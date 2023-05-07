@@ -1,3 +1,6 @@
+# pybind11-OpenKE
+基于 OpenKE-PyTorch 开发的知识表示学习包，底层数据处理利用 C++ 实现，使用 pybind11 实现 C++ 和 Python 的交互。
+
 # OpenKE-PyTorch
 
 This repository is a subproject of THU-OpenSK, and all subprojects of THU-OpenSK are as follows.
