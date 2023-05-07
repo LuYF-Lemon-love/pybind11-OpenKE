@@ -1,3 +1,13 @@
+# train_transe_FB15K237.py
+#
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+#
+# 该脚本展示了如何在 FB15K237 上训练并验证 TransE.
+#
+# 需要的文件:
+#          ./benchmarks/FB15K237/
+
 import openke
 from openke.config import Trainer, Tester
 from openke.module.model import TransE
