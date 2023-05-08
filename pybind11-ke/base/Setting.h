@@ -1,3 +1,10 @@
+// pybind11-ke/base/Setting.h
+// 
+// git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
+// 
+// 该头文件定义了三元组数据结构.
+
 #ifndef SETTING_H
 #define SETTING_H
 #define INT long
@@ -6,6 +13,7 @@
 #include <cstdio>
 #include <string>
 
+// 文件路径
 std::string inPath = "../data/FB15K/";
 std::string outPath = "../data/FB15K/";
 std::string ent_file = "";
@@ -14,6 +22,7 @@ std::string train_file = "";
 std::string valid_file = "";
 std::string test_file = "";
 
+// 设置输入文件路径
 extern "C"
 void setInPath(char *path) {
 	INT len = strlen(path);
@@ -23,6 +32,7 @@ void setInPath(char *path) {
 	printf("Input Files Path : %s\n", inPath.c_str());
 }
 
+// 设置输出文件路径
 extern "C"
 void setOutPath(char *path) {
 	INT len = strlen(path);
@@ -32,6 +42,7 @@ void setOutPath(char *path) {
 	printf("Output Files Path : %s\n", outPath.c_str());
 }
 
+// 设置训练集数据文件路径
 extern "C"
 void setTrainPath(char *path) {
 	INT len = strlen(path);
@@ -41,6 +52,7 @@ void setTrainPath(char *path) {
 	printf("Training Files Path : %s\n", train_file.c_str());
 }
 
+// 设置验证集数据文件路径
 extern "C"
 void setValidPath(char *path) {
 	INT len = strlen(path);
@@ -50,6 +62,7 @@ void setValidPath(char *path) {
 	printf("Valid Files Path : %s\n", valid_file.c_str());
 }
 
+// 设置测试集数据文件路径
 extern "C"
 void setTestPath(char *path) {
 	INT len = strlen(path);
@@ -59,6 +72,7 @@ void setTestPath(char *path) {
 	printf("Test Files Path : %s\n", test_file.c_str());
 }
 
+// 设置实体数据文件路径
 extern "C"
 void setEntPath(char *path) {
 	INT len = strlen(path);
@@ -68,6 +82,7 @@ void setEntPath(char *path) {
 	printf("Entity Files Path : %s\n", ent_file.c_str());
 }
 
+// 设置关系数据文件路径
 extern "C"
 void setRelPath(char *path) {
 	INT len = strlen(path);
@@ -81,6 +96,7 @@ void setRelPath(char *path) {
 ============================================================
 */
 
+// 线程数
 INT workThreads = 1;
 
 extern "C"
@@ -97,6 +113,7 @@ INT getWorkThreads() {
 ============================================================
 */
 
+// 统计数据
 INT relationTotal = 0;
 INT entityTotal = 0;
 INT tripleTotal = 0;
@@ -137,6 +154,7 @@ INT getValidTotal() {
 ============================================================
 */
 
+// TransH 提出的负采样策略
 INT bernFlag = 0;
 
 extern "C"
