@@ -1,3 +1,10 @@
+// pybind11-ke/base/Corrupt.h
+// 
+// git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
+// 
+// 该头文件定义了破坏三元组的方法.
+
 #ifndef CORRUPT_H
 #define CORRUPT_H
 #include "Random.h"

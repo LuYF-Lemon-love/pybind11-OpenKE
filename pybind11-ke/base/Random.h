@@ -1,4 +1,4 @@
-// pybind11-ke/base/Setting.h
+// pybind11-ke/base/Random.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
 // updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
