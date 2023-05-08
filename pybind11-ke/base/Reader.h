@@ -1,3 +1,10 @@
+// pybind11-ke/base/Reader.h
+// 
+// git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
+// 
+// 该头文件从数据集中读取三元组.
+
 #ifndef READER_H
 #define READER_H
 #include "Setting.h"
