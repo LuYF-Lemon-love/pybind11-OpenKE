@@ -3,7 +3,7 @@
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
 // updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
 // 
-// 该头文件定义了三元组数据结构.
+// 该头文件定义了一些全局配置变量.
 
 #ifndef SETTING_H
 #define SETTING_H
