@@ -1,3 +1,10 @@
+// pybind11-ke/base/Setting.h
+// 
+// git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
+// 
+// 该头文件定义了一些随机函数.
+
 #ifndef RANDOM_H
 #define RANDOM_H
 #include "Setting.h"
