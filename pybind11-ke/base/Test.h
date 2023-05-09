@@ -39,6 +39,7 @@ void initTest() {
     l3_filter_tot_constrain = 0, l3_tot_constrain = 0, r3_tot_constrain = 0, r3_filter_tot_constrain = 0, l_filter_tot_constrain = 0, r_filter_tot_constrain = 0, r_filter_rank_constrain = 0, r_rank_constrain = 0, r_filter_reci_rank_constrain = 0, r_reci_rank_constrain = 0;
 }
 
+// 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
 extern "C"
 void getHeadBatch(INT *ph, INT *pt, INT *pr) {
     for (INT i = 0; i < entityTotal; i++) {
@@ -49,6 +50,7 @@ void getHeadBatch(INT *ph, INT *pt, INT *pr) {
     lastHead++;
 }
 
+// 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
 extern "C"
 void getTailBatch(INT *ph, INT *pt, INT *pr) {
     for (INT i = 0; i < entityTotal; i++) {
@@ -59,6 +61,7 @@ void getTailBatch(INT *ph, INT *pt, INT *pr) {
     lastTail++;
 }
 
+// 对于测试集中的给定三元组, 用所有实体替换 relation, 返回所有三元组.
 extern "C"
 void getRelBatch(INT *ph, INT *pt, INT *pr) {
     for (INT i = 0; i < relationTotal; i++) {
@@ -68,23 +71,34 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
     }
 }
 
+// 替换 head, 评估 head 的 rank.
 extern "C"
 void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
     INT h = testList[lastHead].h;
     INT t = testList[lastHead].t;
     INT r = testList[lastHead].r;
+
+    // lef: 记录关系 r 的 head 类型在 head_type 中第一次出现的位置
+	// rig: 记录关系 r 的 head 类型在 head_type 中最后一次出现的后一个位置
     INT lef, rig;
     if (type_constrain) {
         lef = head_lef[r];
         rig = head_rig[r];
     }
+    // minimal: 正确三元组的 score
     REAL minimal = con[h];
+
+	// l_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 head) 负三元组个数
+	// l_filter_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 head) 负三元组个数, 且负三元组不在数据集中
+	// l_s_constrain: 记录能量 (d(h + l, t)) 小于测试三元组的 (通过 type_constrain.txt 替换 head 构造负三元组) 负三元组个数
+	// l_filter_s_constrain: 记录能量 (d(h + l, t)) 小于测试三元组的 (通过 type_constrain.txt 替换 head 构造负三元组) 负三元组个数, 且负三元组不在数据集中
     INT l_s = 0;
     INT l_filter_s = 0;
     INT l_s_constrain = 0;
     INT l_filter_s_constrain = 0;
 
     for (INT j = 0; j < entityTotal; j++) {
+        // 替换 head
         if (j != h) {
             REAL value = con[j];
             if (value < minimal) {
