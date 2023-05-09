@@ -445,6 +445,7 @@ void getNegTest() {
     }
 }
 
+// 生成分类数据集 (一半是负数据集, 一半是原始的测试集)
 extern "C"
 void getTestBatch(INT *ph, INT *pt, INT *pr, INT *nh, INT *nt, INT *nr) {
     getNegTest();
