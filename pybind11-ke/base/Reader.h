@@ -95,24 +95,32 @@ void importTrainFiles() {
         fin = fopen(train_file.c_str(), "r");
     // train2id.txt 第一行是三元组的个数
 	tmp = fscanf(fin, "%ld", &trainTotal);
+    // trainList: 保存训练集中的三元组集合
 	trainList = (Triple *)calloc(trainTotal, sizeof(Triple));
 	trainHead = (Triple *)calloc(trainTotal, sizeof(Triple));
 	trainTail = (Triple *)calloc(trainTotal, sizeof(Triple));
 	trainRel = (Triple *)calloc(trainTotal, sizeof(Triple));
+    // freqRel, freqEnt: 元素值被初始化为 0.
 	freqRel = (INT *)calloc(relationTotal, sizeof(INT));
 	freqEnt = (INT *)calloc(entityTotal, sizeof(INT));
+    // 读取训练集三元组集合, 保存在 trainList
 	for (INT i = 0; i < trainTotal; i++) {
 		tmp = fscanf(fin, "%ld", &trainList[i].h);
 		tmp = fscanf(fin, "%ld", &trainList[i].t);
 		tmp = fscanf(fin, "%ld", &trainList[i].r);
 	}
 	fclose(fin);
+    // 对 trainList 中的三元组排序 (比较顺序: h, r, t).
 	std::sort(trainList, trainList + trainTotal, Triple::cmp_head);
+    // tmp: 保存训练集三元组的个数
 	tmp = trainTotal; trainTotal = 1;
 	trainHead[0] = trainTail[0] = trainRel[0] = trainList[0];
+    // freqEnt: 保存实体在训练集中出现的总数
+    // freqRel: 保存关系在训练集中出现的总数
 	freqEnt[trainList[0].t] += 1;
 	freqEnt[trainList[0].h] += 1;
 	freqRel[trainList[0].r] += 1;
+    // 对训练集中的三元组去重
 	for (INT i = 1; i < tmp; i++)
 		if (trainList[i].h != trainList[i - 1].h || trainList[i].r != trainList[i - 1].r || trainList[i].t != trainList[i - 1].t) {
 			trainHead[trainTotal] = trainTail[trainTotal] = trainRel[trainTotal] = trainList[trainTotal] = trainList[i];
@@ -122,6 +130,9 @@ void importTrainFiles() {
 			freqRel[trainList[i].r]++;
 		}
 
+    // trainHead: 以 h, r, t 排序
+    // trainTail: 以 t, r, h 排序
+    // trainRel: 以 h, t, r 排序
 	std::sort(trainHead, trainHead + trainTotal, Triple::cmp_head);
 	std::sort(trainTail, trainTail + trainTotal, Triple::cmp_tail);
 	std::sort(trainRel, trainRel + trainTotal, Triple::cmp_rel);
@@ -133,18 +144,25 @@ void importTrainFiles() {
 	rigTail = (INT *)calloc(entityTotal, sizeof(INT));
 	lefRel = (INT *)calloc(entityTotal, sizeof(INT));
 	rigRel = (INT *)calloc(entityTotal, sizeof(INT));
+    // rigHead, rigTail, rigRel 初始化为 -1
 	memset(rigHead, -1, sizeof(INT)*entityTotal);
 	memset(rigTail, -1, sizeof(INT)*entityTotal);
 	memset(rigRel, -1, sizeof(INT)*entityTotal);
 	for (INT i = 1; i < trainTotal; i++) {
+        // lefTail (entityTotal): 存储每种实体 (tail) 在 trainTail 中第一次出现的位置
+        // rigTail (entityTotal): 存储每种实体 (tail) 在 trainTail 中最后一次出现的位置
 		if (trainTail[i].t != trainTail[i - 1].t) {
 			rigTail[trainTail[i - 1].t] = i - 1;
 			lefTail[trainTail[i].t] = i;
 		}
+        // lefHead (entityTotal): 存储每种实体 (head) 在 trainHead 中第一次出现的位置
+        // rigHead (entityTotal): 存储每种实体 (head) 在 trainHead 中最后一次出现的位置
 		if (trainHead[i].h != trainHead[i - 1].h) {
 			rigHead[trainHead[i - 1].h] = i - 1;
 			lefHead[trainHead[i].h] = i;
 		}
+        // lefRel (entityTotal): 存储每种实体 (head) 在 trainRel 中第一次出现的位置
+        // rigRel (entityTotal): 存储每种实体 (head) 在 trainRel 中最后一次出现的位置
 		if (trainRel[i].h != trainRel[i - 1].h) {
 			rigRel[trainRel[i - 1].h] = i - 1;
 			lefRel[trainRel[i].h] = i;
