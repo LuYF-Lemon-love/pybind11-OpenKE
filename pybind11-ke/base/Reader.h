@@ -247,24 +247,31 @@ void importTestFiles() {
         f_kb3 = fopen((inPath + "valid2id.txt").c_str(), "r");
     else
         f_kb3 = fopen(valid_file.c_str(), "r");
+    // train2id.txt 第一行是三元组的个数
+    // test2id.txt 第一行是三元组的个数
+    // valid2id.txt 第一行是三元组的个数
     tmp = fscanf(f_kb1, "%ld", &testTotal);
     tmp = fscanf(f_kb2, "%ld", &trainTotal);
     tmp = fscanf(f_kb3, "%ld", &validTotal);
+    // tripleTotal: 数据集三元组个数
     tripleTotal = testTotal + trainTotal + validTotal;
     testList = (Triple *)calloc(testTotal, sizeof(Triple));
     validList = (Triple *)calloc(validTotal, sizeof(Triple));
     tripleList = (Triple *)calloc(tripleTotal, sizeof(Triple));
+    // 读取测试集三元组
     for (INT i = 0; i < testTotal; i++) {
         tmp = fscanf(f_kb1, "%ld", &testList[i].h);
         tmp = fscanf(f_kb1, "%ld", &testList[i].t);
         tmp = fscanf(f_kb1, "%ld", &testList[i].r);
         tripleList[i] = testList[i];
     }
+    // 读取训练集三元组
     for (INT i = 0; i < trainTotal; i++) {
         tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].h);
         tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].t);
         tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].r);
     }
+    // 读取验证集三元组
     for (INT i = 0; i < validTotal; i++) {
         tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + trainTotal].h);
         tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + trainTotal].t);
@@ -275,6 +282,9 @@ void importTestFiles() {
     fclose(f_kb2);
     fclose(f_kb3);
 
+    // tripleList: 以 h, r, t 排序
+    // testList: 以 r, h, t 排序
+    // validList: 以 r, h, t 排序
     std::sort(tripleList, tripleList + tripleTotal, Triple::cmp_head);
     std::sort(testList, testList + testTotal, Triple::cmp_rel2);
     std::sort(validList, validList + validTotal, Triple::cmp_rel2);
@@ -283,10 +293,13 @@ void importTestFiles() {
 
     testLef = (INT *)calloc(relationTotal, sizeof(INT));
     testRig = (INT *)calloc(relationTotal, sizeof(INT));
+    // testLef, testRig 初始化为 -1
     memset(testLef, -1, sizeof(INT) * relationTotal);
     memset(testRig, -1, sizeof(INT) * relationTotal);
     for (INT i = 1; i < testTotal; i++) {
 	if (testList[i].r != testList[i-1].r) {
+        // testLef (relationTotal): 存储每种实体在 testList 中第一次出现的位置
+        // testRig (relationTotal): 存储每种实体在 testList 中最后一次出现的位置
 	    testRig[testList[i-1].r] = i - 1;
 	    testLef[testList[i].r] = i;
 	}
@@ -296,10 +309,13 @@ void importTestFiles() {
 
     validLef = (INT *)calloc(relationTotal, sizeof(INT));
     validRig = (INT *)calloc(relationTotal, sizeof(INT));
+    // validLef, validRig 初始化为 -1
     memset(validLef, -1, sizeof(INT)*relationTotal);
     memset(validRig, -1, sizeof(INT)*relationTotal);
     for (INT i = 1; i < validTotal; i++) {
 	if (validList[i].r != validList[i-1].r) {
+        // validLef (relationTotal): 存储每种实体在 validList 中第一次出现的位置
+        // validRig (relationTotal): 存储每种实体在 validList 中最后一次出现的位置
 	    validRig[validList[i-1].r] = i - 1;
 	    validLef[validList[i].r] = i;
 	}
