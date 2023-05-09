@@ -147,22 +147,32 @@ void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
     }
 }
 
+// 替换 tail, 评估 tail 的 rank.
 extern "C"
 void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
     INT h = testList[lastTail].h;
     INT t = testList[lastTail].t;
     INT r = testList[lastTail].r;
+
+    // lef: 记录关系 r 的 tail 类型在 tail_type 中第一次出现的位置
+	// rig: 记录关系 r 的 tail 类型在 tail_type 中最后一次出现的后一个位置
     INT lef, rig;
     if (type_constrain) {
         lef = tail_lef[r];
         rig = tail_rig[r];
     }
+    // minimal: 正确三元组的 score
     REAL minimal = con[t];
+    // r_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 tail) 负三元组个数
+	// r_filter_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 tail) 负三元组个数, 且负三元组不在数据集中
+    // r_s_constrain: 记录能量 (d(h + l, t)) 小于测试三元组的 (通过 type_constrain.txt 替换 tail 构造负三元组) 负三元组个数
+	// r_filter_s_constrain: 记录能量 (d(h + l, t)) 小于测试三元组的 (通过 type_constrain.txt 替换 tail 构造负三元组) 负三元组个数, 且负三元组不在数据集中
     INT r_s = 0;
     INT r_filter_s = 0;
     INT r_s_constrain = 0;
     INT r_filter_s_constrain = 0;
     for (INT j = 0; j < entityTotal; j++) {
+        // 替换 tail
         if (j != t) {
             REAL value = con[j];
             if (value < minimal) {
