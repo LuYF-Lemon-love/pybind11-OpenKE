@@ -222,17 +222,22 @@ void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
     }
 }
 
+// 替换 relation, 评估 relation 的 rank.
 extern "C"
 void testRel(REAL *con) {
     INT h = testList[lastRel].h;
     INT t = testList[lastRel].t;
     INT r = testList[lastRel].r;
 
+    // minimal: 正确三元组的 score
     REAL minimal = con[r];
+    // rel_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 relation) 负三元组个数
+	// rel_filter_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 relation) 负三元组个数, 且负三元组不在数据集中
     INT rel_s = 0;
     INT rel_filter_s = 0;
 
     for (INT j = 0; j < relationTotal; j++) {
+        // 替换 relation
         if (j != r) {
             REAL value = con[j];
             if (value < minimal) {
