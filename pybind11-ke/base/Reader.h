@@ -88,7 +88,7 @@ void importTrainFiles() {
 	fclose(fin);
 
     // 读取训练数据集
-    // train2id.txt: defined in Setting.h
+    // train_file: defined in Setting.h
     if (train_file == "")
         fin = fopen((inPath + "train2id.txt").c_str(), "r");
     else
@@ -204,25 +204,36 @@ Triple *testList;
 Triple *validList;
 Triple *tripleList;
 
+// 读取测试集
 extern "C"
 void importTestFiles() {
     FILE *fin;
     INT tmp;
-    
+
+    // 读取关系的个数
+    // inPath: defined in Setting.h
+    // rel_file: defined in Setting.h
     if (rel_file == "")
 	    fin = fopen((inPath + "relation2id.txt").c_str(), "r");
     else
         fin = fopen(rel_file.c_str(), "r");
+    // relation2id.txt 第一行是关系的个数
     tmp = fscanf(fin, "%ld", &relationTotal);
     fclose(fin);
 
+    // 读取实体的个数
+    // ent_file: defined in Setting.h
     if (ent_file == "")
         fin = fopen((inPath + "entity2id.txt").c_str(), "r");
     else
         fin = fopen(ent_file.c_str(), "r");
+    // entity2id.txt 第一行是实体的个数
     tmp = fscanf(fin, "%ld", &entityTotal);
     fclose(fin);
 
+    // train_file: defined in Setting.h
+    // test_file: defined in Setting.h
+    // valid_file: defined in Setting.h
     FILE* f_kb1, * f_kb2, * f_kb3;
     if (train_file == "")
         f_kb2 = fopen((inPath + "train2id.txt").c_str(), "r");

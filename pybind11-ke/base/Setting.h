@@ -18,6 +18,8 @@
 // ent_file: entity2id.txt
 // rel_file: relation2id.txt
 // train_file: train2id.txt
+// valid_file: valid2id.txt
+// test_file: test2id.txt
 std::string inPath = "../data/FB15K/";
 std::string outPath = "../data/FB15K/";
 std::string ent_file = "";
