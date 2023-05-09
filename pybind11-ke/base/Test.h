@@ -263,7 +263,7 @@ void testRel(REAL *con) {
     lastRel++;
 }
 
-
+// 链接预测入口函数
 extern "C"
 void test_link_prediction(bool type_constrain = false) {
     l_rank /= testTotal;
@@ -362,6 +362,7 @@ void test_link_prediction(bool type_constrain = false) {
     }
 }
 
+// 链接预测 (relation) 入口函数
 extern "C"
 void test_relation_prediction() {
     rel_rank /= testTotal;
