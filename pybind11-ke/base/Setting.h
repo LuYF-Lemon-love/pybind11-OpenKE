@@ -14,6 +14,10 @@
 #include <string>
 
 // 文件路径
+// inPath: 数据集目录
+// ent_file: entity2id.txt
+// rel_file: relation2id.txt
+// train_file: train2id.txt
 std::string inPath = "../data/FB15K/";
 std::string outPath = "../data/FB15K/";
 std::string ent_file = "";

@@ -56,6 +56,7 @@ void importProb(REAL temp){
     fclose(fin);
 }
 
+// 读取训练集
 extern "C"
 void importTrainFiles() {
 
@@ -63,26 +64,36 @@ void importTrainFiles() {
 	FILE *fin;
 	int tmp;
 
+    // 读取关系的个数
+    // inPath: defined in Setting.h
+    // rel_file: defined in Setting.h
     if (rel_file == "")
 	    fin = fopen((inPath + "relation2id.txt").c_str(), "r");
     else
         fin = fopen(rel_file.c_str(), "r");
+    // relation2id.txt 第一行是关系的个数
 	tmp = fscanf(fin, "%ld", &relationTotal);
 	printf("The total of relations is %ld.\n", relationTotal);
 	fclose(fin);
 
+    // 读取实体的个数
+    // ent_file: defined in Setting.h
     if (ent_file == "")
         fin = fopen((inPath + "entity2id.txt").c_str(), "r");
     else
         fin = fopen(ent_file.c_str(), "r");
+    // entity2id.txt 第一行是实体的个数
 	tmp = fscanf(fin, "%ld", &entityTotal);
 	printf("The total of entities is %ld.\n", entityTotal);
 	fclose(fin);
 
+    // 读取训练数据集
+    // train2id.txt: defined in Setting.h
     if (train_file == "")
         fin = fopen((inPath + "train2id.txt").c_str(), "r");
     else
         fin = fopen(train_file.c_str(), "r");
+    // train2id.txt 第一行是三元组的个数
 	tmp = fscanf(fin, "%ld", &trainTotal);
 	trainList = (Triple *)calloc(trainTotal, sizeof(Triple));
 	trainHead = (Triple *)calloc(trainTotal, sizeof(Triple));
