@@ -324,13 +324,30 @@ void importTestFiles() {
     validRig[validList[validTotal - 1].r] = validTotal - 1;
 }
 
+// head_lef: 记录各个关系的 head 类型在 head_type 中第一次出现的位置
+// head_rig: 记录各个关系的 head 类型在 head_type 中最后一次出现的后一个位置
+// tail_lef: 记录各个关系的 tail 类型在 tail_type 中第一次出现的位置
+// tail_rig: 记录各个关系的 tail 类型在 tail_type 中最后一次出现的后一个位置
 INT* head_lef;
 INT* head_rig;
 INT* tail_lef;
 INT* tail_rig;
+// head_type: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
+// tail_type: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
 INT* head_type;
 INT* tail_type;
 
+// 读取 type_constrain.txt
+// type_constrain.txt: 类型约束文件, 第一行是关系的个数
+// 下面的行是每个关系的类型限制 (训练集、验证集、测试集中每个关系存在的 head 和 tail 的类型)
+// 每个关系有两行：
+// 第一行：`id of relation` `Number of head types` `head1` `head2` ...
+// 第二行: `id of relation` `number of tail types` `tail1` `tail2` ...
+//
+// For example, the relation with id 1200 has 4 types of head entities, which are 3123, 1034, 58 and 5733
+// The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088
+// 1200	4	3123	1034	58	5733
+// 1200	4	12123	4388	11087	11088
 extern "C"
 void importTypeFiles() {
 
@@ -338,6 +355,7 @@ void importTypeFiles() {
     head_rig = (INT *)calloc(relationTotal, sizeof(INT));
     tail_lef = (INT *)calloc(relationTotal, sizeof(INT));
     tail_rig = (INT *)calloc(relationTotal, sizeof(INT));
+    // 统计 total_lef, total_rig
     INT total_lef = 0;
     INT total_rig = 0;
     FILE* f_type = fopen((inPath + "type_constrain.txt").c_str(),"r");
@@ -359,6 +377,7 @@ void importTypeFiles() {
     fclose(f_type);
     head_type = (INT *)calloc(total_lef, sizeof(INT)); 
     tail_type = (INT *)calloc(total_rig, sizeof(INT));
+    // 读取 type_constrain.txt
     total_lef = 0;
     total_rig = 0;
     f_type = fopen((inPath + "type_constrain.txt").c_str(),"r");
