@@ -77,6 +77,7 @@ class TestDataLoader(object):
 		self.entTotal = self.lib.getEntityTotal()
 		self.testTotal = self.lib.getTestTotal()
 
+		# 利用 np.zeros 分配内存
 		self.test_h = np.zeros(self.entTotal, dtype=np.int64)
 		self.test_t = np.zeros(self.entTotal, dtype=np.int64)
 		self.test_r = np.zeros(self.entTotal, dtype=np.int64)
@@ -97,6 +98,7 @@ class TestDataLoader(object):
 		self.test_neg_t_addr = self.test_neg_t.__array_interface__["data"][0]
 		self.test_neg_r_addr = self.test_neg_r.__array_interface__["data"][0]
 
+	# 为链接预测进行采样数据
 	def sampling_lp(self):
 		res = []
 		self.lib.getHeadBatch(self.test_h_addr, self.test_t_addr, self.test_r_addr)
@@ -115,6 +117,7 @@ class TestDataLoader(object):
 		})
 		return res
 
+	# 为分类进行采样数据
 	def sampling_tc(self):
 		self.lib.getTestBatch(
 			self.test_pos_h_addr,
@@ -156,6 +159,7 @@ class TestDataLoader(object):
 	def __len__(self):
 		return self.testTotal
 
+	# 迭代器
 	def __iter__(self):
 		if self.sampling_mode == "link":
 			self.lib.initTest()
