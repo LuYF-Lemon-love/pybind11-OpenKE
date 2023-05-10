@@ -98,6 +98,7 @@ void importTrainFiles();
 // val_loss: val_loss == false (构建负三元组), else 不构建负三元组
 // mode: 控制构建的方式, mode = 0 and bernFlag = True, 起用 TransH 方式构建负三元组.
 // filter_flag: 提出于 TransE, 用于更好的构建负三元组, used in corrupt_head, corrupt_tail, corrupt_rel.
+// filter_flag: 源代码中好像没有用到.
 struct Parameter {
 	INT id;
 	INT *batch_h;
