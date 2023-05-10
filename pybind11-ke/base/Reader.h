@@ -29,6 +29,7 @@ Triple *trainRel;
 INT *testLef, *testRig;
 INT *validLef, *validRig;
 
+// 用于 corrupt_rel 函数
 extern "C"
 void importProb(REAL temp){
     if (prob != NULL)
