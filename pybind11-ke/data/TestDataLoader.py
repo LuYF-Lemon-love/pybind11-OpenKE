@@ -1,4 +1,12 @@
 # coding:utf-8
+#
+# pybind11-ke/data/TestDataLoader.py
+#
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 10, 2023
+#
+# 该脚本定义了采样数据的函数, 用于验证模型.
+
 import os
 import ctypes
 import numpy as np
