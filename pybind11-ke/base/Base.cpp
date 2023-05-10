@@ -85,6 +85,19 @@ void randReset();
 extern "C"
 void importTrainFiles();
 
+// Python 与 C++ 之间传递的数据结构
+// id: 线程 ID
+// batch_h: head entity
+// batch_t: tail entity
+// batch_r: relation
+// batch_y: label
+// batchSize: batch size
+// negRate: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail).
+// negRelRate: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation.
+// p: 用于构建负三元组 (used in corrupt_rel)
+// val_loss: val_loss == false (构建负三元组), else 不构建负三元组
+// mode: 控制构建的方式, mode = 0 and bernFlag = True, 起用 TransH 方式构建负三元组.
+// filter_flag: 提出于 TransE, 用于更好的构建负三元组, used in corrupt_head, corrupt_tail, corrupt_rel.
 struct Parameter {
 	INT id;
 	INT *batch_h;
