@@ -114,6 +114,7 @@ struct Parameter {
 	bool filter_flag;
 };
 
+// 获得 1 batch 训练数据
 void* getBatch(void* con) {
 	Parameter *para = (Parameter *)(con);
 	INT id = para -> id;
@@ -128,6 +129,7 @@ void* getBatch(void* con) {
 	bool val_loss = para -> val_loss;
 	INT mode = para -> mode;
 	bool filter_flag = para -> filter_flag;
+	// 线程 id 负责生成 [lef, rig) 范围的训练数据
 	INT lef, rig;
 	if (batchSize % workThreads == 0) {
 		lef = id * (batchSize / workThreads);
@@ -140,14 +142,18 @@ void* getBatch(void* con) {
 	REAL prob = 500;
 	if (val_loss == false) {
 		for (INT batch = lef; batch < rig; batch++) {
+			// 正三元组
 			INT i = rand_max(id, trainTotal);
 			batch_h[batch] = trainList[i].h;
 			batch_t[batch] = trainList[i].t;
 			batch_r[batch] = trainList[i].r;
 			batch_y[batch] = 1;
+			// batch + batchSize: 第一个负三元组生成的位置
 			INT last = batchSize;
+			// 负采样 entity
 			for (INT times = 0; times < negRate; times ++) {
 				if (mode == 0){
+					// TransH 负采样策略
 					if (bernFlag)
 						prob = 1000 * right_mean[trainList[i].r] / (right_mean[trainList[i].r] + left_mean[trainList[i].r]);
 					if (randd(id) % 1000 < prob) {
@@ -160,6 +166,7 @@ void* getBatch(void* con) {
 						batch_r[batch + last] = trainList[i].r;
 					}
 					batch_y[batch + last] = -1;
+					// 下一负三元组的位置
 					last += batchSize;
 				} else {
 					if(mode == -1){
@@ -175,6 +182,7 @@ void* getBatch(void* con) {
 					last += batchSize;
 				}
 			}
+			// 负采样 relation
 			for (INT times = 0; times < negRelRate; times++) {
 				batch_h[batch + last] = trainList[i].h;
 				batch_t[batch + last] = trainList[i].t;
