@@ -13,57 +13,75 @@
 #include <cstdlib>
 #include <pthread.h>
 
+// defined in Setting.h
 extern "C"
 void setInPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setTrainPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setValidPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setTestPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setEntPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setRelPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setOutPath(char *path);
 
+// defined in Setting.h
 extern "C"
 void setWorkThreads(INT threads);
 
+// defined in Setting.h
 extern "C"
 void setBern(INT con);
 
+// defined in Setting.h
 extern "C"
 INT getWorkThreads();
 
+// defined in Setting.h
 extern "C"
 INT getEntityTotal();
 
+// defined in Setting.h
 extern "C"
 INT getRelationTotal();
 
+// defined in Setting.h
 extern "C"
 INT getTripleTotal();
 
+// defined in Setting.h
 extern "C"
 INT getTrainTotal();
 
+// defined in Setting.h
 extern "C"
 INT getTestTotal();
 
+// defined in Setting.h
 extern "C"
 INT getValidTotal();
 
+// defined in Random.h
 extern "C"
 void randReset();
 
+// defined in Reader.h
 extern "C"
 void importTrainFiles();
 
