@@ -236,6 +236,7 @@ class TrainDataLoader(object):
 	def get_triple_tot(self):
 		return self.tripleTotal
 
+	# 迭代器
 	def __iter__(self):
 		if self.sampling_mode == "normal":
 			return TrainDataSampler(self.nbatches, self.sampling)
