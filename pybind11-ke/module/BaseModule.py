@@ -1,3 +1,10 @@
+# pybind11-ke/module/BaseModule.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 10, 2023
+# 
+# 该头文件定义了 BaseModule.
+
 import torch
 import torch.nn as nn
 import os
