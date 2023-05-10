@@ -205,6 +205,7 @@ void* getBatch(void* con) {
 	pthread_exit(NULL);
 }
 
+// 真正的数据处理函数
 extern "C"
 void sampling(
 		INT *batch_h, 
@@ -219,6 +220,7 @@ void sampling(
 		bool p = false, 
 		bool val_loss = false
 ) {
+	// 在堆区分配空间
 	pthread_t *pt = (pthread_t *)malloc(workThreads * sizeof(pthread_t));
 	Parameter *para = (Parameter *)malloc(workThreads * sizeof(Parameter));
 	for (INT threads = 0; threads < workThreads; threads++) {
@@ -234,6 +236,7 @@ void sampling(
 		para[threads].val_loss = val_loss;
 		para[threads].mode = mode;
 		para[threads].filter_flag = filter_flag;
+		// 创建线程
 		pthread_create(&pt[threads], NULL, getBatch, (void*)(para+threads));
 	}
 	for (INT threads = 0; threads < workThreads; threads++)
