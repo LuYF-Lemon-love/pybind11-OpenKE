@@ -15,6 +15,7 @@ class TrainDataSampler(object):
 
 	def __init__(self, nbatches, datasampler):
 		self.nbatches = nbatches
+		# TrainDataLoader.sampling 函数
 		self.datasampler = datasampler
 		self.batch = 0
 
@@ -47,7 +48,9 @@ class TrainDataLoader(object):
 		neg_rel = 0):
 		
 		base_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../release/Base.so"))
+		# 导入 C 语言的动态库
 		self.lib = ctypes.cdll.LoadLibrary(base_file)
+		# 指定函数原型
 		"""argtypes"""
 		self.lib.sampling.argtypes = [
 			ctypes.c_void_p,
@@ -80,6 +83,7 @@ class TrainDataLoader(object):
 		self.negative_rel = neg_rel
 		self.sampling_mode = sampling_mode
 		self.cross_sampling_flag = 0
+		# 读入数据
 		self.read()
 
 	def read(self):
