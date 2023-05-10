@@ -162,7 +162,7 @@ INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false, bool filter_flag = 
 	return tmp + lef - ll + 1;
 }
 
-// 检查数据集中是否存在 (h, t, r)
+
 bool _find(INT h, INT t, INT r) {
     INT lef = 0;
     INT rig = tripleTotal - 1;
@@ -176,7 +176,6 @@ bool _find(INT h, INT t, INT r) {
     return false;
 }
 
-// 利用 type_constrain.txt 构建负三元组
 INT corrupt(INT h, INT r){
 	INT ll = tail_lef[r];
 	INT rr = tail_rig[r];
