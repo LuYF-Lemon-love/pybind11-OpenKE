@@ -108,6 +108,7 @@ class TrainDataLoader(object):
 			self.nbatches = self.tripleTotal // self.batch_size
 		self.batch_seq_size = self.batch_size * (1 + self.negative_ent + self.negative_rel)
 
+		# 利用 np.zeros 分配内存
 		self.batch_h = np.zeros(self.batch_seq_size, dtype=np.int64)
 		self.batch_t = np.zeros(self.batch_seq_size, dtype=np.int64)
 		self.batch_r = np.zeros(self.batch_seq_size, dtype=np.int64)
@@ -117,6 +118,7 @@ class TrainDataLoader(object):
 		self.batch_r_addr = self.batch_r.__array_interface__["data"][0]
 		self.batch_y_addr = self.batch_y.__array_interface__["data"][0]
 
+	# 采样数据
 	def sampling(self):
 		self.lib.sampling(
 			self.batch_h_addr,
@@ -139,6 +141,7 @@ class TrainDataLoader(object):
 			"mode": "normal"
 		}
 
+	# 只替换 head 进行负采样, 生成数据
 	def sampling_head(self):
 		self.lib.sampling(
 			self.batch_h_addr,
@@ -161,6 +164,7 @@ class TrainDataLoader(object):
 			"mode": "head_batch"
 		}
 
+	# 只替换 tail 进行负采样, 生成数据
 	def sampling_tail(self):
 		self.lib.sampling(
 			self.batch_h_addr,
@@ -183,6 +187,7 @@ class TrainDataLoader(object):
 			"mode": "tail_batch"
 		}
 
+	# 交替替换 head 和 tail 进行负采样, 生成数据
 	def cross_sampling(self):
 		self.cross_sampling_flag = 1 - self.cross_sampling_flag 
 		if self.cross_sampling_flag == 0:
