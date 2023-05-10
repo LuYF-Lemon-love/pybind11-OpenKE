@@ -1,3 +1,10 @@
+// pybind11-ke/base/Base.cpp
+// 
+// git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 10, 2023
+// 
+// 该头文件定义了 Python 和 C++ 的交互接口.
+
 #include "Setting.h"
 #include "Random.h"
 #include "Reader.h"
