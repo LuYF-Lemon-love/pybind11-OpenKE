@@ -15,6 +15,7 @@ class TestDataSampler(object):
 
 	def __init__(self, data_total, data_sampler):
 		self.data_total = data_total
+		# TestDataLoader.sampling_lp 或 TestDataLoader.sampling_tc 函数
 		self.data_sampler = data_sampler
 		self.total = 0
 
@@ -34,7 +35,9 @@ class TestDataLoader(object):
 
 	def __init__(self, in_path = "./", sampling_mode = 'link', type_constrain = True):
 		base_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../release/Base.so"))
+		# 导入 C 语言的动态库
 		self.lib = ctypes.cdll.LoadLibrary(base_file)
+		# 指定函数原型
 		"""for link prediction"""
 		self.lib.getHeadBatch.argtypes = [
 			ctypes.c_void_p,
@@ -59,6 +62,7 @@ class TestDataLoader(object):
 		self.in_path = in_path
 		self.sampling_mode = sampling_mode
 		self.type_constrain = type_constrain
+		# 读入数据
 		self.read()
 
 	def read(self):
