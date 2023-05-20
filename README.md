@@ -73,7 +73,7 @@
 ```bash
 git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
 cd pybind11-OpenKE/
-cd openke/
+cd pybind11_ke/
 ```
 
 3. Compile C++ files.
