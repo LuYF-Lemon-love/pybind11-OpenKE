@@ -135,3 +135,6 @@ venv.bak/
 
 #Backup files
 *.py.bak
+
+# self add
+checkpoint/
