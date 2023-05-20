@@ -64,15 +64,25 @@
 |RotatE|0.549|0.479|-|0.480|
 |RotatE(+adv)|0.565|0.522|0.571|0.533|
 
-## Installation
+## Installation (Linux)
 
-1. Install [PyTorch](https://pytorch.org/get-started/locally/).
+1. 配置环境:
+
+```shell
+conda create --name pybind11-ke python=3.10 -y
+conda activate pybind11-ke
+pip install torch -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
 
 2. Clone the pybind11-OpenKE-PyTorch branch.
 
 ```bash
 git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
 cd pybind11-OpenKE/
+mkdir -p ./checkpoint
 cd pybind11_ke/
 ```
 
