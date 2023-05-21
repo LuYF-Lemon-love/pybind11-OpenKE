@@ -12,6 +12,10 @@
 #include "Test.h"
 #include <cstdlib>
 #include <pthread.h>
+#include <pybind11/pybind11.h> //导入 pybind11
+
+// pybind11 的命名空间
+namespace py = pybind11;
 
 // defined in Setting.h
 extern "C"
@@ -244,6 +248,12 @@ void sampling(
 
 	free(pt);
 	free(para);
+}
+
+PYBIND11_MODULE(base, m) {
+	m.doc() = "The underlying data processing module of pybind11-OpenKE is powered by pybind11.";
+	m.def("sampling", &sampling, "sample function",
+	py::arg("i") = 1, py::arg("j") = 2);
 }
 
 int main() {
