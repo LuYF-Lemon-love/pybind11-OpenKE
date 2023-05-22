@@ -249,6 +249,7 @@ bool _find(INT h, INT t, INT r) {
     }
     if (tripleList[lef].h == h && tripleList[lef].r == r && tripleList[lef].t == t) return true;
     if (tripleList[rig].h == h && tripleList[rig].r == r && tripleList[rig].t == t) return true;
+	std::cout << "mid = " << mid << std::endl;
     return false;
 }
 
