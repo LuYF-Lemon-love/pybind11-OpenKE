@@ -55,6 +55,7 @@ void importProb(REAL temp){
         sum = 0;
     }
     fclose(fin);
+    std::cout << "tmp = " << tmp << std::endl;
 }
 
 // 读取训练集
@@ -323,6 +324,8 @@ void importTestFiles() {
     }
     validLef[validList[0].r] = 0;
     validRig[validList[validTotal - 1].r] = validTotal - 1;
+
+    std::cout << "tmp = " << tmp << std::endl;
 }
 
 // head_lef: 记录各个关系的 head 类型在 head_type 中第一次出现的位置
