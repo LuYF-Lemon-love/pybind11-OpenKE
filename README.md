@@ -75,6 +75,7 @@ pip install torch -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install pybind11 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 2. Clone the pybind11-OpenKE-PyTorch branch.

@@ -58,7 +58,7 @@ void importProb(REAL temp){
 }
 
 // 读取训练集
-extern "C"
+// extern "C"
 void importTrainFiles() {
 
 	printf("The toolkit is importing datasets.\n");

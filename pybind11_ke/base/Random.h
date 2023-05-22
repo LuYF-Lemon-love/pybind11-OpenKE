@@ -14,7 +14,7 @@
 unsigned long long *next_random;
 
 // reset the random seeds for all threads
-extern "C"
+// extern "C"
 void randReset() {
 	next_random = (unsigned long long *)calloc(workThreads, sizeof(unsigned long long));
 	for (INT i = 0; i < workThreads; i++)

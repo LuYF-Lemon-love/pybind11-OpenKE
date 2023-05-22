@@ -8,8 +8,9 @@
 # 该脚本定义了采样数据的函数.
 
 import os
-import ctypes
+# import ctypes
 import numpy as np
+import base
 
 class TrainDataSampler(object):
 
@@ -47,24 +48,24 @@ class TrainDataLoader(object):
 		neg_ent = 1,
 		neg_rel = 0):
 		
-		base_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../release/Base.so"))
+		# base_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../release/Base.so"))
 		# 导入 C 语言的动态库
-		self.lib = ctypes.cdll.LoadLibrary(base_file)
+		# self.lib = ctypes.cdll.LoadLibrary(base_file)
 		# 指定函数原型
-		"""argtypes"""
-		self.lib.sampling.argtypes = [
-			ctypes.c_void_p,
-			ctypes.c_void_p,
-			ctypes.c_void_p,
-			ctypes.c_void_p,
-			ctypes.c_int64,
-			ctypes.c_int64,
-			ctypes.c_int64,
-			ctypes.c_int64,
-			ctypes.c_int64,
-			ctypes.c_int64,
-			ctypes.c_int64
-		]
+		# """argtypes"""
+		# self.lib.sampling.argtypes = [
+		# 	ctypes.c_void_p,
+		# 	ctypes.c_void_p,
+		# 	ctypes.c_void_p,
+		# 	ctypes.c_void_p,
+		# 	ctypes.c_int64,
+		# 	ctypes.c_int64,
+		# 	ctypes.c_int64,
+		# 	ctypes.c_int64,
+		# 	ctypes.c_int64,
+		# 	ctypes.c_int64,
+		# 	ctypes.c_int64
+		# ]
 		self.in_path = in_path
 		self.tri_file = tri_file
 		self.ent_file = ent_file
@@ -88,19 +89,30 @@ class TrainDataLoader(object):
 
 	def read(self):
 		if self.in_path != None:
-			self.lib.setInPath(ctypes.create_string_buffer(self.in_path.encode(), len(self.in_path) * 2))
+			# self.lib.setInPath(ctypes.create_string_buffer(self.in_path.encode(), len(self.in_path) * 2))
+			base.setInPath(self.in_path)
 		else:
-			self.lib.setTrainPath(ctypes.create_string_buffer(self.tri_file.encode(), len(self.tri_file) * 2))
-			self.lib.setEntPath(ctypes.create_string_buffer(self.ent_file.encode(), len(self.ent_file) * 2))
-			self.lib.setRelPath(ctypes.create_string_buffer(self.rel_file.encode(), len(self.rel_file) * 2))
+			# self.lib.setTrainPath(ctypes.create_string_buffer(self.tri_file.encode(), len(self.tri_file) * 2))
+			# self.lib.setEntPath(ctypes.create_string_buffer(self.ent_file.encode(), len(self.ent_file) * 2))
+			# self.lib.setRelPath(ctypes.create_string_buffer(self.rel_file.encode(), len(self.rel_file) * 2))
+			base.setTrainPath(self.tri_file)
+			base.setEntPath(self.ent_file)
+			base.setRelPath(self.rel_file)
 		
-		self.lib.setBern(self.bern)
-		self.lib.setWorkThreads(self.work_threads)
-		self.lib.randReset()
-		self.lib.importTrainFiles()
-		self.relTotal = self.lib.getRelationTotal()
-		self.entTotal = self.lib.getEntityTotal()
-		self.tripleTotal = self.lib.getTrainTotal()
+		# self.lib.setBern(self.bern)
+		base.setBern(self.bern)
+		# self.lib.setWorkThreads(self.work_threads)
+		base.setWorkThreads(self.work_threads)
+		# self.lib.randReset()
+		base.randReset()
+		# self.lib.importTrainFiles()
+		base.importTrainFiles()
+		# self.relTotal = self.lib.getRelationTotal()
+		self.relTotal = base.getRelationTotal()
+		# self.entTotal = self.lib.getEntityTotal()
+		self.entTotal = base.getEntityTotal()
+		# self.tripleTotal = self.lib.getTrainTotal()
+		self.tripleTotal = base.getTrainTotal()
 
 		if self.batch_size == None:
 			self.batch_size = self.tripleTotal // self.nbatches
@@ -113,18 +125,31 @@ class TrainDataLoader(object):
 		self.batch_t = np.zeros(self.batch_seq_size, dtype=np.int64)
 		self.batch_r = np.zeros(self.batch_seq_size, dtype=np.int64)
 		self.batch_y = np.zeros(self.batch_seq_size, dtype=np.float32)
-		self.batch_h_addr = self.batch_h.__array_interface__["data"][0]
-		self.batch_t_addr = self.batch_t.__array_interface__["data"][0]
-		self.batch_r_addr = self.batch_r.__array_interface__["data"][0]
-		self.batch_y_addr = self.batch_y.__array_interface__["data"][0]
+		# self.batch_h_addr = self.batch_h.__array_interface__["data"][0]
+		# self.batch_t_addr = self.batch_t.__array_interface__["data"][0]
+		# self.batch_r_addr = self.batch_r.__array_interface__["data"][0]
+		# self.batch_y_addr = self.batch_y.__array_interface__["data"][0]
 
 	# 采样数据
 	def sampling(self):
-		self.lib.sampling(
-			self.batch_h_addr,
-			self.batch_t_addr,
-			self.batch_r_addr,
-			self.batch_y_addr,
+		# self.lib.sampling(
+		# 	self.batch_h_addr,
+		# 	self.batch_t_addr,
+		# 	self.batch_r_addr,
+		# 	self.batch_y_addr,
+		# 	self.batch_size,
+		# 	self.negative_ent,
+		# 	self.negative_rel,
+		# 	0,
+		# 	self.filter,
+		# 	0,
+		# 	0
+		# )
+		base.sampling(
+			self.batch_h,
+			self.batch_t,
+			self.batch_r,
+			self.batch_y,
 			self.batch_size,
 			self.negative_ent,
 			self.negative_rel,
@@ -143,11 +168,24 @@ class TrainDataLoader(object):
 
 	# 只替换 head 进行负采样, 生成数据
 	def sampling_head(self):
-		self.lib.sampling(
-			self.batch_h_addr,
-			self.batch_t_addr,
-			self.batch_r_addr,
-			self.batch_y_addr,
+		# self.lib.sampling(
+		# 	self.batch_h_addr,
+		# 	self.batch_t_addr,
+		# 	self.batch_r_addr,
+		# 	self.batch_y_addr,
+		# 	self.batch_size,
+		# 	self.negative_ent,
+		# 	self.negative_rel,
+		# 	-1,
+		# 	self.filter,
+		# 	0,
+		# 	0
+		# )
+		base.sampling(
+			self.batch_h,
+			self.batch_t,
+			self.batch_r,
+			self.batch_y,
 			self.batch_size,
 			self.negative_ent,
 			self.negative_rel,
@@ -166,11 +204,24 @@ class TrainDataLoader(object):
 
 	# 只替换 tail 进行负采样, 生成数据
 	def sampling_tail(self):
-		self.lib.sampling(
-			self.batch_h_addr,
-			self.batch_t_addr,
-			self.batch_r_addr,
-			self.batch_y_addr,
+		# self.lib.sampling(
+		# 	self.batch_h_addr,
+		# 	self.batch_t_addr,
+		# 	self.batch_r_addr,
+		# 	self.batch_y_addr,
+		# 	self.batch_size,
+		# 	self.negative_ent,
+		# 	self.negative_rel,
+		# 	1,
+		# 	self.filter,
+		# 	0,
+		# 	0
+		# )
+		base.sampling(
+			self.batch_h,
+			self.batch_t,
+			self.batch_r,
+			self.batch_y,
 			self.batch_size,
 			self.negative_ent,
 			self.negative_rel,
