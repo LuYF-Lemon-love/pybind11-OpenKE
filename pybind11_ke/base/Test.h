@@ -108,7 +108,7 @@ void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
                     l_filter_s += 1;
             }
             if (type_constrain) {
-                while (lef < rig && head_type[lef] < j) lef ++;
+                while (lef < rig && head_type[lef] < j) lef++;
                 if (lef < rig && j == head_type[lef]) {
                     if (value < minimal) {
                         l_s_constrain += 1;
@@ -182,7 +182,7 @@ void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
                     r_filter_s += 1;
             }
             if (type_constrain) {
-                while (lef < rig && tail_type[lef] < j) lef ++;
+                while (lef < rig && tail_type[lef] < j) lef++;
                 if (lef < rig && j == tail_type[lef]) {
                         if (value < minimal) {
                             r_s_constrain += 1;
