@@ -255,7 +255,7 @@ INT getValidTotal();
 // }
 
 // 获得 1 batch 训练数据
-void* getBatch(
+void getBatch(
 	INT id,
 	py::array_t<INT> batch_h_py, 
 	py::array_t<INT> batch_t_py, 
@@ -378,12 +378,12 @@ PYBIND11_MODULE(base, m) {
 	m.doc() = "The underlying data processing module of pybind11-OpenKE is powered by pybind11.";
 
 	m.def("sampling", &sampling, "sample function",
-		py::arg("batch_h"), py::arg("batch_t"),
-		py::arg("batch_r"), py::arg("batch_y"),
+		py::arg("batch_h").noconvert(), py::arg("batch_t").noconvert(),
+		py::arg("batch_r").noconvert(), py::arg("batch_y").noconvert(),
 		py::arg("batchSize"), py::arg("bnegRate") = 1,
 		py::arg("negRelRate") = 0, py::arg("mode") = 0,
 		py::arg("filter_flag") = true, py::arg("p") = false,
-		py::arg("val_loss") = false, py::arg().noconvert(),
+		py::arg("val_loss") = false,
         py::call_guard<py::gil_scoped_release>());
 
 	m.def("setInPath", &setInPath);
