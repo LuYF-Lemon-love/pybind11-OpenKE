@@ -99,8 +99,9 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
 }
 
 // 替换 head, 评估 head 的 rank.
-extern "C"
-void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
+// extern "C"
+// void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
+void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = false) {
     INT h = testList[lastHead].h;
     INT t = testList[lastHead].t;
     INT r = testList[lastHead].r;
@@ -113,7 +114,9 @@ void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
         rig = head_rig[r];
     }
     // minimal: 正确三元组的 score
-    REAL minimal = con[h];
+    auto con = con_py.mutable_unchecked<1>();
+    // REAL minimal = con[h];
+    REAL minimal = con(h);
 
 	// l_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 head) 负三元组个数
 	// l_filter_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 head) 负三元组个数, 且负三元组不在数据集中
@@ -127,7 +130,8 @@ void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
     for (INT j = 0; j < entityTotal; j++) {
         // 替换 head
         if (j != h) {
-            REAL value = con[j];
+            // REAL value = con[j];
+            REAL value = con(j);
             if (value < minimal) {
                 l_s += 1;
                 if (not _find(j, t, r))

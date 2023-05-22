@@ -7,33 +7,34 @@ import os
 import time
 import sys
 import datetime
-import ctypes
+# import ctypes
 import json
 import numpy as np
 from sklearn.metrics import roc_auc_score
 import copy
 from tqdm import tqdm
+from ..release import base
 
 class Tester(object):
 
     def __init__(self, model = None, data_loader = None, use_gpu = True):
-        base_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../release/Base.so"))
-        self.lib = ctypes.cdll.LoadLibrary(base_file)
-        self.lib.testHead.argtypes = [ctypes.c_void_p, ctypes.c_int64, ctypes.c_int64]
-        self.lib.testTail.argtypes = [ctypes.c_void_p, ctypes.c_int64, ctypes.c_int64]
-        self.lib.test_link_prediction.argtypes = [ctypes.c_int64]
+        # base_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../release/Base.so"))
+        # self.lib = ctypes.cdll.LoadLibrary(base_file)
+        # self.lib.testHead.argtypes = [ctypes.c_void_p, ctypes.c_int64, ctypes.c_int64]
+        # self.lib.testTail.argtypes = [ctypes.c_void_p, ctypes.c_int64, ctypes.c_int64]
+        # self.lib.test_link_prediction.argtypes = [ctypes.c_int64]
 
-        self.lib.getTestLinkMRR.argtypes = [ctypes.c_int64]
-        self.lib.getTestLinkMR.argtypes = [ctypes.c_int64]
-        self.lib.getTestLinkHit10.argtypes = [ctypes.c_int64]
-        self.lib.getTestLinkHit3.argtypes = [ctypes.c_int64]
-        self.lib.getTestLinkHit1.argtypes = [ctypes.c_int64]
+        # self.lib.getTestLinkMRR.argtypes = [ctypes.c_int64]
+        # self.lib.getTestLinkMR.argtypes = [ctypes.c_int64]
+        # self.lib.getTestLinkHit10.argtypes = [ctypes.c_int64]
+        # self.lib.getTestLinkHit3.argtypes = [ctypes.c_int64]
+        # self.lib.getTestLinkHit1.argtypes = [ctypes.c_int64]
 
-        self.lib.getTestLinkMRR.restype = ctypes.c_float
-        self.lib.getTestLinkMR.restype = ctypes.c_float
-        self.lib.getTestLinkHit10.restype = ctypes.c_float
-        self.lib.getTestLinkHit3.restype = ctypes.c_float
-        self.lib.getTestLinkHit1.restype = ctypes.c_float
+        # self.lib.getTestLinkMRR.restype = ctypes.c_float
+        # self.lib.getTestLinkMR.restype = ctypes.c_float
+        # self.lib.getTestLinkHit10.restype = ctypes.c_float
+        # self.lib.getTestLinkHit3.restype = ctypes.c_float
+        # self.lib.getTestLinkHit1.restype = ctypes.c_float
 
         self.model = model
         self.data_loader = data_loader
@@ -68,7 +69,8 @@ class Tester(object):
         })
 
     def run_link_prediction(self, type_constrain = False):
-        self.lib.initTest()
+        # self.lib.initTest()
+        base.initTest()
         self.data_loader.set_sampling_mode('link')
         if type_constrain:
             type_constrain = 1
@@ -77,7 +79,8 @@ class Tester(object):
         training_range = tqdm(self.data_loader)
         for index, [data_head, data_tail] in enumerate(training_range):
             score = self.test_one_step(data_head)
-            self.lib.testHead(score.__array_interface__["data"][0], index, type_constrain)
+            # self.lib.testHead(score.__array_interface__["data"][0], index, type_constrain)
+            base.testHead(score, index, type_constrain)
             score = self.test_one_step(data_tail)
             self.lib.testTail(score.__array_interface__["data"][0], index, type_constrain)
         self.lib.test_link_prediction(type_constrain)

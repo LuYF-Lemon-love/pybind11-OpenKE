@@ -401,6 +401,10 @@ PYBIND11_MODULE(base, m) {
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
 		py::arg("pr_py").noconvert());
 	m.def("initTest", &initTest);
+
+	m.def("testHead", &testHead, "替换 head, 评估 head 的 rank.",
+		py::arg("con_py").noconvert(), py::arg("lastHead"),
+		py::arg("type_constrain") = false);
 }
 
 int main() {
