@@ -12,6 +12,7 @@
 #include "Test.h"
 #include <cstdlib>
 #include <pthread.h>
+#include <thread>
 #include <pybind11/pybind11.h> //导入 pybind11
 #include <pybind11/numpy.h>
 namespace py = pybind11;

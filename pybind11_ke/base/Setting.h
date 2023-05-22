@@ -9,6 +9,7 @@
 #define SETTING_H
 #define INT long
 #define REAL float
+#include <iostream>
 #include <cstring>
 #include <cstdio>
 #include <string>
