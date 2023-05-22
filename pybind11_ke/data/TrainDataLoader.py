@@ -10,7 +10,7 @@
 import os
 # import ctypes
 import numpy as np
-import base
+from ..release import base
 
 class TrainDataSampler(object):
 

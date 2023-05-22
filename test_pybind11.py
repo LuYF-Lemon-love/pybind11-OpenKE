@@ -18,8 +18,8 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 # dataloader for training
 train_dataloader = TrainDataLoader(
 	in_path = "./benchmarks/FB15K237/", 
-	nbatches = 100,
-	threads = 8, 
+	nbatches = 5,
+	threads = 32, 
 	sampling_mode = "normal", 
 	bern_flag = 1, 
 	filter_flag = 1, 
