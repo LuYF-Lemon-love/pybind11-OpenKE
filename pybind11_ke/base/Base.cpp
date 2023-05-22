@@ -13,13 +13,6 @@
 #include <cstdlib>
 #include <pthread.h>
 #include <thread>
-#include <pybind11/pybind11.h> //导入 pybind11
-#include <pybind11/numpy.h>
-namespace py = pybind11;
-
-
-// pybind11 的命名空间
-namespace py = pybind11;
 
 // defined in Setting.h
 // extern "C"
@@ -78,8 +71,8 @@ INT getTripleTotal();
 // INT getTrainTotal();
 
 // defined in Setting.h
-extern "C"
-INT getTestTotal();
+// extern "C"
+// INT getTestTotal();
 
 // defined in Setting.h
 extern "C"
@@ -397,6 +390,17 @@ PYBIND11_MODULE(base, m) {
 	m.def("getRelationTotal", &getRelationTotal);
 	m.def("getEntityTotal", &getEntityTotal);
 	m.def("getTrainTotal", &getTrainTotal);
+
+	m.def("importTestFiles", &importTestFiles);
+	m.def("importTypeFiles", &importTypeFiles);
+	m.def("getTestTotal", &getTestTotal);
+	m.def("getHeadBatch", &getHeadBatch, "对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.",
+		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
+		py::arg("pr_py").noconvert());
+	m.def("getTailBatch", &getTailBatch, "对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.",
+		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
+		py::arg("pr_py").noconvert());
+	m.def("initTest", &initTest);
 }
 
 int main() {

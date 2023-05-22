@@ -13,6 +13,9 @@
 #include <cstring>
 #include <cstdio>
 #include <string>
+#include <pybind11/pybind11.h> //导入 pybind11
+#include <pybind11/numpy.h>
+namespace py = pybind11;
 
 // 文件路径
 // inPath: 数据集目录
@@ -176,7 +179,7 @@ INT getTrainTotal() {
 	return trainTotal;
 }
 
-extern "C"
+// extern "C"
 INT getTestTotal() {
 	return testTotal;
 }

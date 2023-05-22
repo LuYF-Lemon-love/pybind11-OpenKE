@@ -207,7 +207,7 @@ Triple *validList;
 Triple *tripleList;
 
 // 读取测试集
-extern "C"
+// extern "C"
 void importTestFiles() {
     FILE *fin;
     INT tmp;
@@ -352,7 +352,7 @@ INT* tail_type;
 // The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088
 // 1200	4	3123	1034	58	5733
 // 1200	4	12123	4388	11087	11088
-extern "C"
+// extern "C"
 void importTypeFiles() {
 
     head_lef = (INT *)calloc(relationTotal, sizeof(INT));

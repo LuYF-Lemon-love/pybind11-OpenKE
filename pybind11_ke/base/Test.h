@@ -26,7 +26,7 @@ REAL l3_filter_tot_constrain = 0, l3_tot_constrain = 0, r3_tot_constrain = 0, r3
 REAL hit1, hit3, hit10, mr, mrr;
 REAL hit1TC, hit3TC, hit10TC, mrTC, mrrTC;
 
-extern "C"
+// extern "C"
 void initTest() {
     lastHead = 0;
     lastTail = 0;
@@ -40,24 +40,50 @@ void initTest() {
     l3_filter_tot_constrain = 0, l3_tot_constrain = 0, r3_tot_constrain = 0, r3_filter_tot_constrain = 0, l_filter_tot_constrain = 0, r_filter_tot_constrain = 0, r_filter_rank_constrain = 0, r_rank_constrain = 0, r_filter_reci_rank_constrain = 0, r_reci_rank_constrain = 0;
 }
 
+// // 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
+// extern "C"
+// void getHeadBatch(INT *ph, INT *pt, INT *pr) {
+//     for (INT i = 0; i < entityTotal; i++) {
+//         ph[i] = i;
+//         pt[i] = testList[lastHead].t;
+//         pr[i] = testList[lastHead].r;
+//     }
+//     lastHead++;
+// }
+
 // 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
-extern "C"
-void getHeadBatch(INT *ph, INT *pt, INT *pr) {
+void getHeadBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
+    auto ph = ph_py.mutable_unchecked<1>();
+	auto pt = pt_py.mutable_unchecked<1>();
+	auto pr = pr_py.mutable_unchecked<1>();
     for (INT i = 0; i < entityTotal; i++) {
-        ph[i] = i;
-        pt[i] = testList[lastHead].t;
-        pr[i] = testList[lastHead].r;
+        ph(i) = i;
+        pt(i) = testList[lastHead].t;
+        pr(i) = testList[lastHead].r;
     }
     lastHead++;
 }
 
+// // 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
+// extern "C"
+// void getTailBatch(INT *ph, INT *pt, INT *pr) {
+//     for (INT i = 0; i < entityTotal; i++) {
+//         ph[i] = testList[lastTail].h;
+//         pt[i] = i;
+//         pr[i] = testList[lastTail].r;
+//     }
+//     lastTail++;
+// }
+
 // 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
-extern "C"
-void getTailBatch(INT *ph, INT *pt, INT *pr) {
+void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
+    auto ph = ph_py.mutable_unchecked<1>();
+	auto pt = pt_py.mutable_unchecked<1>();
+	auto pr = pr_py.mutable_unchecked<1>();
     for (INT i = 0; i < entityTotal; i++) {
-        ph[i] = testList[lastTail].h;
-        pt[i] = i;
-        pr[i] = testList[lastTail].r;
+        ph(i) = testList[lastTail].h;
+        pt(i) = i;
+        pr(i) = testList[lastTail].r;
     }
     lastTail++;
 }
