@@ -405,6 +405,21 @@ PYBIND11_MODULE(base, m) {
 	m.def("testHead", &testHead, "替换 head, 评估 head 的 rank.",
 		py::arg("con_py").noconvert(), py::arg("lastHead"),
 		py::arg("type_constrain") = false);
+	m.def("testTail", &testTail, "替换 tail, 评估 tail 的 rank.",
+		py::arg("con_py").noconvert(), py::arg("lastTail"),
+		py::arg("type_constrain") = false);
+	m.def("test_link_prediction", &test_link_prediction, "链接预测入口函数",
+		py::arg("type_constrain") = false);
+	m.def("getTestLinkMRR", &getTestLinkMRR, "return MRR",
+		py::arg("type_constrain") = false);
+	m.def("getTestLinkMR", &getTestLinkMR, "return MR",
+		py::arg("type_constrain") = false);
+	m.def("getTestLinkHit10", &getTestLinkHit10, "return Hit10",
+		py::arg("type_constrain") = false);
+	m.def("getTestLinkHit3", &getTestLinkHit3, "return Hit3",
+		py::arg("type_constrain") = false);
+	m.def("getTestLinkHit1", &getTestLinkHit1, "return Hit1",
+		py::arg("type_constrain") = false);
 }
 
 int main() {

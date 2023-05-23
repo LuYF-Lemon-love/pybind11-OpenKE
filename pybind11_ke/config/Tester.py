@@ -82,73 +82,80 @@ class Tester(object):
             # self.lib.testHead(score.__array_interface__["data"][0], index, type_constrain)
             base.testHead(score, index, type_constrain)
             score = self.test_one_step(data_tail)
-            self.lib.testTail(score.__array_interface__["data"][0], index, type_constrain)
-        self.lib.test_link_prediction(type_constrain)
+            # self.lib.testTail(score.__array_interface__["data"][0], index, type_constrain)
+            base.testTail(score, index, type_constrain)
+        # self.lib.test_link_prediction(type_constrain)
+        base.test_link_prediction(type_constrain)
 
-        mrr = self.lib.getTestLinkMRR(type_constrain)
-        mr = self.lib.getTestLinkMR(type_constrain)
-        hit10 = self.lib.getTestLinkHit10(type_constrain)
-        hit3 = self.lib.getTestLinkHit3(type_constrain)
-        hit1 = self.lib.getTestLinkHit1(type_constrain)
-        print (hit10)
+        # mrr = self.lib.getTestLinkMRR(type_constrain)
+        mrr = base.getTestLinkMRR(type_constrain)
+        # mr = self.lib.getTestLinkMR(type_constrain)
+        mr = base.getTestLinkMR(type_constrain)
+        # hit10 = self.lib.getTestLinkHit10(type_constrain)
+        # hit3 = self.lib.getTestLinkHit3(type_constrain)
+        # hit1 = self.lib.getTestLinkHit1(type_constrain)
+        hit10 = base.getTestLinkHit10(type_constrain)
+        hit3 = base.getTestLinkHit3(type_constrain)
+        hit1 = base.getTestLinkHit1(type_constrain)
+        print(hit10)
         return mrr, mr, hit10, hit3, hit1
 
-    def get_best_threshlod(self, score, ans):
-        res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
-        order = np.argsort(score)
-        res = res[order]
+    # def get_best_threshlod(self, score, ans):
+    #     res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
+    #     order = np.argsort(score)
+    #     res = res[order]
 
-        total_all = (float)(len(score))
-        total_current = 0.0
-        total_true = np.sum(ans)
-        total_false = total_all - total_true
+    #     total_all = (float)(len(score))
+    #     total_current = 0.0
+    #     total_true = np.sum(ans)
+    #     total_false = total_all - total_true
 
-        res_mx = 0.0
-        threshlod = None
-        for index, [ans, score] in enumerate(res):
-            if ans == 1:
-                total_current += 1.0
-            res_current = (2 * total_current + total_false - index - 1) / total_all
-            if res_current > res_mx:
-                res_mx = res_current
-                threshlod = score
-        return threshlod, res_mx
+    #     res_mx = 0.0
+    #     threshlod = None
+    #     for index, [ans, score] in enumerate(res):
+    #         if ans == 1:
+    #             total_current += 1.0
+    #         res_current = (2 * total_current + total_false - index - 1) / total_all
+    #         if res_current > res_mx:
+    #             res_mx = res_current
+    #             threshlod = score
+    #     return threshlod, res_mx
 
-    def run_triple_classification(self, threshlod = None):
-        self.lib.initTest()
-        self.data_loader.set_sampling_mode('classification')
-        score = []
-        ans = []
-        training_range = tqdm(self.data_loader)
-        for index, [pos_ins, neg_ins] in enumerate(training_range):
-            res_pos = self.test_one_step(pos_ins)
-            ans = ans + [1 for i in range(len(res_pos))]
-            score.append(res_pos)
+    # def run_triple_classification(self, threshlod = None):
+    #     self.lib.initTest()
+    #     self.data_loader.set_sampling_mode('classification')
+    #     score = []
+    #     ans = []
+    #     training_range = tqdm(self.data_loader)
+    #     for index, [pos_ins, neg_ins] in enumerate(training_range):
+    #         res_pos = self.test_one_step(pos_ins)
+    #         ans = ans + [1 for i in range(len(res_pos))]
+    #         score.append(res_pos)
 
-            res_neg = self.test_one_step(neg_ins)
-            ans = ans + [0 for i in range(len(res_pos))]
-            score.append(res_neg)
+    #         res_neg = self.test_one_step(neg_ins)
+    #         ans = ans + [0 for i in range(len(res_pos))]
+    #         score.append(res_neg)
 
-        score = np.concatenate(score, axis = -1)
-        ans = np.array(ans)
+    #     score = np.concatenate(score, axis = -1)
+    #     ans = np.array(ans)
 
-        if threshlod == None:
-            threshlod, _ = self.get_best_threshlod(score, ans)
+    #     if threshlod == None:
+    #         threshlod, _ = self.get_best_threshlod(score, ans)
 
-        res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
-        order = np.argsort(score)
-        res = res[order]
+    #     res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
+    #     order = np.argsort(score)
+    #     res = res[order]
 
-        total_all = (float)(len(score))
-        total_current = 0.0
-        total_true = np.sum(ans)
-        total_false = total_all - total_true
+    #     total_all = (float)(len(score))
+    #     total_current = 0.0
+    #     total_true = np.sum(ans)
+    #     total_false = total_all - total_true
 
-        for index, [ans, score] in enumerate(res):
-            if score > threshlod:
-                acc = (2 * total_current + total_false - index) / total_all
-                break
-            elif ans == 1:
-                total_current += 1.0
+    #     for index, [ans, score] in enumerate(res):
+    #         if score > threshlod:
+    #             acc = (2 * total_current + total_false - index) / total_all
+    #             break
+    #         elif ans == 1:
+    #             total_current += 1.0
 
-        return acc, threshlod
+    #     return acc, threshlod

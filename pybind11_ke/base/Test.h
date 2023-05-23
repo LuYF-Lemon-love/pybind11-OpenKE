@@ -179,8 +179,9 @@ void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = fals
 }
 
 // 替换 tail, 评估 tail 的 rank.
-extern "C"
-void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
+// extern "C"
+// void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
+void testTail(py::array_t<REAL> con_py, INT lastTail, bool type_constrain = false) {
     INT h = testList[lastTail].h;
     INT t = testList[lastTail].t;
     INT r = testList[lastTail].r;
@@ -193,7 +194,9 @@ void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
         rig = tail_rig[r];
     }
     // minimal: 正确三元组的 score
-    REAL minimal = con[t];
+    auto con = con_py.mutable_unchecked<1>();
+    // REAL minimal = con[t];
+    REAL minimal = con(t);
     // r_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 tail) 负三元组个数
 	// r_filter_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 tail) 负三元组个数, 且负三元组不在数据集中
     // r_s_constrain: 记录能量 (d(h + l, t)) 小于测试三元组的 (通过 type_constrain.txt 替换 tail 构造负三元组) 负三元组个数
@@ -205,7 +208,8 @@ void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
     for (INT j = 0; j < entityTotal; j++) {
         // 替换 tail
         if (j != t) {
-            REAL value = con[j];
+            // REAL value = con[j];
+            REAL value = con(j);
             if (value < minimal) {
                 r_s += 1;
                 if (not _find(h, j, r))
@@ -295,7 +299,7 @@ void testRel(REAL *con) {
 }
 
 // 链接预测入口函数
-extern "C"
+// extern "C"
 void test_link_prediction(bool type_constrain = false) {
     l_rank /= testTotal;
     r_rank /= testTotal;
@@ -421,7 +425,7 @@ void test_relation_prediction() {
             rel_filter_reci_rank, rel_filter_rank, rel_filter_tot, rel3_filter_tot, rel1_filter_tot);
 }
 
-extern "C"
+// extern "C"
 REAL getTestLinkHit10(bool type_constrain = false) {
     if (type_constrain)
         return hit10TC;
@@ -429,28 +433,28 @@ REAL getTestLinkHit10(bool type_constrain = false) {
     return hit10;
 }
 
-extern "C"
+// extern "C"
 REAL  getTestLinkHit3(bool type_constrain = false) {
     if (type_constrain)
         return hit3TC;
     return hit3;
 }
 
-extern "C"
+// extern "C"
 REAL  getTestLinkHit1(bool type_constrain = false) {
     if (type_constrain)
         return hit1TC;    
     return hit1;
 }
 
-extern "C"
+// extern "C"
 REAL  getTestLinkMR(bool type_constrain = false) {
     if (type_constrain)
         return mrTC;
     return mr;
 }
 
-extern "C"
+// extern "C"
 REAL  getTestLinkMRR(bool type_constrain = false) {
     if (type_constrain)
         return mrrTC;    
