@@ -1,7 +1,7 @@
 // pybind11-ke/base/Setting.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2023
 // 
 // 该头文件进行验证模型.
 
@@ -26,7 +26,6 @@ REAL l3_filter_tot_constrain = 0, l3_tot_constrain = 0, r3_tot_constrain = 0, r3
 REAL hit1, hit3, hit10, mr, mrr;
 REAL hit1TC, hit3TC, hit10TC, mrTC, mrrTC;
 
-// extern "C"
 void initTest() {
     lastHead = 0;
     lastTail = 0;
@@ -40,17 +39,6 @@ void initTest() {
     l3_filter_tot_constrain = 0, l3_tot_constrain = 0, r3_tot_constrain = 0, r3_filter_tot_constrain = 0, l_filter_tot_constrain = 0, r_filter_tot_constrain = 0, r_filter_rank_constrain = 0, r_rank_constrain = 0, r_filter_reci_rank_constrain = 0, r_reci_rank_constrain = 0;
 }
 
-// // 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
-// extern "C"
-// void getHeadBatch(INT *ph, INT *pt, INT *pr) {
-//     for (INT i = 0; i < entityTotal; i++) {
-//         ph[i] = i;
-//         pt[i] = testList[lastHead].t;
-//         pr[i] = testList[lastHead].r;
-//     }
-//     lastHead++;
-// }
-
 // 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
 void getHeadBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
     auto ph = ph_py.mutable_unchecked<1>();
@@ -63,17 +51,6 @@ void getHeadBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
     }
     lastHead++;
 }
-
-// // 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
-// extern "C"
-// void getTailBatch(INT *ph, INT *pt, INT *pr) {
-//     for (INT i = 0; i < entityTotal; i++) {
-//         ph[i] = testList[lastTail].h;
-//         pt[i] = i;
-//         pr[i] = testList[lastTail].r;
-//     }
-//     lastTail++;
-// }
 
 // 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
 void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
@@ -99,7 +76,6 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
 }
 
 // 替换 head, 评估 head 的 rank.
-// extern "C"
 // void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
 void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = false) {
     INT h = testList[lastHead].h;
@@ -179,7 +155,6 @@ void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = fals
 }
 
 // 替换 tail, 评估 tail 的 rank.
-// extern "C"
 // void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
 void testTail(py::array_t<REAL> con_py, INT lastTail, bool type_constrain = false) {
     INT h = testList[lastTail].h;
@@ -299,7 +274,6 @@ void testRel(REAL *con) {
 }
 
 // 链接预测入口函数
-// extern "C"
 void test_link_prediction(bool type_constrain = false) {
     l_rank /= testTotal;
     r_rank /= testTotal;
@@ -425,7 +399,6 @@ void test_relation_prediction() {
             rel_filter_reci_rank, rel_filter_rank, rel_filter_tot, rel3_filter_tot, rel1_filter_tot);
 }
 
-// extern "C"
 REAL getTestLinkHit10(bool type_constrain = false) {
     if (type_constrain)
         return hit10TC;
@@ -433,28 +406,24 @@ REAL getTestLinkHit10(bool type_constrain = false) {
     return hit10;
 }
 
-// extern "C"
 REAL  getTestLinkHit3(bool type_constrain = false) {
     if (type_constrain)
         return hit3TC;
     return hit3;
 }
 
-// extern "C"
 REAL  getTestLinkHit1(bool type_constrain = false) {
     if (type_constrain)
         return hit1TC;    
     return hit1;
 }
 
-// extern "C"
 REAL  getTestLinkMR(bool type_constrain = false) {
     if (type_constrain)
         return mrTC;
     return mr;
 }
 
-// extern "C"
 REAL  getTestLinkMRR(bool type_constrain = false) {
     if (type_constrain)
         return mrrTC;    
