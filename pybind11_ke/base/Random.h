@@ -1,7 +1,7 @@
 // pybind11-ke/base/Random.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2023
 // 
 // 该头文件定义了一些随机函数.
 
@@ -14,7 +14,6 @@
 unsigned long long *next_random;
 
 // reset the random seeds for all threads
-// extern "C"
 void randReset() {
 	next_random = (unsigned long long *)calloc(workThreads, sizeof(unsigned long long));
 	for (INT i = 0; i < workThreads; i++)

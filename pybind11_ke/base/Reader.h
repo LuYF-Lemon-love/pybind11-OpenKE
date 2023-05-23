@@ -1,7 +1,7 @@
 // pybind11-ke/base/Reader.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2023
 // 
 // 该头文件从数据集中读取三元组.
 
@@ -59,7 +59,6 @@ void importProb(REAL temp){
 }
 
 // 读取训练集
-// extern "C"
 void importTrainFiles() {
 
 	printf("The toolkit is importing datasets.\n");
@@ -207,7 +206,6 @@ Triple *validList;
 Triple *tripleList;
 
 // 读取测试集
-// extern "C"
 void importTestFiles() {
     FILE *fin;
     INT tmp;
@@ -352,7 +350,6 @@ INT* tail_type;
 // The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088
 // 1200	4	3123	1034	58	5733
 // 1200	4	12123	4388	11087	11088
-// extern "C"
 void importTypeFiles() {
 
     head_lef = (INT *)calloc(relationTotal, sizeof(INT));

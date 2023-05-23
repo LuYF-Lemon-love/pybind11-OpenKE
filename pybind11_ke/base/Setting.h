@@ -32,16 +32,6 @@ std::string train_file = "";
 std::string valid_file = "";
 std::string test_file = "";
 
-// // 设置输入文件路径
-// extern "C"
-// void setInPath(char *path) {
-// 	INT len = strlen(path);
-// 	inPath = "";
-// 	for (INT i = 0; i < len; i++)
-// 		inPath = inPath + path[i];
-// 	printf("Input Files Path : %s\n", inPath.c_str());
-// }
-
 // 设置输入文件路径
 void setInPath(std::string path) {
 	inPath = std::move(path);
@@ -58,16 +48,6 @@ void setOutPath(char *path) {
 		outPath = outPath + path[i];
 	printf("Output Files Path : %s\n", outPath.c_str());
 }
-
-// // 设置训练集数据文件路径
-// extern "C"
-// void setTrainPath(char *path) {
-// 	INT len = strlen(path);
-// 	train_file = "";
-// 	for (INT i = 0; i < len; i++)
-// 		train_file = train_file + path[i];
-// 	printf("Training Files Path : %s\n", train_file.c_str());
-// }
 
 // 设置训练集数据文件路径
 void setTrainPath(std::string path) {
@@ -96,32 +76,12 @@ void setTestPath(char *path) {
 	printf("Test Files Path : %s\n", test_file.c_str());
 }
 
-// // 设置实体数据文件路径
-// extern "C"
-// void setEntPath(char *path) {
-// 	INT len = strlen(path);
-// 	ent_file = "";
-// 	for (INT i = 0; i < len; i++)
-// 		ent_file = ent_file + path[i];
-// 	printf("Entity Files Path : %s\n", ent_file.c_str());
-// }
-
 // 设置实体数据文件路径
 void setEntPath(std::string path) {
 	ent_file = std::move(path);
     std::cout << "Entity Files Path : "
               << ent_file << std::endl;
 }
-
-// // 设置关系数据文件路径
-// extern "C"
-// void setRelPath(char *path) {
-// 	INT len = strlen(path);
-// 	rel_file = "";
-// 	for (INT i = 0; i < len; i++)
-// 		rel_file = rel_file + path[i];
-// 	printf("Relation Files Path : %s\n", rel_file.c_str());
-// }
 
 // 设置关系数据文件路径
 void setRelPath(std::string path) {
@@ -137,7 +97,6 @@ void setRelPath(std::string path) {
 // 线程数
 INT workThreads = 1;
 
-// extern "C"
 void setWorkThreads(INT threads) {
 	workThreads = threads;
 }
@@ -159,12 +118,10 @@ INT testTotal = 0;
 INT trainTotal = 0;
 INT validTotal = 0;
 
-// extern "C"
 INT getEntityTotal() {
 	return entityTotal;
 }
 
-// extern "C"
 INT getRelationTotal() {
 	return relationTotal;
 }
@@ -174,12 +131,10 @@ INT getTripleTotal() {
 	return tripleTotal;
 }
 
-// extern "C"
 INT getTrainTotal() {
 	return trainTotal;
 }
 
-// extern "C"
 INT getTestTotal() {
 	return testTotal;
 }
@@ -194,11 +149,6 @@ INT getValidTotal() {
 
 // TransH 提出的负采样策略
 INT bernFlag = 0;
-
-// extern "C"
-// void setBern(INT con) {
-// 	bernFlag = con;
-// }
 
 void setBern(INT con) {
 	bernFlag = con;
