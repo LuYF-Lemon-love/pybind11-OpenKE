@@ -406,25 +406,25 @@ REAL getTestLinkHit10(bool type_constrain = false) {
     return hit10;
 }
 
-REAL  getTestLinkHit3(bool type_constrain = false) {
+REAL getTestLinkHit3(bool type_constrain = false) {
     if (type_constrain)
         return hit3TC;
     return hit3;
 }
 
-REAL  getTestLinkHit1(bool type_constrain = false) {
+REAL getTestLinkHit1(bool type_constrain = false) {
     if (type_constrain)
         return hit1TC;    
     return hit1;
 }
 
-REAL  getTestLinkMR(bool type_constrain = false) {
+REAL getTestLinkMR(bool type_constrain = false) {
     if (type_constrain)
         return mrTC;
     return mr;
 }
 
-REAL  getTestLinkMRR(bool type_constrain = false) {
+REAL getTestLinkMRR(bool type_constrain = false) {
     if (type_constrain)
         return mrrTC;    
     return mrr;
