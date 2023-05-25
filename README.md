@@ -2,6 +2,8 @@
 
 基于 [OpenKE-PyTorch](https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch) 开发的知识表示学习包，底层数据处理利用 C++ 实现，使用 [pybind11](https://github.com/pybind/pybind11) 实现 C++ 和 Python 的交互。
 
+不久后将完成, 稍事等待.
+
 ## New Features
 
 - 利用 C++ 重写底层数据处理，利用 C++11 的线程库实现并行，进而能够做到跨平台 (Windows, Linux).
