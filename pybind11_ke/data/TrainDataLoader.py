@@ -1,3 +1,20 @@
+"""
+
+TrainDataLoader.py head part.
+
+Lumache - Python library for cooks and food lovers.
+
+This is a Python docstring, we can use reStructuredText syntax here!
+
+.. code-block:: python
+
+    # Import lumache
+    import lumache
+
+    # Call its only function
+    get_random_ingredients(kind=["cheeses"])
+"""
+
 # coding:utf-8
 #
 # pybind11-ke/data/TrainDataLoader.py
@@ -7,7 +24,7 @@
 #
 # 该脚本定义了采样数据的函数.
 
-import os
+# import os
 import numpy as np
 from ..release import base
 
