@@ -63,3 +63,4 @@ Trainer
 
 .. autoclass:: Trainer
    :members:
+   :undoc-members:
