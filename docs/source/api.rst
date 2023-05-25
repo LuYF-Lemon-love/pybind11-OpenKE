@@ -1,9 +1,7 @@
 API
 ===
 
-.. currentmodule:: pybind11_ke
-
 .. autosummary::
-   :recursive:
+   :toctree: generated
 
-   config.Trainer
+   Trainer

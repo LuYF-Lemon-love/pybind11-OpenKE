@@ -16,10 +16,15 @@
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here.
+import os
 import pathlib
 import sys
-sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
-
+config_path = os.path.abspath('../../pybind11_ke/config')
+sys.path.insert(0, config_path)
+print(config_path)
+data_path = os.path.abspath('../../pybind11_ke/data')
+sys.path.insert(0, data_path)
+print(data_path)
 
 # -- Project information -----------------------------------------------------
 
