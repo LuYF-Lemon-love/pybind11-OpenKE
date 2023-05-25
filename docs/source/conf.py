@@ -19,6 +19,9 @@
 import os
 import pathlib
 import sys
+root_path = os.path.abspath('../..')
+sys.path.insert(0, root_path)
+print(root_path)
 config_path = os.path.abspath('../../pybind11_ke/config')
 sys.path.insert(0, config_path)
 print(config_path)
