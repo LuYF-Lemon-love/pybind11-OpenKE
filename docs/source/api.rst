@@ -1,10 +1,9 @@
 API
 ===
 
-.. autosummary::
-   :toctree: generated
+.. currentmodule:: pybind11_ke
 
-   pybind11_ke.config.Trainer
-   pybind11_ke.module.BaseModule
-   pybind11_ke.module.model.Analogy
-   ...
+.. autosummary::
+   :recursive:
+
+   config.Trainer
