@@ -16,14 +16,14 @@ pybind11-OpenKE
     Read the Docs 的构建配置保存在 ``.readthedocs.yaml``。
 📍 `docs/requirements.txt <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/requirements.txt>`_ 
     文档的 Python 依赖被固定了，保存在 ``requirements.txt``。
-💡 `docs/api.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/api.rst>`_
+💡 `docs/api.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/source/api.rst>`_
     通过指令 ``:autosummary:``，Sphinx 自动生成的 API 文档。
 💡 `pybind11_ke <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/pybind11_ke>`_
     pybind11_ke 的源文件。
 📜 `README.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/README.rst>`_
     项目主页。
 ⁉️ Questions / comments
-    如果你有任何问题，可以在 `Github issue <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/issues>`_ 提问。
+    如果你有任何问题，可以在 `Github issue <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/issues>`_ 提问。
 
 New Features
 ------------
@@ -125,3 +125,28 @@ Installation (Linux)
     cp examples/train_transe_FB15K237.py ./
     python train_transe_FB15K237.py
 
+Data
+----
+
+* For training, datasets contain three files:
+
+    - train2id.txt: training file, the first line is the number of triples for training. Then the following lines are all in the format **(e1, e2, rel)** which indicates there is a relation **rel** between **e1** and **e2** . **Note that train2id.txt contains ids from entitiy2id.txt and relation2id.txt instead of the names of the entities and relations. If you use your own datasets, please check the format of your training file. Files in the wrong format may cause segmentation fault.**
+
+    - entity2id.txt: all entities and corresponding ids, one per line. The first line is the number of entities.
+
+    - relation2id.txt: all relations and corresponding ids, one per line. The first line is the number of relations.
+
+* For testing, datasets contain additional two files (totally five files):
+
+    - test2id.txt: testing file, the first line is the number of triples for testing. Then the following lines are all in the format **(e1, e2, rel)** .
+
+    - valid2id.txt: validating file, the first line is the number of triples for validating. Then the following lines are all in the format **(e1, e2, rel)** .
+
+    - type_constrain.txt: type constraining file, the first line is the number of relations. Then the following lines are type constraints for each relation. For example, the relation with id 1200 has 4 types of head entities, which are 3123, 1034, 58 and 5733. The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088. You can get this file through **n-n.py** in folder benchmarks/FB15K.
+
+Reference
+---------
+
+#. `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__.
+
+#. `pybind11 <https://github.com/pybind/pybind11>`__.
