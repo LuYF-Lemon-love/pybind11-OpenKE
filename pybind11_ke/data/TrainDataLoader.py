@@ -1,18 +1,24 @@
 """
 
-TrainDataLoader.py head part.
+TrainDataLoader.py API.
 
-Lumache - Python library for cooks and food lovers.
-
-This is a Python docstring, we can use reStructuredText syntax here!
+TrainDataLoader.py - 通过 pybind11 与底层 C++ 数据处理模块交互。
 
 .. code-block:: python
 
-    # Import lumache
-    import lumache
+    # Import TrainDataLoader
+    from pybind11_ke.data import TrainDataLoader
 
-    # Call its only function
-    get_random_ingredients(kind=["cheeses"])
+    # dataloader for training
+	train_dataloader = TrainDataLoader(
+		in_path = "./benchmarks/FB15K237/", 
+		nbatches = 100,
+		threads = 8, 
+		sampling_mode = "normal", 
+		bern_flag = 1, 
+		filter_flag = 1, 
+		neg_ent = 25,
+		neg_rel = 0)
 """
 
 # coding:utf-8
