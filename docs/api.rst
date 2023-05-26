@@ -6,4 +6,4 @@ API
    :recursive:
 
    lumache
-   pybind11_ke
+   pybind11_ke.module
