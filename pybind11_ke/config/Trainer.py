@@ -6,8 +6,8 @@ Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
 
 .. code-block:: python
 
-    # Import Trainer
-    from openke.config import Trainer
+	# Import Trainer
+	from openke.config import Trainer
 	
 	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,

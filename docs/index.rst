@@ -21,4 +21,4 @@ Contents
    installation
    usage
    api
-   Trainer
+   reference
