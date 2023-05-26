@@ -4,6 +4,7 @@
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 10, 2023
 # 
 # 该头文件定义了 BaseModule.
+"""所有模块的基类"""
 
 import torch
 import torch.nn as nn
