@@ -44,7 +44,7 @@ author = "LuYF-Lemon-love"
 
 extensions = [
     "sphinx.ext.duration",
-    "sphinx.ext.doctest",
+    # "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",

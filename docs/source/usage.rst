@@ -60,7 +60,3 @@ Trainer
 
 .. automodule:: Trainer
    :members:
-
-.. autoclass:: Trainer
-   :members:
-   :undoc-members:
