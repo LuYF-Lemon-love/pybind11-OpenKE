@@ -12,8 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../pybind11_ke'))
-print(os.path.abspath('../pybind11_ke'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -31,8 +30,13 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx_autopackagesummary",
     "sphinx.ext.intersphinx",
 ]
+
+autosummary_generate = True
+
+autodoc_mock_imports = ["pybind11_ke.release.base"]
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),

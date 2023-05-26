@@ -140,4 +140,4 @@ venv.bak/
 checkpoint/
 
 # auto-generated Sphinx api docs
-/docs/generated
+docs/_autosummary/

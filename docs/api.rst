@@ -1,8 +1,8 @@
 API
 ===
 
-.. autosummary::
-   :toctree: generated
-   :recursive:
+This is my package.
 
-   base
+.. autopackagesummary:: pybind11_ke
+   :toctree: _autosummary
+   :template: autosummary/package.rst
