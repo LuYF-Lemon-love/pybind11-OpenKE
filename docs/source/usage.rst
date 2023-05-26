@@ -57,6 +57,3 @@ will raise an exception.
 
 Trainer
 -------
-
-.. automodule:: Trainer
-   :members:
