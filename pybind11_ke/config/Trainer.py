@@ -42,37 +42,59 @@ class Trainer(object):
 		:param model: KGE 模型
 		:type model: Model
 		:param data_loader: TrainDataSampler
-		:param data_loader: TrainDataSampler
+		:type data_loader: TrainDataSampler
 		:param train_times: 训练轮次数
-		:param train_times: int
+		:type train_times: int
 		:param alpha: 学习率
-		:param alpha: float
+		:type alpha: float
 		:param use_gpu: 是否使用 gpu
-		:param use_gpu: bool
+		:type use_gpu: bool
 		:param opt_method: 优化器
-		:param opt_method: string
+		:type opt_method: str
 		:param save_steps: 训练几轮保存一次模型
-		:param save_steps: int
+		:type save_steps: int
 		:param checkpoint_dir: 模型保存的目录
-		:param checkpoint_dir: string
+		:type checkpoint_dir: str
 		"""
 
-		self.work_threads = 8
+		#: epochs
 		self.train_times = train_times
 
+		#: 用户传入的优化器名字字符串
 		self.opt_method = opt_method
+		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
 		self.optimizer = None
+		#: 用于 ``Adagrad``
 		self.lr_decay = 0
+		#: 所有优化器都可以设置
 		self.weight_decay = 0
+		#: 学习率
 		self.alpha = alpha
 
+		#: KGE 模型
 		self.model = model
+
+		#: :py:meth:`__init__` 传入的 ``TrainDataSampler``
 		self.data_loader = data_loader
+
+		#: 是否使用 gpu
 		self.use_gpu = use_gpu
+
+		#: 训练几轮保存一次模型
 		self.save_steps = save_steps
+
+		#: 模型保存的目录
 		self.checkpoint_dir = checkpoint_dir
 
 	def train_one_step(self, data):
+		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
+		模型训练 1 步。
+
+		:param data: :py:attr:`data_loader` 利用 ``sampling`` 函数生成的数据
+		:type data: dict
+		:returns: 损失值
+		:rtype: float
+		"""
 		self.optimizer.zero_grad()
 		loss = self.model({
 			'batch_h': self.to_var(data['batch_h'], self.use_gpu),
