@@ -138,3 +138,6 @@ venv.bak/
 
 # self add
 checkpoint/
+
+# self add
+docs/source/generated/
