@@ -9,7 +9,8 @@
 
 import os
 import numpy as np
-from ..release import base
+# from ..release import base
+import base
 
 class TestDataSampler(object):
 

@@ -36,14 +36,13 @@ extensions = [
 
 autosummary_generate = True
 
-autodoc_mock_imports = ["pybind11_ke.release.base", "torch", "numpy", "tqdm", "sklearn"]
+autodoc_mock_imports = ["base", "torch", "numpy", "tqdm", "sklearn"]
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
     "python": ("https://docs.python.org/3/", None),
     "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
 }
-
 intersphinx_disabled_domains = ["std"]
 
 templates_path = ["_templates"]

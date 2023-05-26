@@ -35,7 +35,8 @@ import numpy as np
 from sklearn.metrics import roc_auc_score
 import copy
 from tqdm import tqdm
-from ..release import base
+# from ..release import base
+import base
 
 class Tester(object):
 

@@ -32,7 +32,8 @@ TrainDataLoader.py - 通过 pybind11 与底层 C++ 数据处理模块交互。
 
 # import os
 import numpy as np
-from ..release import base
+# from ..release import base
+import base
 
 class TrainDataSampler(object):
 
