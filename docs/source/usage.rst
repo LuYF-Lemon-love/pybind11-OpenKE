@@ -47,18 +47,18 @@ Creating recipes
 To retrieve a list of random ingredients,
 you can use the ``lumache.get_random_ingredients()`` function:
 
-.. autofunction:: pybind11_ke.lumache.get_random_ingredients
+.. autofunction:: lumache.get_random_ingredients
 
 The ``kind`` parameter should be either ``"meat"``, ``"fish"``,
 or ``"veggies"``. Otherwise, :py:func:`lumache.get_random_ingredients`
 will raise an exception.
 
-.. autoexception:: pybind11_ke.lumache.InvalidKindError
+.. autoexception:: lumache.InvalidKindError
 
 Model
 -----
 
-.. automodule:: pybind11_ke.test
+.. automodule:: module.test
     :members:
     :private-members:
     :special-members:
