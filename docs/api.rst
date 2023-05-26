@@ -5,5 +5,4 @@ API
    :toctree: generated
    :recursive:
 
-   lumache
-   pybind11_ke.module
+   module
