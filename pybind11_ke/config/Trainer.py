@@ -8,8 +8,8 @@ Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
 
     # Import Trainer
     from openke.config import Trainer
-
-    # train the model
+	
+	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 1.0, use_gpu = True)
 	trainer.run()
