@@ -36,7 +36,7 @@ extensions = [
 
 autosummary_generate = True
 
-autodoc_mock_imports = ["pybind11_ke.release.base"]
+autodoc_mock_imports = ["base"]
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
