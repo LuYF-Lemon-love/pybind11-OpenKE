@@ -36,7 +36,7 @@ extensions = [
 
 autosummary_generate = True
 
-autodoc_mock_imports = ["base"]
+autodoc_mock_imports = ["base", "torch"]
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
