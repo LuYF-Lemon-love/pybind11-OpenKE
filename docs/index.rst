@@ -17,7 +17,7 @@ Contents
 
 .. toctree::
 
-   Home <self>
+   主页 <self>
    installation
    usage
    api
