@@ -36,7 +36,7 @@ extensions = [
 
 autosummary_generate = True
 
-autodoc_mock_imports = ["base", "torch", "numpy", "tqdm"]
+autodoc_mock_imports = ["base", "torch", "numpy", "tqdm", "sklearn"]
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
