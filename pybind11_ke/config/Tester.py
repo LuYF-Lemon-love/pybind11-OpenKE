@@ -1,3 +1,26 @@
+"""
+
+TrainDataLoader.py API.
+
+TrainDataLoader.py - 通过 pybind11 与底层 C++ 数据处理模块交互。
+
+.. code-block:: python
+
+    # Import TrainDataLoader
+    from pybind11_ke.data import TrainDataLoader
+
+    # dataloader for training
+	train_dataloader = TrainDataLoader(
+		in_path = "./benchmarks/FB15K237/", 
+		nbatches = 100,
+		threads = 8, 
+		sampling_mode = "normal", 
+		bern_flag = 1, 
+		filter_flag = 1, 
+		neg_ent = 25,
+		neg_rel = 0)
+"""
+
 # coding:utf-8
 import torch
 import torch.nn as nn
