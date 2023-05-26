@@ -1,19 +1,16 @@
 .. include:: ../README.rst
 
-Welcome to Lumache's documentation!
+欢迎来到 pybind11-OpenKE 文档！
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**pybind11-OpenKE** 是一个知识图谱嵌入学习包，使用 pybind11 来完成 C++ 数据预处理模块与 Python 用户接口的交互，
+使用 C++11 线程标准库进行并行化，能够运行在 Windows 和 Linux 操作系统上。
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+为了使用 pybind11-OpenKE，请先 :doc:`installation` 这个项目。 
 
 .. note::
 
-   This project is under active development.
+   这个项目依旧出于积极开发中。
 
 Contents
 --------
@@ -21,5 +18,6 @@ Contents
 .. toctree::
 
    Home <self>
+   installation
    usage
    api
