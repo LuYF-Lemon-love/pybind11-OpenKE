@@ -13,6 +13,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../pybind11_ke'))
+print(os.path.abspath('../pybind11_ke'))
 
 
 # -- Project information -----------------------------------------------------
