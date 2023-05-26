@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "Basic Sphinx Example Project"
-copyright = "2022, Read the Docs core team"
-author = "Read the Docs core team"
+project = "Pybind11-OpenKE"
+copyright = "2023, LuYF-Lemon-love"
+author = "LuYF-Lemon-love"
 
 
 # -- General configuration ---------------------------------------------------
