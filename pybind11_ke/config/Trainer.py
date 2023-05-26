@@ -1,42 +1,31 @@
+# coding:utf-8
 """
+Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
 
-TrainDataLoader.py API.
-
-TrainDataLoader.py - 通过 pybind11 与底层 C++ 数据处理模块交互。
+基本用法如下：
 
 .. code-block:: python
 
-    # Import TrainDataLoader
-    from pybind11_ke.data import TrainDataLoader
+    # Import Trainer
+    from openke.config import Trainer
 
-    # dataloader for training
-	train_dataloader = TrainDataLoader(
-		in_path = "./benchmarks/FB15K237/", 
-		nbatches = 100,
-		threads = 8, 
-		sampling_mode = "normal", 
-		bern_flag = 1, 
-		filter_flag = 1, 
-		neg_ent = 25,
-		neg_rel = 0)
+    # train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+		train_times = 1000, alpha = 1.0, use_gpu = True)
+	trainer.run()
 """
 
-# coding:utf-8
 import torch
-import torch.nn as nn
 from torch.autograd import Variable
 import torch.optim as optim
 import os
-import time
-import sys
-import datetime
-import ctypes
-import json
-import numpy as np
-import copy
 from tqdm import tqdm
 
 class Trainer(object):
+
+	"""
+	Trainer 主要用于 KGE 模型的训练。
+	"""
 
 	def __init__(self, 
 				 model = None,
@@ -47,6 +36,26 @@ class Trainer(object):
 				 opt_method = "sgd",
 				 save_steps = None,
 				 checkpoint_dir = None):
+
+		"""创建 Trainer 对象。
+
+		:param model: KGE 模型
+		:type model: Model
+		:param data_loader: TrainDataSampler
+		:param data_loader: TrainDataSampler
+		:param train_times: 训练轮次数
+		:param train_times: int
+		:param alpha: 学习率
+		:param alpha: float
+		:param use_gpu: 是否使用 gpu
+		:param use_gpu: bool
+		:param opt_method: 优化器
+		:param opt_method: string
+		:param save_steps: 训练几轮保存一次模型
+		:param save_steps: int
+		:param checkpoint_dir: 模型保存的目录
+		:param checkpoint_dir: string
+		"""
 
 		self.work_threads = 8
 		self.train_times = train_times
