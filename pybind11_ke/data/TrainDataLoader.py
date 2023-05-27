@@ -77,12 +77,12 @@ class TrainDataSampler(object):
 		self.batch = 0
 
 	def __iter__(self):
-		"""迭代器函数 :py:func:`iterator.__iter__`"""
+		"""迭代器函数 :py:meth:`iterator.__iter__`"""
 
 		return self
 
 	def __next__(self):
-		"""迭代器函数 :py:func:`iterator.__next__`"""
+		"""迭代器函数 :py:meth:`iterator.__next__`"""
 
 		self.batch += 1 
 		if self.batch > self.nbatches:
@@ -90,7 +90,7 @@ class TrainDataSampler(object):
 		return self.datasampler()
 
 	def __len__(self):
-		"""len() 要求 :py:func:`object.__len__`"""
+		"""len() 要求 :py:meth:`object.__len__`"""
 
 		return self.nbatches
 
