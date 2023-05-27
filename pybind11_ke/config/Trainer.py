@@ -198,7 +198,7 @@ class Trainer(object):
 	def set_lr_decay(self, lr_decay):
 		"""设置 :py:attr:`lr_decay`
 		
-		:param lr_decay: 用于 :ref:`torch.optim.Adagrad`
+		:param lr_decay: 用于 :py:class:`torch.optim.Adagrad`
 		:param lr_decay: float
 		"""
 		self.lr_decay = lr_decay
