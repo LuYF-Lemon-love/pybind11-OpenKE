@@ -108,6 +108,10 @@ class Trainer(object):
 		return loss.item()
 
 	def run(self):
+		"""训练循环，首先根据 :py:attr:`use_gpu` 设置 :py:attr:`model` 是否处于 gpu，然后根据
+		:py:attr:`opt_method` 设置 :py:attr:`optimizer`，最后迭代 :py:attr:`data_loader` 获取数据，
+		并利用 :py:meth:`train_one_step` 训练。
+		"""
 		if self.use_gpu:
 			self.model.cuda()
 
@@ -153,9 +157,23 @@ class Trainer(object):
 				self.model.save_checkpoint(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".ckpt"))
 
 	def set_model(self, model):
+		"""设置 KGE 模型
+
+		:param model: KGE 模型
+		:type model: Model
+		"""
 		self.model = model
 
 	def to_var(self, x, use_gpu):
+		"""根据 ``use_gpu`` 返回 ``x` 的张量
+
+		:param x: 数据
+		:type x: numpy
+		:param use_gpu: 是否使用 gpu
+		:type use_gpu: bool
+		:returns: 张量
+		:rtype: torch.Tensor
+		"""
 		if use_gpu:
 			return Variable(torch.from_numpy(x).cuda())
 		else:

@@ -1,8 +1,0 @@
-[build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
-
-[project]
-name = "pybind11-OpenKE"
-authors = [{name = "LuYF-Lemon-love", email = "3555028709@qq.com"}]
-dynamic = ["version", "description"]

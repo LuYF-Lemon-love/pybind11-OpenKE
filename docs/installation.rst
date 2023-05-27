@@ -11,7 +11,6 @@
     $ pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
     $ pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
     $ pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install pybind11 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 2. 克隆 pybind11-OpenKE-PyTorch 分支。
 
@@ -20,19 +19,12 @@
     $ git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
     $ cd pybind11-OpenKE/
     $ mkdir -p ./checkpoint
-    $ cd pybind11_ke/
+    $ pip install .
 
-3. 编译 C++ 文件。
-
-.. code-block:: console
-
-    $ bash make.sh
-
-4. 快速开始。
+3. 快速开始。
 
 .. code-block:: console
 
     $ cd ../
     $ cp examples/train_transe_FB15K237.py ./
     $ python train_transe_FB15K237.py
-
