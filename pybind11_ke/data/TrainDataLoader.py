@@ -1,6 +1,6 @@
 # coding:utf-8
 #
-# pybind11-ke/data/TrainDataLoader.py
+# pybind11_ke/data/TrainDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2023
@@ -265,7 +265,7 @@ class TrainDataLoader(object):
 			return self.sampling_tail()
 
 	def set_in_path(self, in_path):
-		"""设置 :py:attr`in_path`
+		"""设置 :py:attr:`in_path`
 		
 		:param in_path: 数据集目录
 		:type in_path: str
@@ -274,7 +274,7 @@ class TrainDataLoader(object):
 		self.in_path = in_path
 
 	def set_batch_size(self, batch_size):
-		"""设置 :py:attr`batch_size`
+		"""设置 :py:attr:`batch_size`
 		
 		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
 		:type batch_size: int
@@ -284,7 +284,7 @@ class TrainDataLoader(object):
 		self.nbatches = self.tripleTotal // self.batch_size
 
 	def set_nbatches(self, nbatches):
-		"""设置 :py:attr`nbatches`
+		"""设置 :py:attr:`nbatches`
 		
 		:param nbatches: nbatches
 		:type nbatches: int
@@ -293,7 +293,7 @@ class TrainDataLoader(object):
 		self.nbatches = nbatches
 	
 	def set_work_threads(self, work_threads):
-		"""设置 :py:attr`work_threads`
+		"""设置 :py:attr:`work_threads`
 		
 		:param work_threads: 底层 C++ 数据处理所需要的线程数
 		:type work_threads: int
@@ -302,7 +302,7 @@ class TrainDataLoader(object):
 		self.work_threads = work_threads
 
 	def set_bern_flag(self, bern):
-		"""设置 :py:attr`bern`
+		"""设置 :py:attr:`bern`
 		
 		:param bern: 是否使用 TransH 提出的负采样方法进行负采样
 		:type bern: int
@@ -311,7 +311,7 @@ class TrainDataLoader(object):
 		self.bern = bern
 
 	def set_filter_flag(self, filter):
-		"""设置 :py:attr`filter`
+		"""设置 :py:attr:`filter`
 		
 		:param filter: 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
 		:type filter: bool
@@ -320,7 +320,7 @@ class TrainDataLoader(object):
 		self.filter = filter
 
 	def set_ent_neg_rate(self, rate):
-		"""设置 :py:attr`rate`
+		"""设置 :py:attr:`negative_ent`
 		
 		:param rate: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
 		:type rate: int
@@ -329,7 +329,7 @@ class TrainDataLoader(object):
 		self.negative_ent = rate
 
 	def set_rel_neg_rate(self, rate):
-		"""设置 :py:attr`rate`
+		"""设置 :py:attr:`negative_rel`
 		
 		:param rate: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
 		:type rate: int

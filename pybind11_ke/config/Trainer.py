@@ -1,4 +1,12 @@
 # coding:utf-8
+#
+# pybind11_ke/config/Trainer.py
+#
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 27, 2023
+#
+# 该脚本定义了训练循环类.
+
 """
 Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
 
