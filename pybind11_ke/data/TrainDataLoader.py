@@ -168,6 +168,8 @@ class TrainDataLoader(object):
 		self.read()
 
 	def read(self):
+		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
+		
 		if self.in_path != None:
 			base.setInPath(self.in_path)
 		else:
@@ -195,21 +197,12 @@ class TrainDataLoader(object):
 		self.batch_r = np.zeros(self.batch_seq_size, dtype=np.int64)
 		self.batch_y = np.zeros(self.batch_seq_size, dtype=np.float32)
 
-	# 采样数据
 	def sampling(self):
-		base.sampling(
-			self.batch_h,
-			self.batch_t,
-			self.batch_r,
-			self.batch_y,
-			self.batch_size,
-			self.negative_ent,
-			self.negative_rel,
-			0,
-			self.filter,
-			0,
-			0
-		)
+		"""正常采样1 batch 数据，即 ``normal``"""
+
+		base.sampling( self.batch_h, self.batch_t, self.batch_r, self.batch_y,
+			self.batch_size, self.negative_ent, self.negative_rel, 0,
+			self.filter, 0, 0)
 		return {
 			"batch_h": self.batch_h, 
 			"batch_t": self.batch_t, 
@@ -218,21 +211,12 @@ class TrainDataLoader(object):
 			"mode": "normal"
 		}
 
-	# 只替换 head 进行负采样, 生成数据
 	def sampling_head(self):
-		base.sampling(
-			self.batch_h,
-			self.batch_t,
-			self.batch_r,
-			self.batch_y,
-			self.batch_size,
-			self.negative_ent,
-			self.negative_rel,
-			-1,
-			self.filter,
-			0,
-			0
-		)
+		"""只替换 head 进行负采样, 生成 1 batch 数据"""
+
+		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
+			self.batch_size, self.negative_ent, self.negative_rel, -1,
+			self.filter, 0, 0)
 		return {
 			"batch_h": self.batch_h,
 			"batch_t": self.batch_t[:self.batch_size],
@@ -241,21 +225,12 @@ class TrainDataLoader(object):
 			"mode": "head_batch"
 		}
 
-	# 只替换 tail 进行负采样, 生成数据
 	def sampling_tail(self):
-		base.sampling(
-			self.batch_h,
-			self.batch_t,
-			self.batch_r,
-			self.batch_y,
-			self.batch_size,
-			self.negative_ent,
-			self.negative_rel,
-			1,
-			self.filter,
-			0,
-			0
-		)
+		"""只替换 tail 进行负采样, 生成1 batch 数据"""
+
+		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
+			self.batch_size, self.negative_ent, self.negative_rel, 1,
+			self.filter, 0, 0)
 		return {
 			"batch_h": self.batch_h[:self.batch_size],
 			"batch_t": self.batch_t,
@@ -264,8 +239,9 @@ class TrainDataLoader(object):
 			"mode": "tail_batch"
 		}
 
-	# 交替替换 head 和 tail 进行负采样, 生成数据
 	def cross_sampling(self):
+		"""交替替换 head 和 tail 进行负采样, 生成 1 batch 数据"""
+
 		self.cross_sampling_flag = 1 - self.cross_sampling_flag 
 		if self.cross_sampling_flag == 0:
 			return self.sampling_head()
