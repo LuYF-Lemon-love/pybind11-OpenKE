@@ -62,21 +62,36 @@ class TrainDataSampler(object):
 	"""
 
 	def __init__(self, nbatches, datasampler):
+		"""创建 TrainDataSample 对象
+		
+		:param nbatches: 1 epoch 有多少个 batch 
+		:type nbatches: int
+		:param datasampler: 采样器
+		:type datasampler: :py:meth:`TrainDataLoader.sampling` 或 :py:meth:`TrainDataLoader.cross_sampling`
+		"""
+
+		#: 1 epoch 有多少个 batch
 		self.nbatches = nbatches
-		# TrainDataLoader.sampling 函数
+		#: :py:meth:`TrainDataLoader.sampling` 或 :py:meth:`TrainDataLoader.cross_sampling` 函数
 		self.datasampler = datasampler
 		self.batch = 0
 
 	def __iter__(self):
+		"""迭代器函数 __iter__"""
+
 		return self
 
 	def __next__(self):
+		"""迭代器函数 __next__"""
+
 		self.batch += 1 
 		if self.batch > self.nbatches:
 			raise StopIteration()
 		return self.datasampler()
 
 	def __len__(self):
+		"""len() 要求"""
+
 		return self.nbatches
 
 class TrainDataLoader(object):
