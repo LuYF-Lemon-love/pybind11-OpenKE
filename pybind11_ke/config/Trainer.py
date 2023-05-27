@@ -91,7 +91,7 @@ class Trainer(object):
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用 :py:func:`pybind11_ke.data.TrainDataLoader.TrainDataLoader.sampling` 函数生成的数据
+		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataLoader.TrainDataLoader.sampling` 函数生成的数据
 		:type data: dict
 		:returns: 损失值
 		:rtype: float
@@ -200,23 +200,50 @@ class Trainer(object):
 		"""设置 :py:attr:`lr_decay`
 		
 		:param lr_decay: 用于 :py:class:`torch.optim.Adagrad`
-		:param lr_decay: float
+		:type lr_decay: float
 		"""
 		self.lr_decay = lr_decay
 
 	def set_weight_decay(self, weight_decay):
+		"""设置 :py:attr:`weight_decay`
+		
+		:param weight_decay: 所有优化器都可以设置
+		:type weight_decay: float
+		"""
 		self.weight_decay = weight_decay
 
 	def set_opt_method(self, opt_method):
+		"""设置 :py:attr:`opt_method`
+		
+		:param opt_method: 优化器
+		:type opt_method: str
+		"""
 		self.opt_method = opt_method
 
 	def set_train_times(self, train_times):
+		"""设置 :py:attr:`train_times`
+		
+		:param train_times: 训练轮次数
+		:type train_times: int
+		"""
 		self.train_times = train_times
 
 	def set_save_steps(self, save_steps, checkpoint_dir = None):
+		"""设置 :py:attr:`save_steps`，如果 :py:attr:`checkpoint_dir
+		为 None，用 ``checkpoint_dir`` 调用 :py:meth:`set_checkpoint_dir` 设置。
+		
+		:param save_steps: 训练几轮保存一次模型
+		:type save_steps: int
+		:param checkpoint_dir: 模型保存的目录
+		:type checkpoint_dir: str
+		"""
 		self.save_steps = save_steps
 		if not self.checkpoint_dir:
 			self.set_checkpoint_dir(checkpoint_dir)
 
 	def set_checkpoint_dir(self, checkpoint_dir):
+		"""设置 :py:attr:`checkpoint_dir
+		
+		:param checkpoint_dir: 模型保存的目录
+		:type checkpoint_dir: str"""
 		self.checkpoint_dir = checkpoint_dir
