@@ -4,4 +4,5 @@
 .. toctree::
 
    reference/data/TrainDataLoader
+   reference/data/TestDataLoader
    reference/config/Trainer
