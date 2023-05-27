@@ -90,7 +90,11 @@ class TrainDataSampler(object):
 		return self.datasampler()
 
 	def __len__(self):
-		"""len() 要求 :py:meth:`object.__len__`"""
+		"""len() 要求 :py:meth:`object.__len__`
+		
+		:returns: :py:attr:`nbatch`
+		:rtype: int
+		"""
 
 		return self.nbatches
 
@@ -181,8 +185,12 @@ class TrainDataLoader(object):
 		base.setWorkThreads(self.work_threads)
 		base.randReset()
 		base.importTrainFiles()
-		self.relTotal = base.getRelationTotal()
+
+		#: 实体的个数
 		self.entTotal = base.getEntityTotal()
+		#: 关系的个数
+		self.relTotal = base.getRelationTotal()
+		#: 训练集三元组的个数
 		self.tripleTotal = base.getTrainTotal()
 
 		if self.batch_size == None:
@@ -340,23 +348,56 @@ class TrainDataLoader(object):
 	"""interfaces to get essential parameters"""
 
 	def get_batch_size(self):
+		"""返回 :py:attr:`batch_size`
+
+		:returns: :py:attr:`batch_size`
+		:rtype: int
+		"""
+
 		return self.batch_size
 
 	def get_ent_tot(self):
+		"""返回 :py:attr:`entTotal`
+
+		:returns: :py:attr:`entTotal`
+		:rtype: int
+		"""
+
 		return self.entTotal
 
 	def get_rel_tot(self):
+		"""返回 :py:attr:`relTotal`
+
+		:returns: :py:attr:`relTotal`
+		:rtype: int
+		"""
+
 		return self.relTotal
 
 	def get_triple_tot(self):
+		"""返回 :py:attr:`tripleTotal`
+
+		:returns: :py:attr:`tripleTotal`
+		:rtype: int
+		"""
+
 		return self.tripleTotal
 
-	# 迭代器
 	def __iter__(self):
+		"""迭代器函数 :py:meth:`iterator.__iter__`，
+		根据 :py:attr:`sampling_mode` 选择返回 :py:meth:`sampling` 和
+		:py:meth:`cross_sampling`"""
+
 		if self.sampling_mode == "normal":
 			return TrainDataSampler(self.nbatches, self.sampling)
 		else:
 			return TrainDataSampler(self.nbatches, self.cross_sampling)
 
 	def __len__(self):
+		"""len() 要求 :py:meth:`object.__len__`
+		
+		:returns: :py:attr:`nbatch`
+		:rtype: int
+		"""
+
 		return self.nbatches
