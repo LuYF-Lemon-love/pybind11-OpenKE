@@ -14,11 +14,7 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 
 .. code-block:: python
 
-	import pybind11_ke
-	from pybind11_ke.config import Trainer, Tester
-	from pybind11_ke.module.model import TransE
-	from pybind11_ke.module.loss import MarginLoss
-	from pybind11_ke.module.strategy import NegativeSampling
+	from pybind11_ke.config import Tester
 	from pybind11_ke.data import TestDataLoader
 
 	# dataloader for test
