@@ -95,39 +95,75 @@ class TrainDataSampler(object):
 		return self.nbatches
 
 class TrainDataLoader(object):
+	"""
+	TrainDataLoader 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
+	"""
 
-	def __init__(self, 
-		in_path = "./",
-		tri_file = None,
-		ent_file = None,
-		rel_file = None,
-		batch_size = None,
-		nbatches = None,
-		threads = 8,
-		sampling_mode = "normal",
-		bern_flag = False,
-		filter_flag = True,
-		neg_ent = 1,
-		neg_rel = 0):
+	def __init__(self, in_path = "./", tri_file = None, ent_file = None,
+		rel_file = None, batch_size = None, nbatches = None, threads = 8,
+		sampling_mode = "normal", bern_flag = False, filter_flag = True,
+		neg_ent = 1, neg_rel = 0):
+
+		"""创建 TrainDataLoader 对象。
+
+		:param in_path: 数据集目录
+		:type in_path: str
+		:param tri_file: train2id.txt
+		:type tri_file: str
+		:param ent_file: entity2id.txt
+		:type ent_file: str
+		:param rel_file: relation2id.txt
+		:type rel_file: str
+		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
+		:type batch_size: int
+		:param nbatches: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供
+		:type nbatches: int
+		:param threads: 底层 C++ 数据处理所需要的线程数
+		:type threads: int
+		:param sampling_mode: 数据采样模式，``normal`` 表示正常负采样，否则交替替换 head 和 tail 进行负采样
+		:type sampling_mode: str
+		:param bern_flag: 是否使用 TransH 提出的负采样方法进行负采样
+		:type bern_flag: int
+		:param filter_flag: 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
+		:type filter_flag: book
+		:param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+		:type neg_ent: int
+		:param neg_rel: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
+		:type neg_rel: int
+		"""
 		
+		#. 数据集目录
 		self.in_path = in_path
+		#. train2id.txt
 		self.tri_file = tri_file
+		#. entity2id.txt
 		self.ent_file = ent_file
+		#. relation2id.txt
 		self.rel_file = rel_file
 		if in_path != None:
 			self.tri_file = in_path + "train2id.txt"
 			self.ent_file = in_path + "entity2id.txt"
 			self.rel_file = in_path + "relation2id.txt"
-		"""set essential parameters"""
-		self.work_threads = threads
-		self.nbatches = nbatches
+
+		#. batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
 		self.batch_size = batch_size
-		self.bern = bern_flag
-		self.filter = filter_flag
-		self.negative_ent = neg_ent
-		self.negative_rel = neg_rel
+		#. nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供
+		self.nbatches = nbatches
+		#. 底层 C++ 数据处理所需要的线程数
+		self.work_threads = threads
+		#. 数据采样模式，``normal`` 表示正常负采样，否则交替替换 head 和 tail 进行负采样
 		self.sampling_mode = sampling_mode
+		#. 是否使用 TransH 提出的负采样方法进行负采样
+		self.bern = bern_flag
+		#. 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
+		self.filter = filter_flag
+		#. 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+		self.negative_ent = neg_ent
+		#. 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
+		self.negative_rel = neg_rel
+		
 		self.cross_sampling_flag = 0
+		
 		# 读入数据
 		self.read()
 
