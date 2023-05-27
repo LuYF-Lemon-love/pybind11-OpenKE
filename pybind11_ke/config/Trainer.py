@@ -180,12 +180,27 @@ class Trainer(object):
 			return Variable(torch.from_numpy(x))
 
 	def set_use_gpu(self, use_gpu):
+		"""设置 :py:attr:`use_gpu`
+		
+		:param use_gpu: 是否使用 gpu
+		:type use_gpu: bool
+		"""
 		self.use_gpu = use_gpu
 
 	def set_alpha(self, alpha):
+		"""设置学习率 :py:attr:`alpha`
+		
+		:param alpha: 学习率
+		:type alpha: float
+		"""
 		self.alpha = alpha
 
 	def set_lr_decay(self, lr_decay):
+		"""设置 :py:attr:`lr_decay`
+		
+		:param lr_decay: 用于 torch.optim.Adagrad
+		:param lr_decay: float
+		"""
 		self.lr_decay = lr_decay
 
 	def set_weight_decay(self, weight_decay):

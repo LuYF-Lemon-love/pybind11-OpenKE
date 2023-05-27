@@ -10,6 +10,10 @@ pybind11-OpenKE
 
 不久后将完成, 稍事等待.
 
+教程和 API 参考文档可以访问 
+`pybind11-openke.readthedocs.io <https://pybind11-openke.readthedocs.io/zh_CN/latest/>`_。
+源代码可以访问 `github.com/LuYF-Lemon-love/pybind11-OpenKE <https://github.com/LuYF-Lemon-love/pybind11-OpenKE>`_。
+
 📚 `docs/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/>`_
     所有的文档源文件保存在 ``docs/source/``。 所有的 ``*.rst`` 构成了文档中的各个部分。
 ⚙️ `.readthedocs.yaml <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/.readthedocs.yaml>`_
