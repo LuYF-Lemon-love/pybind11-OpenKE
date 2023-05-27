@@ -1,15 +1,18 @@
+# coding:utf-8
 """
+TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`。
 
-TrainDataLoader.py API.
-
-TrainDataLoader.py - 通过 pybind11 与底层 C++ 数据处理模块交互。
+基本用法如下：
 
 .. code-block:: python
 
-    # Import TrainDataLoader
-    from pybind11_ke.data import TrainDataLoader
+	from pybind11_ke.config import Trainer
+	from pybind11_ke.module.model import TransE
+	from pybind11_ke.module.loss import MarginLoss
+	from pybind11_ke.module.strategy import NegativeSampling
+	from pybind11_ke.data import TrainDataLoader
 
-    # dataloader for training
+	# dataloader for training
 	train_dataloader = TrainDataLoader(
 		in_path = "./benchmarks/FB15K237/", 
 		nbatches = 100,
@@ -19,6 +22,26 @@ TrainDataLoader.py - 通过 pybind11 与底层 C++ 数据处理模块交互。
 		filter_flag = 1, 
 		neg_ent = 25,
 		neg_rel = 0)
+
+	# define the model
+	transe = TransE(
+		ent_tot = train_dataloader.get_ent_tot(),
+		rel_tot = train_dataloader.get_rel_tot(),
+		dim = 200, 
+		p_norm = 1, 
+		norm_flag = True)
+
+
+	# define the loss function
+	model = NegativeSampling(
+		model = transe, 
+		loss = MarginLoss(margin = 5.0),
+		batch_size = train_dataloader.get_batch_size()
+	)
+
+	# train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+		train_times = 1000, alpha = 1.0, use_gpu = True)
 """
 
 # coding:utf-8
