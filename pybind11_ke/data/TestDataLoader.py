@@ -74,16 +74,40 @@ class TestDataSampler(object):
 		return self.data_total
 
 class TestDataLoader(object):
+	"""TestDataLoader 主要从底层 C++ 模块获得数据用于 KGE 模型的验证。"""
 
 	def __init__(self, in_path = "./", sampling_mode = 'link', type_constrain = True):
-		"""set essential parameters"""
+
+		"""创建 TestDataLoader 对象。
+
+		:param in_path: 数据集目录
+		:type in_path: str
+		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
+		:type sampling_mode: str
+		:param type_constrain: 是否用 type_constrain.txt 进行负采样
+		:type type_constrain: bool
+		"""
+
+		#: 数据集目录
 		self.in_path = in_path
+		#: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
 		self.sampling_mode = sampling_mode
+		#: 是否用 type_constrain.txt 进行负采样
 		self.type_constrain = type_constrain
+
+		#: 实体的个数
+		self.entTotal = base.getEntityTotal()
+		#: 关系的个数
+		self.relTotal = base.getRelationTotal()
+		#: 测试集三元组的个数
+		self.testTotal = base.getTestTotal()
+
 		# 读入数据
 		self.read()
 
 	def read(self):
+		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
+
 		base.setInPath(self.in_path)
 		base.randReset()
 		base.importTestFiles()
@@ -91,8 +115,8 @@ class TestDataLoader(object):
 		if self.type_constrain:
 			base.importTypeFiles()
 
-		self.relTotal = base.getRelationTotal()
 		self.entTotal = base.getEntityTotal()
+		self.relTotal = base.getRelationTotal()
 		self.testTotal = base.getTestTotal()
 
 		# 利用 np.zeros 分配内存
@@ -110,6 +134,13 @@ class TestDataLoader(object):
 
 	# 为链接预测进行采样数据
 	def sampling_lp(self):
+		"""为链接预测进行采样数据，为给定的正三元组，用所有实体依次替换头尾实体得到
+		2 * :py:attr:`entTotal` 个三元组。
+		
+		:returns: 对于一个正三元组生成的所有可能破化的三元组
+		:rtype: dict
+		"""
+
 		res = []
 		base.getHeadBatch(self.test_h, self.test_t, self.test_r)
 		res.append({
@@ -152,30 +183,59 @@ class TestDataLoader(object):
 	# 		}
 	# 	]
 
-	"""interfaces to get essential parameters"""
-
 	def get_ent_tot(self):
+		"""返回 :py:attr:`entTotal`
+
+		:returns: :py:attr:`entTotal`
+		:rtype: int
+		"""
+		
 		return self.entTotal
 
 	def get_rel_tot(self):
+		"""返回 :py:attr:`relTotal`
+
+		:returns: :py:attr:`relTotal`
+		:rtype: int
+		"""
+
 		return self.relTotal
 
 	def get_triple_tot(self):
+		"""返回 :py:attr:`testTotal`
+
+		:returns: :py:attr:`testTotal`
+		:rtype: int
+		"""
+
 		return self.testTotal
 
 	def set_sampling_mode(self, sampling_mode):
+		"""设置 :py:attr:`sampling_mode`
+		
+		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
+		:type sampling_mode: str
+		"""
+
 		self.sampling_mode = sampling_mode
 
-	def __len__(self):
-		return self.testTotal
-
-	# 迭代器
 	def __iter__(self):
+		"""迭代器函数 :py:meth:`iterator.__iter__`，
+		根据 :py:attr:`sampling_mode` 选择返回 :py:meth:`sampling_lp` 和
+		:py:meth:`sampling_tc`"""
+
 		if self.sampling_mode == "link":
-			# self.lib.initTest()
 			base.initTest()
 			return TestDataSampler(self.testTotal, self.sampling_lp)
 		else:
-			# self.lib.initTest()
 			base.initTest()
 			return TestDataSampler(1, self.sampling_tc)
+
+	def __len__(self):
+		"""len() 要求 :py:meth:`object.__len__`
+		
+		:returns: :py:attr:`testTotal`
+		:rtype: int
+		"""
+		
+		return self.testTotal
