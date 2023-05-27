@@ -42,7 +42,7 @@ class Trainer(object):
 		:param model: KGE 模型
 		:type model: :py:class:`pybind11_ke.module.model.Model`
 		:param data_loader: TrainDataSampler
-		:type data_loader: :py:class:`pybind11_ke.data.TrainDataSampler`
+		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 		:param train_times: 训练轮次数
 		:type train_times: int
 		:param alpha: 学习率
@@ -75,7 +75,7 @@ class Trainer(object):
 		#: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
 		self.model = model
 
-		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataSampler`
+		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader = data_loader
 
 		#: 是否使用 gpu
@@ -91,7 +91,7 @@ class Trainer(object):
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataSampler.sampling` 函数生成的数据
+		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 函数生成的数据
 		:type data: dict
 		:returns: 损失值
 		:rtype: float
