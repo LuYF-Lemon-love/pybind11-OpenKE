@@ -92,7 +92,7 @@ class TrainDataSampler(object):
 	def __len__(self):
 		"""len() 要求 :py:meth:`object.__len__`
 		
-		:returns: :py:attr:`nbatch`
+		:returns: :py:attr:`nbatches`
 		:rtype: int
 		"""
 
@@ -168,6 +168,13 @@ class TrainDataLoader(object):
 		
 		self.cross_sampling_flag = 0
 
+		#: 实体的个数
+		self.entTotal = 0
+		#: 关系的个数
+		self.relTotal = 0
+		#: 训练集三元组的个数
+		self.tripleTotal = 0
+
 		# 读入数据
 		self.read()
 
@@ -186,11 +193,11 @@ class TrainDataLoader(object):
 		base.randReset()
 		base.importTrainFiles()
 
-		#: 实体的个数
+		# 实体的个数
 		self.entTotal = base.getEntityTotal()
-		#: 关系的个数
+		# 关系的个数
 		self.relTotal = base.getRelationTotal()
-		#: 训练集三元组的个数
+		# 训练集三元组的个数
 		self.tripleTotal = base.getTrainTotal()
 
 		if self.batch_size == None:
@@ -396,7 +403,7 @@ class TrainDataLoader(object):
 	def __len__(self):
 		"""len() 要求 :py:meth:`object.__len__`
 		
-		:returns: :py:attr:`nbatch`
+		:returns: :py:attr:`nbatches`
 		:rtype: int
 		"""
 
