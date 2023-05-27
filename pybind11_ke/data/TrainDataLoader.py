@@ -77,7 +77,7 @@ class TrainDataSampler(object):
 		self.batch = 0
 
 	def __iter__(self):
-		"""迭代器函数 __iter__"""
+		"""迭代器函数 py:meth:`__iter__`"""
 
 		return self
 
