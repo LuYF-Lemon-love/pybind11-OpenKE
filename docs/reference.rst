@@ -3,4 +3,4 @@
 
 .. toctree::
 
-   reference/Trainer
+   reference/config/Trainer

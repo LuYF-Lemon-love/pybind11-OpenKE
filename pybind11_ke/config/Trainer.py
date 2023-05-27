@@ -166,7 +166,7 @@ class Trainer(object):
 		self.model = model
 
 	def to_var(self, x, use_gpu):
-		"""根据 ``use_gpu`` 返回 ``x` 的张量
+		"""根据 ``use_gpu`` 返回 ``x`` 的张量
 
 		:param x: 数据
 		:type x: numpy
@@ -229,7 +229,7 @@ class Trainer(object):
 		self.train_times = train_times
 
 	def set_save_steps(self, save_steps, checkpoint_dir = None):
-		"""设置 :py:attr:`save_steps`，如果 :py:attr:`checkpoint_dir
+		"""设置 :py:attr:`save_steps`，如果 :py:attr:`checkpoint_dir`
 		为 None，用 ``checkpoint_dir`` 调用 :py:meth:`set_checkpoint_dir` 设置。
 		
 		:param save_steps: 训练几轮保存一次模型
@@ -242,7 +242,7 @@ class Trainer(object):
 			self.set_checkpoint_dir(checkpoint_dir)
 
 	def set_checkpoint_dir(self, checkpoint_dir):
-		"""设置 :py:attr:`checkpoint_dir
+		"""设置 :py:attr:`checkpoint_dir`
 		
 		:param checkpoint_dir: 模型保存的目录
 		:type checkpoint_dir: str"""
