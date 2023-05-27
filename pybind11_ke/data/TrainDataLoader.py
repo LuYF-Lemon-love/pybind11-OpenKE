@@ -1,4 +1,12 @@
 # coding:utf-8
+#
+# pybind11-ke/data/TrainDataLoader.py
+#
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2023
+#
+# 该脚本定义了采样数据的函数.
+
 """
 TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`。
 
@@ -44,21 +52,14 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 		train_times = 1000, alpha = 1.0, use_gpu = True)
 """
 
-# coding:utf-8
-#
-# pybind11-ke/data/TrainDataLoader.py
-#
-# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2023
-#
-# 该脚本定义了采样数据的函数.
-
-# import os
 import numpy as np
-# from ..release import base
 import base
 
 class TrainDataSampler(object):
+
+	"""将 :py:meth:`TrainDataLoader.sampling` 或 :py:meth:`TrainDataLoader.cross_sampling` 
+	包装起来。
+	"""
 
 	def __init__(self, nbatches, datasampler):
 		self.nbatches = nbatches
