@@ -40,9 +40,9 @@ class Trainer(object):
 		"""创建 Trainer 对象。
 
 		:param model: KGE 模型
-		:type model: Model
+		:type model: :py:class:`pybind11_ke.module.model.Model`
 		:param data_loader: TrainDataSampler
-		:type data_loader: TrainDataSampler
+		:type data_loader: :py:class:`pybind11_ke.data.TrainDataSampler`
 		:param train_times: 训练轮次数
 		:type train_times: int
 		:param alpha: 学习率
@@ -64,17 +64,18 @@ class Trainer(object):
 		self.opt_method = opt_method
 		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
 		self.optimizer = None
-		#: 用于 ``Adagrad``
+		#: 用于 :py:class:`torch.optim.Adagrad`
 		self.lr_decay = 0
-		#: 所有优化器都可以设置
+		#: 所有优化器（:py:class:`torch.optim.Adagrad`，:py:class:`torch.optim.Adadelta`，
+		#: :py:class:`torch.optim.Adam`，:py:class:`torch.optim.SGD`）都可以设置
 		self.weight_decay = 0
 		#: 学习率
 		self.alpha = alpha
 
-		#: KGE 模型
+		#: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
 		self.model = model
 
-		#: :py:meth:`__init__` 传入的 ``TrainDataSampler``
+		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataSampler`
 		self.data_loader = data_loader
 
 		#: 是否使用 gpu
@@ -90,7 +91,7 @@ class Trainer(object):
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用 ``sampling`` 函数生成的数据
+		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataSampler.sampling` 函数生成的数据
 		:type data: dict
 		:returns: 损失值
 		:rtype: float
@@ -160,7 +161,7 @@ class Trainer(object):
 		"""设置 KGE 模型
 
 		:param model: KGE 模型
-		:type model: Model
+		:type model: :py:class:`pybind11_ke.module.model.Model`
 		"""
 		self.model = model
 
