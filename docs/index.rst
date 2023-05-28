@@ -21,4 +21,22 @@ Contents
    installation
    usage
    api
-   reference
+
+.. toctree::
+   :caption: data
+
+   reference/data/TrainDataLoader
+   reference/data/TestDataLoader
+
+.. toctree::
+   :caption: module
+
+   reference/module/BaseModule
+   reference/module/model/Model
+   reference/module/model/TransE
+   reference/module/loss/Loss
+
+.. toctree::
+   :caption: config
+
+   reference/config/Trainer
