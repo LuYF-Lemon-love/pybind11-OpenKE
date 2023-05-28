@@ -1,7 +1,7 @@
 TrainDataLoader
 ========================================================
 
-.. autoclass:: pybind11_ke.data.TrainDataSampler
+.. autoclass:: pybind11_ke.data.TrainDataLoader.TrainDataSampler
     :members:
     :private-members:
     :special-members:
