@@ -25,4 +25,8 @@ Contents
 .. toctree::
    :caption: 类和函数的详细定义
 
-   reference
+   pybind11_ke.data
+   pybind11_ke.module
+   pybind11_ke.module.model
+   pybind11_ke.module.loss
+   pybind11_ke.config
