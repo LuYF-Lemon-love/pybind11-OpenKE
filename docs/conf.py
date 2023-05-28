@@ -73,4 +73,5 @@ html_logo = "_static/logo.png"
 
 html_theme_options = {
     'style_nav_header_background': '#A6AEF3',
+    'logo_only': True,
 }
