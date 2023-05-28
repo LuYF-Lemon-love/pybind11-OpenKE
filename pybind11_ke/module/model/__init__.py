@@ -1,3 +1,14 @@
+# coding:utf-8
+#
+# pybind11_ke/module/model/__init__.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 28, 2023
+# 
+# 该头文件定义了 model 接口.
+
+"""KGE 模型部分。"""
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
