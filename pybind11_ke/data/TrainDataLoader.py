@@ -57,7 +57,8 @@ import base
 
 class TrainDataSampler(object):
 
-	"""将 :py:meth:`TrainDataLoader.sampling` 或 :py:meth:`TrainDataLoader.cross_sampling` 
+	"""将 :py:meth:``pybind11_ke.data.TrainDataLoader.TrainDataLoader.sampling` 
+	或 :py:meth:``pybind11_ke.data.TrainDataLoader.TrainDataLoader.cross_sampling` 
 	包装起来。
 	"""
 
@@ -67,12 +68,14 @@ class TrainDataSampler(object):
 		:param nbatches: 1 epoch 有多少个 batch 
 		:type nbatches: int
 		:param datasampler: 采样器
-		:type datasampler: :py:meth:`TrainDataLoader.sampling` 或 :py:meth:`TrainDataLoader.cross_sampling`
+		:type datasampler: :py:meth:`pybind11_ke.data.TrainDataLoader.TrainDataLoader.sampling` 
+							或 :py:meth:`pybind11_ke.data.TrainDataLoader.TrainDataLoader.cross_sampling`
 		"""
 
 		#: 1 epoch 有多少个 batch
 		self.nbatches = nbatches
-		#: :py:meth:`TrainDataLoader.sampling` 或 :py:meth:`TrainDataLoader.cross_sampling` 函数
+		#: :py:meth:`pybind11_ke.data.TrainDataLoader.TrainDataLoader.sampling` 
+		#: 或 :py:meth:`pybind11_ke.data.TrainDataLoader.TrainDataLoader.cross_sampling` 函数
 		self.datasampler = datasampler
 		self.batch = 0
 

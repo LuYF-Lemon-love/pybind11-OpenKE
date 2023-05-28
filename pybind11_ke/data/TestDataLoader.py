@@ -28,7 +28,8 @@ import numpy as np
 import base
 
 class TestDataSampler(object):
-	"""将 :py:meth:`TestDataLoader.sampling_lp` 或 :py:meth:`TestDataLoader.sampling_tc` 
+	"""将 :py:meth:`pybind11_ke.data.TestDataLoader.TestDataLoader.sampling_lp` 
+	或 :py:meth:`pybind11_ke.data.TestDataLoader.TestDataLoader.sampling_tc` 
 	包装起来。
 	"""
 
@@ -38,12 +39,14 @@ class TestDataSampler(object):
 		:param data_total: 测试集多少个三元组 
 		:type data_total: int
 		:param data_sampler: 采样器
-		:type data_sampler: :py:meth:`TestDataLoader.sampling_lp` 或 :py:meth:`TestDataLoader.sampling_tc`
+		:type data_sampler: :py:meth:`pybind11_ke.data.TestDataLoader.TestDataLoader.sampling_lp` 
+								或 :py:meth:`TestDataLoader.sampling_tc`
 		"""
 
 		#: 测试集多少个三元组
 		self.data_total = data_total
-		#: :py:meth:`TestDataLoader.sampling_lp` 或 :py:meth:`TestDataLoader.sampling_tc` 函数
+		#: :py:meth:`pybind11_ke.data.TestDataLoader.TestDataLoader.sampling_lp` 
+		#: 或 :py:meth:`pybind11_ke.data.TestDataLoader.TestDataLoader.sampling_tc` 函数
 		self.data_sampler = data_sampler
 		self.total = 0
 
