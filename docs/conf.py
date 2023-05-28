@@ -69,7 +69,7 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
-html_logo = "_static/logo-best.svg"
+html_logo = "_static/logo-best.png"
 
 html_theme_options = {
     'style_nav_header_background': '#F6BBDB',
