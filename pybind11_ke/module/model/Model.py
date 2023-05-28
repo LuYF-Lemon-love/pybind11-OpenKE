@@ -24,7 +24,11 @@ class Model(BaseModule):
 		self.rel_tot = rel_tot
 
 	def forward(self):
+		""":py:class:`torch.nn.Module` 子类必须实现 :py:meth:`torch.nn.Module.forward`。"""
+
 		raise NotImplementedError
 	
 	def predict(self):
+		"""KGE 模型的推理方法。"""
+
 		raise NotImplementedError
