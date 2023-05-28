@@ -76,7 +76,8 @@ class TransE(Model):
 		:type dim: int
 		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		:type p_norm: int
-		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入的最后一维执行 L2-norm。
+		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
+						  对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
 		:param margin: 原论文中损失函数的 gamma。
 		:type margin: float
@@ -90,7 +91,8 @@ class TransE(Model):
 		self.dim = dim
 		#: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		self.p_norm = p_norm
-		#: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入向量的最后一维执行 L2-norm。
+		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
+		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
 		self.norm_flag = norm_flag
 		#: 原论文中损失函数的 gamma。
 		self.margin = margin
@@ -169,6 +171,16 @@ class TransE(Model):
 		return score
 
 	def forward(self, data):
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']

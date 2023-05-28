@@ -24,7 +24,8 @@ class Model(BaseModule):
 		self.rel_tot = rel_tot
 
 	def forward(self):
-		""":py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。"""
+		"""定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。"""
 
 		raise NotImplementedError
 	
