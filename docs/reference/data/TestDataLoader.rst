@@ -1,4 +1,4 @@
-pybind11_ke.data.TestDataLoader
+TestDataLoader
 ========================================================
 
 .. automodule:: pybind11_ke.data.TestDataLoader

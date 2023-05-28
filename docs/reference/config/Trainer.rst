@@ -1,4 +1,4 @@
-pybind11_ke.config.Trainer
+Trainer
 ========================================================
 
 .. automodule:: pybind11_ke.config.Trainer

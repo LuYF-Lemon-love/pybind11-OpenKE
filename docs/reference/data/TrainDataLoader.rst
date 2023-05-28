@@ -1,4 +1,4 @@
-pybind11_ke.data.TrainDataLoader
+TrainDataLoader
 ========================================================
 
 .. automodule:: pybind11_ke.data.TrainDataLoader

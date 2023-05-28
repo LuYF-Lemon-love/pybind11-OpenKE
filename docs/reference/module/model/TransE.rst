@@ -1,4 +1,4 @@
-pybind11_ke.module.model.TransE
+TransE
 ========================================================
 
 .. automodule:: pybind11_ke.module.model.TransE

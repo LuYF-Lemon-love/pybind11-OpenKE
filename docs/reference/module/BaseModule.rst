@@ -1,4 +1,4 @@
-pybind11_ke.module.BaseModule
+BaseModule
 ========================================================
 
 .. automodule:: pybind11_ke.module.BaseModule

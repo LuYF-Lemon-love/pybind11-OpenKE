@@ -1,4 +1,4 @@
-pybind11_ke.module.loss.Loss
+Loss
 ========================================================
 
 .. automodule:: pybind11_ke.module.loss.Loss

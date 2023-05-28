@@ -1,4 +1,4 @@
-pybind11_ke.module.model.Model
+Model
 ========================================================
 
 .. automodule:: pybind11_ke.module.model.Model
