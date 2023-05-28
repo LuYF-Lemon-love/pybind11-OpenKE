@@ -148,7 +148,7 @@ class TransE(Model):
 		:rtype: torch.Tensor
 		"""
 
-		# 对嵌入的最后一维进行正则化
+		# 对嵌入的最后一维进行归一化
 		if self.norm_flag:
 			h = F.normalize(h, 2, -1)
 			r = F.normalize(r, 2, -1)
@@ -195,6 +195,14 @@ class TransE(Model):
 			return score
 
 	def regularization(self, data):
+		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+		
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
@@ -207,6 +215,14 @@ class TransE(Model):
 		return regul
 
 	def predict(self, data):
+		"""TransE 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+		
 		score = self.forward(data)
 		if self.margin_flag:
 			score = self.margin - score
