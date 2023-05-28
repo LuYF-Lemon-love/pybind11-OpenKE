@@ -139,8 +139,8 @@ class TransE(Model):
 		:param r: 关系实体的向量。
 		:type r: torch.Tensor
 		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-		为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 表示
-		:py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
 		:type mode: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
