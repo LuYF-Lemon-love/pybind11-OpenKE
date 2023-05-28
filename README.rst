@@ -1,5 +1,7 @@
-pybind11-OpenKE
-===============
+.. figure:: https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/pybind11-OpenKE-PyTorch/docs/_static/logo.svg
+   :alt: pybind11-OpenKE logo
+
+**pybind11-OpenKE — 知识图谱嵌入学习包**
 
 .. image:: https://readthedocs.org/projects/pybind11-openke/badge/?version=latest
     :target: https://pybind11-openke.readthedocs.io/zh_CN/latest/?badge=latest
