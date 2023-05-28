@@ -16,6 +16,14 @@ class Model(BaseModule):
 	仅仅增加了两个属性：:py:attr:`ent_tot` 和 :py:attr:`rel_tot`。"""
 
 	def __init__(self, ent_tot, rel_tot):
+		"""创建 Model 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		"""
+
 		super(Model, self).__init__()
 
 		#: 实体的种类

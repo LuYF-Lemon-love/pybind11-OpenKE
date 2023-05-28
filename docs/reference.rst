@@ -8,4 +8,5 @@
    reference/module/BaseModule
    reference/module/model/Model
    reference/module/model/TransE
+   reference/module/loss/Loss
    reference/config/Trainer
