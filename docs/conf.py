@@ -70,3 +70,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 html_logo = "_static/logo.jpg"
+
+html_theme_options = {
+    'style_nav_header_background': 'A6AEF3',
+}
