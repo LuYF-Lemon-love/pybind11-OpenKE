@@ -2,11 +2,26 @@
 ===================================
 
 .. toctree::
+   :caption: data
 
    reference/data/TrainDataLoader
    reference/data/TestDataLoader
+
+.. toctree::
+   :caption: module
+
    reference/module/BaseModule
-   reference/module/model/Model
-   reference/module/model/TransE
-   reference/module/loss/Loss
+   .. toctree::
+      :caption: model
+   
+      reference/module/model/Model
+      reference/module/model/TransE
+   .. toctree::
+      :caption: loss
+      
+      reference/module/loss/Loss
+
+.. toctree::
+   :caption: config
+
    reference/config/Trainer
