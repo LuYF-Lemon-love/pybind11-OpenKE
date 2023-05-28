@@ -7,4 +7,5 @@
    reference/data/TestDataLoader
    reference/module/BaseModule
    reference/module/model/Model
+   reference/module/model/TransE
    reference/config/Trainer
