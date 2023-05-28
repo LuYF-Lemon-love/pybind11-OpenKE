@@ -1,4 +1,4 @@
-.. figure:: https://github.com/LuYF-Lemon-love/pybind11-OpenKE/raw/pybind11-OpenKE-PyTorch/docs/_static/logo.svg
+.. figure:: https://github.com/LuYF-Lemon-love/pybind11-OpenKE/raw/pybind11-OpenKE-PyTorch/docs/_static/logo.png
    :alt: pybind11-OpenKE logo
 
 **pybind11-OpenKE — 知识图谱嵌入学习包**
