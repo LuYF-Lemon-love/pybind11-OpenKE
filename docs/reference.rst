@@ -6,4 +6,5 @@
    reference/data/TrainDataLoader
    reference/data/TestDataLoader
    reference/module/BaseModule
+   reference/module/model/Model
    reference/config/Trainer
