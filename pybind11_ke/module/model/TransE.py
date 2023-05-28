@@ -1,3 +1,53 @@
+# coding:utf-8
+#
+# pybind11_ke/module/model/TransE.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 28, 2023
+# 
+# 该头文件定义了 Model.
+
+"""
+TransE - 第一个平移模型，简单而且高效。
+
+论文地址: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`_ 。
+
+基本用法如下：
+
+.. code-block:: python
+
+	from pybind11_ke.config import Trainer, Tester
+	from pybind11_ke.module.model import TransE
+	from pybind11_ke.module.loss import MarginLoss
+	from pybind11_ke.module.strategy import NegativeSampling
+
+	# define the model
+	transe = TransE(
+		ent_tot = train_dataloader.get_ent_tot(),
+		rel_tot = train_dataloader.get_rel_tot(),
+		dim = 200, 
+		p_norm = 1, 
+		norm_flag = True)
+
+
+	# define the loss function
+	model = NegativeSampling(
+		model = transe, 
+		loss = MarginLoss(margin = 5.0),
+		batch_size = train_dataloader.get_batch_size()
+	)
+
+	# train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader, train_times = 1000, alpha = 1.0, use_gpu = True)
+	trainer.run()
+	transe.save_checkpoint('./checkpoint/transe.ckpt')
+
+	# test the model
+	transe.load_checkpoint('./checkpoint/transe.ckpt')
+	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+	tester.run_link_prediction(type_constrain = False)
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -5,16 +55,50 @@ from .Model import Model
 
 class TransE(Model):
 
-	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1, norm_flag = True, margin = None, epsilon = None):
+	"""
+	TransE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	
+	TransE 提出于 2013 年，是第一个平移模型，开创了平移模型研究方向。由于其简单性和高效性，
+	至今依旧常用基线模型，在某些数据集上能够比其他更复杂的模型表现的更好。
+	"""
+
+	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,
+		norm_flag = True, margin = None, epsilon = None):
+		
+		"""创建 TransE 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim: 实体和关系嵌入向量的维度
+		:type dim: int
+		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
+		:type p_norm: int
+		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入向量的最后一维执行 L2-norm。
+		:type norm_flag: bool
+		:param margin: 原论文中损失函数的 gamma。
+		:type margin: float
+		:param epsilon: 对于 TransE 没什么用
+		:type epsilon: float
+		"""
+		
 		super(TransE, self).__init__(ent_tot, rel_tot)
 		
+		#: 实体和关系嵌入向量的维度
 		self.dim = dim
-		self.margin = margin
-		self.epsilon = epsilon
-		self.norm_flag = norm_flag
+		#: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		self.p_norm = p_norm
-
+		#: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入向量的最后一维执行 L2-norm。
+		self.norm_flag = norm_flag
+		#: 原论文中损失函数的 gamma。
+		self.margin = margin
+		#: 对于 TransE 没什么用
+		self.epsilon = epsilon
+		
+		#: 根据实体个数，创建的实体嵌入
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		#: 根据关系个数，创建的关系嵌入
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
 		if margin == None or epsilon == None:
@@ -38,6 +122,7 @@ class TransE(Model):
 		if margin != None:
 			self.margin = nn.Parameter(torch.Tensor([margin]))
 			self.margin.requires_grad = False
+			#: :py:attr:`margin` 是否为 None。
 			self.margin_flag = True
 		else:
 			self.margin_flag = False
