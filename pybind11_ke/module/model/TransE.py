@@ -38,7 +38,8 @@ TransE - 第一个平移模型，简单而且高效。
 	)
 
 	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader, train_times = 1000, alpha = 1.0, use_gpu = True)
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+		train_times = 1000, alpha = 1.0, use_gpu = True)
 	trainer.run()
 	transe.save_checkpoint('./checkpoint/transe.ckpt')
 
@@ -59,7 +60,7 @@ class TransE(Model):
 	TransE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	TransE 提出于 2013 年，是第一个平移模型，开创了平移模型研究方向。由于其简单性和高效性，
-	至今依旧常用基线模型，在某些数据集上能够比其他更复杂的模型表现的更好。
+	至今依旧是常用基线模型，在某些数据集上能够比其他更复杂的模型表现的更好。
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,
@@ -75,7 +76,7 @@ class TransE(Model):
 		:type dim: int
 		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		:type p_norm: int
-		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入向量的最后一维执行 L2-norm。
+		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
 		:param margin: 原论文中损失函数的 gamma。
 		:type margin: float
@@ -129,18 +130,41 @@ class TransE(Model):
 
 
 	def _calc(self, h, t, r, mode):
+		"""计算 TransE 的评分函数。
+		
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
+		:param r: 关系实体的向量。
+		:type r: torch.Tensor
+		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+		为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 表示
+		:py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:type mode: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		# 对嵌入的最后一维进行正则化
 		if self.norm_flag:
 			h = F.normalize(h, 2, -1)
 			r = F.normalize(r, 2, -1)
 			t = F.normalize(t, 2, -1)
+
+		# 保证 h, r, t 都是三维的
 		if mode != 'normal':
 			h = h.view(-1, r.shape[0], h.shape[-1])
 			t = t.view(-1, r.shape[0], t.shape[-1])
 			r = r.view(-1, r.shape[0], r.shape[-1])
+		
+		# 两者结果一样，括号只是逻辑上的，'head_batch' 是替换 head，否则替换 tail
 		if mode == 'head_batch':
 			score = h + (r - t)
 		else:
 			score = (h + r) - t
+		
+		# 利用距离函数计算得分
 		score = torch.norm(score, self.p_norm, -1).flatten()
 		return score
 
