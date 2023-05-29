@@ -70,7 +70,7 @@ class NegativeSampling(Strategy):
 	def _get_positive_score(self, score):
 		"""
 		获得正样本的得分，由于底层 C++ 处理模块的原因，所以正样本的
-		的得分处于前 batch size 位置。
+		得分处于前 batch size 位置。
 
 		:param score: 所有样本的得分。
 		:type n_score: torch.Tensor
@@ -85,7 +85,7 @@ class NegativeSampling(Strategy):
 	def _get_negative_score(self, score):
 		"""
 		获得负样本的得分，由于底层 C++ 处理模块的原因，所以正样本的
-		的得分处于前 batch size 位置，负样本处于正样本后面。
+		得分处于前 batch size 位置，负样本处于正样本后面。
 
 		:param score: 所有样本的得分。
 		:type n_score: torch.Tensor
