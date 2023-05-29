@@ -47,8 +47,8 @@ class Trainer(object):
 
 		"""创建 Trainer 对象。
 
-		:param model: KGE 模型
-		:type model: :py:class:`pybind11_ke.module.model.Model`
+		:param model: 包装 KGE 模型的训练策略类
+		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		:param data_loader: TrainDataSampler
 		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 		:param train_times: 训练轮次数
@@ -80,7 +80,7 @@ class Trainer(object):
 		#: 学习率
 		self.alpha = alpha
 
-		#: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
+		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		self.model = model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
@@ -168,8 +168,8 @@ class Trainer(object):
 	def set_model(self, model):
 		"""设置 KGE 模型
 
-		:param model: KGE 模型
-		:type model: :py:class:`pybind11_ke.module.model.Model`
+		:param model: 包装 KGE 模型的训练策略类
+		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		"""
 		self.model = model
 
