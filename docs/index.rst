@@ -29,4 +29,5 @@ Contents
    pybind11_ke.module
    pybind11_ke.module.model
    pybind11_ke.module.loss
+   pybind11_ke.module.strategy
    pybind11_ke.config
