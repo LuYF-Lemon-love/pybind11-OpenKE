@@ -28,4 +28,5 @@ Contents
    :includehidden:
    :caption: 例子
 
+   auto_exa/index
    auto_examples/index
