@@ -3,5 +3,5 @@ pybind11_ke.config
 
 .. toctree::
 
-   reference/config/Trainer
-   reference/config/Tester
+   reference_classes/config/Trainer
+   reference_classes/config/Tester

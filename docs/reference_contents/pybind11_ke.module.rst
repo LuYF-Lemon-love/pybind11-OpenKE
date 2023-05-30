@@ -3,4 +3,4 @@ pybind11_ke.module
 
 .. toctree::
 
-   reference/module/BaseModule
+   reference_classes/module/BaseModule
