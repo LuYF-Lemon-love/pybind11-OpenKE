@@ -29,4 +29,4 @@ Contents
    :caption: 例子
 
    auto_exa/index
-   auto_examples/pybind11_ke_examples/train_transe_FB15K237
+   auto_examples/index

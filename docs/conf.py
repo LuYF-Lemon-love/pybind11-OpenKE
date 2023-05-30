@@ -40,6 +40,7 @@ extensions = [
 sphinx_gallery_conf = {
      'examples_dirs': ['../exa', '../pybind11_ke_examples'],   # path to your example scripts
      'gallery_dirs': ['auto_exa', 'auto_examples'],  # path to where to save gallery generated output
+     'line_numbers': True,
 }
 
 autosummary_generate = True
