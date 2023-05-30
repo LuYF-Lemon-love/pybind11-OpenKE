@@ -4,4 +4,4 @@
 .. autosummary::
    :toctree: generated
 
-   pybind11_ke_examples
+   pybind11_ke_examples/*
