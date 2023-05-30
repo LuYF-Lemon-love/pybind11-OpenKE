@@ -8,12 +8,12 @@
 # 需要的文件:
 #          ./benchmarks/FB15K237/
 
-import pybind11_ke
-from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.module.model import TransE
-from pybind11_ke.module.loss import MarginLoss
-from pybind11_ke.module.strategy import NegativeSampling
-from pybind11_ke.data import TrainDataLoader, TestDataLoader
+import openke
+from openke.config import Trainer, Tester
+from openke.module.model import TransE
+from openke.module.loss import MarginLoss
+from openke.module.strategy import NegativeSampling
+from openke.data import TrainDataLoader, TestDataLoader
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
