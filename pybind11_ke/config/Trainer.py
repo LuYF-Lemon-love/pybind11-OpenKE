@@ -49,7 +49,7 @@ class Trainer(object):
 
 		:param model: 包装 KGE 模型的训练策略类
 		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-		:param data_loader: TrainDataSampler
+		:param data_loader: TrainDataLoader
 		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 		:param train_times: 训练轮次数
 		:type train_times: int
@@ -178,7 +178,7 @@ class Trainer(object):
 		"""根据 ``use_gpu`` 返回 ``x`` 的张量
 
 		:param x: 数据
-		:type x: numpy
+		:type x: numpy.ndarray
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
 		:returns: 张量
