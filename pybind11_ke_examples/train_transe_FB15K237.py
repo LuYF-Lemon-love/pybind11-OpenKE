@@ -1,3 +1,25 @@
+"""
+`Learn the Basics <intro.html>`_ ||
+**TransE-FB15K237** ||
+`Tensors <tensorqs_tutorial.html>`_ ||
+`Datasets & DataLoaders <data_tutorial.html>`_ ||
+`Transforms <transforms_tutorial.html>`_ ||
+`Build Model <buildmodel_tutorial.html>`_ ||
+`Autograd <autogradqs_tutorial.html>`_ ||
+`Optimization <optimization_tutorial.html>`_ ||
+`Save & Load Model <saveloadrun_tutorial.html>`_
+
+TransE-FB15K237
+===================
+这一部分介绍如何用在 FB15K237 知识图谱上训练 TransE。
+
+导入数据
+-----------------
+pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
+:py:class:`pybind11_ke.data.TestDataLoader`。
+
+"""
+
 # train_transe_FB15K237.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
