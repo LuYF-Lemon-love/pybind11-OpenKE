@@ -19,7 +19,6 @@ Contents
 
    主页 <self>
    installation
-   usage
    api
 
 .. toctree::
@@ -28,5 +27,4 @@ Contents
    :includehidden:
    :caption: 例子
 
-   auto_exa/index
    auto_examples/index

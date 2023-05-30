@@ -54,7 +54,7 @@ test_dataloader = TestDataLoader("./benchmarks/FB15K237/", "link")
 ################################
 # 导入模型
 # ------------------
-# pybind11-OpenKE 提供了很多 KGE 模型，它们目前最常用的基线模型。我们下面将要导入
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
 # :py:class:`pybind11_ke.module.model.TransE`，它是最简单的平移模型。
 
 # define the model
