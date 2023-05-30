@@ -1,6 +1,8 @@
 TestDataLoader
 ========================================================
 
+.. automodule:: pybind11_ke.data.TestDataLoader
+
 .. autoclass:: pybind11_ke.data.TestDataLoader.TestDataSampler
     :members:
     :private-members:
