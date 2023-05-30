@@ -59,7 +59,7 @@ class Tester(object):
         """设置 :py:attr:`model`
         
         :param model: KGE 模型
-		:type model: :py:class:`pybind11_ke.module.model.Model`
+        :type model: :py:class:`pybind11_ke.module.model.Model`
         """
 
         self.model = model
@@ -68,7 +68,7 @@ class Tester(object):
         """设置 :py:attr:`data_loader`
         
         :param data_loader: TestDataLoader
-		:type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
+        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
         """
 
         self.data_loader = data_loader
@@ -77,7 +77,7 @@ class Tester(object):
         """设置 :py:attr:`use_gpu`
         
         :param use_gpu: 是否使用 gpu
-		:type use_gpu: bool
+        :type use_gpu: bool
         """
 
         self.use_gpu = use_gpu
@@ -122,7 +122,7 @@ class Tester(object):
         """进行链接预测
         
         :param type_constrain: 是否用 type_constrain.txt 进行负采样
-		:type type_constrain: bool
+        :type type_constrain: bool
         :returns: 经典指标分别为 MRR，MR，Hits@10，Hits@3，Hits@1
 		:rtype: tuple
         """
