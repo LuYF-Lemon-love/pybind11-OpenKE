@@ -20,5 +20,4 @@ Contents
    主页 <self>
    installation
    usage
-   examples
    api
