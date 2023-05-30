@@ -28,4 +28,4 @@ Contents
    :includehidden:
    :caption: 例子
 
-   quickstart_tutorial
+   auto_examples/index
