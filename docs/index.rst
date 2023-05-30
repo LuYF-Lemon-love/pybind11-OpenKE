@@ -28,3 +28,4 @@ Contents
    :caption: 例子
 
    auto_examples/index
+   auto_examples/train_transe_FB15K237
