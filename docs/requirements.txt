@@ -60,3 +60,5 @@ sphinx-autopackagesummary==1.3
     # self add
 sphinx-gallery==0.13.0
     # self add
+sphinx-copybutton
+    # self add

@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     'sphinx_gallery.gen_gallery',
+    'sphinx_copybutton',
 ]
 
 sphinx_gallery_conf = {
