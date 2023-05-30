@@ -1,6 +1,7 @@
 例子
 =================
 
-.. autopackagesummary:: pybind11_ke_examples
-   :toctree: _autosummary
-   :template: autosummary/package.rst
+.. autosummary::
+   :toctree: generated
+
+   pybind11_ke_examples
