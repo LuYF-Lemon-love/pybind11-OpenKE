@@ -1,3 +1,28 @@
+# coding:utf-8
+#
+# pybind11_ke/config/Trainer.py
+#
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 27, 2023
+#
+# 该脚本定义了训练循环类.
+
+"""
+Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
+
+基本用法如下：
+
+.. code-block:: python
+
+	# Import Trainer
+	from openke.config import Trainer
+	
+	# train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+		train_times = 1000, alpha = 1.0, use_gpu = True)
+	trainer.run()
+"""
+
 import openke
 from openke.config import Trainer, Tester
 from openke.module.model import RESCAL
