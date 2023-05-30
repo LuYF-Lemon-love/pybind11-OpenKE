@@ -1,0 +1,9 @@
+Finish initializing...
+Input Files Path : ./benchmarks/FB15K237/
+The toolkit is importing datasets.
+The total of relations is 237.
+The total of entities is 14541.
+The total of train triples is 272115.
+Input Files Path : ./benchmarks/FB15K237/
+The total of test triples is 20466.
+The total of valid triples is 17535.
