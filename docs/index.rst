@@ -29,3 +29,5 @@ Contents
    :caption: 例子
 
    usage
+   train_rescal_FB15K237
+   quickstart_tutorial
