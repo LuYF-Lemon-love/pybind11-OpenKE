@@ -21,3 +21,11 @@ Contents
    installation
    usage
    api
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
+   :caption: 例子
+
+   pybind11_ke_examples/train_rescal_FB15K237
