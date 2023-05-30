@@ -1,6 +1,4 @@
 例子
 =================
 
-.. autopackagesummary:: pybind11_ke_examples
-   :toctree: generated
-   :template: autosummary/package.rst
+.. automodule:: examples.train_rescal_FB15K237
