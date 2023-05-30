@@ -20,22 +20,18 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 
 """
 
-# train_transe_FB15K237.py
-#
-# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-#
-# 该脚本展示了如何在 FB15K237 上训练并验证 TransE.
-#
-# 需要的文件:
-#          ./benchmarks/FB15K237/
-
 import openke
 from openke.config import Trainer, Tester
 from openke.module.model import TransE
 from openke.module.loss import MarginLoss
 from openke.module.strategy import NegativeSampling
 from openke.data import TrainDataLoader, TestDataLoader
+
+######################################################################
+# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# 
+# :py:class:`pybind11_ke.data.TrainDataLoader` 和 :py:class:`pybind11_ke.data.TestDataLoader`
+# 都包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
@@ -51,6 +47,16 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("./benchmarks/FB15K237/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.TransE`，它是最简单的平移模型。
+
 # define the model
 transe = TransE(
 	ent_tot = train_dataloader.get_ent_tot(),
@@ -59,6 +65,17 @@ transe = TransE(
 	p_norm = 1, 
 	norm_flag = True)
 
+######################################################################
+# --------------
+#
+
+
+#####################################################################
+# 损失函数
+# ----------------------------------------
+# 我们这里使用了 TransE 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
+# :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
+# :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 
 # define the loss function
 model = NegativeSampling(
@@ -67,10 +84,30 @@ model = NegativeSampling(
 	batch_size = train_dataloader.get_batch_size()
 )
 
+######################################################################
+# --------------
+#
+
+######################################################################
+# 训练模型
+# -------------
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
+
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader, train_times = 1000, alpha = 1.0, use_gpu = True)
 trainer.run()
 transe.save_checkpoint('./checkpoint/transe.ckpt')
+
+######################################################################
+# --------------
+#
+
+######################################################################
+# 评估模型
+# -------------
+# 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
 # test the model
 transe.load_checkpoint('./checkpoint/transe.ckpt')
