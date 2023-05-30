@@ -20,12 +20,11 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 
 """
 
-import openke
-from openke.config import Trainer, Tester
-from openke.module.model import TransE
-from openke.module.loss import MarginLoss
-from openke.module.strategy import NegativeSampling
-from openke.data import TrainDataLoader, TestDataLoader
+from pybind11_ke.config import Trainer, Tester
+from pybind11_ke.module.model import TransE
+from pybind11_ke.module.loss import MarginLoss
+from pybind11_ke.module.strategy import NegativeSampling
+from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
