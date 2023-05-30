@@ -124,7 +124,7 @@ class Tester(object):
         :param type_constrain: 是否用 type_constrain.txt 进行负采样
         :type type_constrain: bool
         :returns: 经典指标分别为 MRR，MR，Hits@10，Hits@3，Hits@1
-		:rtype: tuple
+        :rtype: tuple
         """
 
         base.initTest()

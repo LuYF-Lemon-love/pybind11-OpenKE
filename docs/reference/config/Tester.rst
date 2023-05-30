@@ -1,7 +1,7 @@
 Tester
 ========================================================
 
-.. autoclass:: pybind11_ke.config.Tester
+.. automodule:: pybind11_ke.config.Tester
     :members:
     :private-members:
     :special-members:
