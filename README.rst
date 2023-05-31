@@ -16,18 +16,27 @@
 `pybind11-openke.readthedocs.io <https://pybind11-openke.readthedocs.io/zh_CN/latest/>`_。
 源代码可以访问 `github.com/LuYF-Lemon-love/pybind11-OpenKE <https://github.com/LuYF-Lemon-love/pybind11-OpenKE>`_。
 
+📁 `pybind11_ke/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/pybind11_ke/>`_
+    pybind11-OpenKE 源代码保存在 ``pybind11_ke/``。
+
 📚 `docs/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/>`_
-    所有的文档源文件保存在 ``docs/source/``。 所有的 ``*.rst`` 构成了文档中的各个部分。
-⚙️ `.readthedocs.yaml <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/.readthedocs.yaml>`_
-    Read the Docs 的构建配置保存在 ``.readthedocs.yaml``。
-📍 `docs/requirements.txt <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/requirements.txt>`_ 
-    文档的 Python 依赖被固定了，保存在 ``requirements.txt``。
-💡 `docs/api.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/source/api.rst>`_
-    通过指令 ``:autosummary:``，Sphinx 自动生成的 API 文档。
-💡 `pybind11_ke <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/pybind11_ke>`_
-    pybind11_ke 的源文件。
+    所有的文档源文件保存在 ``docs/``。 所有的 ``*.rst`` 构成了文档中的各个部分。
+
+🌰 `pybind11_ke_examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/pybind11_ke_examples/>`_
+    pybind11-OpenKE 的例子保存在 ``pybind11_ke_examples/``。
+
+💡 `benchmarks <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
+    常用的知识图谱保存在 ``benchmarks/``。
+
+🍋 `result <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_
+    OpenKE-PyTorch 和 pybind11-OpenKE 在我们机器上运行的结果保存在 ``result/``。
+
+📍 `requirements.txt <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/requirements.txt>`_ 
+    在我们机器上的 Python 的依赖，可以作为你的参考，保存在 ``requirements.txt``。
+
 📜 `README.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/README.rst>`_
     项目主页。
+    
 ⁉️ Questions / comments
     如果你有任何问题，可以在 `Github issue <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/issues>`_ 提问。
 
