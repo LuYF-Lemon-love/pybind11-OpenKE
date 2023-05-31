@@ -133,56 +133,26 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 
 * 对于训练模型，数据集包含 3 个文件：
 
-  - ``train2id.txt``：训练集文件，第一行是训练集中三元组的个数。
-  - 后面所有行都是 **(e1, e2, rel)** 格式的三元组，表示在实体 **e1** 和实体 **e2** 之间有一个关系 **rel**。
+  - ``train2id.txt``：训练集文件，第一行是训练集中三元组的个数。后面所有行都是 **(e1, e2, rel)** 格式的三元组，表示在实体 **e1** 和实体 **e2** 之间有一个关系 **rel**。
 
-  - ``entity2id.txt``：第一行是实体的个数。其余行是实体和相应的 id，每一行一个实体。
+  - ``entity2id.txt``：第一行是实体的个数。其余行是全部实体和相应的 id，每一行一个实体。
 
-  - ``relation2id.txt``：第一行是关系的个数。其余行是关系和相应的 id，每一行一个关系。
+  - ``relation2id.txt``：第一行是关系的个数。其余行是全部关系和相应的 id，每一行一个关系。
 
 * 对于验证模型，需要 2 个额外的文件（总共 5 个文件）。
 
-  - ``test2id.txt``：测试集文件，第一行是测试集中三元组的个数。
-  - 后面所有行都是 **(e1, e2, rel)** 格式的三元组。
+  - ``test2id.txt``：测试集文件，第一行是测试集中三元组的个数。后面所有行都是 **(e1, e2, rel)** 格式的三元组。
 
-  - ``valid2id.txt``：验证集文件，第一行是验证集中三元组的个数。
-  - 后面所有行都是 **(e1, e2, rel)** 格式的三元组。
+  - ``valid2id.txt``：验证集文件，第一行是验证集中三元组的个数。后面所有行都是 **(e1, e2, rel)** 格式的三元组。
 
-  - ``type_constrain.txt``: 类型约束文件，第一行是关系的个数。
-  - 后面所有行是每个关系的类型约束。如 ``benchmarks/FB15K`` 的关系 1200，它
-  - 有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
+  - ``type_constrain.txt``: 类型约束文件，第一行是关系的个数。后面所有行是每个关系的类型约束。如 ``benchmarks/FB15K`` 的id 为 1200 的关系，它有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
 
 .. Note:: train2id.txt 包含的是来自 entitiy2id.txt 和 relation2id.txt 的 id，
     而不是实体和关系的名字。
 
 .. Note:: type_constrain.txt 可以通过 ``benchmarks/FB15K/n-n.py`` 脚本获得。
 
-* For training, datasets contain three files:
-
-  - train2id.txt: training file, the first line is the number of triples for training. 
-  - Then the following lines are all in the format **(e1, e2, rel)** 
-  - which indicates there is a relation **rel** between **e1** and **e2** . 
-  - **Note that train2id.txt contains ids from entitiy2id.txt and relation2id.txt 
-  - instead of the names of the entities and relations. 
   - If you use your own datasets, please check the format of your training file. Files in the wrong format may cause segmentation fault.**
-
-  - entity2id.txt: all entities and corresponding ids, one per line. The first line is the number of entities.
-
-  - relation2id.txt: all relations and corresponding ids, one per line. The first line is the number of relations.
-
-* For testing, datasets contain additional two files (totally five files):
-
-  - test2id.txt: testing file, the first line is the number of triples for testing. 
-  - Then the following lines are all in the format **(e1, e2, rel)** .
-
-  - valid2id.txt: validating file, the first line is the number of triples for validating. 
-  - Then the following lines are all in the format **(e1, e2, rel)** .
-
-  - type_constrain.txt: type constraining file, the first line is the number of relations. 
-  - Then the following lines are type constraints for each relation. 
-  - For example, the relation with id 1200 has 4 types of head entities, which are 3123, 1034, 58 and 5733. 
-  - The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088. 
-  - You can get this file through **n-n.py** in folder benchmarks/FB15K.
 
 参考
 ---------
