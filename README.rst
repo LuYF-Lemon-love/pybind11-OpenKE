@@ -152,8 +152,6 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 
 .. Note:: type_constrain.txt 可以通过 ``benchmarks/FB15K/n-n.py`` 脚本获得。
 
-  - If you use your own datasets, please check the format of your training file. Files in the wrong format may cause segmentation fault.**
-
 参考
 ---------
 
