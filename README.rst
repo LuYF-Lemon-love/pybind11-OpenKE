@@ -76,7 +76,7 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 
 - RotatE: `RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space <https://openreview.net/forum?id=HkgEQnRqYQ>`__ .
 
-Experimental Settings
+实验设置
 ---------------------
 
 对于每一个测试三元组，头实体依次被实体集中的每一个实体替换。
@@ -88,40 +88,17 @@ Experimental Settings
 因为一些损坏的三元组可能已经存在训练集和验证集中，在这种情形下，
 这些损坏三元组可能比测试集中的三元组排名更靠前，但不应该被认为是
 错误的，因为两个三元组都是正确的。我们删除了那些出现在训练集、验证集或测试集中的损坏的三元组，
-这确保了这样的损坏三元组不会参与排名。最后，报告了在这种设置上测试集三元组的正确实体排名在前 10/3/1 的比例（Hits@10, Hits@3, Hits@1），
-平均排名（mean rank，MR），平均倒数排名（mean reciprocal rank，MRR）。
+这确保了这样的损坏三元组不会参与排名。最后，报告了在这种设置上测试集三元组的正确实体排名在前 10/3/1 的比例（Hits@10 (filter), Hits@3(filter), Hits@1(filter)），
+平均排名（mean rank，MR(filter)），平均倒数排名（mean reciprocal rank，MRR(filter)）。
 
-上述设置更多的细节可以从 `TransE <http://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf>`__ 获得。
+上述设置更多的细节可以从 `TransE 的原论文 <http://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf>`__ 获得。
 
 对于大型知识图谱，用整个实体集合损坏三元组是极其耗时的。
 因此 ``OpenKE-PyTorch`` 提供了名为
 "`type constraint <https://www.dbs.ifi.lmu.de/~krompass/papers/TypeConstrainedRepresentationLearningInKnowledgeGraphs.pdf>`__"
 的实验性的设置用有限的实体集合（取决于相应的关系）损坏三元组。
 
-For each test triplet, the head is removed and replaced by each of the entities from the entity set in turn. 
-The scores of those corrupted triplets are first computed by the models and then sorted by the order. 
-Then, we get the rank of the correct entity. This whole procedure is also repeated by removing those tail entities. 
-We report the proportion of those correct entities ranked in the top 10/3/1 (Hits@10, Hits@3, Hits@1). 
-The mean rank (MRR) and mean reciprocal rank (MRR) of the test triplets under this setting are also reported.
-
-Because some corrupted triplets may be in the training set and validation set. 
-In this case, those corrupted triplets may be ranked above the test triplet, 
-but this should not be counted as an error because both triplets are true. 
-Hence, we remove those corrupted triplets appearing in the training, validation or test set, 
-which ensures the corrupted triplets are not in the dataset. 
-We report the proportion of those correct entities ranked 
-in the top 10/3/1 (Hits@10 (filter), Hits@3(filter), Hits@1(filter)) under this setting. 
-The mean rank (MRR (filter)) and mean reciprocal rank (MRR (filter)) of the test triplets under this setting are also reported.
-
-More details of the above-mentioned settings can 
-be found from the paper `TransE <http://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf>`__.
-
-For those large-scale entity sets, to corrupt all entities with the whole entity set is time-costing. 
-Hence, we also provide the experimental setting 
-named "`type constraint <https://www.dbs.ifi.lmu.de/~krompass/papers/TypeConstrainedRepresentationLearningInKnowledgeGraphs.pdf>`__" to 
-corrupt entities with some limited entity sets determining by their relations.
-
-Installation (Linux)
+安装 (Linux)
 --------------------
 
 1. 配置环境：
@@ -151,16 +128,43 @@ Installation (Linux)
     $ cd pybind11_ke_examples/
     $ python train_transe_FB15K237.py
 
-Data
+数据
 ----
 
-* 对于训练，数据集包含 3 个文件：
+* 对于训练模型，数据集包含 3 个文件：
 
   - ``train2id.txt``：训练集文件，第一行是训练集中三元组的个数。
+  - 后面所有行都是 **(e1, e2, rel)** 格式的三元组，表示在实体 **e1** 和实体 **e2** 之间有一个关系 **rel**。
+
+  - ``entity2id.txt``：第一行是实体的个数。其余行是实体和相应的 id，每一行一个实体。
+
+  - ``relation2id.txt``：第一行是关系的个数。其余行是关系和相应的 id，每一行一个关系。
+
+* 对于验证模型，需要 2 个额外的文件（总共 5 个文件）。
+
+  - ``test2id.txt``：测试集文件，第一行是测试集中三元组的个数。
+  - 后面所有行都是 **(e1, e2, rel)** 格式的三元组。
+
+  - ``valid2id.txt``：验证集文件，第一行是验证集中三元组的个数。
+  - 后面所有行都是 **(e1, e2, rel)** 格式的三元组。
+
+  - ``type_constrain.txt``: 类型约束文件，第一行是关系的个数。
+  - 后面所有行是每个关系的类型约束。如 ``benchmarks/FB15K`` 的关系 1200，它
+  - 有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
+
+.. Note:: train2id.txt 包含的是来自 entitiy2id.txt 和 relation2id.txt 的 id，
+    而不是实体和关系的名字。
+
+.. Note:: type_constrain.txt 可以通过 ``benchmarks/FB15K/n-n.py`` 脚本获得。
 
 * For training, datasets contain three files:
 
-  - train2id.txt: training file, the first line is the number of triples for training. Then the following lines are all in the format **(e1, e2, rel)** which indicates there is a relation **rel** between **e1** and **e2** . **Note that train2id.txt contains ids from entitiy2id.txt and relation2id.txt instead of the names of the entities and relations. If you use your own datasets, please check the format of your training file. Files in the wrong format may cause segmentation fault.**
+  - train2id.txt: training file, the first line is the number of triples for training. 
+  - Then the following lines are all in the format **(e1, e2, rel)** 
+  - which indicates there is a relation **rel** between **e1** and **e2** . 
+  - **Note that train2id.txt contains ids from entitiy2id.txt and relation2id.txt 
+  - instead of the names of the entities and relations. 
+  - If you use your own datasets, please check the format of your training file. Files in the wrong format may cause segmentation fault.**
 
   - entity2id.txt: all entities and corresponding ids, one per line. The first line is the number of entities.
 
@@ -168,13 +172,19 @@ Data
 
 * For testing, datasets contain additional two files (totally five files):
 
-  - test2id.txt: testing file, the first line is the number of triples for testing. Then the following lines are all in the format **(e1, e2, rel)** .
+  - test2id.txt: testing file, the first line is the number of triples for testing. 
+  - Then the following lines are all in the format **(e1, e2, rel)** .
 
-  - valid2id.txt: validating file, the first line is the number of triples for validating. Then the following lines are all in the format **(e1, e2, rel)** .
+  - valid2id.txt: validating file, the first line is the number of triples for validating. 
+  - Then the following lines are all in the format **(e1, e2, rel)** .
 
-  - type_constrain.txt: type constraining file, the first line is the number of relations. Then the following lines are type constraints for each relation. For example, the relation with id 1200 has 4 types of head entities, which are 3123, 1034, 58 and 5733. The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088. You can get this file through **n-n.py** in folder benchmarks/FB15K.
+  - type_constrain.txt: type constraining file, the first line is the number of relations. 
+  - Then the following lines are type constraints for each relation. 
+  - For example, the relation with id 1200 has 4 types of head entities, which are 3123, 1034, 58 and 5733. 
+  - The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088. 
+  - You can get this file through **n-n.py** in folder benchmarks/FB15K.
 
-Reference
+参考
 ---------
 
 #. `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__.
