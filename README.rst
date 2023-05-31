@@ -145,12 +145,12 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 
   - ``valid2id.txt``：验证集文件，第一行是验证集中三元组的个数。后面所有行都是 **(e1, e2, rel)** 格式的三元组。
 
-  - ``type_constrain.txt``: 类型约束文件，第一行是关系的个数。后面所有行是每个关系的类型约束。如 ``benchmarks/FB15K`` 的id 为 1200 的关系，它有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
+  - ``type_constrain.txt``: 类型约束文件，第一行是关系的个数。后面所有行是每个关系的类型约束。如 ``benchmarks/FB15K`` 的 id 为 1200 的关系，它有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
 
-.. Note:: train2id.txt 包含的是来自 entitiy2id.txt 和 relation2id.txt 的 id，
+.. Note:: ``train2id.txt`` 包含的是来自 ``entitiy2id.txt`` 和 ``relation2id.txt`` 的 id，
     而不是实体和关系的名字。
 
-.. Note:: type_constrain.txt 可以通过 ``benchmarks/FB15K/n-n.py`` 脚本获得。
+.. Note:: ``type_constrain.txt`` 可以通过 ``benchmarks/FB15K/n-n.py`` 脚本获得。
 
 参考
 ---------
