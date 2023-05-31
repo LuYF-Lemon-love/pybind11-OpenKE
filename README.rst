@@ -120,8 +120,7 @@ Installation (Linux)
 
 .. code-block:: console
 
-    $ cd ../
-    $ cp examples/train_transe_FB15K237.py ./
+    $ cd pybind11_ke_examples/
     $ python train_transe_FB15K237.py
 
 Data

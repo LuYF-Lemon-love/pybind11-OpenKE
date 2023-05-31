@@ -25,5 +25,6 @@ setup(
     cmdclass={"build_ext": build_ext},
     zip_safe=False,
     python_requires=">=3.7",
-    packages=find_namespace_packages(where='src')
+    packages=find_namespace_packages(include=['pybind11_ke*'],
+                                     exclude=['pybind11_ke_examples'])
 )
