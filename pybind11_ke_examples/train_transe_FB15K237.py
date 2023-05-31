@@ -1,5 +1,5 @@
 """
-`Learn the Basics <intro.html>`_ ||
+`RESCAL-FB15K237 <train_rescal_FB15K237.html>`_ ||
 **TransE-FB15K237** ||
 `Tensors <tensorqs_tutorial.html>`_ ||
 `Datasets & DataLoaders <data_tutorial.html>`_ ||
