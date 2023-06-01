@@ -28,6 +28,12 @@ from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
+######################################################################
+# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# 
+# :py:class:`pybind11_ke.data.TrainDataLoader` 和 :py:class:`pybind11_ke.data.TestDataLoader`
+# 都包含 ``in_path`` 用于传递数据集目录。
+
 # dataloader for training
 train_dataloader = TrainDataLoader(
 	in_path = "../benchmarks/FB15K237/", 
@@ -43,12 +49,34 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.RESCAL`，它是很多张量分解模型改进的基础。
+
 # define the model
 rescal = RESCAL(
 	ent_tot = train_dataloader.get_ent_tot(),
 	rel_tot = train_dataloader.get_rel_tot(),
 	dim = 50
 )
+
+######################################################################
+# --------------
+#
+
+
+#####################################################################
+# 损失函数
+# ----------------------------------------
+# 我们这里使用了 TransE 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
+# :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
+# :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 
 # define the loss function
 model = NegativeSampling(
@@ -57,10 +85,26 @@ model = NegativeSampling(
 	batch_size = train_dataloader.get_batch_size(), 
 )
 
+######################################################################
+# --------------
+#
+
+######################################################################
+# 训练模型
+# -------------
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
+
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader, train_times = 1000, alpha = 0.1, use_gpu = True, opt_method = "adagrad")
 trainer.run()
 rescal.save_checkpoint('../checkpoint/rescal.ckpt')
+
+######################################################################
+# 评估模型
+# -------------
+# 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
 # test the model
 rescal.load_checkpoint('../checkpoint/rescal.ckpt')
