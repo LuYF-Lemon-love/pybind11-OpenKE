@@ -96,7 +96,8 @@ model = NegativeSampling(
 # 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
 
 # train the model
-trainer = Trainer(model = model, data_loader = train_dataloader, train_times = 1000, alpha = 1.0, use_gpu = True)
+trainer = Trainer(model = model, data_loader = train_dataloader,
+                  train_times = 1000, alpha = 1.0, use_gpu = True)
 trainer.run()
 transe.save_checkpoint('../checkpoint/transe.ckpt')
 
