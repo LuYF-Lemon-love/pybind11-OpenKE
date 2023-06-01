@@ -5,7 +5,7 @@
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 28, 2023
 # 
-# 该头文件定义了 Model.
+# 该头文件定义了 TransE.
 
 """
 TransE - 第一个平移模型，简单而且高效。

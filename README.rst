@@ -47,6 +47,8 @@ New Features
 
 - 利用 pybind11 实现 Python 和 C++ 的交互.
 
+- 增加了文档。
+
 OpenKE-PyTorch
 --------------
 
