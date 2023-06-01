@@ -13,6 +13,8 @@ TransE-FB15K237
 ===================
 这一部分介绍如何用在 FB15K237 知识图谱上训练 TransE。
 
+TransE 原论文: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`__。
+
 导入数据
 -----------------
 pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和

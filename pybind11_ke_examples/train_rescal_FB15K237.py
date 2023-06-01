@@ -13,6 +13,8 @@ RESCAL-FB15K237
 ===================
 这一部分介绍如何用在 FB15K237 知识图谱上训练 RESCAL。
 
+RESCAL 原论文: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__。
+
 导入数据
 -----------------
 pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
