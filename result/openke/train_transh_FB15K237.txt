@@ -1,0 +1,24 @@
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ python train_transh_FB15K237.py 
+Input Files Path : ./benchmarks/FB15K237/
+The toolkit is importing datasets.
+The total of relations is 237.
+The total of entities is 14541.
+The total of train triples is 272115.
+Input Files Path : ./benchmarks/FB15K237/
+The total of test triples is 20466.
+The total of valid triples is 17535.
+Finish initializing...
+Epoch 999 | loss: 0.973657: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [1:09:24<00:00,  4.16s/it]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 20466/20466 [00:50<00:00, 403.70it/s]
+no type constraint results:
+metric:			 MRR 		 MR 		 hit@10 	 hit@3  	 hit@1 
+l(raw):			 0.078674 	 597.277344 	 0.192417 	 0.074318 	 0.024333 
+r(raw):			 0.234545 	 186.950607 	 0.427245 	 0.258477 	 0.139304 
+averaged(raw):		 0.156610 	 392.113983 	 0.309831 	 0.166398 	 0.081819 
+
+l(filter):		 0.188743 	 334.184265 	 0.369198 	 0.216994 	 0.099531 
+r(filter):		 0.383614 	 159.188217 	 0.599824 	 0.438532 	 0.269960 
+averaged(filter):	 0.286178 	 246.686249 	 0.484511 	 0.327763 	 0.184745 
+0.484511
+0.4845108985900879
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$
