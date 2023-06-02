@@ -20,7 +20,6 @@ nvidia-cusparse-cu11==11.7.4.91
 nvidia-nccl-cu11==2.14.3
 nvidia-nvtx-cu11==11.7.91
 packaging==23.1
-pybind11-OpenKE @ file:///home/luyanfeng/my_code/my_github/pybind11-OpenKE
 pyproject_hooks==1.0.0
 scikit-learn==1.2.2
 scipy==1.10.1
