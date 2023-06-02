@@ -49,6 +49,8 @@ New Features
 
 - 增加了文档。
 
+- 使用 [Setuptools](https://setuptools.pypa.io/en/latest/) 打包了 pybind11-OpenKE， 使得能够像其他第三方库一样使用。
+
 OpenKE-PyTorch
 --------------
 
@@ -160,3 +162,5 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 #. `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__.
 
 #. `pybind11 <https://github.com/pybind/pybind11>`__.
+
+#. `Setuptools <https://setuptools.pypa.io/en/latest/>`__.
