@@ -1,7 +1,7 @@
 """
 `RESCAL-FB15K237 <train_rescal_FB15K237.html>`_ ||
 **TransE-FB15K237** ||
-`Tensors <tensorqs_tutorial.html>`_ ||
+`TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
 `Datasets & DataLoaders <data_tutorial.html>`_ ||
 `Transforms <transforms_tutorial.html>`_ ||
 `Build Model <buildmodel_tutorial.html>`_ ||
