@@ -49,7 +49,7 @@ New Features
 
 - 增加了文档。
 
-- 使用 [Setuptools](https://setuptools.pypa.io/en/latest/) 打包了 pybind11-OpenKE， 使得能够像其他第三方库一样使用。
+- 使用 `Setuptools <https://setuptools.pypa.io/en/latest/>`__ 打包了 pybind11-OpenKE， 使得能够像其他第三方库一样使用。
 
 OpenKE-PyTorch
 --------------
