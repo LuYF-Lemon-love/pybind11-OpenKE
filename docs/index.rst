@@ -29,3 +29,4 @@ Contents
 
    auto_examples/train_rescal_FB15K237
    auto_examples/train_transe_FB15K237
+   auto_examples/train_transh_FB15K237
