@@ -60,6 +60,10 @@ class DistMult(Model):
 	
 	DistMult 提出于 2015 年，最简单的双线性模型，与 TransE 参数量相同，
 	因此非常容易的应用于大型的知识图谱。
+
+	评分函数为: :math:`< \mathbf{h}, \mathbf{r}, \mathbf{t} >`，
+	为逐元素多线性点积（element-wise multi-linear dot product），
+	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, margin = None, epsilon = None):
