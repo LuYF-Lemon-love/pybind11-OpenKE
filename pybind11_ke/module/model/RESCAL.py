@@ -57,6 +57,8 @@ class RESCAL(Model):
 	RESCAL 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	RESCAL 提出于 2011 年，是很多张量分解模型的基石，模型较复杂。
+
+	评分函数为: :math:`-\mathbf{h}^T \mathbf{M}_r \mathbf{t}`
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100):
