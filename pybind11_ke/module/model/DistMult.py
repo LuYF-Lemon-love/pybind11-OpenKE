@@ -17,35 +17,35 @@ DistMult - 最简单的双线性模型，与 TransE 参数量相同，因此非�
 .. code-block:: python
 
 	from pybind11_ke.config import Trainer, Tester
-	from pybind11_ke.module.model import TransE
-	from pybind11_ke.module.loss import MarginLoss
+	from pybind11_ke.module.model import DistMult
+	from pybind11_ke.module.loss import SoftplusLoss
 	from pybind11_ke.module.strategy import NegativeSampling
-
+	
 	# define the model
-	transe = TransE(
+	distmult = DistMult(
 		ent_tot = train_dataloader.get_ent_tot(),
 		rel_tot = train_dataloader.get_rel_tot(),
-		dim = 200, 
-		p_norm = 1, 
-		norm_flag = True)
-
-
+		dim = 200
+	)
+	
 	# define the loss function
 	model = NegativeSampling(
-		model = transe, 
-		loss = MarginLoss(margin = 5.0),
-		batch_size = train_dataloader.get_batch_size()
+		model = distmult, 
+		loss = SoftplusLoss(),
+		batch_size = train_dataloader.get_batch_size(), 
+		regul_rate = 1.0
 	)
-
+	
+	
 	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 1.0, use_gpu = True)
+		train_times = 2000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
 	trainer.run()
-	transe.save_checkpoint('./checkpoint/transe.ckpt')
-
+	distmult.save_checkpoint('../checkpoint/distmult.ckpt')
+	
 	# test the model
-	transe.load_checkpoint('./checkpoint/transe.ckpt')
-	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+	distmult.load_checkpoint('../checkpoint/distmult.ckpt')
+	tester = Tester(model = distmult, data_loader = test_dataloader, use_gpu = True)
 	tester.run_link_prediction(type_constrain = False)
 """
 
