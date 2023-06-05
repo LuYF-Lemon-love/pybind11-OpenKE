@@ -138,7 +138,7 @@ class TransE(Model):
 		:type h: torch.Tensor
 		:param t: 尾实体的向量。
 		:type t: torch.Tensor
-		:param r: 关系实体的向量。
+		:param r: 关系的向量。
 		:type r: torch.Tensor
 		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
 					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
