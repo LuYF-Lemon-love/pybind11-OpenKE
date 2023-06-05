@@ -31,4 +31,3 @@ Contents
    auto_examples/train_transe_FB15K237
    auto_examples/train_transh_FB15K237
    auto_examples/train_distmult_WN18RR
-   auto_examples/train_distmult_WN18RR

@@ -40,6 +40,8 @@
 ⁉️ Questions / comments
     如果你有任何问题，可以在 `Github issue <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/issues>`_ 提问。
 
+.. Note:: 本项目基于 OpenKE-PyTorch 的版本保存在 `thunlp-OpenKE-PyTorch <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/thunlp-OpenKE-PyTorch>` 分支。
+
 New Features
 ------------
 
