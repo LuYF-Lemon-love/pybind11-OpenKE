@@ -62,7 +62,8 @@ class TransE(Model):
 	TransE 提出于 2013 年，是第一个平移模型，开创了平移模型研究方向。由于其简单性和高效性，
 	至今依旧是常用基线模型，在某些数据集上能够比其他更复杂的模型表现的更好。
 
-	评分函数为: :math:`\parallel \mathbf{h} + \mathbf{r} - \mathbf{t} \parallel_{L_1/L_2}`
+	评分函数为: :math:`\parallel \mathbf{h} + \mathbf{r} - \mathbf{t} \parallel_{L_1/L_2}`，
+	正三元组的评分函数的值越小越好。
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,

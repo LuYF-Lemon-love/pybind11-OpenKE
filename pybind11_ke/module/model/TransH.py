@@ -60,6 +60,9 @@ class TransH(Model):
 	TransH 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	TransH 提出于 2014 年，是第二个平移模型，将关系建模为超平面上的平移操作。
+
+	评分函数为: :math:`\parallel (\mathbf{h}-\mathbf{w}_r^T \mathbf{h} \mathbf{w}) + \mathbf{r} - (\mathbf{t}-\mathbf{w}_r^T \mathbf{t} \mathbf{w}) \parallel_{L_1/L_2}`，
+	正三元组的评分函数的值越小越好。
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,
