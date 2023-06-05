@@ -1,24 +1,23 @@
-(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ python train_distmult_WN18RR.py 
-Input Files Path : ./benchmarks/WN18RR/
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE/pybind11_ke_examples$ python train_distmult_WN18RR.py 
+Input Files Path : ../benchmarks/WN18RR/
 The toolkit is importing datasets.
 The total of relations is 11.
 The total of entities is 40943.
 The total of train triples is 86835.
-Input Files Path : ./benchmarks/WN18RR/
+Input Files Path : ../benchmarks/WN18RR/
 The total of test triples is 3134.
 The total of valid triples is 3034.
 Finish initializing...
-Epoch 1999 | loss: 9.596753: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 2000/2000 [41:24<00:00,  1.24s/it]
-100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3134/3134 [00:09<00:00, 332.55it/s]
+Epoch 1999 | loss: 9.607703: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 2000/2000 [40:02<00:00,  1.20s/it]
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3134/3134 [00:09<00:00, 330.67it/s]
 no type constraint results:
 metric:			 MRR 		 MR 		 hit@10 	 hit@3  	 hit@1 
-l(raw):			 0.206966 	 4519.052734 	 0.394703 	 0.260689 	 0.113593 
-r(raw):			 0.287523 	 3712.081055 	 0.503510 	 0.348117 	 0.179004 
-averaged(raw):		 0.247244 	 4115.566895 	 0.449107 	 0.304403 	 0.146299 
+l(raw):			 0.206999 	 4524.985840 	 0.388641 	 0.263880 	 0.113912 
+r(raw):			 0.285354 	 3668.081055 	 0.500957 	 0.348437 	 0.175814 
+averaged(raw):		 0.246177 	 4096.533203 	 0.444799 	 0.306158 	 0.144863 
 
-l(filter):		 0.277878 	 4496.414062 	 0.416082 	 0.320357 	 0.202936 
-r(filter):		 0.356259 	 3707.164307 	 0.515316 	 0.409700 	 0.269304 
-averaged(filter):	 0.317069 	 4101.789062 	 0.465699 	 0.365029 	 0.236120 
-0.465699
-0.465698778629303
-(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ 
+l(filter):		 0.279546 	 4502.383301 	 0.409381 	 0.325144 	 0.207403 
+r(filter):		 0.355392 	 3663.033447 	 0.513721 	 0.411615 	 0.266752 
+averaged(filter):	 0.317469 	 4082.708496 	 0.461551 	 0.368379 	 0.237077 
+0.461551
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE/pybind11_ke_examples$
