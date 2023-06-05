@@ -46,7 +46,7 @@ class SoftplusLoss(Loss):
 		"""
 
 		super(SoftplusLoss, self).__init__()
-		#: 用于代替逻辑函数，类型为 :py:class:`torch.nn.Softplus`，它 是 ReLU 函数的平滑近似。
+		#: 用于代替逻辑函数，类型为 :py:class:`torch.nn.Softplus`，它是 ReLU 函数的平滑近似。
 		self.criterion = nn.Softplus()
 		if adv_temperature != None:
 			#: RotatE 提出的自我对抗负采样中的温度。
