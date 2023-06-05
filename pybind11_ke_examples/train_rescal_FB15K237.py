@@ -2,7 +2,7 @@
 **RESCAL-FB15K237** ||
 `TransE-FB15K237 <train_transe_FB15K237.html>`_ ||
 `TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
-`Datasets & DataLoaders <data_tutorial.html>`_ ||
+`DistMult-WN18RR <train_distmult_WN18RR.html>`_ ||
 `Transforms <transforms_tutorial.html>`_ ||
 `Build Model <buildmodel_tutorial.html>`_ ||
 `Autograd <autogradqs_tutorial.html>`_ ||
