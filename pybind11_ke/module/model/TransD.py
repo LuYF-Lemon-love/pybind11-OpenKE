@@ -62,7 +62,7 @@ class TransD(Model):
 	
 	TransD 提出于 2015 年，自动生成映射矩阵，简单而且高效，是对 TransR 的改进。
 
-	评分函数为: :math:`\parallel (\mathbf{r}_p \mathbf{h}_p^T + I)\mathbf{h} + \mathbf{r} - (\mathbf{r}_p \mathbf{t}_p^T + I)\mathbf{t} \parallel_{L_1/L_2}`，
+	评分函数为: :math:`\parallel (\mathbf{r}_p \mathbf{h}_p^T + \mathbf{I})\mathbf{h} + \mathbf{r} - (\mathbf{r}_p \mathbf{t}_p^T + \mathbf{I})\mathbf{t} \parallel_{L_1/L_2}`，
 	正三元组的评分函数的值越小越好。
 	"""
 
