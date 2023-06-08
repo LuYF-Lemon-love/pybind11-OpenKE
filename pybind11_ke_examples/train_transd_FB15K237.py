@@ -48,6 +48,16 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.TransD`，它是动态构建映射矩阵的平移模型。
+
 # define the model
 transd = TransD(
 	ent_tot = train_dataloader.get_ent_tot(),
@@ -65,7 +75,7 @@ transd = TransD(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了 TransE 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
+# 我们这里使用了 TransD 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
 # :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 

@@ -57,7 +57,7 @@ test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 # 导入模型
 # ------------------
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
-# :py:class:`pybind11_ke.module.model.DistMult`，它是最简单的平移模型。
+# :py:class:`pybind11_ke.module.model.DistMult`，它是最简单的双线性模型。
 
 # define the model
 distmult = DistMult(
