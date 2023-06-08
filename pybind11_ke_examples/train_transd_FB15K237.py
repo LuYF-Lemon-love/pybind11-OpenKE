@@ -36,7 +36,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
-	in_path = "./benchmarks/FB15K237/", 
+	in_path = "../benchmarks/FB15K237/", 
 	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
@@ -46,7 +46,7 @@ train_dataloader = TrainDataLoader(
 	neg_rel = 0)
 
 # dataloader for test
-test_dataloader = TestDataLoader("./benchmarks/FB15K237/", "link")
+test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link")
 
 # define the model
 transd = TransD(
@@ -91,7 +91,7 @@ model = NegativeSampling(
 trainer = Trainer(model = model, data_loader = train_dataloader,
                   train_times = 1000, alpha = 1.0, use_gpu = True)
 trainer.run()
-transd.save_checkpoint('./checkpoint/transd.ckpt')
+transd.save_checkpoint('../checkpoint/transd.ckpt')
 
 ######################################################################
 # --------------
@@ -104,6 +104,6 @@ transd.save_checkpoint('./checkpoint/transd.ckpt')
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
 # test the model
-transd.load_checkpoint('./checkpoint/transd.ckpt')
+transd.load_checkpoint('../checkpoint/transd.ckpt')
 tester = Tester(model = transd, data_loader = test_dataloader, use_gpu = True)
 tester.run_link_prediction(type_constrain = False)
