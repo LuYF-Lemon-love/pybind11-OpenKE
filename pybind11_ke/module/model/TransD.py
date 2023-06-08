@@ -156,6 +156,21 @@ class TransD(Model):
 			self.margin_flag = False
 
 	def _resize(self, tensor, axis, size):
+		"""计算实体向量与单位矩阵的乘法，并返回结果向量。
+
+		源代码使用 :py:func:`torch.narrow` 进行缩小向量，
+		:py:func:`torch.nn.functional.pad` 进行填充向量。
+		
+		:param tensor: 实体向量。
+		:type tensor: torch.Tensor
+		:param axis: 在哪个轴上进行乘法运算。
+		:type axis: int
+		:param size: 运算结果在 ``axis`` 上的维度大小，一般为关系向量的维度。
+		:type size: int
+		:returns: 乘法结果的向量
+		:rtype: torch.Tensor
+		"""
+
 		shape = tensor.size()
 		osize = shape[axis]
 		if osize == size:
@@ -172,22 +187,58 @@ class TransD(Model):
 		return F.pad(tensor, paddings = paddings, mode = "constant", value = 0)
 
 	def _calc(self, h, t, r, mode):
+		"""计算 TransD 的评分函数。
+		
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
+		:param r: 关系的向量。
+		:type r: torch.Tensor
+		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:type mode: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		# 对嵌入的最后一维进行归一化
 		if self.norm_flag:
 			h = F.normalize(h, 2, -1)
 			r = F.normalize(r, 2, -1)
 			t = F.normalize(t, 2, -1)
+		
+		# 保证 h, r, t 都是三维的
 		if mode != 'normal':
 			h = h.view(-1, r.shape[0], h.shape[-1])
 			t = t.view(-1, r.shape[0], t.shape[-1])
 			r = r.view(-1, r.shape[0], r.shape[-1])
+		
+		# 两者结果一样，括号只是逻辑上的，'head_batch' 是替换 head，否则替换 tail
 		if mode == 'head_batch':
 			score = h + (r - t)
 		else:
 			score = (h + r) - t
+		
+		# 利用距离函数计算得分
 		score = torch.norm(score, self.p_norm, -1).flatten()
 		return score
 
 	def _transfer(self, e, e_transfer, r_transfer):
+		"""
+		将头实体或尾实体的向量映射到关系向量空间。
+		
+		:param e: 头实体或尾实体向量。
+		:type e: torch.Tensor
+		:param e_transfer: 头实体或尾实体的投影向量
+		:type e_transfer: torch.Tensor
+		:param r_transfer: 关系的投影向量
+		:type r_transfer: torch.Tensor
+		:returns: 投影后的实体向量
+		:rtype: torch.Tensor
+		"""
+
 		if e.shape[0] != r_transfer.shape[0]:
 			e = e.view(-1, r_transfer.shape[0], e.shape[-1])
 			e_transfer = e_transfer.view(-1, r_transfer.shape[0], e_transfer.shape[-1])
@@ -206,6 +257,16 @@ class TransD(Model):
 			)
 
 	def forward(self, data):
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
@@ -225,6 +286,14 @@ class TransD(Model):
 			return score
 
 	def regularization(self, data):
+		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
@@ -243,6 +312,14 @@ class TransD(Model):
 		return regul
 
 	def predict(self, data):
+		"""TransD 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+
 		score = self.forward(data)
 		if self.margin_flag:
 			score = self.margin - score
