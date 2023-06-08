@@ -1,3 +1,55 @@
+# coding:utf-8
+#
+# pybind11_ke/module/model/TransD.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 8, 2023
+# 
+# 该头文件定义了 TransD.
+
+"""
+TransD - 自动生成映射矩阵，简单而且高效，是对 TransR 的改进。
+
+论文地址: `Knowledge Graph Embedding via Dynamic Mapping Matrix <https://aclanthology.org/P15-1067/>`__ 。
+
+基本用法如下：
+
+.. code-block:: python
+
+	from pybind11_ke.config import Trainer, Tester
+	from pybind11_ke.module.model import TransD
+	from pybind11_ke.module.loss import MarginLoss
+	from pybind11_ke.module.strategy import NegativeSampling
+
+	# define the model
+	transd = TransD(
+		ent_tot = train_dataloader.get_ent_tot(),
+		rel_tot = train_dataloader.get_rel_tot(),
+		dim_e = 200, 
+		dim_r = 200, 
+		p_norm = 1, 
+		norm_flag = True)
+
+
+	# define the loss function
+	model = NegativeSampling(
+		model = transd, 
+		loss = MarginLoss(margin = 4.0),
+		batch_size = train_dataloader.get_batch_size()
+	)
+
+	# train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+	                  train_times = 1000, alpha = 1.0, use_gpu = True)
+	trainer.run()
+	transd.save_checkpoint('../checkpoint/transd.ckpt')
+
+	# test the model
+	transd.load_checkpoint('../checkpoint/transd.ckpt')
+	tester = Tester(model = transd, data_loader = test_dataloader, use_gpu = True)
+	tester.run_link_prediction(type_constrain = False)
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -5,19 +57,62 @@ from .Model import Model
 
 class TransD(Model):
 
-	def __init__(self, ent_tot, rel_tot, dim_e = 100, dim_r = 100, p_norm = 1, norm_flag = True, margin = None, epsilon = None):
+	"""
+	TransD 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	
+	TransD 提出于 2015 年，自动生成映射矩阵，简单而且高效，是对 TransR 的改进。
+
+	评分函数为: :math:`\parallel (\mathbf{r}_p \mathbf{h}_p^T + \mathbf(I))\mathbf{h} + \mathbf{r} - (\mathbf{r}_p \mathbf{t}_p^T + \mathbf(I))\mathbf{t} \parallel_{L_1/L_2}`，
+	正三元组的评分函数的值越小越好。
+	"""
+
+	def __init__(self, ent_tot, rel_tot, dim_e = 100, dim_r = 100, p_norm = 1,
+	      norm_flag = True, margin = None, epsilon = None):
+		
+		"""创建 TransD 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim_e: 实体嵌入和实体投影向量的维度
+		:type dim_e: int
+		:param dim_r: 关系嵌入和关系投影向量的维度
+		:type dim_r: int
+		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
+		:type p_norm: int
+		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
+						  对实体和关系嵌入的最后一维执行 L2-norm。
+		:type norm_flag: bool
+		:param margin: 原论文中损失函数的 gamma。
+		:type margin: float
+		:param epsilon: 对于 TransD 没什么用
+		:type epsilon: float
+		"""
+
 		super(TransD, self).__init__(ent_tot, rel_tot)
 		
+		#: 实体嵌入和实体投影向量的维度
 		self.dim_e = dim_e
+		#: 关系嵌入和关系投影向量的维度
 		self.dim_r = dim_r
-		self.margin = margin
-		self.epsilon = epsilon
-		self.norm_flag = norm_flag
+		#: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		self.p_norm = p_norm
+		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
+		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
+		self.norm_flag = norm_flag
+		#: 原论文中损失函数的 gamma。
+		self.margin = margin
+		#: 对于 TransE 没什么用
+		self.epsilon = epsilon
 
+		#: 根据实体个数，创建的实体嵌入
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim_e)
+		#: 根据关系个数，创建的关系嵌入
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim_r)
+		#: 根据实体个数，创建的实体投影向量
 		self.ent_transfer = nn.Embedding(self.ent_tot, self.dim_e)
+		#: 根据关系个数，创建的关系投影向量
 		self.rel_transfer = nn.Embedding(self.rel_tot, self.dim_r)
 
 		if margin == None or epsilon == None:
@@ -55,6 +150,7 @@ class TransD(Model):
 		if margin != None:
 			self.margin = nn.Parameter(torch.Tensor([margin]))
 			self.margin.requires_grad = False
+			#: :py:attr:`margin` 是否为 None。
 			self.margin_flag = True
 		else:
 			self.margin_flag = False
