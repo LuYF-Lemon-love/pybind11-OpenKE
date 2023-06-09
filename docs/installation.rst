@@ -5,9 +5,9 @@
 
 .. code-block:: console
 
-    $ conda create --name pybind11-ke python=3.10 -y
+    $ conda create --name pybind11-ke python=3.8 -y
     $ conda activate pybind11-ke
-    $ pip install torch -i https://pypi.tuna.tsinghua.edu.cn/simple
+    $ pip install torch==1.6.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
     $ pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
     $ pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
     $ pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
