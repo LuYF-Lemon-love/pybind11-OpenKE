@@ -1,0 +1,24 @@
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ python train_hole_WN18RR.py 
+Input Files Path : ./benchmarks/WN18RR/
+The toolkit is importing datasets.
+The total of relations is 11.
+The total of entities is 40943.
+The total of train triples is 86835.
+Input Files Path : ./benchmarks/WN18RR/
+The total of test triples is 3134.
+The total of valid triples is 3034.
+Finish initializing...
+Epoch 999 | loss: 5.259584: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [28:37<00:00,  1.72s/it]
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3134/3134 [00:41<00:00, 75.65it/s]
+no type constraint results:
+metric:			 MRR 		 MR 		 hit@10 	 hit@3  	 hit@1 
+l(raw):			 0.232953 	 5057.946777 	 0.399489 	 0.304084 	 0.136567 
+r(raw):			 0.298483 	 5034.330078 	 0.488832 	 0.374920 	 0.191449 
+averaged(raw):		 0.265718 	 5046.138672 	 0.444161 	 0.339502 	 0.164008 
+
+l(filter):		 0.354810 	 5034.636230 	 0.411295 	 0.376835 	 0.315890 
+r(filter):		 0.413565 	 5029.237305 	 0.494895 	 0.440013 	 0.366624 
+averaged(filter):	 0.384188 	 5031.936523 	 0.453095 	 0.408424 	 0.341257 
+0.453095
+0.45309507846832275
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$
