@@ -1,18 +1,99 @@
+# coding:utf-8
+#
+# pybind11_ke/module/model/HolE.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 10, 2023
+# 
+# 该头文件定义了 HolE.
+
+"""
+HolE - 利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
+
+论文地址: `Holographic Embeddings of Knowledge Graphs <https://ojs.aaai.org/index.php/AAAI/article/view/10314>`__ 。
+
+基本用法如下：
+
+.. code-block:: python
+
+	from pybind11_ke.config import Trainer, Tester
+	from pybind11_ke.module.model import HolE
+	from pybind11_ke.module.loss import SoftplusLoss
+	from pybind11_ke.module.strategy import NegativeSampling
+
+	# define the model
+	hole = HolE(
+		ent_tot = train_dataloader.get_ent_tot(),
+		rel_tot = train_dataloader.get_rel_tot(),
+		dim = 100
+	)
+
+	# define the loss function
+	model = NegativeSampling(
+		model = hole, 
+		loss = SoftplusLoss(),
+		batch_size = train_dataloader.get_batch_size(), 
+		regul_rate = 1.0
+	)
+
+	# train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+		train_times = 1000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
+	trainer.run()
+	hole.save_checkpoint('../checkpoint/hole.ckpt')
+
+	# test the model
+	hole.load_checkpoint('../checkpoint/hole.ckpt')
+	tester = Tester(model = hole, data_loader = test_dataloader, use_gpu = True)
+	tester.run_link_prediction(type_constrain = False)
+"""
+
 import torch
 import torch.nn as nn
 from .Model import Model
-import numpy
-from numpy import fft
 
 class HolE(Model):
 
+	"""
+	HolE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	
+	HolE 提出于 2016 年，利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
+
+	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\bar{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b}))) `，
+	:math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，
+	:math:`\bar{\mathbf{x}}` 表示复数共轭，
+	:math:`\odot` 表示哈达玛积。
+	正三元组的评分函数的值越小越好。
+	"""
+
 	def __init__(self, ent_tot, rel_tot, dim = 100, margin = None, epsilon = None):
+
+		"""创建 HolE 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim: 实体和关系嵌入向量的维度
+		:type dim: int
+		:param margin: 原论文中损失函数的 gamma。
+		:type margin: float
+		:param epsilon: 对于 HolE 没什么用
+		:type epsilon: float
+		"""
+
 		super(HolE, self).__init__(ent_tot, rel_tot)
 
+		#: 实体和关系嵌入向量的维度
 		self.dim = dim
+		#: 原论文中损失函数的 gamma。
 		self.margin = margin
+		#: 对于 HolE 没什么用
 		self.epsilon = epsilon
+
+		#: 根据实体个数，创建的实体嵌入
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		#: 根据关系个数，创建的关系嵌入
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
 		if margin == None or epsilon == None:
