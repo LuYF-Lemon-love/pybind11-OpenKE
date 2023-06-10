@@ -59,7 +59,7 @@ class HolE(Model):
 	
 	HolE 提出于 2016 年，利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
 
-	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\bar{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b})))`，
+	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b})))`，
 	:math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，
 	:math:`\bar{\mathbf{x}}` 表示复数共轭，
 	:math:`\odot` 表示哈达玛积。
