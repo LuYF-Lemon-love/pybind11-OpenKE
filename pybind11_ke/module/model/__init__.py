@@ -24,6 +24,7 @@ from .RESCAL import RESCAL
 from .Analogy import Analogy
 from .SimplE import SimplE
 from .RotatE import RotatE
+from .HolE import HolE
 
 __all__ = [
     'Model',
@@ -36,5 +37,6 @@ __all__ = [
     'RESCAL',
     'Analogy',
     'SimplE',
-    'RotatE'
+    'RotatE',
+    'HolE'
 ]
