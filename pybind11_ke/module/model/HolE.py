@@ -59,7 +59,7 @@ class HolE(Model):
 	
 	HolE 提出于 2016 年，利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
 
-	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\bar{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b}))) `，
+	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\bar{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b})))`，
 	:math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，
 	:math:`\bar{\mathbf{x}}` 表示复数共轭，
 	:math:`\odot` 表示哈达玛积。
@@ -115,6 +115,16 @@ class HolE(Model):
 			)
 	
 	def _conj(self, tensor):
+		"""获得复数共轭。
+
+		tensor 减去 2 倍的虚部得到共轭复数。
+
+		:param tensor: 复数。
+		:type tensor: torch.Tensor
+		:returns: 返回共轭复数。
+		:rtype: torch.Tensor
+		"""
+
 		zero_shape = (list)(tensor.shape)
 		one_shape = (list)(tensor.shape)
 		zero_shape[-1] = 1
@@ -126,19 +136,64 @@ class HolE(Model):
 		return tensor - matrix * tensor
 	
 	def _real(self, tensor):
+		"""获得复数的实部。
+
+		利用 :py:func:`torch.narrow` 获得复数的实部。
+
+		:param tensor: 复数。
+		:type tensor: torch.Tensor
+		:returns: 返回复数的实部。
+		:rtype: torch.Tensor
+		"""
+
 		dimensions = len(tensor.shape)
 		return tensor.narrow(dimensions - 1, 0, 1)
 
 	def _imag(self, tensor):
+		"""获得复数的虚部。
+
+		利用 :py:func:`torch.narrow` 获得复数的虚部。
+
+		:param tensor: 复数。
+		:type tensor: torch.Tensor
+		:returns: 返回复数的虚部。
+		:rtype: torch.Tensor
+		"""
+
 		dimensions = len(tensor.shape)
 		return tensor.narrow(dimensions - 1, 1, 1)
 
 	def _mul(self, real_1, imag_1, real_2, imag_2):
+		"""复数的乘法。
+
+		公式为: :math:`(a+b\mathcal{i}) \cdot (c+d\mathcal{i}) = (ac-bd)+(ad+bc)\mathcal{i}`。
+
+		:param a: 头实体的向量。
+		:type a: torch.Tensor
+		:param b: 尾实体的向量。
+		:type b: torch.Tensor
+		:returns: 返回循环相关计算结果。
+		:rtype: torch.Tensor
+		"""
+
 		real = real_1 * real_2 - imag_1 * imag_2
 		imag = real_1 * imag_2 + imag_1 * real_2
 		return torch.cat([real, imag], -1)
 
 	def _ccorr(self, a, b):
+		"""计算循环相关 :math:`\mathcal{F}^{-1}(\bar{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b}))`。
+		
+		利用 :py:func:`torch.rfft` 计算实数到复数离散傅里叶变换，
+		利用 :py:func:`torch.ifft` 计算复数到复数离散傅立叶逆变换。
+
+		:param a: 头实体的向量。
+		:type a: torch.Tensor
+		:param b: 尾实体的向量。
+		:type b: torch.Tensor
+		:returns: 返回循环相关计算结果。
+		:rtype: torch.Tensor
+		"""
+
 		a = self._conj(torch.rfft(a, signal_ndim = 1, onesided = False))
 		b = torch.rfft(b, signal_ndim = 1, onesided = False)
 		res = self._mul(self._real(a), self._imag(a), self._real(b), self._imag(b))
@@ -146,6 +201,22 @@ class HolE(Model):
 		return self._real(res).flatten(start_dim = -2)
 
 	def _calc(self, h, t, r, mode):
+		"""计算 HolE 的评分函数。
+		
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
+		:param r: 关系的向量。
+		:type r: torch.Tensor
+		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:type mode: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
 		if mode != 'normal':
 			h = h.view(-1, r.shape[0], h.shape[-1])
 			t = t.view(-1, r.shape[0], t.shape[-1])
@@ -155,6 +226,16 @@ class HolE(Model):
 		return score
 
 	def forward(self, data):
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
