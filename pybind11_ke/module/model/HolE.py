@@ -247,6 +247,14 @@ class HolE(Model):
 		return score
 
 	def regularization(self, data):
+		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
@@ -257,8 +265,22 @@ class HolE(Model):
 		return regul
 
 	def l3_regularization(self):
+		"""L3 正则化函数，在损失函数中用到。
+
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+		
 		return (self.ent_embeddings.weight.norm(p = 3)**3 + self.rel_embeddings.weight.norm(p = 3)**3)
 
 	def predict(self, data):
+		"""HolE 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+
 		score = -self.forward(data)
 		return score.cpu().data.numpy()
