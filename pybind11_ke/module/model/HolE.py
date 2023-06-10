@@ -61,7 +61,7 @@ class HolE(Model):
 
 	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b})))`，
 	:math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，
-	:math:`\bar{\mathbf{x}}` 表示复数共轭，
+	:math:`\overline{\mathbf{x}}` 表示复数共轭，
 	:math:`\odot` 表示哈达玛积。
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
@@ -181,7 +181,7 @@ class HolE(Model):
 		return torch.cat([real, imag], -1)
 
 	def _ccorr(self, a, b):
-		"""计算循环相关 :math:`\mathcal{F}^{-1}(\bar{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b}))`。
+		"""计算循环相关 :math:`\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{b}))`。
 		
 		利用 :py:func:`torch.rfft` 计算实数到复数离散傅里叶变换，
 		利用 :py:func:`torch.ifft` 计算复数到复数离散傅立叶逆变换。
