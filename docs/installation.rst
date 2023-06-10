@@ -1,6 +1,14 @@
 安装
 =====
 
+.. WARNING:: 由于 :py:class:`pybind11_ke.module.model.HolE` 的
+    :py:meth:`pybind11_ke.module.model.HolE._ccorr` 需要
+    :py:func:`torch.rfft` 和 :py:func:`torch.ifft` 分别计算实数到复数离散傅里叶变换和复数到复数离散傅立叶逆变换。
+    ``pytorch`` 在版本 ``1.8.0`` 移除了上述两个函数，并且在版本 ``1.7.0`` 给出了警告。
+    因此，我们强烈建议安装版本 ``1.6.0``。我们将不久以后修改
+    :py:class:`pybind11_ke.module.model.HolE`，
+    使得能够适配更高版本的 ``pytorch``。
+
 1. 配置环境：
 
 .. code-block:: console
