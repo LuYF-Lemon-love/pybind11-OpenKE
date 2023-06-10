@@ -49,6 +49,17 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.HolE`，它是
+# :py:class:`pybind11_ke.module.model.RESCAL` 的压缩版本。
+
 # define the model
 hole = HolE(
 	ent_tot = train_dataloader.get_ent_tot(),
