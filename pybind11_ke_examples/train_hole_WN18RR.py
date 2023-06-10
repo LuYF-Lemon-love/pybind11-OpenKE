@@ -98,7 +98,8 @@ model = NegativeSampling(
 # 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
 
 # train the model
-trainer = Trainer(model = model, data_loader = train_dataloader, train_times = 1000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
+trainer = Trainer(model = model, data_loader = train_dataloader,
+                  train_times = 1000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
 trainer.run()
 hole.save_checkpoint('../checkpoint/hole.ckpt')
 
