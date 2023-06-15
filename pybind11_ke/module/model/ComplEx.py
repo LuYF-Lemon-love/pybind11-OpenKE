@@ -58,7 +58,7 @@ class ComplEx(Model):
 	ComplEx 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	ComplEx 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 
-    :py:class:`pybind11_ke.module.model.DistMult`。
+        :py:class:`pybind11_ke.module.model.DistMult`。
 
 	评分函数为:
     .. math::
@@ -66,10 +66,10 @@ class ComplEx(Model):
 
         \begin{equation}
         \begin{split} f(\mathbf{h},\mathbf{r},\mathbf{t}) &= \\
-        <\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
-        &+ <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
-        &+ <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
-        &- <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
+            <\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
+            &+ <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
+            &+ <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
+            &- <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
     
 	:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >`
     为逐元素多线性点积（element-wise multi-linear dot product），
