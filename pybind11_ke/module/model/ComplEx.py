@@ -71,8 +71,11 @@ class ComplEx(Model):
             &+ <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
             &+ <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
             &- <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
-    
-	为逐元素多线性点积（element-wise multi-linear dot product），
+        \end{split}
+        \end{equation}
+        
+	:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >`
+    为逐元素多线性点积（element-wise multi-linear dot product），
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
 
