@@ -63,11 +63,9 @@ class ComplEx(Model):
 	评分函数为:
 
     .. math::
-        :label: 1
 
         \begin{equation}
-        \begin{split} f(\mathbf{h},\mathbf{r},\mathbf{t}) &= \\
-            <\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
+        \begin{split} f(\mathbf{h},\mathbf{r},\mathbf{t}) &= <\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
             &+ <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
             &+ <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
             &- <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
