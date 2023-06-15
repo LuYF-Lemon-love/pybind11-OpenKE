@@ -49,6 +49,16 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.ComplEx`，它是第一个真正意义上的复数域模型。
+
 # define the model
 complEx = ComplEx(
 	ent_tot = train_dataloader.get_ent_tot(),
