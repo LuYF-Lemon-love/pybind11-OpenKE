@@ -5,7 +5,7 @@
 **DistMult-WN18RR** ||
 `TransD-FB15K237 <train_transd_FB15K237.html>`_ ||
 `HolE-WN18RR <train_hole_WN18RR.html>`_ ||
-`Autograd <autogradqs_tutorial.html>`_ ||
+`ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
 `Optimization <optimization_tutorial.html>`_ ||
 `Save & Load Model <saveloadrun_tutorial.html>`_
 
