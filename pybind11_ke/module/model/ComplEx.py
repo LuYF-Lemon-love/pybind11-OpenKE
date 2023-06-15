@@ -61,6 +61,7 @@ class ComplEx(Model):
         :py:class:`pybind11_ke.module.model.DistMult`。
 
 	评分函数为:
+
     .. math::
         :label: 1
 
@@ -72,7 +73,7 @@ class ComplEx(Model):
             &- <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
     
 	:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >`
-    为逐元素多线性点积（element-wise multi-linear dot product），
+        为逐元素多线性点积（element-wise multi-linear dot product），
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
 
