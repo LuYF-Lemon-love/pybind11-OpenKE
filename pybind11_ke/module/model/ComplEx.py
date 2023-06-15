@@ -57,17 +57,19 @@ class ComplEx(Model):
     """
 	ComplEx 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
-	ComplEx 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。
-    复数版本的 :py:class:`pybind11_ke.module.model.DistMult`。
+	ComplEx 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 
+    :py:class:`pybind11_ke.module.model.DistMult`。
 
 	评分函数为:
     .. math::
         :label: 1
 
-        <\mathbf{Re}(\mathbf{r}), \mathbf{Re}(\mathbf{h}), \mathbf{Re}(\mathbf{t})> \\
-        + <\mathbf{Re}(\mathbf{r}), \mathbf{Im}(\mathbf{h}), \mathbf{Im}(\mathbf{t})> \\
-        + <\mathbf{Im}(\mathbf{r}), \mathbf{Re}(\mathbf{h}), \mathbf{Im}(\mathbf{t})> \\
-        - <\mathbf{Im}(\mathbf{r}), \mathbf{Im}(\mathbf{h}), \mathbf{Re}(\mathbf{t})> \\
+        \begin{equation}
+        \begin{split} f(\mathbf{h},\mathbf{r},\mathbf{t}) &= \\
+        <\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
+        &+ <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
+        &+ <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> \\
+        &- <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> \\
     
 	:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >`
     为逐元素多线性点积（element-wise multi-linear dot product），
@@ -108,20 +110,20 @@ class ComplEx(Model):
 
         """计算 ComplEx 的评分函数。
 		
-		:param h_re: 头实体的实部向量。
-		:type h_re: torch.Tensor
+        :param h_re: 头实体的实部向量。
+        :type h_re: torch.Tensor
         :param h_im: 头实体的虚部向量。
-		:type h_im: torch.Tensor
-		:param t_re: 尾实体的实部向量。
-		:type t_re: torch.Tensor
+        :type h_im: torch.Tensor
+        :param t_re: 尾实体的实部向量。
+        :type t_re: torch.Tensor
         :param t_im: 尾实体的虚部向量。
-		:type t_im: torch.Tensor
-		:param r_re: 关系的实部向量。
-		:type r_re: torch.Tensor
+        :type t_im: torch.Tensor
+        :param r_re: 关系的实部向量。
+        :type r_re: torch.Tensor
         :param r_im: 关系的虚部向量。
-		:type r_im: torch.Tensor
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
+        :type r_im: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
 		"""
 
         return torch.sum(
