@@ -105,6 +105,25 @@ class ComplEx(Model):
         nn.init.xavier_uniform_(self.rel_im_embeddings.weight.data)
 
     def _calc(self, h_re, h_im, t_re, t_im, r_re, r_im):
+
+        """计算 ComplEx 的评分函数。
+		
+		:param h_re: 头实体的实部向量。
+		:type h_re: torch.Tensor
+        :param h_im: 头实体的虚部向量。
+		:type h_im: torch.Tensor
+		:param t_re: 尾实体的实部向量。
+		:type t_re: torch.Tensor
+        :param t_im: 尾实体的虚部向量。
+		:type t_im: torch.Tensor
+		:param r_re: 关系的实部向量。
+		:type r_re: torch.Tensor
+        :param r_im: 关系的虚部向量。
+		:type r_im: torch.Tensor
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
         return torch.sum(
             h_re * t_re * r_re
             + h_im * t_im * r_re
@@ -114,6 +133,17 @@ class ComplEx(Model):
         )
 
     def forward(self, data):
+
+        """
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
         batch_h = data['batch_h']
         batch_t = data['batch_t']
         batch_r = data['batch_r']
@@ -127,6 +157,15 @@ class ComplEx(Model):
         return score
 
     def regularization(self, data):
+
+        """L2 正则化函数（又称权重衰减），在损失函数中用到。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+
         batch_h = data['batch_h']
         batch_t = data['batch_t']
         batch_r = data['batch_r']
@@ -145,5 +184,14 @@ class ComplEx(Model):
         return regul
 
     def predict(self, data):
+
+        """ComplEx 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+
         score = -self.forward(data)
         return score.cpu().data.numpy()
