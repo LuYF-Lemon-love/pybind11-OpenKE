@@ -61,20 +61,40 @@ class Analogy(Model):
 		:py:class:`pybind11_ke.module.model.HolE` 和 :py:class:`pybind11_ke.module.model.ComplEx` 的集大成者，
 		效果与 :py:class:`pybind11_ke.module.model.HolE`、:py:class:`pybind11_ke.module.model.ComplEx` 差不多。 
 
-	评分函数为: :math:`<\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> + <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> - <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})>`，
+	评分函数为: :py:class:`pybind11_ke.module.model.DistMult` 和 :py:class:`pybind11_ke.module.model.ComplEx` 两者
+		评分函数的和。
+		数学表示为: :math:`<\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> + <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> - <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\mathbf{h}, \mathbf{r}, \mathbf{t}>`，
         :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100):
+
+		"""创建 Analogy 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim: 实体嵌入向量和关系嵌入向量的维度
+		:type dim: int
+		"""
+
 		super(Analogy, self).__init__(ent_tot, rel_tot)
 
+		#: 实体嵌入向量和关系嵌入向量的维度
 		self.dim = dim
+		#: 根据实体个数，创建的实体嵌入的实部
 		self.ent_re_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		#: 根据实体个数，创建的实体嵌入的虚部
 		self.ent_im_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		#: 根据关系个数，创建的关系嵌入的实部
 		self.rel_re_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		#: 根据关系个数，创建的关系嵌入的虚部
 		self.rel_im_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		#: 根据实体个数，创建的实体嵌入，维度为 2 * py:attr:`dim`
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim * 2)
+		#: 根据关系个数，创建的关系嵌入, 维度为 2 * py:attr:`dim`
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim * 2)
 		
 		nn.init.xavier_uniform_(self.ent_re_embeddings.weight.data)

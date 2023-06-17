@@ -73,7 +73,7 @@ class ComplEx(Model):
 		:type ent_tot: int
 		:param rel_tot: 关系的个数
 		:type rel_tot: int
-		:param dim: 实体嵌入向量和关系嵌入的维度
+		:param dim: 实体嵌入向量和关系嵌入向量的维度
 		:type dim: int
 		"""
 
