@@ -105,13 +105,49 @@ class Analogy(Model):
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
 	def _calc(self, h_re, h_im, h, t_re, t_im, t, r_re, r_im, r):
-		return (-torch.sum(r_re * h_re * t_re +
+
+		"""计算 Analogy 的评分函数。
+		
+        :param h_re: 头实体的实部向量。
+        :type h_re: torch.Tensor
+        :param h_im: 头实体的虚部向量。
+        :type h_im: torch.Tensor
+		:param h: 头实体的向量。
+        :type h: torch.Tensor
+        :param t_re: 尾实体的实部向量。
+        :type t_re: torch.Tensor
+        :param t_im: 尾实体的虚部向量。
+        :type t_im: torch.Tensor
+		:param t: 尾实体的向量。
+        :type t: torch.Tensor
+        :param r_re: 关系的实部向量。
+        :type r_re: torch.Tensor
+        :param r_im: 关系的虚部向量。
+        :type r_im: torch.Tensor
+		:param r: 关系的向量。
+        :type r: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+		"""
+
+		return (torch.sum(r_re * h_re * t_re +
 						   r_re * h_im * t_im +
 						   r_im * h_re * t_im -
 						   r_im * h_im * t_re, -1)
-				-torch.sum(h * t * r, -1))
+				+ torch.sum(h * t * r, -1))
 
 	def forward(self, data):
+		
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
