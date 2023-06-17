@@ -49,6 +49,16 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.Analogy`，它是双线性模型的集大成者。
+
 # define the model
 analogy = Analogy(
 	ent_tot = train_dataloader.get_ent_tot(),
