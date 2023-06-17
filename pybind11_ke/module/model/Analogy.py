@@ -90,9 +90,9 @@ class Analogy(Model):
 		self.rel_re_embeddings = nn.Embedding(self.rel_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入的虚部
 		self.rel_im_embeddings = nn.Embedding(self.rel_tot, self.dim)
-		#: 根据实体个数，创建的实体嵌入，维度为 2 * py:attr:`dim`
+		#: 根据实体个数，创建的实体嵌入，维度为 2 * :py:attr:`dim`
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim * 2)
-		#: 根据关系个数，创建的关系嵌入, 维度为 2 * py:attr:`dim`
+		#: 根据关系个数，创建的关系嵌入, 维度为 2 * :py:attr:`dim`
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim * 2)
 		
 		nn.init.xavier_uniform_(self.ent_re_embeddings.weight.data)
