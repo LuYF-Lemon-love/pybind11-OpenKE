@@ -57,13 +57,11 @@ class Analogy(Model):
 	"""
 	Analogy 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
-	Analogy 提出于 2017 年，:py:class:`pybind11_ke.module.model.DistMult`、
-		:py:class:`pybind11_ke.module.model.HolE` 和 :py:class:`pybind11_ke.module.model.ComplEx` 的集大成者，
-		效果与 :py:class:`pybind11_ke.module.model.HolE`、:py:class:`pybind11_ke.module.model.ComplEx` 差不多。 
+	Analogy 提出于 2017 年，:py:class:`pybind11_ke.module.model.DistMult`、:py:class:`pybind11_ke.module.model.HolE` 和 :py:class:`pybind11_ke.module.model.ComplEx` 的集大成者，
+	效果与 :py:class:`pybind11_ke.module.model.HolE`、:py:class:`pybind11_ke.module.model.ComplEx` 差不多。 
 
 	评分函数为: :py:class:`pybind11_ke.module.model.DistMult` 和 :py:class:`pybind11_ke.module.model.ComplEx` 两者
-		评分函数的和。
-		数学表示为: :math:`<\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> + <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> - <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\mathbf{h}, \mathbf{r}, \mathbf{t}>`，
+	评分函数的和。数学表示为: :math:`<\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> + <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> - <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\mathbf{h}, \mathbf{r}, \mathbf{t}>`，
         :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
@@ -108,26 +106,26 @@ class Analogy(Model):
 
 		"""计算 Analogy 的评分函数。
 		
-        :param h_re: 头实体的实部向量。
-        :type h_re: torch.Tensor
-        :param h_im: 头实体的虚部向量。
-        :type h_im: torch.Tensor
+		:param h_re: 头实体的实部向量。
+		:type h_re: torch.Tensor
+		:param h_im: 头实体的虚部向量。
+		:type h_im: torch.Tensor
 		:param h: 头实体的向量。
-        :type h: torch.Tensor
-        :param t_re: 尾实体的实部向量。
-        :type t_re: torch.Tensor
-        :param t_im: 尾实体的虚部向量。
-        :type t_im: torch.Tensor
+		:type h: torch.Tensor
+		:param t_re: 尾实体的实部向量。
+		:type t_re: torch.Tensor
+		:param t_im: 尾实体的虚部向量。
+		:type t_im: torch.Tensor
 		:param t: 尾实体的向量。
-        :type t: torch.Tensor
-        :param r_re: 关系的实部向量。
-        :type r_re: torch.Tensor
-        :param r_im: 关系的虚部向量。
-        :type r_im: torch.Tensor
+		:type t: torch.Tensor
+		:param r_re: 关系的实部向量。
+		:type r_re: torch.Tensor
+		:param r_im: 关系的虚部向量。
+		:type r_im: torch.Tensor
 		:param r: 关系的向量。
-        :type r: torch.Tensor
-        :returns: 三元组的得分
-        :rtype: torch.Tensor
+		:type r: torch.Tensor
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
 		"""
 
 		return (torch.sum(r_re * h_re * t_re +
