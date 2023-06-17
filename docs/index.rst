@@ -19,8 +19,8 @@ Contents
 
    主页 <self>
    installation
-   api
    opinion
+   api
 
 .. toctree::
    :maxdepth: 2
