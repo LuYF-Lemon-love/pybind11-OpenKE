@@ -6,7 +6,7 @@
 `TransD-FB15K237 <train_transd_FB15K237.html>`_ ||
 `HolE-WN18RR <train_hole_WN18RR.html>`_ ||
 **ComplEx-WN18RR** ||
-`Optimization <optimization_tutorial.html>`_ ||
+`Analogy-WN18RR <train_analogy_WN18RR.html>`_ ||
 `Save & Load Model <saveloadrun_tutorial.html>`_
 
 ComplEx-WN18RR

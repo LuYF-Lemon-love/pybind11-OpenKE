@@ -34,3 +34,4 @@ Contents
    auto_examples/train_transd_FB15K237
    auto_examples/train_hole_WN18RR
    auto_examples/train_complex_WN18RR
+   auto_examples/train_analogy_WN18RR
