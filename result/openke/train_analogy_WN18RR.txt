@@ -1,0 +1,24 @@
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ python train_analogy_WN18RR.py
+Input Files Path : ./benchmarks/WN18RR/
+The toolkit is importing datasets.
+The total of relations is 11.
+The total of entities is 40943.
+The total of train triples is 86835.
+Input Files Path : ./benchmarks/WN18RR/
+The total of test triples is 3134.
+The total of valid triples is 3034.
+Finish initializing...
+Epoch 1999 | loss: 2.303729: 100%|████████████████████████████████████████████████| 2000/2000 [2:11:04<00:00,  3.93s/it]
+100%|███████████████████████████████████████████████████████████████████████████████| 3134/3134 [00:35<00:00, 88.37it/s]
+no type constraint results:
+metric:                  MRR             MR              hit@10          hit@3           hit@1
+l(raw):                  0.236920        4680.372559     0.416401        0.309828        0.134333
+r(raw):                  0.305031        5544.007812     0.503191        0.387045        0.192725
+averaged(raw):           0.270976        5112.190430     0.459796        0.348437        0.163529
+
+l(filter):               0.373974        4656.990234     0.433312        0.394384        0.337269
+r(filter):               0.435166        5538.687988     0.510211        0.464582        0.388641
+averaged(filter):        0.404570        5097.838867     0.471761        0.429483        0.362955
+0.471761
+0.4717613160610199
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$
