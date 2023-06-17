@@ -27,3 +27,6 @@ Analogy
 因此，我最终决定去掉 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``Analogy`` 的
 `_calc <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
 负号。
+
+从 `运行结果 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_ 也
+没发现差异。 
