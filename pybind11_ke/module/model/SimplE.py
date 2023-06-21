@@ -67,14 +67,14 @@ class SimplE(Model):
     def __init__(self, ent_tot, rel_tot, dim = 100):
 
         """创建 SimplE 对象。
-
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
-		:param dim: 实体嵌入向量和关系嵌入向量的维度
-		:type dim: int
-		"""
+        
+        :param ent_tot: 实体的个数
+        :type ent_tot: int
+        :param rel_tot: 关系的个数
+        :type rel_tot: int
+        :param dim: 实体嵌入向量和关系嵌入向量的维度
+        :type dim: int
+        """
 
         super(SimplE, self).__init__(ent_tot, rel_tot)
 
@@ -100,14 +100,14 @@ class SimplE(Model):
     def forward(self, data):
         
         """
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-		
-		:param data: 数据。
-		:type data: dict
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
-		"""
+        定义每次调用时执行的计算。
+        :py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        
+        :param data: 数据。
+        :type data: dict
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+        """
 
         batch_h = data['batch_h']
         batch_t = data['batch_t']
@@ -122,12 +122,12 @@ class SimplE(Model):
     def regularization(self, data):
 
         """L2 正则化函数（又称权重衰减），在损失函数中用到。
-		
-		:param data: 数据。
-		:type data: dict
-		:returns: 模型参数的正则损失
-		:rtype: torch.Tensor
-		"""
+        
+        :param data: 数据。
+        :type data: dict
+        :returns: 模型参数的正则损失
+        :rtype: torch.Tensor
+        """
 
         batch_h = data['batch_h']
         batch_t = data['batch_t']
