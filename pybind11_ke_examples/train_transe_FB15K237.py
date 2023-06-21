@@ -7,7 +7,7 @@
 `HolE-WN18RR <train_hole_WN18RR.html>`_ ||
 `ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
 `Analogy-WN18RR <train_analogy_WN18RR.html>`_ ||
-`Save & Load Model <saveloadrun_tutorial.html>`_
+`SimplE-WN18RR <train_simple_WN18RR.html>`_
 
 TransE-FB15K237
 ===================

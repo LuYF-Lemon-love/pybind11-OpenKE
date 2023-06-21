@@ -2,18 +2,18 @@
 `RESCAL-FB15K237 <train_rescal_FB15K237.html>`_ ||
 `TransE-FB15K237 <train_transe_FB15K237.html>`_ ||
 `TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
-**DistMult-WN18RR** ||
+`DistMult-WN18RR <train_distmult_WN18RR.html>`_ ||
 `TransD-FB15K237 <train_transd_FB15K237.html>`_ ||
 `HolE-WN18RR <train_hole_WN18RR.html>`_ ||
 `ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
 `Analogy-WN18RR <train_analogy_WN18RR.html>`_ ||
-`SimplE-WN18RR <train_simple_WN18RR.html>`_
+**SimplE-WN18RR**
 
-DistMult-WN18RR
+SimplE-WN18RR
 ===================
-这一部分介绍如何用在 WN18RR 知识图谱上训练 DistMult。
+这一部分介绍如何用在 WN18RR 知识图谱上训练 SimplE。
 
-DistMult 原论文: `Embedding Entities and Relations for Learning and Inference in Knowledge Bases <https://arxiv.org/abs/1412.6575>`__ 。
+SimplE 原论文: `SimplE Embedding for Link Prediction in Knowledge Graphs <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>`__。
 
 导入数据
 -----------------
@@ -23,7 +23,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 """
 
 from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.module.model import DistMult
+from pybind11_ke.module.model import SimplE
 from pybind11_ke.module.loss import SoftplusLoss
 from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TrainDataLoader, TestDataLoader
@@ -49,18 +49,8 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 
-######################################################################
-# --------------
-#
-
-################################
-# 导入模型
-# ------------------
-# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
-# :py:class:`pybind11_ke.module.model.DistMult`，它是最简单的双线性模型。
-
 # define the model
-distmult = DistMult(
+simple = SimplE(
 	ent_tot = train_dataloader.get_ent_tot(),
 	rel_tot = train_dataloader.get_rel_tot(),
 	dim = 200
@@ -80,7 +70,7 @@ distmult = DistMult(
 
 # define the loss function
 model = NegativeSampling(
-	model = distmult, 
+	model = simple, 
 	loss = SoftplusLoss(),
 	batch_size = train_dataloader.get_batch_size(), 
 	regul_rate = 1.0
@@ -100,7 +90,7 @@ model = NegativeSampling(
 trainer = Trainer(model = model, data_loader = train_dataloader,
                   train_times = 2000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
 trainer.run()
-distmult.save_checkpoint('../checkpoint/distmult.ckpt')
+simple.save_checkpoint('../checkpoint/simple.ckpt')
 
 ######################################################################
 # --------------
@@ -113,6 +103,6 @@ distmult.save_checkpoint('../checkpoint/distmult.ckpt')
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
 # test the model
-distmult.load_checkpoint('../checkpoint/distmult.ckpt')
-tester = Tester(model = distmult, data_loader = test_dataloader, use_gpu = True)
+simple.load_checkpoint('../checkpoint/simple.ckpt')
+tester = Tester(model = simple, data_loader = test_dataloader, use_gpu = True)
 tester.run_link_prediction(type_constrain = False)
