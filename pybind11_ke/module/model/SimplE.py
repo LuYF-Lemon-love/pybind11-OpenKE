@@ -1,15 +1,90 @@
+# coding:utf-8
+#
+# pybind11_ke/module/model/SimplE.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 21, 2023
+# 
+# 该头文件定义了 SimplE.
+
+"""
+SimplE - 简单的双线性模型，能够为头实体和尾实体学习不同的嵌入向量。
+
+论文地址: `SimplE Embedding for Link Prediction in Knowledge Graphs <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>`__ 。
+
+基本用法如下：
+
+.. code-block:: python
+
+    from pybind11_ke.config import Trainer, Tester
+    from pybind11_ke.module.model import SimplE
+    from pybind11_ke.module.loss import SoftplusLoss
+    from pybind11_ke.module.strategy import NegativeSampling
+
+    # define the model
+    simple = SimplE(
+    	ent_tot = train_dataloader.get_ent_tot(),
+    	rel_tot = train_dataloader.get_rel_tot(),
+    	dim = 200
+    )
+
+    # define the loss function
+    model = NegativeSampling(
+    	model = simple, 
+    	loss = SoftplusLoss(),
+    	batch_size = train_dataloader.get_batch_size(), 
+    	regul_rate = 1.0
+    )
+
+    # train the model
+    trainer = Trainer(model = model, data_loader = train_dataloader,
+                      train_times = 2000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
+    trainer.run()
+    simple.save_checkpoint('../checkpoint/simple.ckpt')
+
+    # test the model
+    simple.load_checkpoint('../checkpoint/simple.ckpt')
+    tester = Tester(model = simple, data_loader = test_dataloader, use_gpu = True)
+    tester.run_link_prediction(type_constrain = False)
+"""
+
 import torch
 import torch.nn as nn
 from .Model import Model
 
 class SimplE(Model):
 
+    """
+	SimplE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	
+	SimplE 提出于 2018 年，简单的双线性模型，能够为头实体和尾实体学习不同的嵌入向量。
+
+	评分函数为: :math:`\frac{1}{2}(<\mathbf{h}_{e_i}, \mathbf{v}_r, \mathbf{t}_{e_j}> + <\mathbf{h}_{e_j}, \mathbf{v}_{r^{-1}}, \mathbf{t}_{e_i}>)`，
+        :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
+	正三元组的评分函数的值越大越好，负三元组越小越好。
+	"""
+
     def __init__(self, ent_tot, rel_tot, dim = 100):
+
+        """创建 SimplE 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim: 实体嵌入向量和关系嵌入向量的维度
+		:type dim: int
+		"""
+
         super(SimplE, self).__init__(ent_tot, rel_tot)
 
+        #: 实体嵌入向量和关系嵌入向量的维度
         self.dim = dim
+        #: 根据实体个数，创建的实体嵌入
         self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+        #: 根据关系个数，创建的关系嵌入
         self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
+        #: 根据关系个数，创建的逆关系嵌入
         self.rel_inv_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
         nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
