@@ -59,9 +59,9 @@ class SimplE(Model):
 	
 	SimplE 提出于 2018 年，简单的双线性模型，能够为头实体和尾实体学习不同的嵌入向量。
 
-	评分函数为: :math:`(<\mathbf{h}_{i}, \mathbf{v}_r, \mathbf{t}_{j}> + <\mathbf{h}_{j}, \mathbf{v}_{r^{-1}}, \mathbf{t}_{i}>)`，
+	评分函数为: :math:`1/2(<\mathbf{h}_{i}, \mathbf{v}_r, \mathbf{t}_{j}> + <\mathbf{h}_{j}, \mathbf{v}_{r^{-1}}, \mathbf{t}_{i}>)`，
         :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
-	正三元组的评分函数的值越大越好，负三元组越小越好。:math:`X_{0:5} = (X_0, X_1, X_2, X_3, X_4)`.
+	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
 
     def __init__(self, ent_tot, rel_tot, dim = 100):
