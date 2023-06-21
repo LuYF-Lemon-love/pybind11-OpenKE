@@ -61,8 +61,7 @@ class SimplE(Model):
 
 	评分函数为: :math:`(<\mathbf{h}_{i}, \mathbf{v}_r, \mathbf{t}_{j}> + <\mathbf{h}_{j}, \mathbf{v}_{r^{-1}}, \mathbf{t}_{i}>)`，
         :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
-	正三元组的评分函数的值越大越好，负三元组越小越好。
-    :math:`\frac{1}{2} `
+	正三元组的评分函数的值越大越好，负三元组越小越好。:math:`\frac{1}{r^2}`
 	"""
 
     def __init__(self, ent_tot, rel_tot, dim = 100):
