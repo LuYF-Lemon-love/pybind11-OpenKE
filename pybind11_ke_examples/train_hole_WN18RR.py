@@ -7,7 +7,8 @@
 **HolE-WN18RR** ||
 `ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
 `Analogy-WN18RR <train_analogy_WN18RR.html>`_ ||
-`SimplE-WN18RR <train_simple_WN18RR.html>`_
+`SimplE-WN18RR <train_simple_WN18RR.html>`_ ||
+`RotatE-WN18RR <train_rotate_WN18RR_adv.html>`_
 
 HolE-WN18RR
 ===================
