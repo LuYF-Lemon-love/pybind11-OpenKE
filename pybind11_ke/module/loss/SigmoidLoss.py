@@ -90,5 +90,16 @@ class SigmoidLoss(Loss):
 			return -(self.criterion(p_score).mean() + self.criterion(-n_score).mean()) / 2
 
 	def predict(self, p_score, n_score):
+
+		"""SigmoidLoss 的推理方法。
+		
+		:param p_score: 正样本评分函数的得分。
+		:type p_score: torch.Tensor
+		:param n_score: 负样本评分函数的得分。
+		:type n_score: torch.Tensor
+		:returns: 损失值
+		:rtype: numpy.ndarray
+		"""
+
 		score = self.forward(p_score, n_score)
 		return score.cpu().data.numpy()
