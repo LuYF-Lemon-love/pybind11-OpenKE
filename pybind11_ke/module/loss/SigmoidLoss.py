@@ -1,10 +1,43 @@
+# coding:utf-8
+#
+# pybind11_ke/module/loss/SigmoidLoss.py
+#
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 26, 2023
+#
+# 该脚本定义了 regularized logistic loss 损失函数.
+
+"""
+SigmoidLoss - 损失函数类，RotatE 原论文应用这种损失函数完成模型学习。
+
+基本用法如下：
+
+.. code-block:: python
+
+	from pybind11_ke.module.loss import SigmoidLoss
+	from pybind11_ke.module.strategy import NegativeSampling
+
+	# define the loss function
+	model = NegativeSampling(
+		model = rotate, 
+		loss = SigmoidLoss(adv_temperature = 2),
+		batch_size = train_dataloader.get_batch_size(), 
+		regul_rate = 0.0
+	)
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 from .Loss import Loss
 
 class SigmoidLoss(Loss):
+	
+	"""
+	SigmoidLoss 类，继承自 :py:class:`pybind11_ke.module.loss.Loss`。
+	
+	RotatE 原论文应用这种损失函数完成模型学习。
+	"""
 
 	def __init__(self, adv_temperature = None):
 		super(SigmoidLoss, self).__init__()
