@@ -62,7 +62,7 @@ class RotatE(Model):
 	RotatE 提出于 2019 年，将实体表示成复数向量，关系建模为复数向量空间的旋转。
 
 	评分函数为: :math:`\gamma - \parallel \mathbf{h} \circ \mathbf{r} - \mathbf{t} \parallel_{L_2}`，
-	正三元组的评分函数的值越大越好。
+	:math:`\circ` 表示哈达玛积（Hadamard product），正三元组的评分函数的值越大越好。
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, margin = 6.0, epsilon = 2.0):
