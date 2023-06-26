@@ -51,6 +51,16 @@ train_dataloader = TrainDataLoader(
 # dataloader for test
 test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 
+######################################################################
+# --------------
+#
+
+################################
+# 导入模型
+# ------------------
+# pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
+# :py:class:`pybind11_ke.module.model.RotatE`，它将实体表示成复数向量，关系建模为复数向量空间的旋转。
+
 # define the model
 rotate = RotatE(
 	ent_tot = train_dataloader.get_ent_tot(),
