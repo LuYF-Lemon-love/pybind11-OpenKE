@@ -1,0 +1,24 @@
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ python train_rotate_WN18RR_adv.py
+Input Files Path : ./benchmarks/WN18RR/
+The toolkit is importing datasets.
+The total of relations is 11.
+The total of entities is 40943.
+The total of train triples is 86835.
+Input Files Path : ./benchmarks/WN18RR/
+The total of test triples is 3134.
+The total of valid triples is 3034.
+Finish initializing...
+Epoch 5999 | loss: 1.692934: 100%|████████████████████████████████████████████████| 6000/6000 [8:50:17<00:00,  5.30s/it]
+100%|███████████████████████████████████████████████████████████████████████████████| 3134/3134 [01:02<00:00, 50.00it/s]
+no type constraint results:
+metric:                  MRR             MR              hit@10          hit@3           hit@1
+l(raw):                  0.264047        4639.279785     0.474474        0.337269        0.148692
+r(raw):                  0.334014        1897.481201     0.581047        0.424378        0.198149
+averaged(raw):           0.299030        3268.380371     0.527760        0.380823        0.173421
+
+l(filter):               0.455383        4615.839355     0.540204        0.471921        0.411934
+r(filter):               0.492332        1892.137573     0.601149        0.513721        0.437779
+averaged(filter):        0.473857        3253.988525     0.570676        0.492821        0.424856
+0.570676
+0.5706764459609985
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$
