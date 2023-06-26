@@ -1,20 +1,100 @@
+# coding:utf-8
+#
+# pybind11_ke/module/model/RotatE.py
+# 
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 26, 2023
+# 
+# 该头文件定义了 RotatE.
+
+"""
+RotatE - 将实体表示成复数向量，关系建模为复数向量空间的旋转。
+
+论文地址: `RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space <https://openreview.net/forum?id=HkgEQnRqYQ>`__ 。
+
+基本用法如下：
+
+.. code-block:: python
+
+	from pybind11_ke.config import Trainer, Tester
+	from pybind11_ke.module.model import RotatE
+	from pybind11_ke.module.loss import SigmoidLoss
+	from pybind11_ke.module.strategy import NegativeSampling
+
+	# define the model
+	rotate = RotatE(
+		ent_tot = train_dataloader.get_ent_tot(),
+		rel_tot = train_dataloader.get_rel_tot(),
+		dim = 1024,
+		margin = 6.0,
+		epsilon = 2.0,
+	)
+
+	# define the loss function
+	model = NegativeSampling(
+		model = rotate, 
+		loss = SigmoidLoss(adv_temperature = 2),
+		batch_size = train_dataloader.get_batch_size(), 
+		regul_rate = 0.0
+	)
+
+	# train the model
+	trainer = Trainer(model = model, data_loader = train_dataloader,
+	                  train_times = 6000, alpha = 2e-5, use_gpu = True, opt_method = "adam")
+	trainer.run()
+	rotate.save_checkpoint('../checkpoint/rotate.ckpt')
+
+	# test the model
+	rotate.load_checkpoint('../checkpoint/rotate.ckpt')
+	tester = Tester(model = rotate, data_loader = test_dataloader, use_gpu = True)
+	tester.run_link_prediction(type_constrain = False)
+"""
+
 import torch
-import torch.autograd as autograd
 import torch.nn as nn
 from .Model import Model
 
 class RotatE(Model):
 
+	"""
+	RotatE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	
+	RotatE 提出于 2019 年，将实体表示成复数向量，关系建模为复数向量空间的旋转。
+
+	评分函数为: :math:`\parallel \mathbf{h} + \mathbf{r} - \mathbf{t} \parallel_{L_1/L_2}`，
+	正三元组的评分函数的值越小越好。
+	"""
+
 	def __init__(self, ent_tot, rel_tot, dim = 100, margin = 6.0, epsilon = 2.0):
+
+		"""创建 RotatE 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim: 实体和关系嵌入向量的维度
+		:type dim: int
+		:param margin: 原论文中损失函数的 gamma。
+		:type margin: float
+		:param epsilon: RotatE 原论文对应的源代码固定为 2.0。
+		:type epsilon: float
+		"""
+
 		super(RotatE, self).__init__(ent_tot, rel_tot)
 
-		self.margin = margin
+		#: RotatE 原论文对应的源代码固定为 2.0。
 		self.epsilon = epsilon
 
+		#: RotatE 原论文的实现中将实体嵌入向量的维度指定为 ``dim`` 的 2 倍。
+		#: 因为实体嵌入向量需要划分为实部和虚部。
 		self.dim_e = dim * 2
+		#: 关系嵌入向量的维度，为 ``dim``。
 		self.dim_r = dim
 
+		#: 根据实体个数，创建的实体嵌入。
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim_e)
+		#: 根据关系个数，创建的关系嵌入。
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim_r)
 
 		self.ent_embedding_range = nn.Parameter(
@@ -39,6 +119,7 @@ class RotatE(Model):
 			b=self.rel_embedding_range.item()
 		)
 
+		#: 原论文中损失函数的 gamma。
 		self.margin = nn.Parameter(torch.Tensor([margin]))
 		self.margin.requires_grad = False
 
