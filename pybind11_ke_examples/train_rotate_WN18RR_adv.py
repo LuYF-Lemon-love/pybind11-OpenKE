@@ -2,7 +2,7 @@
 `RESCAL-FB15K237 <train_rescal_FB15K237.html>`_ ||
 `TransE-FB15K237 <train_transe_FB15K237.html>`_ ||
 `TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
-**DistMult-WN18RR** ||
+`DistMult-WN18RR <train_distmult_WN18RR.html>`_ ||
 `TransD-FB15K237 <train_transd_FB15K237.html>`_ ||
 `HolE-WN18RR <train_hole_WN18RR.html>`_ ||
 `ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
@@ -68,9 +68,9 @@ rotate = RotatE(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了逻辑损失函数：:py:class:`pybind11_ke.module.loss.SoftplusLoss`，
+# 我们这里使用了逻辑损失函数：:py:class:`pybind11_ke.module.loss.SigmoidLoss`，
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
-# :py:class:`pybind11_ke.module.loss.SoftplusLoss` 进行了封装，加入权重衰减等额外项。
+# :py:class:`pybind11_ke.module.loss.SigmoidLoss` 进行了封装，加入权重衰减等额外项。
 
 # define the loss function
 model = NegativeSampling(
