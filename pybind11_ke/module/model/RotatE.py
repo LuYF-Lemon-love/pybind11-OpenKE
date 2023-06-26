@@ -199,6 +199,27 @@ class RotatE(Model):
 		score = self.margin - self._calc(h ,t, r, mode)
 		return score
 
+	def regularization(self, data):
+
+		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+
+		batch_h = data['batch_h']
+		batch_t = data['batch_t']
+		batch_r = data['batch_r']
+		h = self.ent_embeddings(batch_h)
+		t = self.ent_embeddings(batch_t)
+		r = self.rel_embeddings(batch_r)
+		regul = (torch.mean(h ** 2) + 
+				 torch.mean(t ** 2) + 
+				 torch.mean(r ** 2)) / 3
+		return regul
+
 	def predict(self, data):
 
 		"""RotatE 的推理方法。
@@ -211,24 +232,3 @@ class RotatE(Model):
 
 		score = -self.forward(data)
 		return score.cpu().data.numpy()
-
-	def regularization(self, data):
-
-		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
-		
-		:param data: 数据。
-		:type data: dict
-		:returns: 模型参数的正则损失
-		:rtype: torch.Tensor
-		"""
-		
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		regul = (torch.mean(h ** 2) + 
-				 torch.mean(t ** 2) + 
-				 torch.mean(r ** 2)) / 3
-		return regul
