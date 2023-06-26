@@ -60,9 +60,30 @@ class SigmoidLoss(Loss):
 			self.adv_flag = False
 
 	def get_weights(self, n_score):
+
+		"""计算 RotatE 提出的自我对抗负采样中的负样本的分布概率。
+		
+		:param n_score: 负样本评分函数的得分。
+		:type n_score: torch.Tensor
+		:returns: 自我对抗负采样中的负样本的分布概率
+		:rtype: torch.Tensor
+		"""
+
 		return F.softmax(n_score * self.adv_temperature, dim = -1).detach()
 
 	def forward(self, p_score, n_score):
+
+		"""计算 SigmoidLoss 损失函数。定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param p_score: 正样本评分函数的得分。
+		:type p_score: torch.Tensor
+		:param n_score: 负样本评分函数的得分。
+		:type n_score: torch.Tensor
+		:returns: 损失值
+		:rtype: torch.Tensor
+		"""
+
 		if self.adv_flag:
 			return -(self.criterion(p_score).mean() + (self.get_weights(n_score) * self.criterion(-n_score)).sum(dim = -1).mean()) / 2
 		else:
