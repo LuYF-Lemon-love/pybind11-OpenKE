@@ -213,6 +213,15 @@ class RotatE(Model):
 		return score.cpu().data.numpy()
 
 	def regularization(self, data):
+
+		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+		
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
