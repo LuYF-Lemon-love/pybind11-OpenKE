@@ -178,6 +178,17 @@ class RotatE(Model):
 		return score.permute(1, 0).flatten()
 
 	def forward(self, data):
+		
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+		
 		batch_h = data['batch_h']
 		batch_t = data['batch_t']
 		batch_r = data['batch_r']
@@ -189,6 +200,15 @@ class RotatE(Model):
 		return score
 
 	def predict(self, data):
+
+		"""RotatE 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+
 		score = -self.forward(data)
 		return score.cpu().data.numpy()
 
