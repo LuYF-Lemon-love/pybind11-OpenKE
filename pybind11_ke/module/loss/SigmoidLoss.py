@@ -40,11 +40,21 @@ class SigmoidLoss(Loss):
 	"""
 
 	def __init__(self, adv_temperature = None):
+
+		"""创建 SigmoidLoss 对象。
+
+		:param adv_temperature: RotatE 提出的自我对抗负采样中的温度。
+		:type adv_temperature: float
+		"""
+
 		super(SigmoidLoss, self).__init__()
+		#: 逻辑函数，类型为 :py:class:`torch.nn.LogSigmoid`。
 		self.criterion = nn.LogSigmoid()
 		if adv_temperature != None:
+			#: RotatE 提出的自我对抗负采样中的温度。
 			self.adv_temperature = nn.Parameter(torch.Tensor([adv_temperature]))
 			self.adv_temperature.requires_grad = False
+			#: 是否启用 RotatE 提出的自我对抗负采样。
 			self.adv_flag = True
 		else:
 			self.adv_flag = False
