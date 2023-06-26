@@ -124,11 +124,32 @@ class RotatE(Model):
 		self.margin.requires_grad = False
 
 	def _calc(self, h, t, r, mode):
+
+		"""计算 RotatE 的评分函数。
+
+		利用 :py:func:`torch.chunk` 拆分实体嵌入向量获得复数的实部和虚部。
+		依据原论文使用的 L2-norm 作为距离函数。
+		
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
+		:param r: 关系的向量。
+		:type r: torch.Tensor
+		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:type mode: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
 		pi = self.pi_const
 
 		re_head, im_head = torch.chunk(h, 2, dim=-1)
 		re_tail, im_tail = torch.chunk(t, 2, dim=-1)
 
+		# Make phases of relations uniformly distributed in [-pi, pi]
 		phase_relation = r / (self.rel_embedding_range.item() / pi)
 
 		re_relation = torch.cos(phase_relation)
