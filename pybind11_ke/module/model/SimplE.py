@@ -48,6 +48,7 @@
     tester.run_link_prediction(type_constrain = False)
 """
 
+import math
 import torch
 import torch.nn as nn
 from .Model import Model
@@ -89,7 +90,7 @@ class SimplE(Model):
         #: 根据关系个数，创建的逆关系嵌入
         self.rel_inv_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
-        sqrt_size = 6.0 / torch.sqrt(self.dim)
+        sqrt_size = 6.0 / math.sqrt(self.dim)
         nn.init.uniform_(self.ent_h_embeddings.weight.data, -sqrt_size, sqrt_size)
         nn.init.uniform_(self.ent_t_embeddings.weight.data, -sqrt_size, sqrt_size)
         nn.init.uniform_(self.rel_embeddings.weight.data, -sqrt_size, sqrt_size)
