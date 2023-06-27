@@ -30,4 +30,4 @@ API
 .. autosummary::
    :toctree: _autosummary
 
-   pybind11_ke.module.model
+   pybind11_ke.module.model.Model
