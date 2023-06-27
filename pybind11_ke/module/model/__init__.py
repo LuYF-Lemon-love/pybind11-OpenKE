@@ -38,5 +38,5 @@ __all__ = [
     'Analogy',
     'SimplE',
     'RotatE',
-    'HolE'
+    'HolE',
 ]
