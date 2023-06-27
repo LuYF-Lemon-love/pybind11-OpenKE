@@ -164,6 +164,6 @@ class SimplE(Model):
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
-
-		score = -self.forward(data)
+        
+        score = -self.forward(data)
         return score.cpu().data.numpy()
