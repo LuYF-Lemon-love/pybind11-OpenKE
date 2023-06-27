@@ -35,4 +35,3 @@ API
    model.ComplEx
    model.Analogy
    model.SimplE
-   model.RotatE
