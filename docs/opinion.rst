@@ -29,3 +29,23 @@ Analogy
 负号。
 
 从 `运行结果 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_ 也没发现差异。 
+
+SimplE
+---------
+
+`OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 实现的 `SimplE <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/SimplE.py>`__ 存在问题。
+下面是 `SimplE <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>` 的作者给出的声明：
+
+.. Important::
+
+    Hi all, I'm the main author of the SimplE paper. I have received emails asking me if the OpenKE implementation of SimplE is correct or not so I thought I post a public response here. I can confirm that the OpenKE implementation is indeed incorrect and there are two issues (one major, one minor) in it:
+    
+    **Major issue**: As pointed out by @dschaehi there's a major issue in the model definition. SimplE requires two embedding vectors per entity, one to be used when the entity is the head and one to be used when the entity is the tail. In the OpenKE implementation, there is only one embedding vector per entity which hurts the model by making it almost identical to DistMult.
+    
+    **Minor issue**: This implementation corresponds to a variant of SimplE which we called SimplE-ignr in the paper. It takes the average of the two predictions during training but only uses one of the predictions during testing (see https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch/openke/module/model/SimplE.py#L54). The standard SimplE model takes the average of the two predictions for both training and testing.
+
+    For a correct pytorch implementation of SimplE, I recommend this repo: https://github.com/baharefatemi/SimplE/blob/master/SimplE.py
+
+关于这个问题的讨论在：https://github.com/thunlp/OpenKE/issues/151 。
+
+因此，遵从 ``SimplE`` 作者的建议，依据 https://github.com/baharefatemi/SimplE/blob/master/SimplE.py 实现 ``SimplE`` 。
