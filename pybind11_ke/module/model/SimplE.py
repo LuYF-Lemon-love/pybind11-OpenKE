@@ -63,7 +63,7 @@ class SimplE(Model):
         :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
-
+            
     def __init__(self, ent_tot, rel_tot, dim = 100):
 
         """创建 SimplE 对象。
@@ -77,25 +77,23 @@ class SimplE(Model):
         """
 
         super(SimplE, self).__init__(ent_tot, rel_tot)
-
+        
         #: 实体嵌入向量和关系嵌入向量的维度
         self.dim = dim
-        #: 根据实体个数，创建的实体嵌入
-        self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+        #: 根据实体个数，创建的头实体嵌入
+        self.ent_h_embeddings = nn.Embedding(self.ent_tot, self.dim)
+        #: 根据实体个数，创建的尾实体嵌入
+        self.ent_t_embeddings = nn.Embedding(self.ent_tot, self.dim)
         #: 根据关系个数，创建的关系嵌入
         self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
         #: 根据关系个数，创建的逆关系嵌入
         self.rel_inv_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
-        nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
-        nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
-        nn.init.xavier_uniform_(self.rel_inv_embeddings.weight.data)
-
-    def _calc_avg(self, h, t, r, r_inv):
-        return (torch.sum(h * r * t, -1) + torch.sum(h * r_inv * t, -1))/2
-
-    def _calc_ingr(self, h, r, t):
-        return torch.sum(h * r * t, -1)
+        sqrt_size = 6.0 / torch.sqrt(self.dim)
+        nn.init.uniform_(self.ent_h_embeddings.weight.data, -sqrt_size, sqrt_size)
+        nn.init.uniform_(self.ent_t_embeddings.weight.data, -sqrt_size, sqrt_size)
+        nn.init.uniform_(self.rel_embeddings.weight.data, -sqrt_size, sqrt_size)
+        nn.init.uniform_(self.rel_inv_embeddings.weight.data, -sqrt_size, sqrt_size)
 
     def forward(self, data):
         
@@ -112,12 +110,20 @@ class SimplE(Model):
         batch_h = data['batch_h']
         batch_t = data['batch_t']
         batch_r = data['batch_r']
-        h = self.ent_embeddings(batch_h)
-        t = self.ent_embeddings(batch_t)
-        r = self.rel_embeddings(batch_r)
-        r_inv = self.rel_inv_embeddings(batch_r)
-        score = self._calc_avg(h, t, r, r_inv)
-        return score
+
+        hh_embs = self.ent_h_embeddings(batch_h)
+        ht_embs = self.ent_h_embeddings(batch_t)
+        th_embs = self.ent_t_embeddings(batch_h)
+        tt_embs = self.ent_t_embeddings(batch_t)
+        r_embs = self.rel_embeddings(batch_r)
+        r_inv_embs = self.rel_inv_embeddings(batch_r)
+
+        scores1 = torch.sum(hh_embs * r_embs * tt_embs, -1)
+        scores2 = torch.sum(ht_embs * r_inv_embs * th_embs, -1)
+
+        # Without clipping, we run into NaN problems.
+        # 基于论文作者的实现。
+        return torch.clamp((scores1 + scores2) / 2, -20, 20)
 
     def regularization(self, data):
 
@@ -132,19 +138,32 @@ class SimplE(Model):
         batch_h = data['batch_h']
         batch_t = data['batch_t']
         batch_r = data['batch_r']
-        h = self.ent_embeddings(batch_h)
-        t = self.ent_embeddings(batch_t)
-        r = self.rel_embeddings(batch_r)
-        r_inv = self.rel_inv_embeddings(batch_r)
-        regul = (torch.mean(h ** 2) + torch.mean(t ** 2) + torch.mean(r ** 2) + torch.mean(r_inv ** 2)) / 4
+
+        hh_embs = self.ent_h_embeddings(batch_h)
+        ht_embs = self.ent_h_embeddings(batch_t)
+        th_embs = self.ent_t_embeddings(batch_h)
+        tt_embs = self.ent_t_embeddings(batch_t)
+        r_embs = self.rel_embeddings(batch_r)
+        r_inv_embs = self.rel_inv_embeddings(batch_r)
+
+        regul = (torch.mean(hh_embs ** 2) + 
+                 torch.mean(ht_embs ** 2) + 
+                 torch.mean(th_embs ** 2) +
+                 torch.mean(tt_embs ** 2) +
+                 torch.mean(r_embs ** 2) +
+                 torch.mean(r_inv_embs ** 2)) / 6
+
         return regul
 
     def predict(self, data):
-        batch_h = data['batch_h']
-        batch_t = data['batch_t']
-        batch_r = data['batch_r']
-        h = self.ent_embeddings(batch_h)
-        t = self.ent_embeddings(batch_t)
-        r = self.rel_embeddings(batch_r)
-        score = -self._calc_ingr(h, r, t)
+
+        """SimplE 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+
+		score = -self.forward(data)
         return score.cpu().data.numpy()
