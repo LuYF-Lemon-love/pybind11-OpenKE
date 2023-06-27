@@ -7,6 +7,13 @@ API
    pybind11_ke.config
    pybind11_ke.data
 
+.. currentmodule:: pybind11_ke.config
+.. autosummary::
+   :toctree: _autosummary
+
+   Trainer
+   Tester
+
 .. currentmodule:: pybind11_ke.data
 .. autosummary::
    :toctree: _autosummary
