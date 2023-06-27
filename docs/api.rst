@@ -1,6 +1,9 @@
 API
 ===
 
-.. autopackagesummary:: pybind11_ke
+.. autosummary::
    :toctree: _autosummary
-   :template: autosummary/package.rst
+
+   pybind11_ke.config
+   pybind11_ke.config.Trainer
+   pybind11_ke.config.Tester
