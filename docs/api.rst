@@ -19,8 +19,6 @@ API
    Trainer
    Tester
 
-.. autosummary::
-   :recursive:
+.. autopackagesummary:: pybind11_ke.module
    :toctree: _autosummary
-
-   pybind11_ke.module
+   :template: autosummary/package.rst
