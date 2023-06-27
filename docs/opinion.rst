@@ -49,3 +49,7 @@ SimplE
 关于这个问题的讨论在：https://github.com/thunlp/OpenKE/issues/151 。
 
 因此，遵从 ``SimplE`` 作者的建议，依据 https://github.com/baharefatemi/SimplE/blob/master/SimplE.py 实现 ``SimplE`` 。
+
+最终实现可以从这里得到。
+
+`TransD-FB15K237 <_modules/pybind11_ke/module/model/SimplE.html#SimplE>`_
