@@ -32,7 +32,6 @@ API
    model.TransH
    model.DistMult
    model.TransD
-   model.HolE
    model.ComplEx
    model.Analogy
    model.SimplE
