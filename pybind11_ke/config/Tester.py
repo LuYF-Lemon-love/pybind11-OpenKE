@@ -31,7 +31,7 @@ import base
 class Tester(object):
 
     """
-	Tester 主要用于 KGE 模型的验证。
+	:py:class:`Tester` 主要用于 KGE 模型的验证。
 	"""
 
     def __init__(self, model = None, data_loader = None, use_gpu = True):
