@@ -20,6 +20,7 @@ Contents
    主页 <self>
    installation
    opinion
+   models
    api
 
 .. toctree::
