@@ -55,7 +55,7 @@ from .Model import Model
 class Analogy(Model):
 
 	"""
-	Analogy 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`Analogy` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	Analogy 提出于 2017 年，:py:class:`pybind11_ke.module.model.DistMult`、:py:class:`pybind11_ke.module.model.HolE` 和 :py:class:`pybind11_ke.module.model.ComplEx` 的集大成者，
 	效果与 :py:class:`pybind11_ke.module.model.HolE`、:py:class:`pybind11_ke.module.model.ComplEx` 差不多。 

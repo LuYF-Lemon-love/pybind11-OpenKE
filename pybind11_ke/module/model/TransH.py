@@ -57,7 +57,7 @@ from .Model import Model
 class TransH(Model):
 
 	"""
-	TransH 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`TransH` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	TransH 提出于 2014 年，是第二个平移模型，将关系建模为超平面上的平移操作。
 

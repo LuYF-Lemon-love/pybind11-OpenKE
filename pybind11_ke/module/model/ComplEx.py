@@ -55,7 +55,7 @@ from .Model import Model
 class ComplEx(Model):
 
     """
-	ComplEx 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`ComplEx` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	ComplEx 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 
         :py:class:`pybind11_ke.module.model.DistMult`。

@@ -58,7 +58,7 @@ from .Model import Model
 class TransD(Model):
 
 	"""
-	TransD 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`TransD` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	TransD 提出于 2015 年，自动生成映射矩阵，简单而且高效，是对 TransR 的改进。
 

@@ -57,7 +57,7 @@ from .Model import Model
 class RotatE(Model):
 
 	"""
-	RotatE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`RotatE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	RotatE 提出于 2019 年，将实体表示成复数向量，关系建模为复数向量空间的旋转。
 

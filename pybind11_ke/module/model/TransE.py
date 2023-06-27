@@ -57,7 +57,7 @@ from .Model import Model
 class TransE(Model):
 
 	"""
-	TransE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`TransE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	TransE 提出于 2013 年，是第一个平移模型，开创了平移模型研究方向。由于其简单性和高效性，
 	至今依旧是常用基线模型，在某些数据集上能够比其他更复杂的模型表现的更好。

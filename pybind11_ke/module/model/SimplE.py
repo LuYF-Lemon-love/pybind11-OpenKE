@@ -55,7 +55,7 @@ from .Model import Model
 class SimplE(Model):
 
     """
-	SimplE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`SimplE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	SimplE 提出于 2018 年，简单的双线性模型，能够为头实体和尾实体学习不同的嵌入向量。
 

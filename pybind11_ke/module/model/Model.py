@@ -12,7 +12,7 @@
 from ..BaseModule import BaseModule
 
 class Model(BaseModule):
-	"""Model 继承自 :py:class:`pybind11_ke.module.BaseModule`，
+	""":py:class:`Model` 继承自 :py:class:`pybind11_ke.module.BaseModule`，
 	仅仅增加了两个属性：:py:attr:`ent_tot` 和 :py:attr:`rel_tot`。"""
 
 	def __init__(self, ent_tot, rel_tot):

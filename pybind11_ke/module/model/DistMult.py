@@ -56,7 +56,7 @@ from .Model import Model
 class DistMult(Model):
 
 	"""
-	DistMult 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`DistMult` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	DistMult 提出于 2015 年，最简单的双线性模型，与 TransE 参数量相同，
 	因此非常容易的应用于大型的知识图谱。

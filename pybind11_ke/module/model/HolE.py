@@ -55,7 +55,7 @@ from .Model import Model
 class HolE(Model):
 
 	"""
-	HolE 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`HolE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	HolE 提出于 2016 年，利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
 

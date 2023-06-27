@@ -54,7 +54,7 @@ from .Model import Model
 class RESCAL(Model):
 
 	"""
-	RESCAL 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
+	:py:class:`RESCAL` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
 	RESCAL 提出于 2011 年，是很多张量分解模型的基石，模型较复杂。
 

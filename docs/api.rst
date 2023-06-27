@@ -26,3 +26,21 @@ API
    :toctree: _autosummary
 
    BaseModule
+
+.. automodule:: pybind11_ke.module.model
+
+.. currentmodule:: pybind11_ke.module.model
+.. autosummary::
+   :toctree: _autosummary
+
+   Model
+   RESCAL
+   TransE
+   TransH
+   DistMult
+   TransD
+   HolE
+   ComplEx
+   Analogy
+   SimplE
+   RotatE
