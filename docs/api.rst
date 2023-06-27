@@ -11,6 +11,7 @@ API
 .. autosummary::
    :toctree: _autosummary
 
+   .
    Trainer
    Tester
 
