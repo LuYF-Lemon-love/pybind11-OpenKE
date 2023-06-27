@@ -98,7 +98,7 @@ class RotatE(Model):
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim_r)
 
 		self.ent_embedding_range = nn.Parameter(
-			torch.Tensor([(self.margin + self.epsilon) / self.dim_e]), 
+			torch.Tensor([(margin + self.epsilon) / self.dim_e]), 
 			requires_grad=False
 		)
 
@@ -109,7 +109,7 @@ class RotatE(Model):
 		)
 
 		self.rel_embedding_range = nn.Parameter(
-			torch.Tensor([(self.margin + self.epsilon) / self.dim_r]), 
+			torch.Tensor([(margin + self.epsilon) / self.dim_r]), 
 			requires_grad=False
 		)
 
