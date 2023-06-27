@@ -26,7 +26,6 @@ API
    :toctree: _autosummary
 
    BaseModule
-   model
    model.Model
    model.RESCAL
    model.TransE
