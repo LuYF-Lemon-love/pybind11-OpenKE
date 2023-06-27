@@ -8,7 +8,7 @@
 # 该头文件定义了 DistMult.
 
 """
-DistMult - 最简单的双线性模型，与 TransE 参数量相同，因此非常容易的应用于大型的知识图谱。
+:py:class:`DistMult` 类 - 最简单的双线性模型，与 TransE 参数量相同，因此非常容易的应用于大型的知识图谱。
 
 论文地址: `Embedding Entities and Relations for Learning and Inference in Knowledge Bases <https://arxiv.org/abs/1412.6575>`__ 。
 

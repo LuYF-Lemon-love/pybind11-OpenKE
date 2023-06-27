@@ -8,7 +8,7 @@
 # 该头文件定义了 RotatE.
 
 """
-RotatE - 将实体表示成复数向量，关系建模为复数向量空间的旋转。
+:py:class:`RotatE` 类 - 将实体表示成复数向量，关系建模为复数向量空间的旋转。
 
 论文地址: `RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space <https://openreview.net/forum?id=HkgEQnRqYQ>`__ 。
 

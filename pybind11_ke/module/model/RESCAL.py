@@ -8,7 +8,7 @@
 # 该头文件定义了 RESCAL.
 
 """
-RESCAL - 一个张量分解模型。
+:py:class:`RESCAL` 类 - 一个张量分解模型。
 
 论文地址: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__ 。
 

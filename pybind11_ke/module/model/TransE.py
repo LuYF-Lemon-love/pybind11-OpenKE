@@ -8,7 +8,7 @@
 # 该头文件定义了 TransE.
 
 """
-TransE - 第一个平移模型，简单而且高效。
+:py:class:`TransE` 类 - 第一个平移模型，简单而且高效。
 
 论文地址: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`_ 。
 

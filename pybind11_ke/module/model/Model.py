@@ -7,7 +7,7 @@
 # 
 # 该头文件定义了 Model.
 
-"""Model - 所有 KGE 模型的基类"""
+""":py:class:`Model` 类 - 所有 KGE 模型的基类"""
 
 from ..BaseModule import BaseModule
 

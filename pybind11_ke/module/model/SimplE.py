@@ -8,7 +8,7 @@
 # 该头文件定义了 SimplE.
 
 """
-SimplE - 简单的双线性模型，能够为头实体和尾实体学习不同的嵌入向量。
+:py:class:`SimplE` 类 - 简单的双线性模型，能够为头实体和尾实体学习不同的嵌入向量。
 
 论文地址: `SimplE Embedding for Link Prediction in Knowledge Graphs <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>`__ 。
 

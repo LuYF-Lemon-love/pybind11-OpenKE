@@ -8,7 +8,7 @@
 # 该头文件定义了 ComplEx.
 
 """
-ComplEx - 第一个真正意义上复数域模型，简单而且高效。
+:py:class:`ComplEx` 类 - 第一个真正意义上复数域模型，简单而且高效。
 
 论文地址: `Complex Embeddings for Simple Link Prediction <https://arxiv.org/abs/1606.06357>`__ 。
 

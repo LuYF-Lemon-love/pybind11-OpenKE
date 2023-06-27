@@ -8,7 +8,7 @@
 # 该头文件定义了 TransD.
 
 """
-TransD - 自动生成映射矩阵，简单而且高效，是对 TransR 的改进。
+:py:class:`TransD` 类 - 自动生成映射矩阵，简单而且高效，是对 TransR 的改进。
 
 论文地址: `Knowledge Graph Embedding via Dynamic Mapping Matrix <https://aclanthology.org/P15-1067/>`__ 。
 

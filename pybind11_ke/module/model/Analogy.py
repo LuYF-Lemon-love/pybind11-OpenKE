@@ -8,7 +8,7 @@
 # 该头文件定义了 Analogy.
 
 """
-Analogy - DistMult、HolE 和 ComplEx 的集大成者，效果与 HolE、ComplEx 差不多。
+:py:class:`Analogy` 类 - DistMult、HolE 和 ComplEx 的集大成者，效果与 HolE、ComplEx 差不多。
 
 论文地址: `Analogical Inference for Multi-relational Embeddings <https://proceedings.mlr.press/v70/liu17d.html>`__ 。
 

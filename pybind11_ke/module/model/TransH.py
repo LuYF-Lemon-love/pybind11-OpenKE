@@ -8,7 +8,7 @@
 # 该头文件定义了 TransH.
 
 """
-TransH - 是第二个平移模型，将关系建模为超平面上的平移操作。
+:py:class:`TransH` 类 - 是第二个平移模型，将关系建模为超平面上的平移操作。
 
 论文地址: `Knowledge Graph Embedding by Translating on Hyperplanes <https://ojs.aaai.org/index.php/AAAI/article/view/8870>`__ 。
 
