@@ -13,7 +13,7 @@ ext_modules = [
 ]
 
 setup(
-    name="pybind11-OpenKE",
+    name="pybind11_ke",
     version=__version__,
     author="LuYF-Lemon-love",
     author_email="3555028709@qq.com",
