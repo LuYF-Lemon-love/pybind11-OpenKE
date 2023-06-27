@@ -15,7 +15,7 @@ import os
 import json
 
 class BaseModule(nn.Module):
-	"""BaseModule 继承自 :py:class:`torch.nn.Module`，
+	""":py:class:`BaseModule` 继承自 :py:class:`torch.nn.Module`，
 	并且封装了一些常用功能，如加载和保存模型。"""
 
 	def __init__(self):
