@@ -63,7 +63,7 @@ class SimplE(Model):
         :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
 	正三元组的评分函数的值越大越好，负三元组越小越好。
 	"""
-            
+    
     def __init__(self, ent_tot, rel_tot, dim = 100):
 
         """创建 SimplE 对象。
@@ -75,7 +75,7 @@ class SimplE(Model):
         :param dim: 实体嵌入向量和关系嵌入向量的维度
         :type dim: int
         """
-
+        
         super(SimplE, self).__init__(ent_tot, rel_tot)
         
         #: 实体嵌入向量和关系嵌入向量的维度
@@ -94,7 +94,7 @@ class SimplE(Model):
         nn.init.uniform_(self.ent_t_embeddings.weight.data, -sqrt_size, sqrt_size)
         nn.init.uniform_(self.rel_embeddings.weight.data, -sqrt_size, sqrt_size)
         nn.init.uniform_(self.rel_inv_embeddings.weight.data, -sqrt_size, sqrt_size)
-
+        
     def forward(self, data):
         
         """
@@ -124,7 +124,7 @@ class SimplE(Model):
         # Without clipping, we run into NaN problems.
         # 基于论文作者的实现。
         return torch.clamp((scores1 + scores2) / 2, -20, 20)
-
+        
     def regularization(self, data):
 
         """L2 正则化函数（又称权重衰减），在损失函数中用到。
@@ -154,7 +154,7 @@ class SimplE(Model):
                  torch.mean(r_inv_embs ** 2)) / 6
 
         return regul
-
+        
     def predict(self, data):
 
         """SimplE 的推理方法。
