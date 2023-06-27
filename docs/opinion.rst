@@ -30,6 +30,8 @@ Analogy
 
 从 `运行结果 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_ 也没发现差异。 
 
+最终实现可以从 `这里 <_modules/pybind11_ke/module/model/HolE.html#HolE>`_ 得到。
+
 SimplE
 ---------
 
@@ -50,6 +52,4 @@ SimplE
 
 因此，遵从 ``SimplE`` 作者的建议，依据 https://github.com/baharefatemi/SimplE/blob/master/SimplE.py 实现 ``SimplE`` 。
 
-最终实现可以从这里得到。
-
-`TransD-FB15K237 <_modules/pybind11_ke/module/model/SimplE.html#SimplE>`_
+最终实现可以从 `这里 <_modules/pybind11_ke/module/model/SimplE.html#SimplE>`_ 得到。
