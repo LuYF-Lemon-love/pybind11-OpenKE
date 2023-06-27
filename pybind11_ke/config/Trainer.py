@@ -32,7 +32,7 @@ from tqdm import tqdm
 class Trainer(object):
 
 	"""
-	Trainer 主要用于 KGE 模型的训练。
+	:py:class:`Trainer` 主要用于 KGE 模型的训练。
 	"""
 
 	def __init__(self, 
