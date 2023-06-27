@@ -53,7 +53,7 @@ import torch.nn as nn
 from .Model import Model
 
 class SimplE(Model):
-
+    
     """
 	:py:class:`SimplE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
 	
@@ -158,12 +158,12 @@ class SimplE(Model):
     def predict(self, data):
 
         """SimplE 的推理方法。
-		
-		:param data: 数据。
-		:type data: dict
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
+        
+        :param data: 数据。
+        :type data: dict
+        :returns: 三元组的得分
+        :rtype: numpy.ndarray
+        """
         
         score = -self.forward(data)
         return score.cpu().data.numpy()
