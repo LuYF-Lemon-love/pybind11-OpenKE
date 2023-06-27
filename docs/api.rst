@@ -27,3 +27,4 @@ API
 
    BaseModule
    model.Model
+   model.RESCAL
