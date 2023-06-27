@@ -27,13 +27,3 @@ API
 
    BaseModule
    model.Model
-   model.RESCAL
-   model.TransE
-   model.TransH
-   model.DistMult
-   model.TransD
-   model.HolE
-   model.ComplEx
-   model.Analogy
-   model.SimplE
-   model.RotatE
