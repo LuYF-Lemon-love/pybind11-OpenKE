@@ -73,7 +73,7 @@ class TestDataSampler(object):
 		return self.data_total
 
 class TestDataLoader(object):
-	"""TestDataLoader 主要从底层 C++ 模块获得数据用于 KGE 模型的验证。"""
+	""":py:class:`TestDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的验证。"""
 
 	def __init__(self, in_path = "./", sampling_mode = 'link', type_constrain = True):
 

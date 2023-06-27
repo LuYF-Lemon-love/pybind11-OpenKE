@@ -103,7 +103,7 @@ class TrainDataSampler(object):
 
 class TrainDataLoader(object):
 	"""
-	TrainDataLoader 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
+	:py:class:`TrainDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
 	"""
 
 	def __init__(self, in_path = "./", tri_file = None, ent_file = None,
