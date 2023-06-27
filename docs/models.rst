@@ -1,6 +1,8 @@
 模型
 =====
 
-.. autopackagesummary:: pybind11_ke.module.model
+.. currentmodule:: pybind11_ke.module.model
+
+.. autopackagesummary::
    :toctree: _autosummary
    :template: autosummary/package.rst
