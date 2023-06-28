@@ -1,0 +1,24 @@
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$ python train_transe_WN18_adv_sigmoidloss.py
+Input Files Path : ./benchmarks/WN18RR/
+The toolkit is importing datasets.
+The total of relations is 11.
+The total of entities is 40943.
+The total of train triples is 86835.
+Input Files Path : ./benchmarks/WN18RR/
+The total of test triples is 3134.
+The total of valid triples is 3034.
+Finish initializing...
+Epoch 2999 | loss: 1.996692: 100%|████████████████████████████████████████████████| 3000/3000 [1:43:05<00:00,  2.06s/it]
+100%|██████████████████████████████████████████████████████████████████████████████| 3134/3134 [00:22<00:00, 138.86it/s]
+no type constraint results:
+metric:                  MRR             MR              hit@10          hit@3           hit@1
+l(raw):                  0.154674        4808.578613     0.450542        0.248564        0.008934
+r(raw):                  0.182212        1791.655762     0.540523        0.276005        0.014678
+averaged(raw):           0.168443        3300.117188     0.495533        0.262285        0.011806
+
+l(filter):               0.223022        4785.132324     0.500000        0.402361        0.020102
+r(filter):               0.239040        1786.302490     0.560306        0.414805        0.022974
+averaged(filter):        0.231031        3285.717285     0.530153        0.408583        0.021538
+0.530153
+0.5301531553268433
+(pybind11-ke) luyanfeng@amax:~/my_code/my_github/pybind11-OpenKE$
