@@ -53,6 +53,8 @@ New Features
 
 - 使用 `Setuptools <https://setuptools.pypa.io/en/latest/>`__ 打包了 pybind11-OpenKE， 使得能够像其他第三方库一样使用。
 
+- 修复 `SimplE模型实现的问题 <https://github.com/thunlp/OpenKE/issues/151>`__ 。
+
 OpenKE-PyTorch
 --------------
 
