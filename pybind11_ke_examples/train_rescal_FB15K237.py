@@ -3,6 +3,7 @@
 `TransE-FB15K237 <train_transe_FB15K237.html>`_ ||
 `TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
 `DistMult-WN18RR <train_distmult_WN18RR.html>`_ ||
+`DistMult-WN18RR-adv <train_distmult_WN18RR_adv.html>`_ ||
 `TransD-FB15K237 <train_transd_FB15K237.html>`_ ||
 `HolE-WN18RR <train_hole_WN18RR.html>`_ ||
 `ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
