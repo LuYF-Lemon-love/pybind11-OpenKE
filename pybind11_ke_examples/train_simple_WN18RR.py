@@ -1,6 +1,7 @@
 """
 `RESCAL-FB15K237 <train_rescal_FB15K237.html>`_ ||
 `TransE-FB15K237 <train_transe_FB15K237.html>`_ ||
+`TransE-WN18RR-adv <train_transe_WN18_adv_sigmoidloss.html>`_ ||
 `TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
 `DistMult-WN18RR <train_distmult_WN18RR.html>`_ ||
 `DistMult-WN18RR-adv <train_distmult_WN18RR_adv.html>`_ ||

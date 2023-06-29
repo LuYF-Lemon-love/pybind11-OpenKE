@@ -26,10 +26,11 @@ Contents
    :maxdepth: 2
    :hidden:
    :includehidden:
-   :caption: 例子
+   :caption: OpenKE-PyTorch的例子
 
    auto_examples/train_rescal_FB15K237
    auto_examples/train_transe_FB15K237
+   auto_examples/train_transe_WN18_adv_sigmoidloss
    auto_examples/train_transh_FB15K237
    auto_examples/train_distmult_WN18RR
    auto_examples/train_distmult_WN18RR_adv
