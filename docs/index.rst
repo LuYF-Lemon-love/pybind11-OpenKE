@@ -26,7 +26,7 @@ Contents
    :maxdepth: 2
    :hidden:
    :includehidden:
-   :caption: OpenKE-PyTorch的例子
+   :caption: OpenKE 的例子
 
    auto_examples/train_rescal_FB15K237
    auto_examples/train_transe_FB15K237

@@ -22,8 +22,8 @@
 📚 `docs/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/>`_
     所有的文档源文件保存在 ``docs/``。 所有的 ``*.rst`` 构成了文档中的各个部分。
 
-🌰 `pybind11_ke_examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/pybind11_ke_examples/>`_
-    pybind11-OpenKE 的例子保存在 ``pybind11_ke_examples/``。
+🌰 `examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/examples/>`_
+    pybind11-OpenKE 的例子保存在 ``examples/``，取自 ``OpenKE-PyTorch``。
 
 💡 `benchmarks <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
     常用的知识图谱保存在 ``benchmarks/``。
