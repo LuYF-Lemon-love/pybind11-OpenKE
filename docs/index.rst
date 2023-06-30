@@ -26,6 +26,14 @@ Contents
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: TransE
+
+   auto_experiments/TransE/train_transe_FB15K237
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: OpenKE 的例子
 
    auto_examples/train_rescal_FB15K237
