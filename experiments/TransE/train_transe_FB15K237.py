@@ -19,6 +19,22 @@ TransE 原论文: `Translating Embeddings for Modeling Multi-relational Data <ht
      50           0.01        1           L1         1, 000
 ============= =========== ========== ============ ===========
 
+.. list-table::
+    :widths: 10 10 10 10
+    :header-rows: 1
+    :stub-columns: 2
+
+    * - 向量维度
+      - 学习率
+      - margin
+      - 距离函数
+	  - epochs
+    * - 50
+      - 0.01
+      - 1
+      - L1
+	  - 1, 000
+
 导入数据
 -----------------
 pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
