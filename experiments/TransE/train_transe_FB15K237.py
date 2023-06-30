@@ -12,7 +12,7 @@
 `SimplE-WN18RR <train_simple_WN18RR.html>`_ ||
 `RotatE-WN18RR <train_rotate_WN18RR_adv.html>`_
 
-TransE-FB15K237
+TransE-FB15K
 ===================
 这一部分介绍如何用在 FB15K237 知识图谱上训练 TransE。
 

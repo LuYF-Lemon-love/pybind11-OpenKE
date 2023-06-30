@@ -19,6 +19,7 @@ Contents
 
    主页 <self>
    installation
+   datasets
    opinion
    api
 
