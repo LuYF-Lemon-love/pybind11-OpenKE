@@ -8,7 +8,7 @@
 TransE-FB15K
 ===================
 
-这一部分介绍如何用在 :ref:`FB15k <FB15k>` 知识图谱上训练 TransE。
+这一部分介绍如何用在 :ref:`FB15k` 知识图谱上训练 TransE。
 
 TransE 原论文: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`__。
 
