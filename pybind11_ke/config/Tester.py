@@ -3,7 +3,7 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 30, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
 #
 # 该脚本定义了验证模型类.
 
@@ -17,7 +17,7 @@ Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
     from pybind11_ke.config import Trainer, Tester
     
     # test the model
-    transe.load_checkpoint('./checkpoint/transe.ckpt')
+    transe.load_checkpoint('../checkpoint/transe.ckpt')
     tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
     tester.run_link_prediction(type_constrain = False)
 """
@@ -35,6 +35,7 @@ class Tester(object):
 	"""
 
     def __init__(self, model = None, data_loader = None, use_gpu = True):
+
         """创建 Tester 对象。
 
 		:param model: KGE 模型
@@ -56,6 +57,7 @@ class Tester(object):
             self.model.cuda()
 
     def set_model(self, model):
+
         """设置 :py:attr:`model`
         
         :param model: KGE 模型
@@ -65,6 +67,7 @@ class Tester(object):
         self.model = model
 
     def set_data_loader(self, data_loader):
+
         """设置 :py:attr:`data_loader`
         
         :param data_loader: TestDataLoader
@@ -74,6 +77,7 @@ class Tester(object):
         self.data_loader = data_loader
 
     def set_use_gpu(self, use_gpu):
+
         """设置 :py:attr:`use_gpu`
         
         :param use_gpu: 是否使用 gpu
@@ -85,6 +89,7 @@ class Tester(object):
             self.model.cuda()
 
     def to_var(self, x, use_gpu):
+
         """根据 ``use_gpu`` 返回 ``x`` 的张量
 
 		:param x: 数据
@@ -101,6 +106,7 @@ class Tester(object):
             return Variable(torch.from_numpy(x))
 
     def test_one_step(self, data):
+
         """根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型验证 1 步。
 
@@ -119,6 +125,7 @@ class Tester(object):
         })
 
     def run_link_prediction(self, type_constrain = False):
+        
         """进行链接预测
         
         :param type_constrain: 是否用 type_constrain.txt 进行负采样
