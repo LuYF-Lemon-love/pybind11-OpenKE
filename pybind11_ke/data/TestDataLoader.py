@@ -247,6 +247,16 @@ class TestDataLoader(object):
 
 		return self.testTotal
 
+	def set_sampling_mode(self, sampling_mode):
+
+		"""设置 :py:attr:`sampling_mode`
+		
+		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
+		:type sampling_mode: str
+		"""
+
+		self.sampling_mode = sampling_mode
+
 	def __iter__(self):
 
 		"""迭代器函数 :py:meth:`iterator.__iter__`，
