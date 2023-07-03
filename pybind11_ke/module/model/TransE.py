@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 28, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
 # 
 # 该头文件定义了 TransE.
 
@@ -41,10 +41,10 @@
 	trainer = Trainer(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 1.0, use_gpu = True)
 	trainer.run()
-	transe.save_checkpoint('./checkpoint/transe.ckpt')
+	transe.save_checkpoint('../checkpoint/transe.ckpt')
 
 	# test the model
-	transe.load_checkpoint('./checkpoint/transe.ckpt')
+	transe.load_checkpoint('../checkpoint/transe.ckpt')
 	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
 	tester.run_link_prediction(type_constrain = False)
 """
@@ -135,6 +135,7 @@ class TransE(Model):
 
 
 	def _calc(self, h, t, r, mode):
+
 		"""计算 TransE 的评分函数。
 		
 		:param h: 头实体的向量。
@@ -174,6 +175,7 @@ class TransE(Model):
 		return score
 
 	def forward(self, data):
+
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
@@ -198,6 +200,7 @@ class TransE(Model):
 			return score
 
 	def regularization(self, data):
+
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
@@ -218,6 +221,7 @@ class TransE(Model):
 		return regul
 
 	def predict(self, data):
+		
 		"""TransE 的推理方法。
 		
 		:param data: 数据。
