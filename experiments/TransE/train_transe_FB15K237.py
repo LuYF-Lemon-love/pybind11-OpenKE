@@ -49,7 +49,7 @@ train_dataloader = TrainDataLoader(
 	neg_rel = 0)
 
 # dataloader for test
-test_dataloader = TestDataLoader("../../benchmarks/FB15K/", "link")
+test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
 
 ######################################################################
 # --------------
@@ -99,6 +99,7 @@ model = NegativeSampling(
 # 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
 
 # train the model
+# train_times: 1000 -> 50
 trainer = Trainer(model = model, data_loader = train_dataloader,
                   train_times = 1000, alpha = 0.01, use_gpu = True)
 trainer.run()
