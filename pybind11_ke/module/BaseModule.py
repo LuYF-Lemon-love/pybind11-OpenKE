@@ -42,15 +42,19 @@ class BaseModule(nn.Module):
 		self.eval()
 
 	def save_checkpoint(self, path):
+
 		"""保存模型权重。
 
 		:param path: 模型保存的路径
 		:type path: str
 		"""
 
+		if not os.path.exists(os.path.split(path)[0]):
+			os.makedirs(os.path.split(path)[0], exist_ok=True)
 		torch.save(self.state_dict(), path)
 
 	def load_parameters(self, path):
+
 		"""加载模型权重。
 
 		:param path: 模型保存的路径
@@ -66,6 +70,7 @@ class BaseModule(nn.Module):
 		self.eval()
 
 	def save_parameters(self, path):
+
 		"""保存模型权重。
 
 		:param path: 模型保存的路径
@@ -77,6 +82,7 @@ class BaseModule(nn.Module):
 		f.close()
 
 	def get_parameters(self, mode = "numpy", param_dict = None):
+
 		"""获得模型权重。
 
 		:param mode: 模型保存的格式，可以选择 ``numpy``、``list`` 和 ``Tensor``。
@@ -101,6 +107,7 @@ class BaseModule(nn.Module):
 		return res
 
 	def set_parameters(self, parameters):
+		
 		"""加载模型权重。
 
 		:param parameters: 模型权重字典。
