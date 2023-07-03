@@ -62,7 +62,6 @@ void getBatch(
 	INT negRate, 
 	INT negRelRate, 
 	INT mode,
-	bool filter_flag,
 	bool p, 
 	bool val_loss
 ) {
