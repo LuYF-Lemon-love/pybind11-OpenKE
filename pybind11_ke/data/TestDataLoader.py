@@ -101,11 +101,11 @@ class TestDataLoader(object):
 		self.type_constrain = type_constrain
 
 		#: 实体的个数
-		self.entTotal = base.getEntityTotal()
+		self.entTotal = 0
 		#: 关系的个数
-		self.relTotal = base.getRelationTotal()
+		self.relTotal = 0
 		#: 测试集三元组的个数
-		self.testTotal = base.getTestTotal()
+		self.testTotal = 0
 
 		# 读入数据
 		self.read()
@@ -115,6 +115,7 @@ class TestDataLoader(object):
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 
 		base.setInPath(self.in_path)
+		print("111111111111" + base.getEntityTotal())
 		base.randReset()
 		base.importTestFiles()
 
@@ -210,7 +211,7 @@ class TestDataLoader(object):
 
 		return self.relTotal
 
-	def get_triple_tot(self):
+	def get_test_tot(self):
 
 		"""返回 :py:attr:`testTotal`
 
@@ -219,16 +220,6 @@ class TestDataLoader(object):
 		"""
 
 		return self.testTotal
-
-	def set_sampling_mode(self, sampling_mode):
-
-		"""设置 :py:attr:`sampling_mode`
-		
-		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
-		:type sampling_mode: str
-		"""
-
-		self.sampling_mode = sampling_mode
 
 	def __iter__(self):
 

@@ -67,7 +67,7 @@ class TransE(Model):
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,
-		norm_flag = True, margin = None, epsilon = None):
+		norm_flag = True):
 		
 		"""创建 TransE 对象。
 
@@ -82,10 +82,6 @@ class TransE(Model):
 		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
 						  对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
-		:param margin: 原论文中损失函数的 gamma。
-		:type margin: float
-		:param epsilon: 对于 TransE 没什么用
-		:type epsilon: float
 		"""
 		
 		super(TransE, self).__init__(ent_tot, rel_tot)
@@ -97,42 +93,14 @@ class TransE(Model):
 		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
 		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
 		self.norm_flag = norm_flag
-		#: 原论文中损失函数的 gamma。
-		self.margin = margin
-		#: 对于 TransE 没什么用
-		self.epsilon = epsilon
 		
 		#: 根据实体个数，创建的实体嵌入
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
-		if margin == None or epsilon == None:
-			nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
-			nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
-		else:
-			self.embedding_range = nn.Parameter(
-				torch.Tensor([(self.margin + self.epsilon) / self.dim]), requires_grad=False
-			)
-			nn.init.uniform_(
-				tensor = self.ent_embeddings.weight.data, 
-				a = -self.embedding_range.item(), 
-				b = self.embedding_range.item()
-			)
-			nn.init.uniform_(
-				tensor = self.rel_embeddings.weight.data, 
-				a= -self.embedding_range.item(), 
-				b= self.embedding_range.item()
-			)
-
-		if margin != None:
-			self.margin = nn.Parameter(torch.Tensor([margin]))
-			self.margin.requires_grad = False
-			#: :py:attr:`margin` 是否为 None。
-			self.margin_flag = True
-		else:
-			self.margin_flag = False
-
+		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
+		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
 	def _calc(self, h, t, r, mode):
 
@@ -194,10 +162,7 @@ class TransE(Model):
 		t = self.ent_embeddings(batch_t)
 		r = self.rel_embeddings(batch_r)
 		score = self._calc(h ,t, r, mode)
-		if self.margin_flag:
-			return self.margin - score
-		else:
-			return score
+		return score
 
 	def regularization(self, data):
 
@@ -231,8 +196,4 @@ class TransE(Model):
 		"""
 		
 		score = self.forward(data)
-		if self.margin_flag:
-			score = self.margin - score
-			return score.cpu().data.numpy()
-		else:
-			return score.cpu().data.numpy()
+		return score.cpu().data.numpy()

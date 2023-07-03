@@ -211,20 +211,14 @@ void importTestFiles() {
     // 读取关系的个数
     // inPath: 定义于 Setting.h
     // rel_file: 定义于 Setting.h
-    if (rel_file == "")
-	    fin = fopen((inPath + "relation2id.txt").c_str(), "r");
-    else
-        fin = fopen(rel_file.c_str(), "r");
+    fin = fopen(rel_file.c_str(), "r");
     // relation2id.txt 第一行是关系的个数
     tmp = fscanf(fin, "%ld", &relationTotal);
     fclose(fin);
 
     // 读取实体的个数
     // ent_file: 定义于 Setting.h
-    if (ent_file == "")
-        fin = fopen((inPath + "entity2id.txt").c_str(), "r");
-    else
-        fin = fopen(ent_file.c_str(), "r");
+    fin = fopen(ent_file.c_str(), "r");
     // entity2id.txt 第一行是实体的个数
     tmp = fscanf(fin, "%ld", &entityTotal);
     fclose(fin);
@@ -233,18 +227,9 @@ void importTestFiles() {
     // test_file: 定义于 Setting.h
     // valid_file: 定义于 Setting.h
     FILE* f_kb1, * f_kb2, * f_kb3;
-    if (train_file == "")
-        f_kb2 = fopen((inPath + "train2id.txt").c_str(), "r");
-    else
-        f_kb2 = fopen(train_file.c_str(), "r");
-    if (test_file == "")
-        f_kb1 = fopen((inPath + "test2id.txt").c_str(), "r");
-    else
-        f_kb1 = fopen(test_file.c_str(), "r");
-    if (valid_file == "")
-        f_kb3 = fopen((inPath + "valid2id.txt").c_str(), "r");
-    else
-        f_kb3 = fopen(valid_file.c_str(), "r");
+    f_kb2 = fopen(train_file.c_str(), "r");
+    f_kb1 = fopen(test_file.c_str(), "r");
+    f_kb3 = fopen(valid_file.c_str(), "r");
     // train2id.txt 第一行是三元组的个数
     // test2id.txt 第一行是三元组的个数
     // valid2id.txt 第一行是三元组的个数
