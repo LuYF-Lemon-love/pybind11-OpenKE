@@ -68,10 +68,7 @@ void importTrainFiles() {
     // 读取关系的个数
     // inPath: 定义于 Setting.h
     // rel_file: 定义于 Setting.h
-    if (rel_file == "")
-	    fin = fopen((inPath + "relation2id.txt").c_str(), "r");
-    else
-        fin = fopen(rel_file.c_str(), "r");
+    fin = fopen(rel_file.c_str(), "r");
     // relation2id.txt 第一行是关系的个数
 	tmp = fscanf(fin, "%ld", &relationTotal);
     std::cout << "The total of relations is " << relationTotal
@@ -80,10 +77,7 @@ void importTrainFiles() {
 
     // 读取实体的个数
     // ent_file: defined in Setting.h
-    if (ent_file == "")
-        fin = fopen((inPath + "entity2id.txt").c_str(), "r");
-    else
-        fin = fopen(ent_file.c_str(), "r");
+    fin = fopen(ent_file.c_str(), "r");
     // entity2id.txt 第一行是实体的个数
 	tmp = fscanf(fin, "%ld", &entityTotal);
     std::cout << "The total of entities is " << entityTotal
@@ -92,10 +86,7 @@ void importTrainFiles() {
 
     // 读取训练数据集
     // train_file: 定义于 Setting.h
-    if (train_file == "")
-        fin = fopen((inPath + "train2id.txt").c_str(), "r");
-    else
-        fin = fopen(train_file.c_str(), "r");
+    fin = fopen(train_file.c_str(), "r");
     // train2id.txt 第一行是三元组的个数.
 	tmp = fscanf(fin, "%ld", &trainTotal);
     // trainList: 保存训练集中的三元组集合.

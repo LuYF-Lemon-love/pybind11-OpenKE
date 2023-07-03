@@ -27,7 +27,6 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 		threads = 8, 
 		sampling_mode = "normal", 
 		bern_flag = 1, 
-		filter_flag = 1, 
 		neg_ent = 25,
 		neg_rel = 0)
 
@@ -110,9 +109,9 @@ class TrainDataLoader(object):
 	:py:class:`TrainDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
 	"""
 
-	def __init__(self, in_path = "./", tri_file = None, ent_file = None,
-		rel_file = None, batch_size = None, nbatches = None, threads = 8,
-		sampling_mode = "normal", bern_flag = False, filter_flag = True,
+	def __init__(self, in_path = "./", tri_file = "train2id.txt", ent_file = "entity2id.txt",
+		rel_file = "relation2id.txt", batch_size = None, nbatches = None, threads = 8,
+		sampling_mode = "normal", bern_flag = False,
 		neg_ent = 1, neg_rel = 0):
 
 		"""创建 TrainDataLoader 对象。
@@ -135,8 +134,6 @@ class TrainDataLoader(object):
 		:type sampling_mode: str
 		:param bern_flag: 是否使用 TransH 提出的负采样方法进行负采样
 		:type bern_flag: int
-		:param filter_flag: 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
-		:type filter_flag: bool
 		:param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
 		:type neg_ent: int
 		:param neg_rel: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
@@ -146,15 +143,11 @@ class TrainDataLoader(object):
 		#: 数据集目录
 		self.in_path = in_path
 		#: train2id.txt
-		self.tri_file = tri_file
+		self.tri_file = self.in_path + tri_file
 		#: entity2id.txt
-		self.ent_file = ent_file
+		self.ent_file = self.in_path + ent_file
 		#: relation2id.txt
-		self.rel_file = rel_file
-		if in_path != None:
-			self.tri_file = in_path + "train2id.txt"
-			self.ent_file = in_path + "entity2id.txt"
-			self.rel_file = in_path + "relation2id.txt"
+		self.rel_file = self.in_path + rel_file
 
 		#: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
 		self.batch_size = batch_size
@@ -166,8 +159,6 @@ class TrainDataLoader(object):
 		self.sampling_mode = sampling_mode
 		#: 是否使用 TransH 提出的负采样方法进行负采样
 		self.bern = bern_flag
-		#: 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
-		self.filter = filter_flag
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
 		self.negative_ent = neg_ent
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
@@ -189,12 +180,10 @@ class TrainDataLoader(object):
 
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 		
-		if self.in_path != None:
-			base.setInPath(self.in_path)
-		else:
-			base.setTrainPath(self.tri_file)
-			base.setEntPath(self.ent_file)
-			base.setRelPath(self.rel_file)
+		base.setInPath(self.in_path)
+		base.setTrainPath(self.tri_file)
+		base.setEntPath(self.ent_file)
+		base.setRelPath(self.rel_file)
 		
 		base.setBern(self.bern)
 		base.setWorkThreads(self.work_threads)
@@ -230,7 +219,7 @@ class TrainDataLoader(object):
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.negative_ent, self.negative_rel, 0,
-			self.filter, 0, 0)
+			0, 0)
 		return {
 			"batch_h": self.batch_h, 
 			"batch_t": self.batch_t, 
@@ -249,7 +238,7 @@ class TrainDataLoader(object):
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.negative_ent, self.negative_rel, -1,
-			self.filter, 0, 0)
+			0, 0)
 		return {
 			"batch_h": self.batch_h,
 			"batch_t": self.batch_t[:self.batch_size],
@@ -268,7 +257,7 @@ class TrainDataLoader(object):
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.negative_ent, self.negative_rel, 1,
-			self.filter, 0, 0)
+			0, 0)
 		return {
 			"batch_h": self.batch_h[:self.batch_size],
 			"batch_t": self.batch_t,
@@ -290,87 +279,6 @@ class TrainDataLoader(object):
 			return self.sampling_head()
 		else:
 			return self.sampling_tail()
-
-	def set_in_path(self, in_path):
-
-		"""设置 :py:attr:`in_path`
-		
-		:param in_path: 数据集目录
-		:type in_path: str
-		"""
-
-		self.in_path = in_path
-
-	def set_batch_size(self, batch_size):
-
-		"""设置 :py:attr:`batch_size`
-		
-		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
-		:type batch_size: int
-		"""
-
-		self.batch_size = batch_size
-		self.nbatches = self.tripleTotal // self.batch_size
-
-	def set_nbatches(self, nbatches):
-
-		"""设置 :py:attr:`nbatches`
-		
-		:param nbatches: nbatches
-		:type nbatches: int
-		"""
-
-		self.nbatches = nbatches
-	
-	def set_work_threads(self, work_threads):
-
-		"""设置 :py:attr:`work_threads`
-		
-		:param work_threads: 底层 C++ 数据处理所需要的线程数
-		:type work_threads: int
-		"""
-
-		self.work_threads = work_threads
-
-	def set_bern_flag(self, bern):
-
-		"""设置 :py:attr:`bern`
-		
-		:param bern: 是否使用 TransH 提出的负采样方法进行负采样
-		:type bern: int
-		"""
-
-		self.bern = bern
-
-	def set_filter_flag(self, filter):
-
-		"""设置 :py:attr:`filter`
-		
-		:param filter: 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
-		:type filter: bool
-		"""
-
-		self.filter = filter
-
-	def set_ent_neg_rate(self, rate):
-
-		"""设置 :py:attr:`negative_ent`
-		
-		:param rate: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
-		:type rate: int
-		"""
-
-		self.negative_ent = rate
-
-	def set_rel_neg_rate(self, rate):
-
-		"""设置 :py:attr:`negative_rel`
-		
-		:param rate: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
-		:type rate: int
-		"""
-
-		self.negative_rel = rate
 
 	"""interfaces to get essential parameters"""
 

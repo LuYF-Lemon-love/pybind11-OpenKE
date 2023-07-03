@@ -13,17 +13,8 @@
 
 // 用 head 和 relation 构建负三元组，即替换 tail
 // 该函数返回负三元组的 tail
-INT corrupt_head(INT id, INT h, INT r, bool filter_flag = true) {
+INT corrupt_head(INT id, INT h, INT r) {
 	INT lef, rig, mid, ll, rr;
-
-	// 如果不过滤
-	if (not filter_flag) {
-		INT tmp = rand_max(id, entityTotal - 1);
-		if (tmp < h)
-			return tmp;
-		else
-			return tmp + 1;
-	}
 
 	// lef: head(h) 在 trainHead 中第一次出现的前一个位置
 	// rig: head(h) 在 trainHead 中最后一次出现的位置
@@ -75,17 +66,8 @@ INT corrupt_head(INT id, INT h, INT r, bool filter_flag = true) {
 
 // 用 tail 和 relation 构建负三元组，即替换 head
 // 该函数返回负三元组的 head
-INT corrupt_tail(INT id, INT t, INT r, bool filter_flag = true) {
+INT corrupt_tail(INT id, INT t, INT r) {
 	INT lef, rig, mid, ll, rr;
-
-	// 如果不过滤
-	if (not filter_flag) {
-		INT tmp = rand_max(id, entityTotal - 1);
-		if (tmp < t)
-			return tmp;
-		else
-			return tmp + 1;
-	}
 
 	// lef: tail(t) 在 trainTail 中第一次出现的前一个位置
 	// rig: tail(t) 在 trainTail 中最后一次出现的位置
@@ -137,17 +119,8 @@ INT corrupt_tail(INT id, INT t, INT r, bool filter_flag = true) {
 
 // 用 head 和 tail 构建负三元组，即替换 relation
 // 该函数返回负三元组的 relation
-INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false, bool filter_flag = true) {
+INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false) {
 	INT lef, rig, mid, ll, rr;
-
-	// 如果不过滤
-	if (not filter_flag) {
-		INT tmp = rand_max(id, relationTotal - 1);
-		if (tmp < r)
-			return tmp;
-		else
-			return tmp + 1;
-	}
 
 	// lef: head(h) 在 trainRel 中第一次出现的前一个位置
 	// rig: head(h) 在 trainRel 中最后一次出现的位置

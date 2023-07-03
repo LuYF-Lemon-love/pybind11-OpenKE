@@ -48,8 +48,6 @@ INT getValidTotal();
 // negRate: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail).
 // negRelRate: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation.
 // mode: 控制构建的方式, mode = 0 and bernFlag = True, 起用 TransH 方式构建负三元组.
-// filter_flag: 提出于 TransE, 用于更好的构建负三元组, used in corrupt_head, corrupt_tail, corrupt_rel.
-// filter_flag: 源代码中好像没有用到.
 // p: 用于构建负三元组 (used in corrupt_rel)
 // val_loss: val_loss == false (构建负三元组), else 不构建负三元组
 
@@ -157,7 +155,6 @@ void sampling(
 		INT negRate = 1, 
 		INT negRelRate = 0, 
 		INT mode = 0,
-		bool filter_flag = true,
 		bool p = false, 
 		bool val_loss = false
 ) {
@@ -166,7 +163,7 @@ void sampling(
     {
         threads.emplace_back(getBatch, id, batch_h,
 			batch_t, batch_r, batch_y, batchSize,
-			negRate, negRelRate, mode, filter_flag,
+			negRate, negRelRate, mode,
 			p, val_loss);
     }
     for(auto& entry: threads)
@@ -181,7 +178,7 @@ PYBIND11_MODULE(base, m) {
 		py::arg("batch_r").noconvert(), py::arg("batch_y").noconvert(),
 		py::arg("batchSize"), py::arg("bnegRate") = 1,
 		py::arg("negRelRate") = 0, py::arg("mode") = 0,
-		py::arg("filter_flag") = true, py::arg("p") = false,
+		py::arg("p") = false,
 		py::arg("val_loss") = false,
         py::call_guard<py::gil_scoped_release>());
 
