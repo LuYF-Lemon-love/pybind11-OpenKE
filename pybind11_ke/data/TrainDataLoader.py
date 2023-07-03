@@ -3,7 +3,7 @@
 # pybind11_ke/data/TrainDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
 #
 # 该脚本定义了采样数据的函数.
 
@@ -22,7 +22,7 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 
 	# dataloader for training
 	train_dataloader = TrainDataLoader(
-		in_path = "./benchmarks/FB15K237/", 
+		in_path = "../benchmarks/FB15K237/", 
 		nbatches = 100,
 		threads = 8, 
 		sampling_mode = "normal", 
@@ -38,7 +38,6 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 		dim = 200, 
 		p_norm = 1, 
 		norm_flag = True)
-
 
 	# define the loss function
 	model = NegativeSampling(
@@ -63,9 +62,10 @@ class TrainDataSampler(object):
 	"""
 
 	def __init__(self, nbatches, datasampler):
-		"""创建 TrainDataSample 对象
+
+		"""创建 TrainDataSample 对象。
 		
-		:param nbatches: 1 epoch 有多少个 batch 
+		:param nbatches: 1 epoch 有多少个 batch
 		:type nbatches: int
 		:param datasampler: 采样器
 		:type datasampler: :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 
@@ -80,11 +80,13 @@ class TrainDataSampler(object):
 		self.batch = 0
 
 	def __iter__(self):
+
 		"""迭代器函数 :py:meth:`iterator.__iter__`"""
 
 		return self
 
 	def __next__(self):
+
 		"""迭代器函数 :py:meth:`iterator.__next__`"""
 
 		self.batch += 1 
@@ -93,6 +95,7 @@ class TrainDataSampler(object):
 		return self.datasampler()
 
 	def __len__(self):
+
 		"""len() 要求 :py:meth:`object.__len__`
 		
 		:returns: :py:attr:`nbatches`
@@ -102,6 +105,7 @@ class TrainDataSampler(object):
 		return self.nbatches
 
 class TrainDataLoader(object):
+
 	"""
 	:py:class:`TrainDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
 	"""
@@ -182,6 +186,7 @@ class TrainDataLoader(object):
 		self.read()
 
 	def read(self):
+
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 		
 		if self.in_path != None:
@@ -216,13 +221,14 @@ class TrainDataLoader(object):
 		self.batch_y = np.zeros(self.batch_seq_size, dtype=np.float32)
 
 	def sampling(self):
+
 		"""正常采样1 batch 数据，即 ``normal``
 		
 		:returns: 1 batch 数据
 		:rtype: dict
 		"""
 
-		base.sampling( self.batch_h, self.batch_t, self.batch_r, self.batch_y,
+		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.negative_ent, self.negative_rel, 0,
 			self.filter, 0, 0)
 		return {
@@ -234,6 +240,7 @@ class TrainDataLoader(object):
 		}
 
 	def sampling_head(self):
+
 		"""只替换 head 进行负采样, 生成 1 batch 数据
 
 		:returns: 1 batch 数据
@@ -252,6 +259,7 @@ class TrainDataLoader(object):
 		}
 
 	def sampling_tail(self):
+
 		"""只替换 tail 进行负采样, 生成 1 batch 数据
 		
 		:returns: 1 batch 数据
@@ -270,6 +278,7 @@ class TrainDataLoader(object):
 		}
 
 	def cross_sampling(self):
+
 		"""交替替换 head 和 tail 进行负采样, 生成 1 batch 数据
 		
 		:returns: 1 batch 数据
@@ -283,6 +292,7 @@ class TrainDataLoader(object):
 			return self.sampling_tail()
 
 	def set_in_path(self, in_path):
+
 		"""设置 :py:attr:`in_path`
 		
 		:param in_path: 数据集目录
@@ -292,6 +302,7 @@ class TrainDataLoader(object):
 		self.in_path = in_path
 
 	def set_batch_size(self, batch_size):
+
 		"""设置 :py:attr:`batch_size`
 		
 		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
@@ -302,6 +313,7 @@ class TrainDataLoader(object):
 		self.nbatches = self.tripleTotal // self.batch_size
 
 	def set_nbatches(self, nbatches):
+
 		"""设置 :py:attr:`nbatches`
 		
 		:param nbatches: nbatches
@@ -311,6 +323,7 @@ class TrainDataLoader(object):
 		self.nbatches = nbatches
 	
 	def set_work_threads(self, work_threads):
+
 		"""设置 :py:attr:`work_threads`
 		
 		:param work_threads: 底层 C++ 数据处理所需要的线程数
@@ -320,6 +333,7 @@ class TrainDataLoader(object):
 		self.work_threads = work_threads
 
 	def set_bern_flag(self, bern):
+
 		"""设置 :py:attr:`bern`
 		
 		:param bern: 是否使用 TransH 提出的负采样方法进行负采样
@@ -329,6 +343,7 @@ class TrainDataLoader(object):
 		self.bern = bern
 
 	def set_filter_flag(self, filter):
+
 		"""设置 :py:attr:`filter`
 		
 		:param filter: 提出于 TransE，用于更好的构建负三元组，源代码一直使用，因此此开关不起作用
@@ -338,6 +353,7 @@ class TrainDataLoader(object):
 		self.filter = filter
 
 	def set_ent_neg_rate(self, rate):
+
 		"""设置 :py:attr:`negative_ent`
 		
 		:param rate: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
@@ -347,6 +363,7 @@ class TrainDataLoader(object):
 		self.negative_ent = rate
 
 	def set_rel_neg_rate(self, rate):
+
 		"""设置 :py:attr:`negative_rel`
 		
 		:param rate: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
@@ -358,6 +375,7 @@ class TrainDataLoader(object):
 	"""interfaces to get essential parameters"""
 
 	def get_batch_size(self):
+
 		"""返回 :py:attr:`batch_size`
 
 		:returns: :py:attr:`batch_size`
@@ -367,6 +385,7 @@ class TrainDataLoader(object):
 		return self.batch_size
 
 	def get_ent_tot(self):
+
 		"""返回 :py:attr:`entTotal`
 
 		:returns: :py:attr:`entTotal`
@@ -376,6 +395,7 @@ class TrainDataLoader(object):
 		return self.entTotal
 
 	def get_rel_tot(self):
+
 		"""返回 :py:attr:`relTotal`
 
 		:returns: :py:attr:`relTotal`
@@ -385,6 +405,7 @@ class TrainDataLoader(object):
 		return self.relTotal
 
 	def get_triple_tot(self):
+
 		"""返回 :py:attr:`tripleTotal`
 
 		:returns: :py:attr:`tripleTotal`
@@ -394,6 +415,7 @@ class TrainDataLoader(object):
 		return self.tripleTotal
 
 	def __iter__(self):
+
 		"""迭代器函数 :py:meth:`iterator.__iter__`，
 		根据 :py:attr:`sampling_mode` 选择返回 :py:meth:`sampling` 和
 		:py:meth:`cross_sampling`"""
@@ -404,6 +426,7 @@ class TrainDataLoader(object):
 			return TrainDataSampler(self.nbatches, self.cross_sampling)
 
 	def __len__(self):
+		
 		"""len() 要求 :py:meth:`object.__len__`
 		
 		:returns: :py:attr:`nbatches`
