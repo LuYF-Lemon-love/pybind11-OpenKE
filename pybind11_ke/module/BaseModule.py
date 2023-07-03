@@ -53,34 +53,6 @@ class BaseModule(nn.Module):
 			os.makedirs(os.path.split(path)[0], exist_ok=True)
 		torch.save(self.state_dict(), path)
 
-	def load_parameters(self, path):
-
-		"""加载模型权重。
-
-		:param path: 模型保存的路径
-		:type path: str
-		"""
-
-		f = open(path, "r")
-		parameters = json.loads(f.read())
-		f.close()
-		for i in parameters:
-			parameters[i] = torch.Tensor(parameters[i])
-		self.load_state_dict(parameters, strict = False)
-		self.eval()
-
-	def save_parameters(self, path):
-
-		"""保存模型权重。
-
-		:param path: 模型保存的路径
-		:type path: str
-		"""
-
-		f = open(path, "w")
-		f.write(json.dumps(self.get_parameters("list")))
-		f.close()
-
 	def get_parameters(self, mode = "numpy", param_dict = None):
 
 		"""获得模型权重。
@@ -118,3 +90,33 @@ class BaseModule(nn.Module):
 			parameters[i] = torch.Tensor(parameters[i])
 		self.load_state_dict(parameters, strict = False)
 		self.eval()
+
+	def load_parameters(self, path):
+
+		"""加载模型权重。
+
+		:param path: 模型保存的路径
+		:type path: str
+		"""
+
+		f = open(path, "r")
+		parameters = json.loads(f.read())
+		f.close()
+		for i in parameters:
+			parameters[i] = torch.Tensor(parameters[i])
+		self.load_state_dict(parameters, strict = False)
+		self.eval()
+
+	def save_parameters(self, path):
+
+		"""保存模型权重。
+
+		:param path: 模型保存的路径
+		:type path: str
+		"""
+
+		if not os.path.exists(os.path.split(path)[0]):
+			os.makedirs(os.path.split(path)[0], exist_ok=True)
+		f = open(path, "w")
+		f.write(json.dumps(self.get_parameters("list")))
+		f.close()
