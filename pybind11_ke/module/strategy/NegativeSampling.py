@@ -3,7 +3,7 @@
 # pybind11_ke/module/strategy/NegativeSampling.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 28, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
 #
 # 该脚本定义了 KGE 模型的训练策略.
 
@@ -33,6 +33,7 @@ NegativeSampling - 训练策略类，包含损失函数。
 from .Strategy import Strategy
 
 class NegativeSampling(Strategy):
+
 	"""
 	NegativeSampling 类，继承自 :py:class:`pybind11_ke.module.strategy.Strategy`。
 	
@@ -41,6 +42,7 @@ class NegativeSampling(Strategy):
 
 	def __init__(self, model = None, loss = None, batch_size = 256,
 	      regul_rate = 0.0, l3_regul_rate = 0.0):
+		
 		"""创建 NegativeSampling 对象。
 
 		:param model: KGE 模型
@@ -68,6 +70,7 @@ class NegativeSampling(Strategy):
 		self.l3_regul_rate = l3_regul_rate
 
 	def _get_positive_score(self, score):
+
 		"""
 		获得正样本的得分，由于底层 C++ 处理模块的原因，
 		所以正样本的得分处于前 batch size 位置。
@@ -83,6 +86,7 @@ class NegativeSampling(Strategy):
 		return positive_score
 
 	def _get_negative_score(self, score):
+
 		"""
 		获得负样本的得分，由于底层 C++ 处理模块的原因，
 		所以正样本的得分处于前 batch size 位置，负样本处于正样本后面。
@@ -98,6 +102,7 @@ class NegativeSampling(Strategy):
 		return negative_score
 
 	def forward(self, data):
+		
 		"""计算最后的损失值。定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
