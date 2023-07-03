@@ -81,12 +81,24 @@ class TestDataLoader(object):
 
 	""":py:class:`TestDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的验证。"""
 
-	def __init__(self, in_path = "./", sampling_mode = 'link', type_constrain = True):
+	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
+		train_file = "train2id.txt", valid_file = "valid2id.txt", test_file = "test2id.txt",
+		sampling_mode = 'link', type_constrain = True):
 
 		"""创建 TestDataLoader 对象。
 
 		:param in_path: 数据集目录
 		:type in_path: str
+		:param ent_file: entity2id.txt
+		:type ent_file: str
+		:param rel_file: relation2id.txt
+		:type rel_file: str
+		:param train_file: train2id.txt
+		:type train_file: str
+		:param valid_file: valid2id.txt
+		:type valid_file: str
+		:param test_file: test2id.txt
+		:type test_file: str
 		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
 		:type sampling_mode: str
 		:param type_constrain: 是否用 type_constrain.txt 进行负采样
@@ -95,6 +107,16 @@ class TestDataLoader(object):
 
 		#: 数据集目录
 		self.in_path = in_path
+		#: entity2id.txt
+		self.ent_file = self.in_path + ent_file
+		#: relation2id.txt
+		self.rel_file = self.in_path + rel_file
+		#: train2id.txt
+		self.train_file = self.in_path + train_file
+		#: valid2id.txt
+		self.valid_file = self.in_path + valid_file
+		#: test2id.txt
+		self.test_file = self.in_path + test_file
 		#: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
 		self.sampling_mode = sampling_mode
 		#: 是否用 type_constrain.txt 进行负采样
@@ -115,6 +137,11 @@ class TestDataLoader(object):
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 
 		base.setInPath(self.in_path)
+		base.setEntPath(self.ent_file)
+		base.setRelPath(self.rel_file)
+		base.setTrainPath(self.train_file)
+		base.setValidPath(self.valid_file)
+		base.setTestPath(self.test_file)
 		base.randReset()
 		base.importTestFiles()
 

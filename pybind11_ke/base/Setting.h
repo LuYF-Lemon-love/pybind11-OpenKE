@@ -63,25 +63,19 @@ void setTrainPath(std::string path) {
               << train_file << std::endl;
 }
 
-// // 设置验证集数据文件路径
-// extern "C"
-// void setValidPath(char *path) {
-// 	INT len = strlen(path);
-// 	valid_file = "";
-// 	for (INT i = 0; i < len; i++)
-// 		valid_file = valid_file + path[i];
-// 	printf("Valid Files Path : %s\n", valid_file.c_str());
-// }
+// 设置验证集数据文件路径
+void setValidPath(std::string path) {
+	valid_file = std::move(path);
+    std::cout << "Valid Files Path : "
+              << valid_file << std::endl;
+}
 
-// // 设置测试集数据文件路径
-// extern "C"
-// void setTestPath(char *path) {
-// 	INT len = strlen(path);
-// 	test_file = "";
-// 	for (INT i = 0; i < len; i++)
-// 		test_file = test_file + path[i];
-// 	printf("Test Files Path : %s\n", test_file.c_str());
-// }
+// 设置测试集数据文件路径
+void setTestPath(std::string path) {
+	test_file = std::move(path);
+    std::cout << "Test Files Path : "
+              << test_file << std::endl;
+}
 
 // 设置实体数据文件路径
 void setEntPath(std::string path) {

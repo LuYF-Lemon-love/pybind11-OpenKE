@@ -16,14 +16,6 @@
 
 // defined in Setting.h
 extern "C"
-void setValidPath(char *path);
-
-// defined in Setting.h
-extern "C"
-void setTestPath(char *path);
-
-// defined in Setting.h
-extern "C"
 void setOutPath(char *path);
 
 // defined in Setting.h
@@ -182,9 +174,11 @@ PYBIND11_MODULE(base, m) {
         py::call_guard<py::gil_scoped_release>());
 
 	m.def("setInPath", &setInPath);
-	m.def("setTrainPath", &setTrainPath);
 	m.def("setEntPath", &setEntPath);
 	m.def("setRelPath", &setRelPath);
+	m.def("setTrainPath", &setTrainPath);
+	m.def("setValidPath", &setValidPath);
+	m.def("setTestPath", &setTestPath);
 	m.def("setBern", &setBern);
 	m.def("setWorkThreads", &setWorkThreads);
 	m.def("randReset", &randReset);
