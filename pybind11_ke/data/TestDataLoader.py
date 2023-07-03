@@ -115,7 +115,6 @@ class TestDataLoader(object):
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 
 		base.setInPath(self.in_path)
-		print("111111111111" + base.getEntityTotal())
 		base.randReset()
 		base.importTestFiles()
 
