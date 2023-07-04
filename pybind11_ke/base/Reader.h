@@ -62,8 +62,8 @@ INT *validLef, *validRig;
 void importTrainFiles() {
 
     std::cout << "The toolkit is importing datasets." << std::endl;
-	FILE *fin;
-	int tmp;
+    FILE *fin;
+    int tmp;
 
     // 读取关系的个数
     // rel_file: 定义于 Setting.h
@@ -140,12 +140,12 @@ void importTrainFiles() {
     right_head = (INT *)calloc(entity_total, sizeof(INT));
     left_tail = (INT *)calloc(entity_total, sizeof(INT));
     right_tail = (INT *)calloc(entity_total, sizeof(INT));
-	left_rel = (INT *)calloc(entity_total, sizeof(INT));
-	right_rel = (INT *)calloc(entity_total, sizeof(INT));
+    left_rel = (INT *)calloc(entity_total, sizeof(INT));
+    right_rel = (INT *)calloc(entity_total, sizeof(INT));
     // right_head, right_tail, right_rel 初始化为 -1
-	memset(right_head, -1, sizeof(INT)*entity_total);
-	memset(right_tail, -1, sizeof(INT)*entity_total);
-	memset(right_rel, -1, sizeof(INT)*entity_total);
+    memset(right_head, -1, sizeof(INT)*entity_total);
+    memset(right_tail, -1, sizeof(INT)*entity_total);
+    memset(right_rel, -1, sizeof(INT)*entity_total);
     for (INT i = 1; i < train_total; i++) {
         // left_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
         // right_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
