@@ -96,10 +96,10 @@ void setRelPath(std::string path) {
 */
 
 // 线程数
-INT workThreads = 1;
+INT work_threads = 1;
 
 void setWorkThreads(INT threads) {
-	workThreads = threads;
+	work_threads = threads;
 }
 
 /*
@@ -145,10 +145,10 @@ INT getTestTotal() {
 */
 
 // TransH 提出的负采样策略
-INT bernFlag = 0;
+bool bern_flag = false;
 
-void setBern(INT flag) {
-	bernFlag = flag;
+void setBern(bool flag) {
+	bern_flag = flag;
 }
 
 #endif

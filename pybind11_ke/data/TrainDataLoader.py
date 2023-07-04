@@ -26,7 +26,7 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 		nbatches = 100,
 		threads = 8, 
 		sampling_mode = "normal", 
-		bern_flag = 1, 
+		bern_flag = True, 
 		neg_ent = 25,
 		neg_rel = 0)
 
@@ -133,7 +133,7 @@ class TrainDataLoader(object):
 		:param sampling_mode: 数据采样模式，``normal`` 表示正常负采样，``cross`` 表示交替替换 head 和 tail 进行负采样
 		:type sampling_mode: str
 		:param bern_flag: 是否使用 TransH 提出的负采样方法进行负采样
-		:type bern_flag: int
+		:type bern_flag: bool
 		:param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
 		:type neg_ent: int
 		:param neg_rel: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
@@ -219,7 +219,7 @@ class TrainDataLoader(object):
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.neg_ent, self.neg_rel, 0,
-			0, 0)
+			0)
 		return {
 			"batch_h": self.batch_h, 
 			"batch_t": self.batch_t, 
@@ -238,7 +238,7 @@ class TrainDataLoader(object):
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.neg_ent, self.neg_rel, -1,
-			0, 0)
+			0)
 		return {
 			"batch_h": self.batch_h,
 			"batch_t": self.batch_t[:self.batch_size],
@@ -257,7 +257,7 @@ class TrainDataLoader(object):
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
 			self.batch_size, self.neg_ent, self.neg_rel, 1,
-			0, 0)
+			0)
 		return {
 			"batch_h": self.batch_h[:self.batch_size],
 			"batch_t": self.batch_t,

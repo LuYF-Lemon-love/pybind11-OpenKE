@@ -14,8 +14,8 @@ unsigned long long *next_random;
 
 // 重新设定所有线程的随机种子.
 void randReset() {
-	next_random = (unsigned long long *)calloc(workThreads, sizeof(unsigned long long));
-	for (INT i = 0; i < workThreads; i++)
+	next_random = (unsigned long long *)calloc(work_threads, sizeof(unsigned long long));
+	for (INT i = 0; i < work_threads; i++)
 		next_random[i] = rand();
 }
 
