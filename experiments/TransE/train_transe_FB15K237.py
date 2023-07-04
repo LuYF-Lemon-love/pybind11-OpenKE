@@ -44,7 +44,7 @@ train_dataloader = TrainDataLoader(
 	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
-	bern_flag = 1,  
+	bern_flag = True,  
 	neg_ent = 25,
 	neg_rel = 0)
 
