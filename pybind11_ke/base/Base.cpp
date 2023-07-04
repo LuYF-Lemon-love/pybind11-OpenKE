@@ -36,8 +36,7 @@ INT getValidTotal();
 // neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail).
 // neg_rel: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation.
 // mode: 控制构建的方式, mode = 0 and bern_flag = True, 起用 TransH 方式构建负三元组.
-//		mode = -1 : 只替换头实体; mode = 1 : 只替换尾实体.
-// p: 用于构建负三元组 (used in corrupt_rel)
+//		mode = 1 : 只替换头实体; mode = -1 : 只替换尾实体.
 
 // 获得 1 batch 训练数据
 void get_bacth(
@@ -49,8 +48,7 @@ void get_bacth(
 	INT batch_size, 
 	INT neg_ent, 
 	INT neg_rel, 
-	INT mode,
-	bool p
+	INT mode
 ) {
 	auto batch_h = batch_h_py.mutable_unchecked<1>();
 	auto batch_t = batch_t_py.mutable_unchecked<1>();
@@ -84,10 +82,10 @@ void get_bacth(
 					prob = 1000 * right_mean[train_list[i].r] / (right_mean[train_list[i].r] + left_mean[train_list[i].r]);
 				if (randd(id) % 1000 < prob) {
 					batch_h(batch + last) = train_list[i].h;
-					batch_t(batch + last) = corrupt_head(id, train_list[i].h, train_list[i].r);
+					batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
 					batch_r(batch + last) = train_list[i].r;
 				} else {
-					batch_h(batch + last) = corrupt_tail(id, train_list[i].t, train_list[i].r);
+					batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
 					batch_t(batch + last) = train_list[i].t;
 					batch_r(batch + last) = train_list[i].r;
 				}
@@ -95,13 +93,13 @@ void get_bacth(
 				// 下一负三元组的位置
 				last += batch_size;
 			} else {
-				if(mode == -1){
-					batch_h(batch + last) = corrupt_tail(id, train_list[i].t, train_list[i].r);
+				if(mode == 1){
+					batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
 					batch_t(batch + last) = train_list[i].t;
 					batch_r(batch + last) = train_list[i].r;
-				} else if (mode == 1){
+				} else if (mode == -1){
 					batch_h(batch + last) = train_list[i].h;
-					batch_t(batch + last) = corrupt_head(id, train_list[i].h, train_list[i].r);
+					batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
 					batch_r(batch + last) = train_list[i].r;
 				}
 				batch_y(batch + last) = -1;
@@ -112,7 +110,7 @@ void get_bacth(
 		for (INT times = 0; times < neg_rel; times++) {
 			batch_h(batch + last) = train_list[i].h;
 			batch_t(batch + last) = train_list[i].t;
-			batch_r(batch + last) = corrupt_rel(id, train_list[i].h, train_list[i].t, train_list[i].r, p);
+			batch_r(batch + last) = corrupt_rel(id, train_list[i].h, train_list[i].t);
 			batch_y(batch + last) = -1;
 			last += batch_size;
 		}
@@ -128,16 +126,14 @@ void sampling(
 		INT batch_size, 
 		INT neg_ent = 1, 
 		INT neg_rel = 0, 
-		INT mode = 0,
-		bool p = false
+		INT mode = 0
 ) {
 	std::vector<std::thread> threads;
     for (INT id = 0; id < work_threads; id++)
     {
         threads.emplace_back(get_bacth, id, batch_h,
 			batch_t, batch_r, batch_y, batch_size,
-			neg_ent, neg_rel, mode,
-			p);
+			neg_ent, neg_rel, mode);
     }
     for(auto& entry: threads)
         entry.join();
@@ -151,7 +147,6 @@ PYBIND11_MODULE(base, m) {
 		py::arg("batch_r").noconvert(), py::arg("batch_y").noconvert(),
 		py::arg("batch_size"), py::arg("neg_ent") = 1,
 		py::arg("neg_rel") = 0, py::arg("mode") = 0,
-		py::arg("p") = false,
         py::call_guard<py::gil_scoped_release>());
 
 	m.def("setInPath", &setInPath);

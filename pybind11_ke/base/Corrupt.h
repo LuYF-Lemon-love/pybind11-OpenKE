@@ -13,7 +13,7 @@
 
 // 用 head 和 relation 构建负三元组，即替换 tail
 // 该函数返回负三元组的 tail
-INT corrupt_head(INT id, INT h, INT r) {
+INT corrupt_with_head(INT id, INT h, INT r) {
 	INT lef, rig, mid, ll, rr;
 
 	// lef: head(h) 在 train_head 中第一次出现的前一个位置
@@ -66,7 +66,7 @@ INT corrupt_head(INT id, INT h, INT r) {
 
 // 用 tail 和 relation 构建负三元组，即替换 head
 // 该函数返回负三元组的 head
-INT corrupt_tail(INT id, INT t, INT r) {
+INT corrupt_with_tail(INT id, INT t, INT r) {
 	INT lef, rig, mid, ll, rr;
 
 	// lef: tail(t) 在 train_tail 中第一次出现的前一个位置
@@ -119,7 +119,7 @@ INT corrupt_tail(INT id, INT t, INT r) {
 
 // 用 head 和 tail 构建负三元组，即替换 relation
 // 该函数返回负三元组的 relation
-INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false) {
+INT corrupt_rel(INT id, INT h, INT t) {
 	INT lef, rig, mid, ll, rr;
 
 	// lef: head(h) 在 train_rel 中第一次出现的前一个位置
@@ -145,50 +145,9 @@ INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false) {
 		rig = mid;
 	}
 	rr = lef;
-
-	INT tmp;
-	if(p == false) {	
-		// 只能产生 (elationTotal - (rr - ll + 1)) 种关系，即去掉训练集中已有的三元组
-		tmp = rand_max(id, relation_total - (rr - ll + 1));
-	}
-	else {
-		// 利用概率分布替换 relation
-		INT start = r * (relation_total - 1);
-		REAL sum = 1;
-		bool *record = (bool *)calloc(relation_total - 1, sizeof(bool));
-		for (INT i = ll; i <= rr; ++i){
-			if (train_rel[i].r > r){
-				sum -= prob[start + train_rel[i].r-1];
-				record[train_rel[i].r-1] = true;
-			}
-			else if (train_rel[i].r < r){
-				sum -= prob[start + train_rel[i].r];
-				record[train_rel[i].r] = true;
-			}
-		}		
-		REAL *prob_tmp = (REAL *)calloc(relation_total-(rr-ll+1), sizeof(REAL));
-		INT cnt = 0;
-		REAL rec = 0;
-		for (INT i = start; i < start + relation_total - 1; ++i) {
-			if (record[i-start])
-				continue;
-			rec += prob[i] / sum;
-			prob_tmp[cnt++] = rec;
-		}
-		REAL m = rand_max(id, 10000) / 10000.0;
-		lef = 0;
-		rig = cnt - 1;
-		while (lef < rig) {
-			mid = (lef + rig) >> 1;
-			if (prob_tmp[mid] < m) 
-				lef = mid + 1; 
-			else
-				rig = mid;
-		}
-		tmp = rig;
-		free(prob_tmp);
-		free(record);
-	}
+	
+	// 只能产生 (elationTotal - (rr - ll + 1)) 种关系，即去掉训练集中已有的三元组
+	INT	tmp = rand_max(id, relation_total - (rr - ll + 1));
 
 	// 第一种：tmp 小于第一个 t 对应的 relation
 	if (tmp < train_rel[ll].r) return tmp;
@@ -239,7 +198,7 @@ INT corrupt(INT h, INT r){
 		} else {
 			loop ++;
 			if (loop >= 1000) {
-				return corrupt_head(0, h, r);
+				return corrupt_with_head(0, h, r);
 			}
 		} 
 	}

@@ -19,7 +19,6 @@ INT *left_head, *right_head;
 INT *left_tail, *right_tail;
 INT *left_rel, *right_rel;
 REAL *left_mean, *right_mean;
-REAL *prob;
 
 Triple *train_list;
 Triple *train_head;
@@ -28,35 +27,6 @@ Triple *train_rel;
 
 INT *testLef, *testRig;
 INT *validLef, *validRig;
-
-// // 用于 corrupt_rel 函数
-// extern "C"
-// void importProb(REAL temp){
-//     if (prob != NULL)
-//         free(prob);
-//     FILE *fin;
-//     fin = fopen((inPath + "kl_prob.txt").c_str(), "r");
-//     printf("Current temperature:%f\n", temp);
-//     prob = (REAL *)calloc(relation_total * (relation_total - 1), sizeof(REAL));
-//     INT tmp;
-//     for (INT i = 0; i < relation_total * (relation_total - 1); ++i){
-//         tmp = fscanf(fin, "%f", &prob[i]);
-//     }
-//     REAL sum = 0.0;
-//     for (INT i = 0; i < relation_total; ++i) {
-//         for (INT j = 0; j < relation_total-1; ++j){
-//             REAL tmp = exp(-prob[i * (relation_total - 1) + j] / temp);
-//             sum += tmp;
-//             prob[i * (relation_total - 1) + j] = tmp;
-//         }
-//         for (INT j = 0; j < relation_total-1; ++j){
-//             prob[i*(relation_total-1)+j] /= sum;
-//         }
-//         sum = 0;
-//     }
-//     fclose(fin);
-//     std::cout << "tmp = " << tmp << std::endl;
-// }
 
 // 读取训练集
 void importTrainFiles() {

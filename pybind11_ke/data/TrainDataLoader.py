@@ -218,8 +218,7 @@ class TrainDataLoader(object):
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
-			self.batch_size, self.neg_ent, self.neg_rel, 0,
-			0)
+			self.batch_size, self.neg_ent, self.neg_rel, 0)
 		return {
 			"batch_h": self.batch_h, 
 			"batch_t": self.batch_t, 
@@ -237,8 +236,7 @@ class TrainDataLoader(object):
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
-			self.batch_size, self.neg_ent, self.neg_rel, -1,
-			0)
+			self.batch_size, self.neg_ent, self.neg_rel, 1)
 		return {
 			"batch_h": self.batch_h,
 			"batch_t": self.batch_t[:self.batch_size],
@@ -256,8 +254,7 @@ class TrainDataLoader(object):
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
-			self.batch_size, self.neg_ent, self.neg_rel, 1,
-			0)
+			self.batch_size, self.neg_ent, self.neg_rel, -1)
 		return {
 			"batch_h": self.batch_h[:self.batch_size],
 			"batch_t": self.batch_t,
