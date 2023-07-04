@@ -102,29 +102,24 @@ void setWorkThreads(INT threads) {
 	workThreads = threads;
 }
 
-// extern "C"
-// INT getWorkThreads() {
-// 	return workThreads;
-// }
-
 /*
 ============================================================
 */
 
 // 统计数据
-INT relationTotal = 0;
-INT entityTotal = 0;
+INT relation_total = 0;
+INT entity_total = 0;
 INT tripleTotal = 0;
 INT testTotal = 0;
-INT trainTotal = 0;
+INT train_total = 0;
 INT validTotal = 0;
 
 INT getEntityTotal() {
-	return entityTotal;
+	return entity_total;
 }
 
 INT getRelationTotal() {
-	return relationTotal;
+	return relation_total;
 }
 
 // extern "C"
@@ -133,7 +128,7 @@ INT getRelationTotal() {
 // }
 
 INT getTrainTotal() {
-	return trainTotal;
+	return train_total;
 }
 
 INT getTestTotal() {
@@ -152,8 +147,8 @@ INT getTestTotal() {
 // TransH 提出的负采样策略
 INT bernFlag = 0;
 
-void setBern(INT con) {
-	bernFlag = con;
+void setBern(INT flag) {
+	bernFlag = flag;
 }
 
 #endif

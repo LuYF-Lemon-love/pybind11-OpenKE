@@ -20,10 +20,6 @@ void setOutPath(char *path);
 
 // defined in Setting.h
 extern "C"
-INT getWorkThreads();
-
-// defined in Setting.h
-extern "C"
 INT getTripleTotal();
 
 // defined in Setting.h
@@ -75,10 +71,10 @@ void getBatch(
 	if (val_loss == false) {
 		for (INT batch = lef; batch < rig; batch++) {
 			// 正三元组
-			INT i = rand_max(id, trainTotal);
-			batch_h(batch) = trainList[i].h;
-			batch_t(batch) = trainList[i].t;
-			batch_r(batch) = trainList[i].r;
+			INT i = rand_max(id, train_total);
+			batch_h(batch) = train_list[i].h;
+			batch_t(batch) = train_list[i].t;
+			batch_r(batch) = train_list[i].r;
 			batch_y(batch) = 1;
 			// batch + batchSize: 第一个负三元组生成的位置
 			INT last = batchSize;
@@ -87,28 +83,28 @@ void getBatch(
 				if (mode == 0){
 					// TransH 负采样策略
 					if (bernFlag)
-						prob = 1000 * right_mean[trainList[i].r] / (right_mean[trainList[i].r] + left_mean[trainList[i].r]);
+						prob = 1000 * right_mean[train_list[i].r] / (right_mean[train_list[i].r] + left_mean[train_list[i].r]);
 					if (randd(id) % 1000 < prob) {
-						batch_h(batch + last) = trainList[i].h;
-						batch_t(batch + last) = corrupt_head(id, trainList[i].h, trainList[i].r);
-						batch_r(batch + last) = trainList[i].r;
+						batch_h(batch + last) = train_list[i].h;
+						batch_t(batch + last) = corrupt_head(id, train_list[i].h, train_list[i].r);
+						batch_r(batch + last) = train_list[i].r;
 					} else {
-						batch_h(batch + last) = corrupt_tail(id, trainList[i].t, trainList[i].r);
-						batch_t(batch + last) = trainList[i].t;
-						batch_r(batch + last) = trainList[i].r;
+						batch_h(batch + last) = corrupt_tail(id, train_list[i].t, train_list[i].r);
+						batch_t(batch + last) = train_list[i].t;
+						batch_r(batch + last) = train_list[i].r;
 					}
 					batch_y(batch + last) = -1;
 					// 下一负三元组的位置
 					last += batchSize;
 				} else {
 					if(mode == -1){
-						batch_h(batch + last) = corrupt_tail(id, trainList[i].t, trainList[i].r);
-						batch_t(batch + last) = trainList[i].t;
-						batch_r(batch + last) = trainList[i].r;
+						batch_h(batch + last) = corrupt_tail(id, train_list[i].t, train_list[i].r);
+						batch_t(batch + last) = train_list[i].t;
+						batch_r(batch + last) = train_list[i].r;
 					} else {
-						batch_h(batch + last) = trainList[i].h;
-						batch_t(batch + last) = corrupt_head(id, trainList[i].h, trainList[i].r);
-						batch_r(batch + last) = trainList[i].r;
+						batch_h(batch + last) = train_list[i].h;
+						batch_t(batch + last) = corrupt_head(id, train_list[i].h, train_list[i].r);
+						batch_r(batch + last) = train_list[i].r;
 					}
 					batch_y(batch + last) = -1;
 					last += batchSize;
@@ -116,9 +112,9 @@ void getBatch(
 			}
 			// 负采样 relation
 			for (INT times = 0; times < negRelRate; times++) {
-				batch_h(batch + last) = trainList[i].h;
-				batch_t(batch + last) = trainList[i].t;
-				batch_r(batch + last) = corrupt_rel(id, trainList[i].h, trainList[i].t, trainList[i].r, p);
+				batch_h(batch + last) = train_list[i].h;
+				batch_t(batch + last) = train_list[i].t;
+				batch_r(batch + last) = corrupt_rel(id, train_list[i].h, train_list[i].t, train_list[i].r, p);
 				batch_y(batch + last) = -1;
 				last += batchSize;
 			}

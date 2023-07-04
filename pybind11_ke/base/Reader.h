@@ -21,7 +21,7 @@ INT *lefRel, *rigRel;
 REAL *left_mean, *right_mean;
 REAL *prob;
 
-Triple *trainList;
+Triple *train_list;
 Triple *trainHead;
 Triple *trainTail;
 Triple *trainRel;
@@ -37,20 +37,20 @@ INT *validLef, *validRig;
 //     FILE *fin;
 //     fin = fopen((inPath + "kl_prob.txt").c_str(), "r");
 //     printf("Current temperature:%f\n", temp);
-//     prob = (REAL *)calloc(relationTotal * (relationTotal - 1), sizeof(REAL));
+//     prob = (REAL *)calloc(relation_total * (relation_total - 1), sizeof(REAL));
 //     INT tmp;
-//     for (INT i = 0; i < relationTotal * (relationTotal - 1); ++i){
+//     for (INT i = 0; i < relation_total * (relation_total - 1); ++i){
 //         tmp = fscanf(fin, "%f", &prob[i]);
 //     }
 //     REAL sum = 0.0;
-//     for (INT i = 0; i < relationTotal; ++i) {
-//         for (INT j = 0; j < relationTotal-1; ++j){
-//             REAL tmp = exp(-prob[i * (relationTotal - 1) + j] / temp);
+//     for (INT i = 0; i < relation_total; ++i) {
+//         for (INT j = 0; j < relation_total-1; ++j){
+//             REAL tmp = exp(-prob[i * (relation_total - 1) + j] / temp);
 //             sum += tmp;
-//             prob[i * (relationTotal - 1) + j] = tmp;
+//             prob[i * (relation_total - 1) + j] = tmp;
 //         }
-//         for (INT j = 0; j < relationTotal-1; ++j){
-//             prob[i*(relationTotal-1)+j] /= sum;
+//         for (INT j = 0; j < relation_total-1; ++j){
+//             prob[i*(relation_total-1)+j] /= sum;
 //         }
 //         sum = 0;
 //     }
@@ -66,12 +66,11 @@ void importTrainFiles() {
 	int tmp;
 
     // 读取关系的个数
-    // inPath: 定义于 Setting.h
     // rel_file: 定义于 Setting.h
     fin = fopen(rel_file.c_str(), "r");
     // relation2id.txt 第一行是关系的个数
-	tmp = fscanf(fin, "%ld", &relationTotal);
-    std::cout << "The total of relations is " << relationTotal
+	tmp = fscanf(fin, "%ld", &relation_total);
+    std::cout << "The total of relations is " << relation_total
             << "." << std::endl;
 	fclose(fin);
 
@@ -79,8 +78,8 @@ void importTrainFiles() {
     // ent_file: defined in Setting.h
     fin = fopen(ent_file.c_str(), "r");
     // entity2id.txt 第一行是实体的个数
-	tmp = fscanf(fin, "%ld", &entityTotal);
-    std::cout << "The total of entities is " << entityTotal
+	tmp = fscanf(fin, "%ld", &entity_total);
+    std::cout << "The total of entities is " << entity_total
             << "." << std::endl;
 	fclose(fin);
 
@@ -88,100 +87,100 @@ void importTrainFiles() {
     // train_file: 定义于 Setting.h
     fin = fopen(train_file.c_str(), "r");
     // train2id.txt 第一行是三元组的个数.
-	tmp = fscanf(fin, "%ld", &trainTotal);
-    // trainList: 保存训练集中的三元组集合.
-	trainList = (Triple *)calloc(trainTotal, sizeof(Triple));
-	trainHead = (Triple *)calloc(trainTotal, sizeof(Triple));
-	trainTail = (Triple *)calloc(trainTotal, sizeof(Triple));
-	trainRel = (Triple *)calloc(trainTotal, sizeof(Triple));
+	tmp = fscanf(fin, "%ld", &train_total);
+    // train_list: 保存训练集中的三元组集合.
+	train_list = (Triple *)calloc(train_total, sizeof(Triple));
+	trainHead = (Triple *)calloc(train_total, sizeof(Triple));
+	trainTail = (Triple *)calloc(train_total, sizeof(Triple));
+	trainRel = (Triple *)calloc(train_total, sizeof(Triple));
     // freqRel, freqEnt: 元素值被初始化为 0.
-	freqRel = (INT *)calloc(relationTotal, sizeof(INT));
-	freqEnt = (INT *)calloc(entityTotal, sizeof(INT));
-    // 读取训练集三元组集合, 保存在 trainList.
-	for (INT i = 0; i < trainTotal; i++) {
-		tmp = fscanf(fin, "%ld", &trainList[i].h);
-		tmp = fscanf(fin, "%ld", &trainList[i].t);
-		tmp = fscanf(fin, "%ld", &trainList[i].r);
+	freqRel = (INT *)calloc(relation_total, sizeof(INT));
+	freqEnt = (INT *)calloc(entity_total, sizeof(INT));
+    // 读取训练集三元组集合, 保存在 train_list.
+	for (INT i = 0; i < train_total; i++) {
+		tmp = fscanf(fin, "%ld", &train_list[i].h);
+		tmp = fscanf(fin, "%ld", &train_list[i].t);
+		tmp = fscanf(fin, "%ld", &train_list[i].r);
 	}
 	fclose(fin);
-    // 对 trainList 中的三元组排序 (比较顺序: h, r, t).
-	std::sort(trainList, trainList + trainTotal, Triple::cmp_head);
+    // 对 train_list 中的三元组排序 (比较顺序: h, r, t).
+	std::sort(train_list, train_list + train_total, Triple::cmp_head);
     // tmp: 保存训练集三元组的个数
-	tmp = trainTotal; trainTotal = 1;
-	trainHead[0] = trainTail[0] = trainRel[0] = trainList[0];
+	tmp = train_total; train_total = 1;
+	trainHead[0] = trainTail[0] = trainRel[0] = train_list[0];
     // freqEnt: 保存实体在训练集中出现的总数
     // freqRel: 保存关系在训练集中出现的总数
-	freqEnt[trainList[0].t] += 1;
-	freqEnt[trainList[0].h] += 1;
-	freqRel[trainList[0].r] += 1;
+	freqEnt[train_list[0].t] += 1;
+	freqEnt[train_list[0].h] += 1;
+	freqRel[train_list[0].r] += 1;
     // 对训练集中的三元组去重
 	for (INT i = 1; i < tmp; i++)
-		if (trainList[i].h != trainList[i - 1].h 
-        || trainList[i].r != trainList[i - 1].r 
-        || trainList[i].t != trainList[i - 1].t) {
-			trainHead[trainTotal] = trainTail[trainTotal] 
-                = trainRel[trainTotal] = trainList[trainTotal] 
-                = trainList[i];
-			trainTotal++;
-			freqEnt[trainList[i].t]++;
-			freqEnt[trainList[i].h]++;
-			freqRel[trainList[i].r]++;
+		if (train_list[i].h != train_list[i - 1].h 
+        || train_list[i].r != train_list[i - 1].r 
+        || train_list[i].t != train_list[i - 1].t) {
+			trainHead[train_total] = trainTail[train_total] 
+                = trainRel[train_total] = train_list[train_total] 
+                = train_list[i];
+			train_total++;
+			freqEnt[train_list[i].t]++;
+			freqEnt[train_list[i].h]++;
+			freqRel[train_list[i].r]++;
 		}
 
     // trainHead: 以 h, r, t 排序
     // trainTail: 以 t, r, h 排序
     // trainRel: 以 h, t, r 排序
-	std::sort(trainHead, trainHead + trainTotal, Triple::cmp_head);
-	std::sort(trainTail, trainTail + trainTotal, Triple::cmp_tail);
-	std::sort(trainRel, trainRel + trainTotal, Triple::cmp_rel);
-    std::cout << "The total of train triples is " << trainTotal
+	std::sort(trainHead, trainHead + train_total, Triple::cmp_head);
+	std::sort(trainTail, trainTail + train_total, Triple::cmp_tail);
+	std::sort(trainRel, trainRel + train_total, Triple::cmp_rel);
+    std::cout << "The total of train triples is " << train_total
             << "." << std::endl;
 
-	lefHead = (INT *)calloc(entityTotal, sizeof(INT));
-	rigHead = (INT *)calloc(entityTotal, sizeof(INT));
-	lefTail = (INT *)calloc(entityTotal, sizeof(INT));
-	rigTail = (INT *)calloc(entityTotal, sizeof(INT));
-	lefRel = (INT *)calloc(entityTotal, sizeof(INT));
-	rigRel = (INT *)calloc(entityTotal, sizeof(INT));
+	lefHead = (INT *)calloc(entity_total, sizeof(INT));
+	rigHead = (INT *)calloc(entity_total, sizeof(INT));
+	lefTail = (INT *)calloc(entity_total, sizeof(INT));
+	rigTail = (INT *)calloc(entity_total, sizeof(INT));
+	lefRel = (INT *)calloc(entity_total, sizeof(INT));
+	rigRel = (INT *)calloc(entity_total, sizeof(INT));
     // rigHead, rigTail, rigRel 初始化为 -1
-	memset(rigHead, -1, sizeof(INT)*entityTotal);
-	memset(rigTail, -1, sizeof(INT)*entityTotal);
-	memset(rigRel, -1, sizeof(INT)*entityTotal);
-	for (INT i = 1; i < trainTotal; i++) {
-        // lefHead (entityTotal): 存储每种实体 (head) 在 trainHead 中第一次出现的位置
-        // rigHead (entityTotal): 存储每种实体 (head) 在 trainHead 中最后一次出现的位置
+	memset(rigHead, -1, sizeof(INT)*entity_total);
+	memset(rigTail, -1, sizeof(INT)*entity_total);
+	memset(rigRel, -1, sizeof(INT)*entity_total);
+	for (INT i = 1; i < train_total; i++) {
+        // lefHead (entity_total): 存储每种实体 (head) 在 trainHead 中第一次出现的位置
+        // rigHead (entity_total): 存储每种实体 (head) 在 trainHead 中最后一次出现的位置
 		if (trainHead[i].h != trainHead[i - 1].h) {
 			rigHead[trainHead[i - 1].h] = i - 1;
 			lefHead[trainHead[i].h] = i;
 		}
-        // lefTail (entityTotal): 存储每种实体 (tail) 在 trainTail 中第一次出现的位置
-        // rigTail (entityTotal): 存储每种实体 (tail) 在 trainTail 中最后一次出现的位置
+        // lefTail (entity_total): 存储每种实体 (tail) 在 trainTail 中第一次出现的位置
+        // rigTail (entity_total): 存储每种实体 (tail) 在 trainTail 中最后一次出现的位置
 		if (trainTail[i].t != trainTail[i - 1].t) {
 			rigTail[trainTail[i - 1].t] = i - 1;
 			lefTail[trainTail[i].t] = i;
 		}
-        // lefRel (entityTotal): 存储每种实体 (head) 在 trainRel 中第一次出现的位置
-        // rigRel (entityTotal): 存储每种实体 (head) 在 trainRel 中最后一次出现的位置
+        // lefRel (entity_total): 存储每种实体 (head) 在 trainRel 中第一次出现的位置
+        // rigRel (entity_total): 存储每种实体 (head) 在 trainRel 中最后一次出现的位置
 		if (trainRel[i].h != trainRel[i - 1].h) {
 			rigRel[trainRel[i - 1].h] = i - 1;
 			lefRel[trainRel[i].h] = i;
 		}
 	}
 	lefHead[trainHead[0].h] = 0;
-	rigHead[trainHead[trainTotal - 1].h] = trainTotal - 1;
+	rigHead[trainHead[train_total - 1].h] = train_total - 1;
 	lefTail[trainTail[0].t] = 0;
-	rigTail[trainTail[trainTotal - 1].t] = trainTotal - 1;
+	rigTail[trainTail[train_total - 1].t] = train_total - 1;
 	lefRel[trainRel[0].h] = 0;
-	rigRel[trainRel[trainTotal - 1].h] = trainTotal - 1;
+	rigRel[trainRel[train_total - 1].h] = train_total - 1;
 
 	// 获得 left_mean、right_mean，为 train_mode 中的 bern_flag 做准备
 	// 在训练过程中，我们能够构建负三元组进行负采样
 	// bern 算法能根据特定关系的 head 和 tail 种类的比值，选择构建适当的负三元组
 	// train_mode 中的 bern_flag: pr = left_mean / (left_mean + right_mean)
 	// 因此为训练而构建的负三元组比 = tail / (tail + head)
-	left_mean = (REAL *)calloc(relationTotal,sizeof(REAL));
-	right_mean = (REAL *)calloc(relationTotal,sizeof(REAL));
-	for (INT i = 0; i < entityTotal; i++) {
+	left_mean = (REAL *)calloc(relation_total,sizeof(REAL));
+	right_mean = (REAL *)calloc(relation_total,sizeof(REAL));
+	for (INT i = 0; i < entity_total; i++) {
 		for (INT j = lefHead[i] + 1; j <= rigHead[i]; j++)
 			if (trainHead[j].r != trainHead[j - 1].r)
 				left_mean[trainHead[j].r] += 1.0;
@@ -193,7 +192,7 @@ void importTrainFiles() {
 		if (lefTail[i] <= rigTail[i])
 			right_mean[trainTail[lefTail[i]].r] += 1.0;
 	}
-	for (INT i = 0; i < relationTotal; i++) {
+	for (INT i = 0; i < relation_total; i++) {
 		left_mean[i] = freqRel[i] / left_mean[i];
 		right_mean[i] = freqRel[i] / right_mean[i];
 	}
@@ -213,14 +212,14 @@ void importTestFiles() {
     // rel_file: 定义于 Setting.h
     fin = fopen(rel_file.c_str(), "r");
     // relation2id.txt 第一行是关系的个数
-    tmp = fscanf(fin, "%ld", &relationTotal);
+    tmp = fscanf(fin, "%ld", &relation_total);
     fclose(fin);
 
     // 读取实体的个数
     // ent_file: 定义于 Setting.h
     fin = fopen(ent_file.c_str(), "r");
     // entity2id.txt 第一行是实体的个数
-    tmp = fscanf(fin, "%ld", &entityTotal);
+    tmp = fscanf(fin, "%ld", &entity_total);
     fclose(fin);
 
     // train_file: 定义于 Setting.h
@@ -234,7 +233,7 @@ void importTestFiles() {
     // test2id.txt 第一行是三元组的个数
     // valid2id.txt 第一行是三元组的个数
     tmp = fscanf(f_kb1, "%ld", &testTotal);
-    tmp = fscanf(f_kb2, "%ld", &trainTotal);
+    tmp = fscanf(f_kb2, "%ld", &train_total);
     tmp = fscanf(f_kb3, "%ld", &validTotal);
     std::cout << "The total of test triples is " << testTotal
             << "." << std::endl;
@@ -242,7 +241,7 @@ void importTestFiles() {
             << "." << std::endl;
     
     // tripleTotal: 数据集三元组个数
-    tripleTotal = testTotal + trainTotal + validTotal;
+    tripleTotal = testTotal + train_total + validTotal;
     testList = (Triple *)calloc(testTotal, sizeof(Triple));
     validList = (Triple *)calloc(validTotal, sizeof(Triple));
     tripleList = (Triple *)calloc(tripleTotal, sizeof(Triple));
@@ -254,17 +253,17 @@ void importTestFiles() {
         tripleList[i] = testList[i];
     }
     // 读取训练集三元组
-    for (INT i = 0; i < trainTotal; i++) {
+    for (INT i = 0; i < train_total; i++) {
         tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].h);
         tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].t);
         tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].r);
     }
     // 读取验证集三元组
     for (INT i = 0; i < validTotal; i++) {
-        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + trainTotal].h);
-        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + trainTotal].t);
-        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + trainTotal].r);
-        validList[i] = tripleList[i + testTotal + trainTotal];
+        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + train_total].h);
+        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + train_total].t);
+        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + train_total].r);
+        validList[i] = tripleList[i + testTotal + train_total];
     }
     fclose(f_kb1);
     fclose(f_kb2);
@@ -277,15 +276,15 @@ void importTestFiles() {
     std::sort(testList, testList + testTotal, Triple::cmp_rel2);
     std::sort(validList, validList + validTotal, Triple::cmp_rel2);
 
-    testLef = (INT *)calloc(relationTotal, sizeof(INT));
-    testRig = (INT *)calloc(relationTotal, sizeof(INT));
+    testLef = (INT *)calloc(relation_total, sizeof(INT));
+    testRig = (INT *)calloc(relation_total, sizeof(INT));
     // testLef, testRig 初始化为 -1
-    memset(testLef, -1, sizeof(INT) * relationTotal);
-    memset(testRig, -1, sizeof(INT) * relationTotal);
+    memset(testLef, -1, sizeof(INT) * relation_total);
+    memset(testRig, -1, sizeof(INT) * relation_total);
     for (INT i = 1; i < testTotal; i++) {
 	if (testList[i].r != testList[i-1].r) {
-        // testLef (relationTotal): 存储每种实体在 testList 中第一次出现的位置
-        // testRig (relationTotal): 存储每种实体在 testList 中最后一次出现的位置
+        // testLef (relation_total): 存储每种实体在 testList 中第一次出现的位置
+        // testRig (relation_total): 存储每种实体在 testList 中最后一次出现的位置
 	    testRig[testList[i-1].r] = i - 1;
 	    testLef[testList[i].r] = i;
 	}
@@ -293,15 +292,15 @@ void importTestFiles() {
     testLef[testList[0].r] = 0;
     testRig[testList[testTotal - 1].r] = testTotal - 1;
 
-    validLef = (INT *)calloc(relationTotal, sizeof(INT));
-    validRig = (INT *)calloc(relationTotal, sizeof(INT));
+    validLef = (INT *)calloc(relation_total, sizeof(INT));
+    validRig = (INT *)calloc(relation_total, sizeof(INT));
     // validLef, validRig 初始化为 -1
-    memset(validLef, -1, sizeof(INT)*relationTotal);
-    memset(validRig, -1, sizeof(INT)*relationTotal);
+    memset(validLef, -1, sizeof(INT)*relation_total);
+    memset(validRig, -1, sizeof(INT)*relation_total);
     for (INT i = 1; i < validTotal; i++) {
 	if (validList[i].r != validList[i-1].r) {
-        // validLef (relationTotal): 存储每种实体在 validList 中第一次出现的位置
-        // validRig (relationTotal): 存储每种实体在 validList 中最后一次出现的位置
+        // validLef (relation_total): 存储每种实体在 validList 中第一次出现的位置
+        // validRig (relation_total): 存储每种实体在 validList 中最后一次出现的位置
 	    validRig[validList[i-1].r] = i - 1;
 	    validLef[validList[i].r] = i;
 	}
@@ -338,17 +337,17 @@ INT* tail_type;
 // 1200	4	12123	4388	11087	11088
 void importTypeFiles() {
 
-    head_lef = (INT *)calloc(relationTotal, sizeof(INT));
-    head_rig = (INT *)calloc(relationTotal, sizeof(INT));
-    tail_lef = (INT *)calloc(relationTotal, sizeof(INT));
-    tail_rig = (INT *)calloc(relationTotal, sizeof(INT));
+    head_lef = (INT *)calloc(relation_total, sizeof(INT));
+    head_rig = (INT *)calloc(relation_total, sizeof(INT));
+    tail_lef = (INT *)calloc(relation_total, sizeof(INT));
+    tail_rig = (INT *)calloc(relation_total, sizeof(INT));
     // 统计 total_lef, total_rig
     INT total_lef = 0;
     INT total_rig = 0;
     FILE* f_type = fopen((inPath + "type_constrain.txt").c_str(),"r");
     INT tmp;
     tmp = fscanf(f_type, "%ld", &tmp);
-    for (INT i = 0; i < relationTotal; i++) {
+    for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
         tmp = fscanf(f_type, "%ld %ld", &rel, &tot);
         for (INT j = 0; j < tot; j++) {
@@ -369,7 +368,7 @@ void importTypeFiles() {
     total_rig = 0;
     f_type = fopen((inPath + "type_constrain.txt").c_str(),"r");
     tmp = fscanf(f_type, "%ld", &tmp);
-    for (INT i = 0; i < relationTotal; i++) {
+    for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
         tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
         head_lef[rel] = total_lef;

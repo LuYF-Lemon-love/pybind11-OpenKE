@@ -41,7 +41,7 @@ INT corrupt_head(INT id, INT h, INT r) {
 	rr = lef;
 
 	// 只能产生 (entity_total - (rr - ll + 1)) 种实体，即去掉训练集中已有的三元组
-	INT tmp = rand_max(id, entityTotal - (rr - ll + 1));
+	INT tmp = rand_max(id, entity_total - (rr - ll + 1));
 
 	// 第一种：tmp 小于第一个 r 对应的 tail
 	if (tmp < trainHead[ll].t) return tmp;
@@ -94,7 +94,7 @@ INT corrupt_tail(INT id, INT t, INT r) {
 	rr = lef;
 
 	// 只能产生 (entity_total - (rr - ll + 1)) 种实体，即去掉训练集中已有的三元组
-	INT tmp = rand_max(id, entityTotal - (rr - ll + 1));
+	INT tmp = rand_max(id, entity_total - (rr - ll + 1));
 
 	// 第一种：tmp 小于第一个 r 对应的 head
 	if (tmp < trainTail[ll].h) return tmp;
@@ -149,13 +149,13 @@ INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false) {
 	INT tmp;
 	if(p == false) {	
 		// 只能产生 (elationTotal - (rr - ll + 1)) 种关系，即去掉训练集中已有的三元组
-		tmp = rand_max(id, relationTotal - (rr - ll + 1));
+		tmp = rand_max(id, relation_total - (rr - ll + 1));
 	}
 	else {
 		// 利用概率分布替换 relation
-		INT start = r * (relationTotal - 1);
+		INT start = r * (relation_total - 1);
 		REAL sum = 1;
-		bool *record = (bool *)calloc(relationTotal - 1, sizeof(bool));
+		bool *record = (bool *)calloc(relation_total - 1, sizeof(bool));
 		for (INT i = ll; i <= rr; ++i){
 			if (trainRel[i].r > r){
 				sum -= prob[start + trainRel[i].r-1];
@@ -166,10 +166,10 @@ INT corrupt_rel(INT id, INT h, INT t, INT r, bool p = false) {
 				record[trainRel[i].r] = true;
 			}
 		}		
-		REAL *prob_tmp = (REAL *)calloc(relationTotal-(rr-ll+1), sizeof(REAL));
+		REAL *prob_tmp = (REAL *)calloc(relation_total-(rr-ll+1), sizeof(REAL));
 		INT cnt = 0;
 		REAL rec = 0;
-		for (INT i = start; i < start + relationTotal - 1; ++i) {
+		for (INT i = start; i < start + relation_total - 1; ++i) {
 			if (record[i-start])
 				continue;
 			rec += prob[i] / sum;

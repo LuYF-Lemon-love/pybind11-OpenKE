@@ -109,7 +109,7 @@ class TrainDataLoader(object):
 	:py:class:`TrainDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
 	"""
 
-	def __init__(self, in_path = "./", tri_file = "train2id.txt", ent_file = "entity2id.txt",
+	def __init__(self, in_path = "./", train_file = "train2id.txt", ent_file = "entity2id.txt",
 		rel_file = "relation2id.txt", batch_size = None, nbatches = None, threads = 8,
 		sampling_mode = "normal", bern_flag = False,
 		neg_ent = 1, neg_rel = 0):
@@ -118,8 +118,8 @@ class TrainDataLoader(object):
 
 		:param in_path: 数据集目录
 		:type in_path: str
-		:param tri_file: train2id.txt
-		:type tri_file: str
+		:param train_file: train2id.txt
+		:type train_file: str
 		:param ent_file: entity2id.txt
 		:type ent_file: str
 		:param rel_file: relation2id.txt
@@ -130,7 +130,7 @@ class TrainDataLoader(object):
 		:type nbatches: int
 		:param threads: 底层 C++ 数据处理所需要的线程数
 		:type threads: int
-		:param sampling_mode: 数据采样模式，``normal`` 表示正常负采样，否则交替替换 head 和 tail 进行负采样
+		:param sampling_mode: 数据采样模式，``normal`` 表示正常负采样，``cross`` 表示交替替换 head 和 tail 进行负采样
 		:type sampling_mode: str
 		:param bern_flag: 是否使用 TransH 提出的负采样方法进行负采样
 		:type bern_flag: int
@@ -143,7 +143,7 @@ class TrainDataLoader(object):
 		#: 数据集目录
 		self.in_path = in_path
 		#: train2id.txt
-		self.tri_file = self.in_path + tri_file
+		self.train_file = self.in_path + train_file
 		#: entity2id.txt
 		self.ent_file = self.in_path + ent_file
 		#: relation2id.txt
@@ -154,24 +154,24 @@ class TrainDataLoader(object):
 		#: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供
 		self.nbatches = nbatches
 		#: 底层 C++ 数据处理所需要的线程数
-		self.work_threads = threads
-		#: 数据采样模式，``normal`` 表示正常负采样，否则交替替换 head 和 tail 进行负采样
+		self.threads = threads
+		#: 数据采样模式，``normal`` 表示正常负采样，``cross`` 表示交替替换 head 和 tail 进行负采样
 		self.sampling_mode = sampling_mode
 		#: 是否使用 TransH 提出的负采样方法进行负采样
-		self.bern = bern_flag
+		self.bern_flag = bern_flag
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
-		self.negative_ent = neg_ent
+		self.neg_ent = neg_ent
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
-		self.negative_rel = neg_rel
+		self.neg_rel = neg_rel
 		
 		self.cross_sampling_flag = 0
 
 		#: 实体的个数
-		self.entTotal = 0
+		self.ent_tol = 0
 		#: 关系的个数
-		self.relTotal = 0
+		self.rel_tol = 0
 		#: 训练集三元组的个数
-		self.tripleTotal = 0
+		self.train_tot = 0
 
 		# 读入数据
 		self.read()
@@ -181,27 +181,27 @@ class TrainDataLoader(object):
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 		
 		base.setInPath(self.in_path)
-		base.setTrainPath(self.tri_file)
+		base.setTrainPath(self.train_file)
 		base.setEntPath(self.ent_file)
 		base.setRelPath(self.rel_file)
 		
-		base.setBern(self.bern)
-		base.setWorkThreads(self.work_threads)
+		base.setBern(self.bern_flag)
+		base.setWorkThreads(self.threads)
 		base.randReset()
 		base.importTrainFiles()
 
 		# 实体的个数
-		self.entTotal = base.getEntityTotal()
+		self.ent_tol = base.getEntityTotal()
 		# 关系的个数
-		self.relTotal = base.getRelationTotal()
+		self.rel_tol = base.getRelationTotal()
 		# 训练集三元组的个数
-		self.tripleTotal = base.getTrainTotal()
+		self.train_tot = base.getTrainTotal()
 
 		if self.batch_size == None:
-			self.batch_size = self.tripleTotal // self.nbatches
+			self.batch_size = self.train_tot // self.nbatches
 		if self.nbatches == None:
-			self.nbatches = self.tripleTotal // self.batch_size
-		self.batch_seq_size = self.batch_size * (1 + self.negative_ent + self.negative_rel)
+			self.nbatches = self.train_tot // self.batch_size
+		self.batch_seq_size = self.batch_size * (1 + self.neg_ent + self.neg_rel)
 
 		# 利用 np.zeros 分配内存
 		self.batch_h = np.zeros(self.batch_seq_size, dtype=np.int64)
@@ -218,7 +218,7 @@ class TrainDataLoader(object):
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
-			self.batch_size, self.negative_ent, self.negative_rel, 0,
+			self.batch_size, self.neg_ent, self.neg_rel, 0,
 			0, 0)
 		return {
 			"batch_h": self.batch_h, 
@@ -237,7 +237,7 @@ class TrainDataLoader(object):
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
-			self.batch_size, self.negative_ent, self.negative_rel, -1,
+			self.batch_size, self.neg_ent, self.neg_rel, -1,
 			0, 0)
 		return {
 			"batch_h": self.batch_h,
@@ -256,7 +256,7 @@ class TrainDataLoader(object):
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
-			self.batch_size, self.negative_ent, self.negative_rel, 1,
+			self.batch_size, self.neg_ent, self.neg_rel, 1,
 			0, 0)
 		return {
 			"batch_h": self.batch_h[:self.batch_size],
@@ -294,33 +294,33 @@ class TrainDataLoader(object):
 
 	def get_ent_tot(self):
 
-		"""返回 :py:attr:`entTotal`
+		"""返回 :py:attr:`ent_tol`
 
-		:returns: :py:attr:`entTotal`
+		:returns: :py:attr:`ent_tol`
 		:rtype: int
 		"""
 
-		return self.entTotal
+		return self.ent_tol
 
 	def get_rel_tot(self):
 
-		"""返回 :py:attr:`relTotal`
+		"""返回 :py:attr:`rel_tol`
 
-		:returns: :py:attr:`relTotal`
+		:returns: :py:attr:`rel_tol`
 		:rtype: int
 		"""
 
-		return self.relTotal
+		return self.rel_tol
 
-	def get_triple_tot(self):
+	def get_train_tot(self):
 
-		"""返回 :py:attr:`tripleTotal`
+		"""返回 :py:attr:`train_tot`
 
-		:returns: :py:attr:`tripleTotal`
+		:returns: :py:attr:`train_tot`
 		:rtype: int
 		"""
 
-		return self.tripleTotal
+		return self.train_tot
 
 	def __iter__(self):
 
@@ -330,7 +330,7 @@ class TrainDataLoader(object):
 
 		if self.sampling_mode == "normal":
 			return TrainDataSampler(self.nbatches, self.sampling)
-		else:
+		elif self.sampling_mode == "cross":
 			return TrainDataSampler(self.nbatches, self.cross_sampling)
 
 	def __len__(self):

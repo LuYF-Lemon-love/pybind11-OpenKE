@@ -44,7 +44,7 @@ void getHeadBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
     auto ph = ph_py.mutable_unchecked<1>();
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
-    for (INT i = 0; i < entityTotal; i++) {
+    for (INT i = 0; i < entity_total; i++) {
         ph(i) = i;
         pt(i) = testList[lastHead].t;
         pr(i) = testList[lastHead].r;
@@ -57,7 +57,7 @@ void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
     auto ph = ph_py.mutable_unchecked<1>();
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
-    for (INT i = 0; i < entityTotal; i++) {
+    for (INT i = 0; i < entity_total; i++) {
         ph(i) = testList[lastTail].h;
         pt(i) = i;
         pr(i) = testList[lastTail].r;
@@ -68,7 +68,7 @@ void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
 // 对于测试集中的给定三元组, 用所有实体替换 relation, 返回所有三元组.
 extern "C"
 void getRelBatch(INT *ph, INT *pt, INT *pr) {
-    for (INT i = 0; i < relationTotal; i++) {
+    for (INT i = 0; i < relation_total; i++) {
         ph[i] = testList[lastRel].h;
         pt[i] = testList[lastRel].t;
         pr[i] = i;
@@ -103,7 +103,7 @@ void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = fals
     INT l_s_constrain = 0;
     INT l_filter_s_constrain = 0;
 
-    for (INT j = 0; j < entityTotal; j++) {
+    for (INT j = 0; j < entity_total; j++) {
         // 替换 head
         if (j != h) {
             // REAL value = con[j];
@@ -180,7 +180,7 @@ void testTail(py::array_t<REAL> con_py, INT lastTail, bool type_constrain = fals
     INT r_filter_s = 0;
     INT r_s_constrain = 0;
     INT r_filter_s_constrain = 0;
-    for (INT j = 0; j < entityTotal; j++) {
+    for (INT j = 0; j < entity_total; j++) {
         // 替换 tail
         if (j != t) {
             // REAL value = con[j];
@@ -246,7 +246,7 @@ void testRel(REAL *con) {
     INT rel_s = 0;
     INT rel_filter_s = 0;
 
-    for (INT j = 0; j < relationTotal; j++) {
+    for (INT j = 0; j < relation_total; j++) {
         // 替换 relation
         if (j != r) {
             REAL value = con[j];
