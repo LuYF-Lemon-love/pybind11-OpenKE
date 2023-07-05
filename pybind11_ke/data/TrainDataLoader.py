@@ -3,7 +3,7 @@
 # pybind11_ke/data/TrainDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
 #
 # 该脚本定义了采样数据的函数.
 
@@ -26,7 +26,7 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 		nbatches = 100,
 		threads = 8, 
 		sampling_mode = "normal", 
-		bern_flag = True, 
+		bern = True, 
 		neg_ent = 25,
 		neg_rel = 0)
 
@@ -60,14 +60,14 @@ class TrainDataSampler(object):
 	包装起来。
 	"""
 
-	def __init__(self, nbatches, datasampler):
+	def __init__(self, nbatches, sampler):
 
 		"""创建 TrainDataSample 对象。
 		
 		:param nbatches: 1 epoch 有多少个 batch
 		:type nbatches: int
-		:param datasampler: 采样器
-		:type datasampler: :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 
+		:param sampler: 采样器
+		:type sampler: :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 
 							或 :py:meth:`pybind11_ke.data.TrainDataLoader.cross_sampling`
 		"""
 
@@ -75,7 +75,7 @@ class TrainDataSampler(object):
 		self.nbatches = nbatches
 		#: :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 
 		#: 或 :py:meth:`pybind11_ke.data.TrainDataLoader.cross_sampling` 函数
-		self.datasampler = datasampler
+		self.sampler = sampler
 		self.batch = 0
 
 	def __iter__(self):
@@ -91,7 +91,7 @@ class TrainDataSampler(object):
 		self.batch += 1 
 		if self.batch > self.nbatches:
 			raise StopIteration()
-		return self.datasampler()
+		return self.sampler()
 
 	def __len__(self):
 
@@ -109,21 +109,21 @@ class TrainDataLoader(object):
 	:py:class:`TrainDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
 	"""
 
-	def __init__(self, in_path = "./", train_file = "train2id.txt", ent_file = "entity2id.txt",
-		rel_file = "relation2id.txt", batch_size = None, nbatches = None, threads = 8,
-		sampling_mode = "normal", bern_flag = False,
+	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
+		train_file = "train2id.txt", batch_size = None, nbatches = None, threads = 8,
+		sampling_mode = "normal", bern = False,
 		neg_ent = 1, neg_rel = 0):
 
 		"""创建 TrainDataLoader 对象。
 
 		:param in_path: 数据集目录
 		:type in_path: str
-		:param train_file: train2id.txt
-		:type train_file: str
 		:param ent_file: entity2id.txt
 		:type ent_file: str
 		:param rel_file: relation2id.txt
 		:type rel_file: str
+		:param train_file: train2id.txt
+		:type train_file: str
 		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
 		:type batch_size: int
 		:param nbatches: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供
@@ -132,8 +132,8 @@ class TrainDataLoader(object):
 		:type threads: int
 		:param sampling_mode: 数据采样模式，``normal`` 表示正常负采样，``cross`` 表示交替替换 head 和 tail 进行负采样
 		:type sampling_mode: str
-		:param bern_flag: 是否使用 TransH 提出的负采样方法进行负采样
-		:type bern_flag: bool
+		:param bern: 是否使用 TransH 提出的负采样方法进行负采样
+		:type bern: bool
 		:param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
 		:type neg_ent: int
 		:param neg_rel: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
@@ -142,12 +142,12 @@ class TrainDataLoader(object):
 		
 		#: 数据集目录
 		self.in_path = in_path
-		#: train2id.txt
-		self.train_file = self.in_path + train_file
 		#: entity2id.txt
 		self.ent_file = self.in_path + ent_file
 		#: relation2id.txt
 		self.rel_file = self.in_path + rel_file
+		#: train2id.txt
+		self.train_file = self.in_path + train_file
 
 		#: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
 		self.batch_size = batch_size
@@ -158,7 +158,7 @@ class TrainDataLoader(object):
 		#: 数据采样模式，``normal`` 表示正常负采样，``cross`` 表示交替替换 head 和 tail 进行负采样
 		self.sampling_mode = sampling_mode
 		#: 是否使用 TransH 提出的负采样方法进行负采样
-		self.bern_flag = bern_flag
+		self.bern = bern
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
 		self.neg_ent = neg_ent
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
@@ -180,22 +180,22 @@ class TrainDataLoader(object):
 
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 		
-		base.setInPath(self.in_path)
-		base.setTrainPath(self.train_file)
-		base.setEntPath(self.ent_file)
-		base.setRelPath(self.rel_file)
+		base.set_in_path(self.in_path)
+		base.set_train_path(self.train_file)
+		base.set_ent_path(self.ent_file)
+		base.set_rel_path(self.rel_file)
 		
-		base.setBern(self.bern_flag)
-		base.setWorkThreads(self.threads)
-		base.randReset()
-		base.importTrainFiles()
+		base.set_bern(self.bern)
+		base.set_work_threads(self.threads)
+		base.rand_reset()
+		base.read_train_files()
 
 		# 实体的个数
-		self.ent_tol = base.getEntityTotal()
+		self.ent_tol = base.get_entity_total()
 		# 关系的个数
-		self.rel_tol = base.getRelationTotal()
+		self.rel_tol = base.get_relation_total()
 		# 训练集三元组的个数
-		self.train_tot = base.getTrainTotal()
+		self.train_tot = base.get_train_total()
 
 		if self.batch_size == None:
 			self.batch_size = self.train_tot // self.nbatches

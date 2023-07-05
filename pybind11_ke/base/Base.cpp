@@ -35,7 +35,7 @@ INT getValidTotal();
 // batch_size: batch size
 // neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail).
 // neg_rel: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation.
-// mode: 控制构建的方式, mode = 0 and bern_flag = True, 起用 TransH 方式构建负三元组.
+// mode: 控制构建的方式, mode = 0 and bern = True, 起用 TransH 方式构建负三元组.
 //		mode = 1 : 只替换头实体; mode = -1 : 只替换尾实体.
 
 // 获得 1 batch 训练数据
@@ -78,7 +78,7 @@ void get_bacth(
 		for (INT times = 0; times < neg_ent; times ++) {
 			if (mode == 0){
 				// TransH 负采样策略
-				if (bern_flag)
+				if (bern)
 					prob = 1000 * right_mean[train_list[i].r] / (right_mean[train_list[i].r] + left_mean[train_list[i].r]);
 				if (randd(id) % 1000 < prob) {
 					batch_h(batch + last) = train_list[i].h;
@@ -149,19 +149,19 @@ PYBIND11_MODULE(base, m) {
 		py::arg("neg_rel") = 0, py::arg("mode") = 0,
         py::call_guard<py::gil_scoped_release>());
 
-	m.def("setInPath", &setInPath);
-	m.def("setEntPath", &setEntPath);
-	m.def("setRelPath", &setRelPath);
-	m.def("setTrainPath", &setTrainPath);
+	m.def("set_in_path", &set_in_path);
+	m.def("set_ent_path", &set_ent_path);
+	m.def("set_rel_path", &set_rel_path);
+	m.def("set_train_path", &set_train_path);
 	m.def("setValidPath", &setValidPath);
 	m.def("setTestPath", &setTestPath);
-	m.def("setBern", &setBern);
-	m.def("setWorkThreads", &setWorkThreads);
-	m.def("randReset", &randReset);
-	m.def("importTrainFiles", &importTrainFiles);
-	m.def("getRelationTotal", &getRelationTotal);
-	m.def("getEntityTotal", &getEntityTotal);
-	m.def("getTrainTotal", &getTrainTotal);
+	m.def("set_bern", &set_bern);
+	m.def("set_work_threads", &set_work_threads);
+	m.def("rand_reset", &rand_reset);
+	m.def("read_train_files", &read_train_files);
+	m.def("get_relation_total", &get_relation_total);
+	m.def("get_entity_total", &get_entity_total);
+	m.def("get_train_total", &get_train_total);
 
 	m.def("importTestFiles", &importTestFiles);
 	m.def("importTypeFiles", &importTypeFiles);

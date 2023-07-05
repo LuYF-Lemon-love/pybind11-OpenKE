@@ -40,7 +40,7 @@ std::string valid_file = "";
 std::string test_file = "";
 
 // 设置输入文件路径
-void setInPath(std::string path) {
+void set_in_path(std::string path) {
 	inPath = std::move(path);
     std::cout << "Input Files Path : "
               << inPath << std::endl;
@@ -57,7 +57,7 @@ void setInPath(std::string path) {
 // }
 
 // 设置训练集数据文件路径
-void setTrainPath(std::string path) {
+void set_train_path(std::string path) {
 	train_file = std::move(path);
     std::cout << "Training Files Path : "
               << train_file << std::endl;
@@ -78,14 +78,14 @@ void setTestPath(std::string path) {
 }
 
 // 设置实体数据文件路径
-void setEntPath(std::string path) {
+void set_ent_path(std::string path) {
 	ent_file = std::move(path);
     std::cout << "Entity Files Path : "
               << ent_file << std::endl;
 }
 
 // 设置关系数据文件路径
-void setRelPath(std::string path) {
+void set_rel_path(std::string path) {
 	rel_file = std::move(path);
     std::cout << "Relation Files Path : "
               << rel_file << std::endl;
@@ -98,7 +98,7 @@ void setRelPath(std::string path) {
 // 线程数
 INT work_threads = 1;
 
-void setWorkThreads(INT threads) {
+void set_work_threads(INT threads) {
 	work_threads = threads;
 }
 
@@ -114,11 +114,11 @@ INT testTotal = 0;
 INT train_total = 0;
 INT validTotal = 0;
 
-INT getEntityTotal() {
+INT get_entity_total() {
 	return entity_total;
 }
 
-INT getRelationTotal() {
+INT get_relation_total() {
 	return relation_total;
 }
 
@@ -127,7 +127,7 @@ INT getRelationTotal() {
 // 	return tripleTotal;
 // }
 
-INT getTrainTotal() {
+INT get_train_total() {
 	return train_total;
 }
 
@@ -145,10 +145,10 @@ INT getTestTotal() {
 */
 
 // TransH 提出的负采样策略
-bool bern_flag = false;
+bool bern = false;
 
-void setBern(bool flag) {
-	bern_flag = flag;
+void set_bern(bool flag) {
+	bern = flag;
 }
 
 #endif

@@ -136,20 +136,20 @@ class TestDataLoader(object):
 
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 
-		base.setInPath(self.in_path)
-		base.setEntPath(self.ent_file)
-		base.setRelPath(self.rel_file)
-		base.setTrainPath(self.train_file)
+		base.set_in_path(self.in_path)
+		base.set_ent_path(self.ent_file)
+		base.set_rel_path(self.rel_file)
+		base.set_train_path(self.train_file)
 		base.setValidPath(self.valid_file)
 		base.setTestPath(self.test_file)
-		base.randReset()
+		base.rand_reset()
 		base.importTestFiles()
 
 		if self.type_constrain:
 			base.importTypeFiles()
 
-		self.entTotal = base.getEntityTotal()
-		self.relTotal = base.getRelationTotal()
+		self.entTotal = base.get_entity_total()
+		self.relTotal = base.get_relation_total()
 		self.testTotal = base.getTestTotal()
 
 		# 利用 np.zeros 分配内存

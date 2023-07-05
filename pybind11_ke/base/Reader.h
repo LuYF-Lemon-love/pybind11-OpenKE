@@ -29,7 +29,7 @@ INT *testLef, *testRig;
 INT *validLef, *validRig;
 
 // 读取训练集
-void importTrainFiles() {
+void read_train_files() {
 
     std::cout << "The toolkit is importing datasets." << std::endl;
     FILE *fin;
@@ -139,10 +139,10 @@ void importTrainFiles() {
     left_rel[train_rel[0].h] = 0;
     right_rel[train_rel[train_total - 1].h] = train_total - 1;
     
-    // 获得 left_mean、right_mean，为 train_mode 中的 bern_flag 做准备
+    // 获得 left_mean、right_mean，为 train_mode 中的 bern 做准备
     // 在训练过程中，我们能够构建负三元组进行负采样
     // bern 算法能根据特定关系的 head 和 tail 种类的比值，选择构建适当的负三元组
-    // train_mode 中的 bern_flag: pr = left_mean / (left_mean + right_mean)
+    // train_mode 中的 bern: pr = left_mean / (left_mean + right_mean)
     // 因此为训练而构建的负三元组比 = tail / (tail + head)
     left_mean = (REAL *)calloc(relation_total, sizeof(REAL));
     right_mean = (REAL *)calloc(relation_total, sizeof(REAL));
