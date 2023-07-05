@@ -41,6 +41,7 @@ class Trainer(object):
 				 train_times = 1000,
 				 alpha = 0.5,
 				 use_gpu = True,
+				 device = "cuda:0",
 				 opt_method = "sgd",
 				 save_steps = None,
 				 checkpoint_dir = None):
@@ -57,6 +58,8 @@ class Trainer(object):
 		:type alpha: float
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
+		:param device: 使用哪个 gpu
+		:type device: str
 		:param opt_method: 优化器: Adagrad or adagrad, Adadelta or adadelta, Adam or adam, SGD or sgd
 		:type opt_method: str
 		:param save_steps: 训练几轮保存一次模型
@@ -88,6 +91,8 @@ class Trainer(object):
 
 		#: 是否使用 gpu
 		self.use_gpu = use_gpu
+		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
+		self.device = torch.device(device)
 
 		#: 训练几轮保存一次模型
 		self.save_steps = save_steps
@@ -126,7 +131,7 @@ class Trainer(object):
 		"""
 
 		if self.use_gpu:
-			self.model.cuda()
+			self.model.cuda(device = self.device)
 
 		if self.opt_method == "Adagrad" or self.opt_method == "adagrad":
 			self.optimizer = optim.Adagrad(
@@ -180,6 +185,6 @@ class Trainer(object):
 		"""
 
 		if use_gpu:
-			return Variable(torch.from_numpy(x).cuda())
+			return Variable(torch.from_numpy(x).cuda(device = self.device))
 		else:
 			return Variable(torch.from_numpy(x))
