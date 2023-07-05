@@ -35,16 +35,16 @@ class Trainer(object):
 	:py:class:`Trainer` 主要用于 KGE 模型的训练。
 	"""
 
-	def __init__(self, 
-				 model = None,
-				 data_loader = None,
-				 train_times = 1000,
-				 alpha = 0.5,
-				 use_gpu = True,
-				 device = "cuda:0",
-				 opt_method = "sgd",
-				 save_steps = None,
-				 checkpoint_dir = None):
+	def __init__(self,
+		model = None,
+		data_loader = None,
+		train_times = 1000,
+		alpha = 0.5,
+		use_gpu = True,
+		device = "cuda:0",
+		opt_method = "sgd",
+		save_steps = None,
+		checkpoint_dir = None):
 
 		"""创建 Trainer 对象。
 
