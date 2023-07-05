@@ -3,7 +3,7 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
 #
 # 该脚本定义了训练循环类.
 
@@ -57,7 +57,7 @@ class Trainer(object):
 		:type alpha: float
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
-		:param opt_method: 优化器
+		:param opt_method: 优化器: Adagrad or adagrad, Adadelta or adadelta, Adam or adam, SGD or sgd
 		:type opt_method: str
 		:param save_steps: 训练几轮保存一次模型
 		:type save_steps: int
@@ -128,9 +128,7 @@ class Trainer(object):
 		if self.use_gpu:
 			self.model.cuda()
 
-		if self.optimizer != None:
-			pass
-		elif self.opt_method == "Adagrad" or self.opt_method == "adagrad":
+		if self.opt_method == "Adagrad" or self.opt_method == "adagrad":
 			self.optimizer = optim.Adagrad(
 				self.model.parameters(),
 				lr=self.alpha,
@@ -149,7 +147,7 @@ class Trainer(object):
 				lr=self.alpha,
 				weight_decay=self.weight_decay,
 			)
-		else:
+		elif self.opt_method == "SGD" or self.opt_method == "sgd":
 			self.optimizer = optim.SGD(
 				self.model.parameters(),
 				lr = self.alpha,
@@ -167,16 +165,7 @@ class Trainer(object):
 			
 			if self.save_steps and self.checkpoint_dir and (epoch + 1) % self.save_steps == 0:
 				print("Epoch %d has finished, saving..." % (epoch))
-				self.model.save_checkpoint(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".ckpt"))
-
-	def set_model(self, model):
-
-		"""设置 KGE 模型
-
-		:param model: 包装 KGE 模型的训练策略类
-		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-		"""
-		self.model = model
+				self.model.save_checkpoint(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".pth"))
 
 	def to_var(self, x, use_gpu):
 
@@ -194,85 +183,3 @@ class Trainer(object):
 			return Variable(torch.from_numpy(x).cuda())
 		else:
 			return Variable(torch.from_numpy(x))
-
-	def set_use_gpu(self, use_gpu):
-
-		"""设置 :py:attr:`use_gpu`
-		
-		:param use_gpu: 是否使用 gpu
-		:type use_gpu: bool
-		"""
-		self.use_gpu = use_gpu
-
-	def set_alpha(self, alpha):
-
-		"""设置学习率 :py:attr:`alpha`
-		
-		:param alpha: 学习率
-		:type alpha: float
-		"""
-		self.alpha = alpha
-
-	def set_lr_decay(self, lr_decay):
-
-		"""设置 :py:attr:`lr_decay`
-		
-		:param lr_decay: 用于 :py:class:`torch.optim.Adagrad`
-		:type lr_decay: float
-		"""
-
-		self.lr_decay = lr_decay
-
-	def set_weight_decay(self, weight_decay):
-
-		"""设置 :py:attr:`weight_decay`
-		
-		:param weight_decay: 所有优化器都可以设置
-		:type weight_decay: float
-		"""
-
-		self.weight_decay = weight_decay
-
-	def set_opt_method(self, opt_method):
-
-		"""设置 :py:attr:`opt_method`
-		
-		:param opt_method: 优化器
-		:type opt_method: str
-		"""
-
-		self.opt_method = opt_method
-
-	def set_train_times(self, train_times):
-
-		"""设置 :py:attr:`train_times`
-		
-		:param train_times: 训练轮次数
-		:type train_times: int
-		"""
-
-		self.train_times = train_times
-
-	def set_save_steps(self, save_steps, checkpoint_dir = None):
-
-		"""设置 :py:attr:`save_steps`，如果 :py:attr:`checkpoint_dir`
-		为 None，用 ``checkpoint_dir`` 调用 :py:meth:`set_checkpoint_dir` 设置。
-		
-		:param save_steps: 训练几轮保存一次模型
-		:type save_steps: int
-		:param checkpoint_dir: 模型保存的目录
-		:type checkpoint_dir: str
-		"""
-
-		self.save_steps = save_steps
-		if not self.checkpoint_dir:
-			self.set_checkpoint_dir(checkpoint_dir)
-
-	def set_checkpoint_dir(self, checkpoint_dir):
-
-		"""设置 :py:attr:`checkpoint_dir`
-		
-		:param checkpoint_dir: 模型保存的目录
-		:type checkpoint_dir: str"""
-		
-		self.checkpoint_dir = checkpoint_dir

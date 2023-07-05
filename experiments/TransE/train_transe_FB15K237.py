@@ -101,7 +101,8 @@ model = NegativeSampling(
 # train the model
 # train_times: 1000 -> 50
 trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 1000, alpha = 0.01, use_gpu = True)
+                  train_times = 1000, alpha = 0.01, use_gpu = True,
+				  save_steps = 100, checkpoint_dir = "../../checkpoint/transe")
 trainer.run()
 transe.save_checkpoint('../../checkpoint/transe.pth')
 
