@@ -26,7 +26,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 :py:class:`pybind11_ke.data.TestDataLoader`。
 """
 
-from pybind11_ke.config import Trainer, Tester
+from pybind11_ke.config import Trainer, Tester, TrainerDataParallel
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
@@ -100,11 +100,15 @@ model = NegativeSampling(
 
 # train the model
 # train_times: 1000 -> 50
-trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-				  save_steps = 100, checkpoint_dir = "../../checkpoint/transe")
-trainer.run()
-transe.save_checkpoint('../../checkpoint/transe.pth')
+# trainer = Trainer(model = model, data_loader = train_dataloader,
+#                   train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+# 				  save_steps = 100, checkpoint_dir = "../../checkpoint/transe")
+
+if __name__ == "__main__":
+	TrainerDataParallel(model = model, data_loader = train_dataloader,
+		train_times = 1000, alpha = 0.01, opt_method = "sgd", 
+		save_steps = 10, checkpoint_dir = "../../checkpoint/transe")
+	transe.save_checkpoint('../../checkpoint/transe.pth')
 
 ######################################################################
 # --------------
@@ -117,6 +121,6 @@ transe.save_checkpoint('../../checkpoint/transe.pth')
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
 # test the model
-transe.load_checkpoint('../../checkpoint/transe.pth')
-tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-tester.run_link_prediction(type_constrain = False)
+# transe.load_checkpoint('../../checkpoint/transe.pth')
+# tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+# tester.run_link_prediction(type_constrain = False)
