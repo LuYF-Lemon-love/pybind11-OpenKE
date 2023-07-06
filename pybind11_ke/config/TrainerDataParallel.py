@@ -46,7 +46,7 @@ class TrainerDataParallel(object):
 		opt_method = "sgd",
 		log_interval = None,
 		save_interval = None,
-		checkpoint_dir = None):
+		save_path = None):
 
 		"""创建 TrainerDataParallel 对象。
 
@@ -66,8 +66,8 @@ class TrainerDataParallel(object):
 		:type log_interval: int
 		:param save_interval: 训练几轮保存一次模型
 		:type save_interval: int
-		:param checkpoint_dir: 模型保存的目录
-		:type checkpoint_dir: str
+		:param save_path: 模型保存的路径
+		:type save_path: str
 		"""
 
 		#: 第几个 gpu
@@ -91,8 +91,8 @@ class TrainerDataParallel(object):
 		self.log_interval = log_interval
 		#: 训练几轮保存一次模型
 		self.save_interval = save_interval
-		#: 模型保存的目录
-		self.checkpoint_dir = checkpoint_dir
+		#: 模型保存的路径
+		self.save_path = save_path
 
 		if self.opt_method == "Adam" or self.opt_method == "adam":
 			self.optimizer = optim.Adam(
@@ -144,8 +144,8 @@ class TrainerDataParallel(object):
 			timer.stop()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>7f} | {timer.avg():.5f} sec/epoch")
-			if self.gpu_id == 0 and self.save_interval and self.checkpoint_dir and (epoch + 1) % self.save_interval == 0:
-				path = os.path.join(self.checkpoint_dir + "-" + str(epoch+1) + ".pth")
+			if self.gpu_id == 0 and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
+				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.model.module.save_checkpoint(path)
 				print(f"[GPU{self.gpu_id}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		print(f"[GPU{self.gpu_id}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
@@ -178,7 +178,7 @@ def ddp_setup(rank, world_size):
 	init_process_group(backend="gloo", rank=rank, world_size=world_size)
 	torch.cuda.set_device(rank)
 
-def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir):
+def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path):
 
 	"""进程函数。
 
@@ -200,16 +200,16 @@ def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, 
 	:type log_interval: int
 	:param save_interval: 训练几轮保存一次模型
 	:type save_interval: int
-	:param checkpoint_dir: 模型保存的目录
-	:type checkpoint_dir: str
+	:param save_path: 模型保存的路径
+	:type save_path: str
 	"""
 	
 	ddp_setup(rank, world_size)
-	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir)
+	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path)
 	trainer.run()
 	destroy_process_group()
 	
-def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir):
+def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path):
 
 	"""生成进程。
 	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
@@ -229,10 +229,10 @@ def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, op
 	:type log_interval: int
 	:param save_interval: 训练几轮保存一次模型
 	:type save_interval: int
-	:param checkpoint_dir: 模型保存的目录
-	:type checkpoint_dir: str
+	:param save_path: 模型保存的路径
+	:type save_path: str
 	"""
 	
 	world_size = torch.cuda.device_count()
-	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir),
+	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path),
 		nprocs = world_size)

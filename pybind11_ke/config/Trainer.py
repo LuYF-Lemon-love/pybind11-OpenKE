@@ -44,7 +44,7 @@ class Trainer(object):
 		device = "cuda:0",
 		opt_method = "sgd",
 		save_interval = None,
-		checkpoint_dir = None):
+		save_path = None):
 
 		"""创建 Trainer 对象。
 
@@ -64,8 +64,8 @@ class Trainer(object):
 		:type opt_method: str
 		:param save_interval: 训练几轮保存一次模型
 		:type save_interval: int
-		:param checkpoint_dir: 模型保存的目录
-		:type checkpoint_dir: str
+		:param save_path: 模型保存的目录
+		:type save_path: str
 		"""
 
 		#: epochs
@@ -98,7 +98,7 @@ class Trainer(object):
 		self.save_interval = save_interval
 
 		#: 模型保存的目录
-		self.checkpoint_dir = checkpoint_dir
+		self.save_path = save_path
 
 	def train_one_step(self, data):
 
@@ -168,9 +168,9 @@ class Trainer(object):
 				res += loss
 			training_range.set_description("Epoch %d | loss: %f" % (epoch, res))
 			
-			if self.save_interval and self.checkpoint_dir and (epoch + 1) % self.save_interval == 0:
+			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				print("Epoch %d has finished, saving..." % (epoch))
-				self.model.save_checkpoint(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".pth"))
+				self.model.save_checkpoint(os.path.join(self.save_path + "-" + str(epoch) + ".pth"))
 
 	def to_var(self, x, use_gpu):
 

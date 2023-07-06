@@ -92,18 +92,20 @@ model = NegativeSampling(
 # 训练模型
 # -------------
 # pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
+# 或者使用 :py:func:`pybind11_ke.config.trainer_distributed_data_parallel` 函数进行并行训练，
+# 该函数必须由 ``if __name__ == '__main__'`` 保护。
 
 # train the model
 # train_times: 1000 -> 50
 # trainer = Trainer(model = model, data_loader = train_dataloader,
 #                   train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-# 				  save_interval = 100, checkpoint_dir = "../../checkpoint/transe")
+# 				  save_interval = 100, save_path = "../../checkpoint/transe")
 
 if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.01, opt_method = "sgd", log_interval = 50,
-		save_interval = 50, checkpoint_dir = "../../checkpoint/transe")
+		save_interval = 50, save_path = "../../checkpoint/transe.pth")
 	transe.save_checkpoint('../../checkpoint/transe.pth')
 
 ######################################################################

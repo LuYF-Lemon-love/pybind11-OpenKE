@@ -6,7 +6,7 @@
 # 
 # 该头文件定义了 utils 接口.
 
-"""循环部分，包含训练循环和验证循环。"""
+"""工具类。"""
 
 from __future__ import absolute_import
 from __future__ import division
