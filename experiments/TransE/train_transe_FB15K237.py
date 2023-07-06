@@ -12,7 +12,7 @@ TransE-FB15K
 
 TransE 原论文: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`__。
 
-下面是 TransE 原论文给出的 FB15k 的模型超参数，使用 :py:class:`torch.optim.SGD` 进行训练的。
+下面是 TransE 原论文给出的 FB15k 的模型超参数，是使用 :py:class:`torch.optim.SGD` 进行训练的。
 
 ============= =========== ========== ============ ===========
    向量维度       学习率     margin      距离函数     epochs

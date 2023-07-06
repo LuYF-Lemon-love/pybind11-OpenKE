@@ -140,11 +140,11 @@ class TrainerDataParallel(object):
 				loss = self.train_one_step(data)
 				res += loss
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				print(f"[GPU{self.gpu_id}] Epoch [{epoch:>5d} / {self.train_times:>5d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>7f}")
+				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>7f}")
 			if self.gpu_id == 0 and self.save_interval and self.checkpoint_dir and (epoch + 1) % self.save_interval == 0:
-				path = os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".pth")
+				path = os.path.join(self.checkpoint_dir + "-" + str(epoch+1) + ".pth")
 				self.model.module.save_checkpoint(path)
-				print(f"[GPU{self.gpu_id}] Epoch {epoch} | Training checkpoint saved at {path}")
+				print(f"[GPU{self.gpu_id}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 
 	def to_var(self, x):
 
