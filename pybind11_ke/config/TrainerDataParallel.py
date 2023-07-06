@@ -13,13 +13,14 @@
 
 .. code-block:: python
 
-	# Import Trainer
-	from openke.config import Trainer
+	# Import trainer_distributed_data_parallel
+	from pybind11_ke.config import trainer_distributed_data_parallel
 	
 	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 1.0, use_gpu = True)
-	trainer.run()
+	if __name__ == "__main__":
+		trainer_distributed_data_parallel(model = model, data_loader = tra
+			train_times = 1000, alpha = 0.01, opt_method = "sgd", log_inte
+			save_interval = 50, save_path = "../../checkpoint/transe.pth")
 """
 
 import torch

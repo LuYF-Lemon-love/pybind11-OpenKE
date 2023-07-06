@@ -119,10 +119,10 @@ if __name__ == "__main__":
 # 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
-# dataloader for test
-# test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
-
-# test the model
-# transe.load_checkpoint('../../checkpoint/transe.pth')
-# tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-# tester.run_link_prediction(type_constrain = False)
+	# dataloader for test
+	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
+	
+	# test the model
+	transe.load_checkpoint('../../checkpoint/transe.pth')
+	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+	tester.run_link_prediction(type_constrain = False)
