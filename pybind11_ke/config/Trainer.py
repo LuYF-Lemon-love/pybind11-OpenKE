@@ -8,7 +8,7 @@
 # 该脚本定义了训练循环类.
 
 """
-Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
+Trainer - 训练循环类。
 
 基本用法如下：
 
@@ -24,10 +24,9 @@ Trainer - 训练循环类，内部使用 ``tqmn`` 实现进度条。
 """
 
 import torch
-from torch.autograd import Variable
 import torch.optim as optim
 import os
-from tqdm import tqdm
+from ..utils.Timer import Timer
 
 class Trainer(object):
 
@@ -40,9 +39,10 @@ class Trainer(object):
 		data_loader = None,
 		train_times = 1000,
 		alpha = 0.5,
+		opt_method = "sgd",
 		use_gpu = True,
 		device = "cuda:0",
-		opt_method = "sgd",
+		log_interval = None,
 		save_interval = None,
 		save_path = None):
 
@@ -56,48 +56,45 @@ class Trainer(object):
 		:type train_times: int
 		:param alpha: 学习率
 		:type alpha: float
+		:param opt_method: 优化器: Adam or adam, SGD or sgd
+		:type opt_method: str
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
 		:param device: 使用哪个 gpu
 		:type device: str
-		:param opt_method: 优化器: Adagrad or adagrad, Adadelta or adadelta, Adam or adam, SGD or sgd
-		:type opt_method: str
+		:param log_interval: 训练几轮输出一次日志
+		:type log_interval: int
 		:param save_interval: 训练几轮保存一次模型
 		:type save_interval: int
-		:param save_path: 模型保存的目录
+		:param save_path: 模型保存的路径
 		:type save_path: str
 		"""
-
-		#: epochs
-		self.train_times = train_times
-
-		#: 用户传入的优化器名字字符串
-		self.opt_method = opt_method
-		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
-		self.optimizer = None
-		#: 用于 :py:class:`torch.optim.Adagrad`
-		self.lr_decay = 0
-		#: 所有优化器（:py:class:`torch.optim.Adagrad`，:py:class:`torch.optim.Adadelta`，
-		#: :py:class:`torch.optim.Adam`，:py:class:`torch.optim.SGD`）都可以设置
-		self.weight_decay = 0
-		#: 学习率
-		self.alpha = alpha
 
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		self.model = model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader = data_loader
+		#: epochs
+		self.train_times = train_times
+
+		#: 学习率
+		self.alpha = alpha
+		#: 用户传入的优化器名字字符串
+		self.opt_method = opt_method
+		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
+		self.optimizer = None
 
 		#: 是否使用 gpu
 		self.use_gpu = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
 		self.device = torch.device(device)
 
+		#: 训练几轮输出一次日志
+		self.log_interval = log_interval
 		#: 训练几轮保存一次模型
 		self.save_interval = save_interval
-
-		#: 模型保存的目录
+		#: 模型保存的路径
 		self.save_path = save_path
 
 	def train_one_step(self, data):
@@ -105,8 +102,7 @@ class Trainer(object):
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用
-		 			 :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 函数生成的数据
+		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 函数生成的数据
 		:type data: dict
 		:returns: 损失值
 		:rtype: float
@@ -133,44 +129,32 @@ class Trainer(object):
 		if self.use_gpu:
 			self.model.cuda(device = self.device)
 
-		if self.opt_method == "Adagrad" or self.opt_method == "adagrad":
-			self.optimizer = optim.Adagrad(
-				self.model.parameters(),
-				lr=self.alpha,
-				lr_decay=self.lr_decay,
-				weight_decay=self.weight_decay,
-			)
-		elif self.opt_method == "Adadelta" or self.opt_method == "adadelta":
-			self.optimizer = optim.Adadelta(
-				self.model.parameters(),
-				lr=self.alpha,
-				weight_decay=self.weight_decay,
-			)
-		elif self.opt_method == "Adam" or self.opt_method == "adam":
+		if self.opt_method == "Adam" or self.opt_method == "adam":
 			self.optimizer = optim.Adam(
 				self.model.parameters(),
 				lr=self.alpha,
-				weight_decay=self.weight_decay,
 			)
 		elif self.opt_method == "SGD" or self.opt_method == "sgd":
 			self.optimizer = optim.SGD(
 				self.model.parameters(),
 				lr = self.alpha,
-				weight_decay=self.weight_decay,
 			)
 		print("Finish initializing...")
 		
-		training_range = tqdm(range(self.train_times))
-		for epoch in training_range:
+		timer = Timer()
+		for epoch in range(self.train_times):
 			res = 0.0
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
-			training_range.set_description("Epoch %d | loss: %f" % (epoch, res))
-			
+			timer.stop()
+			if self.log_interval and (epoch + 1) % self.log_interval == 0:
+				print(f"[GPU{self.device}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} sec/epoch")
 			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
-				print("Epoch %d has finished, saving..." % (epoch))
-				self.model.save_checkpoint(os.path.join(self.save_path + "-" + str(epoch) + ".pth"))
+				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
+				self.model.save_checkpoint(path)
+				print(f"[GPU{self.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+		print(f"[GPU{self.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
 
 	def to_var(self, x, use_gpu):
 
@@ -185,6 +169,6 @@ class Trainer(object):
 		"""
 
 		if use_gpu:
-			return Variable(torch.from_numpy(x).cuda(device = self.device))
+			return torch.from_numpy(x).to(self.device)
 		else:
-			return Variable(torch.from_numpy(x))
+			return torch.from_numpy(x)
