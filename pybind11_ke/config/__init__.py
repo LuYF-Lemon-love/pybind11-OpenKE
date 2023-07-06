@@ -14,11 +14,11 @@ from __future__ import division
 from __future__ import print_function
 
 from .Trainer import Trainer
-from .TrainerDataParallel import TrainerDataParallel
+from .TrainerDataParallel import trainer_distributed_data_parallel
 from .Tester import Tester
 
 __all__ = [
 	'Trainer',
 	'Tester',
-	'TrainerDataParallel'
+	'trainer_distributed_data_parallel'
 ]
