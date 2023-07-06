@@ -40,7 +40,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 # dataloader for training
 train_dataloader = TrainDataLoader(
 	in_path = "../../benchmarks/FB15K/", 
-	nbatches = 100,
+	nbatches = 200,
 	threads = 8, 
 	sampling_mode = "normal", 
 	bern = False,  
@@ -93,7 +93,7 @@ model = NegativeSampling(
 # -------------
 # pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
-# 或者使用 :py:func:`pybind11_ke.config.trainer_distributed_data_parallel` 函数进行并行训练，
+# 或者使用 :py:func:`pybind11_ke.config.TrainerDataParallel.trainer_distributed_data_parallel` 函数进行并行训练，
 # 该函数必须由 ``if __name__ == '__main__'`` 保护。
 
 # train the model
