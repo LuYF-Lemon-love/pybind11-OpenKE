@@ -102,7 +102,7 @@ model = NegativeSampling(
 
 if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.01, opt_method = "sgd", log_interval = 50
+		train_times = 1000, alpha = 0.01, opt_method = "sgd", log_interval = 50,
 		save_interval = 50, checkpoint_dir = "../../checkpoint/transe")
 	transe.save_checkpoint('../../checkpoint/transe.pth')
 
