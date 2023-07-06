@@ -199,11 +199,11 @@ def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, 
 	"""
 	
 	ddp_setup(rank, world_size)
-	trainer = TrainerDDP(rank, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir)
+	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir)
 	trainer.run()
 	destroy_process_group()
 	
-def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, opt_method, save_interval, checkpoint_dir):
+def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir):
 
 	"""生成进程。
 	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
