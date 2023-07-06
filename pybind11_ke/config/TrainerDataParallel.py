@@ -166,11 +166,11 @@ def ddp_setup(rank, world_size):
 	:param world_size: 进程的总数
 	:type world_size: int
     """
-
-    os.environ["MASTER_ADDR"] = "localhost"
-    os.environ["MASTER_PORT"] = "12355"
-    init_process_group(backend="gloo", rank=rank, world_size=world_size)
-    torch.cuda.set_device(rank)
+	
+	os.environ["MASTER_ADDR"] = "localhost"
+	os.environ["MASTER_PORT"] = "12355"
+	init_process_group(backend="gloo", rank=rank, world_size=world_size)
+	torch.cuda.set_device(rank)
 
 def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir):
 
@@ -197,7 +197,7 @@ def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, 
 	:param checkpoint_dir: 模型保存的目录
 	:type checkpoint_dir: str
 	"""
-
+	
 	ddp_setup(rank, world_size)
 	trainer = TrainerDDP(rank, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir)
 	trainer.run()
@@ -226,7 +226,7 @@ def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, op
 	:param checkpoint_dir: 模型保存的目录
 	:type checkpoint_dir: str
 	"""
-
+	
 	world_size = torch.cuda.device_count()
 	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, checkpoint_dir),
 		nprocs = world_size)
