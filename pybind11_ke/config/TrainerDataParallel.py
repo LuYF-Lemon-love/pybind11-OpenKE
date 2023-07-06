@@ -74,7 +74,7 @@ class TrainerDataParallel(object):
 		#: 第几个 gpu
 		self.gpu_id = gpu_id
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-		self.model = DDP(model, device_ids=[gpu_id])
+		self.model = DDP(model.to(gpu_id), device_ids=[gpu_id])
 		
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader = data_loader	
