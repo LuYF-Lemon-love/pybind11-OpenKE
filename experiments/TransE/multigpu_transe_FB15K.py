@@ -1,12 +1,12 @@
 """
-**TransE-FB15K** ||
+**TransE-FB15K-multigpu** ||
 `TransE-WN18RR-adv <train_transe_WN18_adv_sigmoidloss.html>`_ ||
 `TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
 `SimplE-WN18RR <train_simple_WN18RR.html>`_ ||
 `RotatE-WN18RR <train_rotate_WN18RR_adv.html>`_
 
-TransE-FB15K
-===================
+TransE-FB15K-multigpu
+=========================
 
 这一部分介绍如何用在 ``FB15k`` 知识图谱上训练 TransE。
 
@@ -96,15 +96,9 @@ model = NegativeSampling(
 # 或者使用 :py:func:`pybind11_ke.config.TrainerDataParallel.trainer_distributed_data_parallel` 函数进行并行训练，
 # 该函数必须由 ``if __name__ == '__main__'`` 保护。
 
-# train the model
-# train_times: 1000 -> 50
-# trainer = Trainer(model = model, data_loader = train_dataloader,
-#                   train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-# 				  save_interval = 100, save_path = "../../checkpoint/transe")
-
 if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.01, opt_method = "sgd", log_interval = 50,
+		train_times = 500, alpha = 0.01, opt_method = "sgd", log_interval = 50,
 		save_interval = 50, save_path = "../../checkpoint/transe.pth")
 	transe.save_checkpoint('../../checkpoint/transe.pth')
 
