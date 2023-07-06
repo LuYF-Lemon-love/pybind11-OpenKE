@@ -29,6 +29,7 @@ import torch.multiprocessing as mp
 from torch.utils.data.distributed import DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
+from ..utils.Timer import Timer
 
 class TrainerDataParallel(object):
 
@@ -134,17 +135,20 @@ class TrainerDataParallel(object):
 		"""训练循环，利用 :py:meth:`train_one_step` 训练。
 		"""
 		
+		timer = Timer()
 		for epoch in range(self.train_times):
 			res = 0.0
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
+			timer.stop()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>7f}")
+				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>7f} | {timer.avg():.5f} sec/epoch")
 			if self.gpu_id == 0 and self.save_interval and self.checkpoint_dir and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(self.checkpoint_dir + "-" + str(epoch+1) + ".pth")
 				self.model.module.save_checkpoint(path)
 				print(f"[GPU{self.gpu_id}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+		print(f"The model training is completed, taking a total of {timer.sum():.5f} seconds.")
 
 	def to_var(self, x):
 
