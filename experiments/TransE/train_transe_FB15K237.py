@@ -102,12 +102,12 @@ model = NegativeSampling(
 # train_times: 1000 -> 50
 # trainer = Trainer(model = model, data_loader = train_dataloader,
 #                   train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-# 				  save_steps = 100, checkpoint_dir = "../../checkpoint/transe")
+# 				  save_interval = 100, checkpoint_dir = "../../checkpoint/transe")
 
 if __name__ == "__main__":
 	TrainerDataParallel(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.01, opt_method = "sgd", 
-		save_steps = 10, checkpoint_dir = "../../checkpoint/transe")
+		train_times = 1000, alpha = 0.01, opt_method = "sgd", log_interval = 50
+		save_interval = 50, checkpoint_dir = "../../checkpoint/transe")
 	transe.save_checkpoint('../../checkpoint/transe.pth')
 
 ######################################################################

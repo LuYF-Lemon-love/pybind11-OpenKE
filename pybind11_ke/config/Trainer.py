@@ -43,7 +43,7 @@ class Trainer(object):
 		use_gpu = True,
 		device = "cuda:0",
 		opt_method = "sgd",
-		save_steps = None,
+		save_interval = None,
 		checkpoint_dir = None):
 
 		"""创建 Trainer 对象。
@@ -62,8 +62,8 @@ class Trainer(object):
 		:type device: str
 		:param opt_method: 优化器: Adagrad or adagrad, Adadelta or adadelta, Adam or adam, SGD or sgd
 		:type opt_method: str
-		:param save_steps: 训练几轮保存一次模型
-		:type save_steps: int
+		:param save_interval: 训练几轮保存一次模型
+		:type save_interval: int
 		:param checkpoint_dir: 模型保存的目录
 		:type checkpoint_dir: str
 		"""
@@ -95,7 +95,7 @@ class Trainer(object):
 		self.device = torch.device(device)
 
 		#: 训练几轮保存一次模型
-		self.save_steps = save_steps
+		self.save_interval = save_interval
 
 		#: 模型保存的目录
 		self.checkpoint_dir = checkpoint_dir
@@ -168,7 +168,7 @@ class Trainer(object):
 				res += loss
 			training_range.set_description("Epoch %d | loss: %f" % (epoch, res))
 			
-			if self.save_steps and self.checkpoint_dir and (epoch + 1) % self.save_steps == 0:
+			if self.save_interval and self.checkpoint_dir and (epoch + 1) % self.save_interval == 0:
 				print("Epoch %d has finished, saving..." % (epoch))
 				self.model.save_checkpoint(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".pth"))
 
