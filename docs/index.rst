@@ -29,7 +29,8 @@ Contents
    :includehidden:
    :caption: TransE
 
-   auto_experiments/TransE/train_transe_FB15K237
+   auto_experiments/TransE/single_gpu/train_transe_FB15K237
+   auto_experiments/TransE/multigpu/train_transe_FB15K237
 
 .. toctree::
    :maxdepth: 2
