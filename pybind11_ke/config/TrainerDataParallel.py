@@ -7,7 +7,7 @@
 # 该脚本定义了并行训练循环函数.
 
 """
-trainer_distributed_data_parallel - 并行训练循环函数。
+py:func:`trainer_distributed_data_parallel` - 并行训练循环函数。
 
 基本用法如下：
 
@@ -161,13 +161,13 @@ class TrainerDataParallel(object):
 def ddp_setup(rank, world_size):
 
 	"""
-	构建进程组。在 Windows 上， py:mod:`torch.distributed` 仅支持 `Gloo` 后端。
+	构建进程组。在 Windows 上， :py:mod:`torch.distributed` 仅支持 `Gloo` 后端。
 
 	:param rank: 进程的唯一标识符
 	:type rank: int
 	:param world_size: 进程的总数
 	:type world_size: int
-    """
+	"""
 	
 	os.environ["MASTER_ADDR"] = "localhost"
 	os.environ["MASTER_PORT"] = "12355"
@@ -209,7 +209,7 @@ def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, op
 
 	"""生成进程。
 	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
-	```multiprocessing`` 的生成进程函数必须由 ``if __name__ == '__main__'`` 保护。
+	``multiprocessing`` 的生成进程函数必须由 ``if __name__ == '__main__'`` 保护。
 
 	:param model: 包装 KGE 模型的训练策略类
 	:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
