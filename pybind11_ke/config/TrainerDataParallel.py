@@ -103,6 +103,8 @@ class TrainerDataParallel(object):
 				self.model.parameters(),
 				lr = self.alpha,
 			)
+		
+		print(f"[GPU{self.gpu_id}] Initialization completed, start model training.")
 
 	def train_one_step(self, data):
 
