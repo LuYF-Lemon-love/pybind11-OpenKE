@@ -7,7 +7,7 @@
 # 该脚本定义了并行训练循环函数.
 
 """
-py:func:`trainer_distributed_data_parallel` - 并行训练循环函数。
+:py:func:`trainer_distributed_data_parallel` - 并行训练循环函数。
 
 基本用法如下：
 
