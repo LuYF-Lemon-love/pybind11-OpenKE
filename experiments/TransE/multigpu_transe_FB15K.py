@@ -40,7 +40,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 # dataloader for training
 train_dataloader = TrainDataLoader(
 	in_path = "../../benchmarks/FB15K/", 
-	nbatches = 200,
+	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
 	bern = False,  
@@ -98,7 +98,7 @@ model = NegativeSampling(
 
 if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
-		train_times = 500, alpha = 0.01, opt_method = "sgd", log_interval = 50,
+		train_times = 600, alpha = 0.02, opt_method = "sgd", log_interval = 50,
 		save_interval = 50, save_path = "../../checkpoint/transe.pth")
 	transe.save_checkpoint('../../checkpoint/transe.pth')
 
