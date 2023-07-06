@@ -31,6 +31,7 @@ Contents
 
    auto_experiments/TransE/single_gpu/single_gpu_transe_FB15K
    auto_experiments/TransE/multigpu/train_transe_FB15K237
+   auto_experiments/TransE/single_gpu_transe_FB15K
 
 .. toctree::
    :maxdepth: 2
