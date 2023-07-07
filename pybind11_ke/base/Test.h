@@ -301,7 +301,7 @@ void test_link_prediction(bool type_constrain = false) {
 
     printf("no type constraint results:\n");
 
-    printf("metric:\t\t\t MRR \t\t MR \t\t hit@1  \t hit@3  \t hit@10 \n");
+    printf("metric:\t\t\t MRR \t\t MR \t\t hit@1 \t\t hit@3  \t hit@10 \n");
     printf("l(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", l_reci_rank, l_rank, l1_tot, l3_tot, l10_tot);
     printf("r(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", r_reci_rank, r_rank, r1_tot, r3_tot, r10_tot);
     printf("averaged(raw):\t\t %f \t %f \t %f \t %f \t %f \n",
@@ -349,7 +349,7 @@ void test_link_prediction(bool type_constrain = false) {
 
         printf("type constraint results:\n");
         
-        printf("metric:\t\t\t MRR \t\t MR \t\t hit@1  \t hit@3  \t hit@10 \n");
+        printf("metric:\t\t\t MRR \t\t MR \t\t hit@1 \t\t hit@3  \t hit@10 \n");
         printf("l(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", l_reci_rank_constrain, l_rank_constrain, l1_tot_constrain, l3_tot_constrain, l10_tot_constrain);
         printf("r(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", r_reci_rank_constrain, r_rank_constrain, r1_tot_constrain, r3_tot_constrain, r10_tot_constrain);
         printf("averaged(raw):\t\t %f \t %f \t %f \t %f \t %f \n",
