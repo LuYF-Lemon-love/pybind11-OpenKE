@@ -75,11 +75,11 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
 }
 
 // 替换 head, 评估 head 的 rank.
-void test_head(py::array_t<REAL> con_py, INT last_head, bool type_constrain = false) {
+void test_head(py::array_t<REAL> con_py, bool type_constrain = false) {
 
-    INT h = test_list[last_head].h;
-    INT t = test_list[last_head].t;
-    INT r = test_list[last_head].r;
+    INT h = test_list[last_head - 1].h;
+    INT t = test_list[last_head - 1].t;
+    INT r = test_list[last_head - 1].r;
 
     // lef: 记录关系 r 的 head 类型在 head_type 中第一次出现的位置
 	// rig: 记录关系 r 的 head 类型在 head_type 中最后一次出现的后一个位置
@@ -153,11 +153,11 @@ void test_head(py::array_t<REAL> con_py, INT last_head, bool type_constrain = fa
 }
 
 // 替换 tail, 评估 tail 的 rank.
-void test_tail(py::array_t<REAL> con_py, INT last_tail, bool type_constrain = false) {
+void test_tail(py::array_t<REAL> con_py, bool type_constrain = false) {
 
-    INT h = test_list[last_tail].h;
-    INT t = test_list[last_tail].t;
-    INT r = test_list[last_tail].r;
+    INT h = test_list[last_tail - 1].h;
+    INT t = test_list[last_tail - 1].t;
+    INT r = test_list[last_tail - 1].r;
 
     // lef: 记录关系 r 的 tail 类型在 tail_type 中第一次出现的位置
 	// rig: 记录关系 r 的 tail 类型在 tail_type 中最后一次出现的后一个位置

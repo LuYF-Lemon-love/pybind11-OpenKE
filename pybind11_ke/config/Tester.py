@@ -107,11 +107,11 @@ class Tester(object):
         base.init_test()
         self.data_loader.set_sampling_mode('link')
         training_range = tqdm(self.data_loader)
-        for index, [data_head, data_tail] in enumerate(training_range):
+        for [data_head, data_tail] in training_range:
             score = self.test_one_step(data_head)
-            base.test_head(score, index, type_constrain)
+            base.test_head(score, type_constrain)
             score = self.test_one_step(data_tail)
-            base.test_tail(score, index, type_constrain)
+            base.test_tail(score, type_constrain)
         base.test_link_prediction(type_constrain)
 
         mrr = base.get_test_link_MRR(type_constrain)
