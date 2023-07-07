@@ -25,9 +25,6 @@ Triple *train_head;
 Triple *train_tail;
 Triple *train_rel;
 
-INT *testLef, *testRig;
-INT *validLef, *validRig;
-
 // 读取训练集
 void read_train_files() {
 
@@ -164,17 +161,16 @@ void read_train_files() {
     }
 }
 
-Triple *testList;
-Triple *validList;
-Triple *tripleList;
+Triple *test_list;
+Triple *valid_list;
+Triple *triple_list;
 
 // 读取测试集
-void importTestFiles() {
+void read_test_files() {
     FILE *fin;
     INT tmp;
 
     // 读取关系的个数
-    // inPath: 定义于 Setting.h
     // rel_file: 定义于 Setting.h
     fin = fopen(rel_file.c_str(), "r");
     // relation2id.txt 第一行是关系的个数
@@ -188,95 +184,65 @@ void importTestFiles() {
     tmp = fscanf(fin, "%ld", &entity_total);
     fclose(fin);
 
-    // train_file: 定义于 Setting.h
     // test_file: 定义于 Setting.h
+    // train_file: 定义于 Setting.h
     // valid_file: 定义于 Setting.h
     FILE* f_kb1, * f_kb2, * f_kb3;
-    f_kb2 = fopen(train_file.c_str(), "r");
     f_kb1 = fopen(test_file.c_str(), "r");
+    f_kb2 = fopen(train_file.c_str(), "r");
     f_kb3 = fopen(valid_file.c_str(), "r");
-    // train2id.txt 第一行是三元组的个数
     // test2id.txt 第一行是三元组的个数
+    // train2id.txt 第一行是三元组的个数
     // valid2id.txt 第一行是三元组的个数
-    tmp = fscanf(f_kb1, "%ld", &testTotal);
+    tmp = fscanf(f_kb1, "%ld", &test_total);
     tmp = fscanf(f_kb2, "%ld", &train_total);
-    tmp = fscanf(f_kb3, "%ld", &validTotal);
-    std::cout << "The total of test triples is " << testTotal
+    tmp = fscanf(f_kb3, "%ld", &valid_total);
+    std::cout << "The total of test triples is " << test_total
             << "." << std::endl;
-    std::cout << "The total of valid triples is " << validTotal
+    std::cout << "The total of valid triples is " << valid_total
             << "." << std::endl;
     
-    // tripleTotal: 数据集三元组个数
-    tripleTotal = testTotal + train_total + validTotal;
-    testList = (Triple *)calloc(testTotal, sizeof(Triple));
-    validList = (Triple *)calloc(validTotal, sizeof(Triple));
-    tripleList = (Triple *)calloc(tripleTotal, sizeof(Triple));
+    // triple_total: 数据集三元组个数
+    triple_total = test_total + train_total + valid_total;
+    test_list = (Triple *)calloc(test_total, sizeof(Triple));
+    valid_list = (Triple *)calloc(valid_total, sizeof(Triple));
+    triple_list = (Triple *)calloc(triple_total, sizeof(Triple));
     // 读取测试集三元组
-    for (INT i = 0; i < testTotal; i++) {
-        tmp = fscanf(f_kb1, "%ld", &testList[i].h);
-        tmp = fscanf(f_kb1, "%ld", &testList[i].t);
-        tmp = fscanf(f_kb1, "%ld", &testList[i].r);
-        tripleList[i] = testList[i];
+    for (INT i = 0; i < test_total; i++) {
+        tmp = fscanf(f_kb1, "%ld", &test_list[i].h);
+        tmp = fscanf(f_kb1, "%ld", &test_list[i].t);
+        tmp = fscanf(f_kb1, "%ld", &test_list[i].r);
+        triple_list[i] = test_list[i];
     }
     // 读取训练集三元组
     for (INT i = 0; i < train_total; i++) {
-        tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].h);
-        tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].t);
-        tmp = fscanf(f_kb2, "%ld", &tripleList[i + testTotal].r);
+        tmp = fscanf(f_kb2, "%ld", &triple_list[i + test_total].h);
+        tmp = fscanf(f_kb2, "%ld", &triple_list[i + test_total].t);
+        tmp = fscanf(f_kb2, "%ld", &triple_list[i + test_total].r);
     }
     // 读取验证集三元组
-    for (INT i = 0; i < validTotal; i++) {
-        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + train_total].h);
-        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + train_total].t);
-        tmp = fscanf(f_kb3, "%ld", &tripleList[i + testTotal + train_total].r);
-        validList[i] = tripleList[i + testTotal + train_total];
+    for (INT i = 0; i < valid_total; i++) {
+        tmp = fscanf(f_kb3, "%ld", &triple_list[i + test_total + train_total].h);
+        tmp = fscanf(f_kb3, "%ld", &triple_list[i + test_total + train_total].t);
+        tmp = fscanf(f_kb3, "%ld", &triple_list[i + test_total + train_total].r);
+        valid_list[i] = triple_list[i + test_total + train_total];
     }
     fclose(f_kb1);
     fclose(f_kb2);
     fclose(f_kb3);
 
-    // tripleList: 以 h, r, t 排序
-    // testList: 以 r, h, t 排序
-    // validList: 以 r, h, t 排序
-    std::sort(tripleList, tripleList + tripleTotal, Triple::cmp_head);
-    std::sort(testList, testList + testTotal, Triple::cmp_rel2);
-    std::sort(validList, validList + validTotal, Triple::cmp_rel2);
-
-    testLef = (INT *)calloc(relation_total, sizeof(INT));
-    testRig = (INT *)calloc(relation_total, sizeof(INT));
-    // testLef, testRig 初始化为 -1
-    memset(testLef, -1, sizeof(INT) * relation_total);
-    memset(testRig, -1, sizeof(INT) * relation_total);
-    for (INT i = 1; i < testTotal; i++) {
-	if (testList[i].r != testList[i-1].r) {
-        // testLef (relation_total): 存储每种实体在 testList 中第一次出现的位置
-        // testRig (relation_total): 存储每种实体在 testList 中最后一次出现的位置
-	    testRig[testList[i-1].r] = i - 1;
-	    testLef[testList[i].r] = i;
-	}
-    }
-    testLef[testList[0].r] = 0;
-    testRig[testList[testTotal - 1].r] = testTotal - 1;
-
-    validLef = (INT *)calloc(relation_total, sizeof(INT));
-    validRig = (INT *)calloc(relation_total, sizeof(INT));
-    // validLef, validRig 初始化为 -1
-    memset(validLef, -1, sizeof(INT)*relation_total);
-    memset(validRig, -1, sizeof(INT)*relation_total);
-    for (INT i = 1; i < validTotal; i++) {
-	if (validList[i].r != validList[i-1].r) {
-        // validLef (relation_total): 存储每种实体在 validList 中第一次出现的位置
-        // validRig (relation_total): 存储每种实体在 validList 中最后一次出现的位置
-	    validRig[validList[i-1].r] = i - 1;
-	    validLef[validList[i].r] = i;
-	}
-    }
-    validLef[validList[0].r] = 0;
-    validRig[validList[validTotal - 1].r] = validTotal - 1;
-
-    // std::cout << "tmp = " << tmp << std::endl;
+    // triple_list: 以 h, r, t 排序
+    // test_list: 以 r, h, t 排序
+    // valid_list: 以 r, h, t 排序
+    std::sort(triple_list, triple_list + triple_total, Triple::cmp_head);
+    std::sort(test_list, test_list + test_total, Triple::cmp_rel2);
+    std::sort(valid_list, valid_list + valid_total, Triple::cmp_rel2);
 }
 
+// head_type: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
+// tail_type: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
+INT* head_type;
+INT* tail_type;
 // head_lef: 记录各个关系的 head 类型在 head_type 中第一次出现的位置
 // head_rig: 记录各个关系的 head 类型在 head_type 中最后一次出现的后一个位置
 // tail_lef: 记录各个关系的 tail 类型在 tail_type 中第一次出现的位置
@@ -285,10 +251,6 @@ INT* head_lef;
 INT* head_rig;
 INT* tail_lef;
 INT* tail_rig;
-// head_type: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
-// tail_type: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
-INT* head_type;
-INT* tail_type;
 
 // 读取 type_constrain.txt
 // type_constrain.txt: 类型约束文件, 第一行是关系的个数
@@ -301,16 +263,16 @@ INT* tail_type;
 // The relation with id 1200 has 4 types of tail entities, which are 12123, 4388, 11087 and 11088
 // 1200	4	3123	1034	58	5733
 // 1200	4	12123	4388	11087	11088
-void importTypeFiles() {
+void read_type_files() {
 
     head_lef = (INT *)calloc(relation_total, sizeof(INT));
     head_rig = (INT *)calloc(relation_total, sizeof(INT));
     tail_lef = (INT *)calloc(relation_total, sizeof(INT));
     tail_rig = (INT *)calloc(relation_total, sizeof(INT));
-    // 统计 total_lef, total_rig
-    INT total_lef = 0;
-    INT total_rig = 0;
-    FILE* f_type = fopen((inPath + "type_constrain.txt").c_str(),"r");
+    // 统计所有关系头实体类型、尾实体类型的总数
+    INT total_head = 0;
+    INT total_tail = 0;
+    FILE* f_type = fopen((in_path + "type_constrain.txt").c_str(), "r");
     INT tmp;
     tmp = fscanf(f_type, "%ld", &tmp);
     for (INT i = 0; i < relation_total; i++) {
@@ -318,39 +280,39 @@ void importTypeFiles() {
         tmp = fscanf(f_type, "%ld %ld", &rel, &tot);
         for (INT j = 0; j < tot; j++) {
             tmp = fscanf(f_type, "%ld", &tmp);
-            total_lef++;
+            total_head++;
         }
         tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
         for (INT j = 0; j < tot; j++) {
             tmp = fscanf(f_type, "%ld", &tmp);
-            total_rig++;
+            total_tail++;
         }
     }
     fclose(f_type);
-    head_type = (INT *)calloc(total_lef, sizeof(INT)); 
-    tail_type = (INT *)calloc(total_rig, sizeof(INT));
+    head_type = (INT *)calloc(total_head, sizeof(INT)); 
+    tail_type = (INT *)calloc(total_tail, sizeof(INT));
     // 读取 type_constrain.txt
-    total_lef = 0;
-    total_rig = 0;
-    f_type = fopen((inPath + "type_constrain.txt").c_str(),"r");
+    total_head = 0;
+    total_tail = 0;
+    f_type = fopen((in_path + "type_constrain.txt").c_str(),"r");
     tmp = fscanf(f_type, "%ld", &tmp);
     for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
         tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
-        head_lef[rel] = total_lef;
+        head_lef[rel] = total_head;
         for (INT j = 0; j < tot; j++) {
-            tmp = fscanf(f_type, "%ld", &head_type[total_lef]);
-            total_lef++;
+            tmp = fscanf(f_type, "%ld", &head_type[total_head]);
+            total_head++;
         }
-        head_rig[rel] = total_lef;
+        head_rig[rel] = total_head;
         std::sort(head_type + head_lef[rel], head_type + head_rig[rel]);
         tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
-        tail_lef[rel] = total_rig;
+        tail_lef[rel] = total_tail;
         for (INT j = 0; j < tot; j++) {
-            tmp = fscanf(f_type, "%ld", &tail_type[total_rig]);
-            total_rig++;
+            tmp = fscanf(f_type, "%ld", &tail_type[total_tail]);
+            total_tail++;
         }
-        tail_rig[rel] = total_rig;
+        tail_rig[rel] = total_tail;
         std::sort(tail_type + tail_lef[rel], tail_type + tail_rig[rel]);
     }
     fclose(f_type);

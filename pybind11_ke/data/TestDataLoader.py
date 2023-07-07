@@ -99,7 +99,7 @@ class TestDataLoader(object):
 		:type valid_file: str
 		:param test_file: test2id.txt
 		:type test_file: str
-		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
+		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，``tc`` 表示为分类进行负采样
 		:type sampling_mode: str
 		:param type_constrain: 是否用 type_constrain.txt 进行负采样
 		:type type_constrain: bool
@@ -117,17 +117,17 @@ class TestDataLoader(object):
 		self.valid_file = self.in_path + valid_file
 		#: test2id.txt
 		self.test_file = self.in_path + test_file
-		#: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
+		#: 数据采样模式，``link`` 表示为链接预测进行负采样，``tc`` 表示为分类进行负采样
 		self.sampling_mode = sampling_mode
 		#: 是否用 type_constrain.txt 进行负采样
 		self.type_constrain = type_constrain
 
 		#: 实体的个数
-		self.entTotal = 0
+		self.ent_tol = 0
 		#: 关系的个数
-		self.relTotal = 0
+		self.rel_tol = 0
 		#: 测试集三元组的个数
-		self.testTotal = 0
+		self.test_tol = 0
 
 		# 读入数据
 		self.read()
@@ -140,36 +140,36 @@ class TestDataLoader(object):
 		base.set_ent_path(self.ent_file)
 		base.set_rel_path(self.rel_file)
 		base.set_train_path(self.train_file)
-		base.setValidPath(self.valid_file)
-		base.setTestPath(self.test_file)
+		base.set_valid_path(self.valid_file)
+		base.set_test_path(self.test_file)
 		base.rand_reset()
-		base.importTestFiles()
+		base.read_test_files()
 
 		if self.type_constrain:
-			base.importTypeFiles()
+			base.read_type_files()
 
-		self.entTotal = base.get_entity_total()
-		self.relTotal = base.get_relation_total()
-		self.testTotal = base.getTestTotal()
+		self.ent_tol = base.get_entity_total()
+		self.rel_tol = base.get_relation_total()
+		self.test_tol = base.getTestTotal()
 
 		# 利用 np.zeros 分配内存
-		self.test_h = np.zeros(self.entTotal, dtype=np.int64)
-		self.test_t = np.zeros(self.entTotal, dtype=np.int64)
-		self.test_r = np.zeros(self.entTotal, dtype=np.int64)
+		self.test_h = np.zeros(self.ent_tol, dtype=np.int64)
+		self.test_t = np.zeros(self.ent_tol, dtype=np.int64)
+		self.test_r = np.zeros(self.ent_tol, dtype=np.int64)
 
-		self.test_pos_h = np.zeros(self.testTotal, dtype=np.int64)
-		self.test_pos_t = np.zeros(self.testTotal, dtype=np.int64)
-		self.test_pos_r = np.zeros(self.testTotal, dtype=np.int64)
+		self.test_pos_h = np.zeros(self.test_tol, dtype=np.int64)
+		self.test_pos_t = np.zeros(self.test_tol, dtype=np.int64)
+		self.test_pos_r = np.zeros(self.test_tol, dtype=np.int64)
 		
-		self.test_neg_h = np.zeros(self.testTotal, dtype=np.int64)
-		self.test_neg_t = np.zeros(self.testTotal, dtype=np.int64)
-		self.test_neg_r = np.zeros(self.testTotal, dtype=np.int64)
+		self.test_neg_h = np.zeros(self.test_tol, dtype=np.int64)
+		self.test_neg_t = np.zeros(self.test_tol, dtype=np.int64)
+		self.test_neg_r = np.zeros(self.test_tol, dtype=np.int64)
 
 	# 为链接预测进行采样数据
 	def sampling_lp(self):
 
 		"""为链接预测进行采样数据，为给定的正三元组，用所有实体依次替换头尾实体得到
-		2 * :py:attr:`entTotal` 个三元组。
+		2 * :py:attr:`ent_tol` 个三元组。
 		
 		:returns: 对于一个正三元组生成的所有可能破化的三元组
 		:rtype: dict
@@ -219,33 +219,33 @@ class TestDataLoader(object):
 
 	def get_ent_tot(self):
 
-		"""返回 :py:attr:`entTotal`
+		"""返回 :py:attr:`ent_tol`
 
-		:returns: :py:attr:`entTotal`
+		:returns: :py:attr:`ent_tol`
 		:rtype: int
 		"""
 		
-		return self.entTotal
+		return self.ent_tol
 
 	def get_rel_tot(self):
 
-		"""返回 :py:attr:`relTotal`
+		"""返回 :py:attr:`rel_tol`
 
-		:returns: :py:attr:`relTotal`
+		:returns: :py:attr:`rel_tol`
 		:rtype: int
 		"""
 
-		return self.relTotal
+		return self.rel_tol
 
 	def get_test_tot(self):
 
-		"""返回 :py:attr:`testTotal`
+		"""返回 :py:attr:`test_tol`
 
-		:returns: :py:attr:`testTotal`
+		:returns: :py:attr:`test_tol`
 		:rtype: int
 		"""
 
-		return self.testTotal
+		return self.test_tol
 
 	def set_sampling_mode(self, sampling_mode):
 
@@ -265,8 +265,8 @@ class TestDataLoader(object):
 
 		if self.sampling_mode == "link":
 			base.initTest()
-			return TestDataSampler(self.testTotal, self.sampling_lp)
-		else:
+			return TestDataSampler(self.test_tol, self.sampling_lp)
+		elif self.sampling_mode == "tc":
 			base.initTest()
 			return TestDataSampler(1, self.sampling_tc)
 
@@ -274,8 +274,8 @@ class TestDataLoader(object):
 		
 		"""len() 要求 :py:meth:`object.__len__`
 		
-		:returns: :py:attr:`testTotal`
+		:returns: :py:attr:`test_tol`
 		:rtype: int
 		"""
 		
-		return self.testTotal
+		return self.test_tol

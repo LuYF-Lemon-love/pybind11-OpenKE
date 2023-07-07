@@ -153,8 +153,8 @@ PYBIND11_MODULE(base, m) {
 	m.def("set_ent_path", &set_ent_path);
 	m.def("set_rel_path", &set_rel_path);
 	m.def("set_train_path", &set_train_path);
-	m.def("setValidPath", &setValidPath);
-	m.def("setTestPath", &setTestPath);
+	m.def("set_valid_path", &set_valid_path);
+	m.def("set_test_path", &set_test_path);
 	m.def("set_bern", &set_bern);
 	m.def("set_work_threads", &set_work_threads);
 	m.def("rand_reset", &rand_reset);
@@ -163,8 +163,8 @@ PYBIND11_MODULE(base, m) {
 	m.def("get_entity_total", &get_entity_total);
 	m.def("get_train_total", &get_train_total);
 
-	m.def("importTestFiles", &importTestFiles);
-	m.def("importTypeFiles", &importTypeFiles);
+	m.def("read_test_files", &read_test_files);
+	m.def("read_type_files", &read_type_files);
 	m.def("getTestTotal", &getTestTotal);
 	m.def("getHeadBatch", &getHeadBatch, "对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.",
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),

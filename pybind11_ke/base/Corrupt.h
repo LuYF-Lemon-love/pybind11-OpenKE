@@ -173,14 +173,14 @@ INT corrupt_rel(INT id, INT h, INT t) {
 // 检查数据集中是否存在 (h, t, r)
 bool _find(INT h, INT t, INT r) {
     INT lef = 0;
-    INT rig = tripleTotal - 1;
+    INT rig = triple_total - 1;
     INT mid;
     while (lef + 1 < rig) {
         INT mid = (lef + rig) >> 1;
-        if ((tripleList[mid]. h < h) || (tripleList[mid]. h == h && tripleList[mid]. r < r) || (tripleList[mid]. h == h && tripleList[mid]. r == r && tripleList[mid]. t < t)) lef = mid; else rig = mid;
+        if ((triple_list[mid]. h < h) || (triple_list[mid]. h == h && triple_list[mid]. r < r) || (triple_list[mid]. h == h && triple_list[mid]. r == r && triple_list[mid]. t < t)) lef = mid; else rig = mid;
     }
-    if (tripleList[lef].h == h && tripleList[lef].r == r && tripleList[lef].t == t) return true;
-    if (tripleList[rig].h == h && tripleList[rig].r == r && tripleList[rig].t == t) return true;
+    if (triple_list[lef].h == h && triple_list[lef].r == r && triple_list[lef].t == t) return true;
+    if (triple_list[rig].h == h && triple_list[rig].r == r && triple_list[rig].t == t) return true;
 	// std::cout << "mid = " << mid << std::endl;
     return false;
 }

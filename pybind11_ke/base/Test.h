@@ -46,8 +46,8 @@ void getHeadBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
 	auto pr = pr_py.mutable_unchecked<1>();
     for (INT i = 0; i < entity_total; i++) {
         ph(i) = i;
-        pt(i) = testList[lastHead].t;
-        pr(i) = testList[lastHead].r;
+        pt(i) = test_list[lastHead].t;
+        pr(i) = test_list[lastHead].r;
     }
     lastHead++;
 }
@@ -58,9 +58,9 @@ void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
     for (INT i = 0; i < entity_total; i++) {
-        ph(i) = testList[lastTail].h;
+        ph(i) = test_list[lastTail].h;
         pt(i) = i;
-        pr(i) = testList[lastTail].r;
+        pr(i) = test_list[lastTail].r;
     }
     lastTail++;
 }
@@ -69,8 +69,8 @@ void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<IN
 extern "C"
 void getRelBatch(INT *ph, INT *pt, INT *pr) {
     for (INT i = 0; i < relation_total; i++) {
-        ph[i] = testList[lastRel].h;
-        pt[i] = testList[lastRel].t;
+        ph[i] = test_list[lastRel].h;
+        pt[i] = test_list[lastRel].t;
         pr[i] = i;
     }
 }
@@ -78,9 +78,9 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
 // 替换 head, 评估 head 的 rank.
 // void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
 void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = false) {
-    INT h = testList[lastHead].h;
-    INT t = testList[lastHead].t;
-    INT r = testList[lastHead].r;
+    INT h = test_list[lastHead].h;
+    INT t = test_list[lastHead].t;
+    INT r = test_list[lastHead].r;
 
     // lef: 记录关系 r 的 head 类型在 head_type 中第一次出现的位置
 	// rig: 记录关系 r 的 head 类型在 head_type 中最后一次出现的后一个位置
@@ -157,9 +157,9 @@ void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = fals
 // 替换 tail, 评估 tail 的 rank.
 // void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
 void testTail(py::array_t<REAL> con_py, INT lastTail, bool type_constrain = false) {
-    INT h = testList[lastTail].h;
-    INT t = testList[lastTail].t;
-    INT r = testList[lastTail].r;
+    INT h = test_list[lastTail].h;
+    INT t = test_list[lastTail].t;
+    INT r = test_list[lastTail].r;
 
     // lef: 记录关系 r 的 tail 类型在 tail_type 中第一次出现的位置
 	// rig: 记录关系 r 的 tail 类型在 tail_type 中最后一次出现的后一个位置
@@ -235,9 +235,9 @@ void testTail(py::array_t<REAL> con_py, INT lastTail, bool type_constrain = fals
 // 替换 relation, 评估 relation 的 rank.
 extern "C"
 void testRel(REAL *con) {
-    INT h = testList[lastRel].h;
-    INT t = testList[lastRel].t;
-    INT r = testList[lastRel].r;
+    INT h = test_list[lastRel].h;
+    INT t = test_list[lastRel].t;
+    INT r = test_list[lastRel].r;
 
     // minimal: 正确三元组的 score
     REAL minimal = con[r];
@@ -275,32 +275,32 @@ void testRel(REAL *con) {
 
 // 链接预测入口函数
 void test_link_prediction(bool type_constrain = false) {
-    l_rank /= testTotal;
-    r_rank /= testTotal;
-    l_reci_rank /= testTotal;
-    r_reci_rank /= testTotal;
+    l_rank /= test_total;
+    r_rank /= test_total;
+    l_reci_rank /= test_total;
+    r_reci_rank /= test_total;
  
-    l_tot /= testTotal;
-    l3_tot /= testTotal;
-    l1_tot /= testTotal;
+    l_tot /= test_total;
+    l3_tot /= test_total;
+    l1_tot /= test_total;
  
-    r_tot /= testTotal;
-    r3_tot /= testTotal;
-    r1_tot /= testTotal;
+    r_tot /= test_total;
+    r3_tot /= test_total;
+    r1_tot /= test_total;
 
     // with filter
-    l_filter_rank /= testTotal;
-    r_filter_rank /= testTotal;
-    l_filter_reci_rank /= testTotal;
-    r_filter_reci_rank /= testTotal;
+    l_filter_rank /= test_total;
+    r_filter_rank /= test_total;
+    l_filter_reci_rank /= test_total;
+    r_filter_reci_rank /= test_total;
  
-    l_filter_tot /= testTotal;
-    l3_filter_tot /= testTotal;
-    l1_filter_tot /= testTotal;
+    l_filter_tot /= test_total;
+    l3_filter_tot /= test_total;
+    l1_filter_tot /= test_total;
  
-    r_filter_tot /= testTotal;
-    r3_filter_tot /= testTotal;
-    r1_filter_tot /= testTotal;
+    r_filter_tot /= test_total;
+    r3_filter_tot /= test_total;
+    r1_filter_tot /= test_total;
 
     printf("no type constraint results:\n");
     
@@ -323,32 +323,32 @@ void test_link_prediction(bool type_constrain = false) {
 
     if (type_constrain) {
         //type constrain
-        l_rank_constrain /= testTotal;
-        r_rank_constrain /= testTotal;
-        l_reci_rank_constrain /= testTotal;
-        r_reci_rank_constrain /= testTotal;
+        l_rank_constrain /= test_total;
+        r_rank_constrain /= test_total;
+        l_reci_rank_constrain /= test_total;
+        r_reci_rank_constrain /= test_total;
      
-        l_tot_constrain /= testTotal;
-        l3_tot_constrain /= testTotal;
-        l1_tot_constrain /= testTotal;
+        l_tot_constrain /= test_total;
+        l3_tot_constrain /= test_total;
+        l1_tot_constrain /= test_total;
      
-        r_tot_constrain /= testTotal;
-        r3_tot_constrain /= testTotal;
-        r1_tot_constrain /= testTotal;
+        r_tot_constrain /= test_total;
+        r3_tot_constrain /= test_total;
+        r1_tot_constrain /= test_total;
 
         // with filter
-        l_filter_rank_constrain /= testTotal;
-        r_filter_rank_constrain /= testTotal;
-        l_filter_reci_rank_constrain /= testTotal;
-        r_filter_reci_rank_constrain /= testTotal;
+        l_filter_rank_constrain /= test_total;
+        r_filter_rank_constrain /= test_total;
+        l_filter_reci_rank_constrain /= test_total;
+        r_filter_reci_rank_constrain /= test_total;
      
-        l_filter_tot_constrain /= testTotal;
-        l3_filter_tot_constrain /= testTotal;
-        l1_filter_tot_constrain /= testTotal;
+        l_filter_tot_constrain /= test_total;
+        l3_filter_tot_constrain /= test_total;
+        l1_filter_tot_constrain /= test_total;
      
-        r_filter_tot_constrain /= testTotal;
-        r3_filter_tot_constrain /= testTotal;
-        r1_filter_tot_constrain /= testTotal;
+        r_filter_tot_constrain /= test_total;
+        r3_filter_tot_constrain /= test_total;
+        r1_filter_tot_constrain /= test_total;
 
         printf("type constraint results:\n");
         
@@ -374,20 +374,20 @@ void test_link_prediction(bool type_constrain = false) {
 // 链接预测 (relation) 入口函数
 extern "C"
 void test_relation_prediction() {
-    rel_rank /= testTotal;
-    rel_reci_rank /= testTotal;
+    rel_rank /= test_total;
+    rel_reci_rank /= test_total;
   
-    rel_tot /= testTotal;
-    rel3_tot /= testTotal;
-    rel1_tot /= testTotal;
+    rel_tot /= test_total;
+    rel3_tot /= test_total;
+    rel1_tot /= test_total;
 
     // with filter
-    rel_filter_rank /= testTotal;
-    rel_filter_reci_rank /= testTotal;
+    rel_filter_rank /= test_total;
+    rel_filter_reci_rank /= test_total;
   
-    rel_filter_tot /= testTotal;
-    rel3_filter_tot /= testTotal;
-    rel1_filter_tot /= testTotal;
+    rel_filter_tot /= test_total;
+    rel3_filter_tot /= test_total;
+    rel1_filter_tot /= test_total;
 
     printf("no type constraint results:\n");
     
@@ -439,13 +439,13 @@ Triple *negTestList = NULL;
 extern "C"
 void getNegTest() {
     if (negTestList == NULL)
-        negTestList = (Triple *)calloc(testTotal, sizeof(Triple));
-    for (INT i = 0; i < testTotal; i++) {
-        negTestList[i] = testList[i];
+        negTestList = (Triple *)calloc(test_total, sizeof(Triple));
+    for (INT i = 0; i < test_total; i++) {
+        negTestList[i] = test_list[i];
         if (randd(0) % 1000 < 500)
-            negTestList[i].t = corrupt_with_head(0, testList[i].h, testList[i].r);
+            negTestList[i].t = corrupt_with_head(0, test_list[i].h, test_list[i].r);
         else
-            negTestList[i].h = corrupt_with_tail(0, testList[i].t, testList[i].r);
+            negTestList[i].h = corrupt_with_tail(0, test_list[i].t, test_list[i].r);
     }
 }
 
@@ -453,10 +453,10 @@ void getNegTest() {
 extern "C"
 void getTestBatch(INT *ph, INT *pt, INT *pr, INT *nh, INT *nt, INT *nr) {
     getNegTest();
-    for (INT i = 0; i < testTotal; i++) {
-        ph[i] = testList[i].h;
-        pt[i] = testList[i].t;
-        pr[i] = testList[i].r;
+    for (INT i = 0; i < test_total; i++) {
+        ph[i] = test_list[i].h;
+        pt[i] = test_list[i].t;
+        pr[i] = test_list[i].r;
         nh[i] = negTestList[i].h;
         nt[i] = negTestList[i].t;
         nr[i] = negTestList[i].r;

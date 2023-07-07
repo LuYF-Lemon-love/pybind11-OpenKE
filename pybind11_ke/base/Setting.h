@@ -25,13 +25,13 @@
 namespace py = pybind11;
 
 // 文件路径
-// inPath: 数据集目录
+// in_path: 数据集目录
 // ent_file: entity2id.txt
 // rel_file: relation2id.txt
 // train_file: train2id.txt
 // valid_file: valid2id.txt
 // test_file: test2id.txt
-std::string inPath = "";
+std::string in_path = "";
 // std::string outPath = "../data/FB15K/";
 std::string ent_file = "";
 std::string rel_file = "";
@@ -41,9 +41,9 @@ std::string test_file = "";
 
 // 设置输入文件路径
 void set_in_path(std::string path) {
-	inPath = std::move(path);
+	in_path = std::move(path);
     std::cout << "Input Files Path : "
-              << inPath << std::endl;
+              << in_path << std::endl;
 }
 
 // // 设置输出文件路径
@@ -64,14 +64,14 @@ void set_train_path(std::string path) {
 }
 
 // 设置验证集数据文件路径
-void setValidPath(std::string path) {
+void set_valid_path(std::string path) {
 	valid_file = std::move(path);
     std::cout << "Valid Files Path : "
               << valid_file << std::endl;
 }
 
 // 设置测试集数据文件路径
-void setTestPath(std::string path) {
+void set_test_path(std::string path) {
 	test_file = std::move(path);
     std::cout << "Test Files Path : "
               << test_file << std::endl;
@@ -109,10 +109,10 @@ void set_work_threads(INT threads) {
 // 统计数据
 INT relation_total = 0;
 INT entity_total = 0;
-INT tripleTotal = 0;
-INT testTotal = 0;
+INT triple_total = 0;
+INT test_total = 0;
 INT train_total = 0;
-INT validTotal = 0;
+INT valid_total = 0;
 
 INT get_entity_total() {
 	return entity_total;
@@ -124,7 +124,7 @@ INT get_relation_total() {
 
 // extern "C"
 // INT getTripleTotal() {
-// 	return tripleTotal;
+// 	return triple_total;
 // }
 
 INT get_train_total() {
@@ -132,12 +132,12 @@ INT get_train_total() {
 }
 
 INT getTestTotal() {
-	return testTotal;
+	return test_total;
 }
 
 // extern "C"
 // INT getValidTotal() {
-// 	return validTotal;
+// 	return valid_total;
 // }
 
 /*
