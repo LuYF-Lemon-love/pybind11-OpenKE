@@ -34,14 +34,14 @@ class TestDataSampler(object):
 	包装起来。
 	"""
 
-	def __init__(self, data_total, data_sampler):
+	def __init__(self, data_total, sampler):
 
 		"""创建 TestDataSampler 对象
 
 		:param data_total: 测试集多少个三元组 
 		:type data_total: int
-		:param data_sampler: 采样器
-		:type data_sampler: :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
+		:param sampler: 采样器
+		:type sampler: :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
 								或 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_tc`
 		"""
 
@@ -49,7 +49,7 @@ class TestDataSampler(object):
 		self.data_total = data_total
 		#: :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
 		#: 或 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_tc` 函数
-		self.data_sampler = data_sampler
+		self.sampler = sampler
 		self.total = 0
 
 	def __iter__(self):
@@ -65,7 +65,7 @@ class TestDataSampler(object):
 		self.total += 1 
 		if self.total > self.data_total:
 			raise StopIteration()
-		return self.data_sampler()
+		return self.sampler()
 
 	def __len__(self):
 
