@@ -146,11 +146,11 @@ class TrainerDataParallel(object):
 				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if self.gpu_id == 0 and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
-				self.model.module.save_checkpoint(path)
+				self.model.module.model.save_checkpoint(path)
 				print(f"[GPU{self.gpu_id}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		print(f"[GPU{self.gpu_id}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
 		if self.gpu_id == 0 and self.save_path:
-			self.model.module.save_checkpoint(self.save_path)
+			self.model.module.model.save_checkpoint(self.save_path)
 			print(f"[GPU{self.gpu_id}] Model saved at {self.save_path}.")
 
 	def to_var(self, x):
