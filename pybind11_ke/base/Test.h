@@ -304,33 +304,41 @@ void testRel(REAL *con) {
 }
 
 // 链接预测入口函数
-void test_link_prediction(bool type_constrain = false) {
-    l_rank /= test_total;
-    r_rank /= test_total;
-    l_reci_rank /= test_total;
-    r_reci_rank /= test_total;
+void test_link_prediction(bool type_constrain = false, std::string sampling_mode = "link_test") {
+    INT total;
 
-    l1_tot /= test_total;
-    l3_tot /= test_total;
-    l10_tot /= test_total;
+    if (sampling_mode == "link_test") {
+        total = test_total;
+    } else if (sampling_mode == "link_valid") {
+        total = valid_total;
+    }
 
-    r1_tot /= test_total;
-    r3_tot /= test_total;
-    r10_tot /= test_total;
+    l_rank /= total;
+    r_rank /= total;
+    l_reci_rank /= total;
+    r_reci_rank /= total;
+
+    l1_tot /= total;
+    l3_tot /= total;
+    l10_tot /= total;
+
+    r1_tot /= total;
+    r3_tot /= total;
+    r10_tot /= total;
 
     // with filter
-    l_filter_rank /= test_total;
-    r_filter_rank /= test_total;
-    l_filter_reci_rank /= test_total;
-    r_filter_reci_rank /= test_total;
+    l_filter_rank /= total;
+    r_filter_rank /= total;
+    l_filter_reci_rank /= total;
+    r_filter_reci_rank /= total;
 
-    l1_filter_tot /= test_total;
-    l3_filter_tot /= test_total;
-    l10_filter_tot /= test_total;
+    l1_filter_tot /= total;
+    l3_filter_tot /= total;
+    l10_filter_tot /= total;
 
-    r1_filter_tot /= test_total;
-    r3_filter_tot /= test_total;
-    r10_filter_tot /= test_total;
+    r1_filter_tot /= total;
+    r3_filter_tot /= total;
+    r10_filter_tot /= total;
 
     printf("no type constraint results:\n");
 
@@ -353,32 +361,32 @@ void test_link_prediction(bool type_constrain = false) {
 
     if (type_constrain) {
         //type constrain
-        l_rank_constrain /= test_total;
-        r_rank_constrain /= test_total;
-        l_reci_rank_constrain /= test_total;
-        r_reci_rank_constrain /= test_total;
+        l_rank_constrain /= total;
+        r_rank_constrain /= total;
+        l_reci_rank_constrain /= total;
+        r_reci_rank_constrain /= total;
 
-        l1_tot_constrain /= test_total;
-        l3_tot_constrain /= test_total;
-        l10_tot_constrain /= test_total;
+        l1_tot_constrain /= total;
+        l3_tot_constrain /= total;
+        l10_tot_constrain /= total;
 
-        r1_tot_constrain /= test_total;
-        r3_tot_constrain /= test_total;
-        r10_tot_constrain /= test_total;
+        r1_tot_constrain /= total;
+        r3_tot_constrain /= total;
+        r10_tot_constrain /= total;
 
         // with filter
-        l_filter_rank_constrain /= test_total;
-        r_filter_rank_constrain /= test_total;
-        l_filter_reci_rank_constrain /= test_total;
-        r_filter_reci_rank_constrain /= test_total;
+        l_filter_rank_constrain /= total;
+        r_filter_rank_constrain /= total;
+        l_filter_reci_rank_constrain /= total;
+        r_filter_reci_rank_constrain /= total;
 
-        l1_filter_tot_constrain /= test_total;
-        l3_filter_tot_constrain /= test_total;
-        l10_filter_tot_constrain /= test_total;
+        l1_filter_tot_constrain /= total;
+        l3_filter_tot_constrain /= total;
+        l10_filter_tot_constrain /= total;
 
-        r1_filter_tot_constrain /= test_total;
-        r3_filter_tot_constrain /= test_total;
-        r10_filter_tot_constrain /= test_total;
+        r1_filter_tot_constrain /= total;
+        r3_filter_tot_constrain /= total;
+        r10_filter_tot_constrain /= total;
 
         printf("type constraint results:\n");
         

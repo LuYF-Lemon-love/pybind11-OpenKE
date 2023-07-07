@@ -116,7 +116,7 @@ class Tester(object):
             base.test_head(score, type_constrain, self.sampling_mode)
             score = self.test_one_step(data_tail)
             base.test_tail(score, type_constrain, self.sampling_mode)
-        base.test_link_prediction(type_constrain)
+        base.test_link_prediction(type_constrain, self.sampling_mode)
 
         mrr = base.get_test_link_MRR(type_constrain)
         mr = base.get_test_link_MR(type_constrain)

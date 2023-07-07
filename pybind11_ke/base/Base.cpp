@@ -178,7 +178,7 @@ PYBIND11_MODULE(base, m) {
 		py::arg("con_py").noconvert(), py::arg("type_constrain") = false,
 		py::arg("sampling_mode") = "link_test");
 	m.def("test_link_prediction", &test_link_prediction, "链接预测入口函数",
-		py::arg("type_constrain") = false);
+		py::arg("type_constrain") = false, py::arg("sampling_mode").noconvert());
 	m.def("get_test_link_MRR", &get_test_link_MRR, "return MRR",
 		py::arg("type_constrain") = false);
 	m.def("get_test_link_MR", &get_test_link_MR, "return MR",
