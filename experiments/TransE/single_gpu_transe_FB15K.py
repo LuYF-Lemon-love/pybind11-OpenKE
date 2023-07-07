@@ -120,3 +120,6 @@ test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'lin
 transe.load_checkpoint('../../checkpoint/transe.pth')
 tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
 tester.run_link_prediction(type_constrain = False)
+
+tester.set_sampling_mode("link_valid")
+tester.run_link_prediction(type_constrain = False)
