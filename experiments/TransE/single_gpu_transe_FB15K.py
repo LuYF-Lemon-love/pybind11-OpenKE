@@ -99,7 +99,7 @@ model = NegativeSampling(
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader,
 	train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-	log_interval = 100, save_interval = 100, save_path = "../../checkpoint/transe.pth")
+	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
 trainer.run()
 
 ######################################################################
@@ -114,9 +114,9 @@ trainer.run()
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
 # dataloader for test
-test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
+test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
 	
 # test the model
 transe.load_checkpoint('../../checkpoint/transe.pth')
-tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
 tester.run_link_prediction(type_constrain = False)
