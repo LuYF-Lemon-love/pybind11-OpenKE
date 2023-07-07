@@ -150,7 +150,7 @@ class TestDataLoader(object):
 
 		self.ent_tol = base.get_entity_total()
 		self.rel_tol = base.get_relation_total()
-		self.test_tol = base.getTestTotal()
+		self.test_tol = base.get_test_total()
 
 		# 利用 np.zeros 分配内存
 		self.test_h = np.zeros(self.ent_tol, dtype=np.int64)
@@ -176,14 +176,14 @@ class TestDataLoader(object):
 		"""
 
 		res = []
-		base.getHeadBatch(self.test_h, self.test_t, self.test_r)
+		base.get_head_batch(self.test_h, self.test_t, self.test_r)
 		res.append({
 			"batch_h": self.test_h.copy(), 
 			"batch_t": self.test_t[:1].copy(), 
 			"batch_r": self.test_r[:1].copy(),
 			"mode": "head_batch"
 		})
-		base.getTailBatch(self.test_h, self.test_t, self.test_r)
+		base.get_tail_batch(self.test_h, self.test_t, self.test_r)
 		res.append({
 			"batch_h": self.test_h[:1],
 			"batch_t": self.test_t,

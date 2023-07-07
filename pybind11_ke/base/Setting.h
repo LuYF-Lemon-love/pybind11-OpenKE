@@ -131,7 +131,7 @@ INT get_train_total() {
 	return train_total;
 }
 
-INT getTestTotal() {
+INT get_test_total() {
 	return test_total;
 }
 

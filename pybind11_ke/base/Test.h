@@ -14,8 +14,8 @@
 /*=====================================================================================
 link prediction
 ======================================================================================*/
-INT lastHead = 0;
-INT lastTail = 0;
+INT last_head = 0;
+INT last_tail = 0;
 INT lastRel = 0;
 REAL l1_filter_tot = 0, l1_tot = 0, r1_tot = 0, r1_filter_tot = 0, l_tot = 0, r_tot = 0, l_filter_rank = 0, l_rank = 0, l_filter_reci_rank = 0, l_reci_rank = 0;
 REAL l3_filter_tot = 0, l3_tot = 0, r3_tot = 0, r3_filter_tot = 0, l_filter_tot = 0, r_filter_tot = 0, r_filter_rank = 0, r_rank = 0, r_filter_reci_rank = 0, r_reci_rank = 0;
@@ -27,8 +27,8 @@ REAL hit1, hit3, hit10, mr, mrr;
 REAL hit1TC, hit3TC, hit10TC, mrTC, mrrTC;
 
 void initTest() {
-    lastHead = 0;
-    lastTail = 0;
+    last_head = 0;
+    last_tail = 0;
     lastRel = 0;
     l1_filter_tot = 0, l1_tot = 0, r1_tot = 0, r1_filter_tot = 0, l_tot = 0, r_tot = 0, l_filter_rank = 0, l_rank = 0, l_filter_reci_rank = 0, l_reci_rank = 0;
     l3_filter_tot = 0, l3_tot = 0, r3_tot = 0, r3_filter_tot = 0, l_filter_tot = 0, r_filter_tot = 0, r_filter_rank = 0, r_rank = 0, r_filter_reci_rank = 0, r_reci_rank = 0;
@@ -40,29 +40,29 @@ void initTest() {
 }
 
 // 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
-void getHeadBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
+void get_head_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
     auto ph = ph_py.mutable_unchecked<1>();
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
     for (INT i = 0; i < entity_total; i++) {
         ph(i) = i;
-        pt(i) = test_list[lastHead].t;
-        pr(i) = test_list[lastHead].r;
+        pt(i) = test_list[last_head].t;
+        pr(i) = test_list[last_head].r;
     }
-    lastHead++;
+    last_head++;
 }
 
 // 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
-void getTailBatch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
+void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
     auto ph = ph_py.mutable_unchecked<1>();
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
     for (INT i = 0; i < entity_total; i++) {
-        ph(i) = test_list[lastTail].h;
+        ph(i) = test_list[last_tail].h;
         pt(i) = i;
-        pr(i) = test_list[lastTail].r;
+        pr(i) = test_list[last_tail].r;
     }
-    lastTail++;
+    last_tail++;
 }
 
 // 对于测试集中的给定三元组, 用所有实体替换 relation, 返回所有三元组.
@@ -76,11 +76,11 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
 }
 
 // 替换 head, 评估 head 的 rank.
-// void testHead(REAL *con, INT lastHead, bool type_constrain = false) {
-void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = false) {
-    INT h = test_list[lastHead].h;
-    INT t = test_list[lastHead].t;
-    INT r = test_list[lastHead].r;
+// void testHead(REAL *con, INT last_head, bool type_constrain = false) {
+void testHead(py::array_t<REAL> con_py, INT last_head, bool type_constrain = false) {
+    INT h = test_list[last_head].h;
+    INT t = test_list[last_head].t;
+    INT r = test_list[last_head].r;
 
     // lef: 记录关系 r 的 head 类型在 head_type 中第一次出现的位置
 	// rig: 记录关系 r 的 head 类型在 head_type 中最后一次出现的后一个位置
@@ -155,11 +155,11 @@ void testHead(py::array_t<REAL> con_py, INT lastHead, bool type_constrain = fals
 }
 
 // 替换 tail, 评估 tail 的 rank.
-// void testTail(REAL *con, INT lastTail, bool type_constrain = false) {
-void testTail(py::array_t<REAL> con_py, INT lastTail, bool type_constrain = false) {
-    INT h = test_list[lastTail].h;
-    INT t = test_list[lastTail].t;
-    INT r = test_list[lastTail].r;
+// void testTail(REAL *con, INT last_tail, bool type_constrain = false) {
+void testTail(py::array_t<REAL> con_py, INT last_tail, bool type_constrain = false) {
+    INT h = test_list[last_tail].h;
+    INT t = test_list[last_tail].t;
+    INT r = test_list[last_tail].r;
 
     // lef: 记录关系 r 的 tail 类型在 tail_type 中第一次出现的位置
 	// rig: 记录关系 r 的 tail 类型在 tail_type 中最后一次出现的后一个位置
