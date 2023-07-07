@@ -33,7 +33,7 @@ class Tester(object):
     :py:class:`Tester` 主要用于 KGE 模型的验证。
     """
 
-    def __init__(self, model = None, data_loader = None, use_gpu = True, device = "cuda:0"):
+    def __init__(self, model = None, data_loader = None, sampling_mode = 'link_test', use_gpu = True, device = "cuda:0"):
 
         """创建 Tester 对象。
         
@@ -41,6 +41,8 @@ class Tester(object):
         :type model: :py:class:`pybind11_ke.module.model.Model`
         :param data_loader: TestDataLoader
         :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
+        :param sampling_mode: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
+        :type sampling_mode: str
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
         :param device: 使用哪个 gpu
@@ -51,6 +53,8 @@ class Tester(object):
         self.model = model
         #: :py:class:`pybind11_ke.data.TestDataLoader`
         self.data_loader = data_loader
+        #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
+        self.sampling_mode = sampling_mode
         #: 是否使用 gpu
         self.use_gpu = use_gpu
         #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
@@ -105,13 +109,13 @@ class Tester(object):
         """
 
         base.init_test()
-        self.data_loader.set_sampling_mode('link')
+        self.data_loader.set_sampling_mode(self.sampling_mode)
         training_range = tqdm(self.data_loader)
         for [data_head, data_tail] in training_range:
             score = self.test_one_step(data_head)
-            base.test_head(score, type_constrain)
+            base.test_head(score, type_constrain, self.sampling_mode)
             score = self.test_one_step(data_tail)
-            base.test_tail(score, type_constrain)
+            base.test_tail(score, type_constrain, self.sampling_mode)
         base.test_link_prediction(type_constrain)
 
         mrr = base.get_test_link_MRR(type_constrain)

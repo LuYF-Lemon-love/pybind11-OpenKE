@@ -51,8 +51,8 @@ test_dataloader = TestDataLoader(
 
 # define the model
 transe = TransE(
-	ent_tot = train_dataloader.get_ent_tot(),
-	rel_tot = train_dataloader.get_rel_tot(),
+	ent_tot = train_dataloader.get_ent_tol(),
+	rel_tot = train_dataloader.get_rel_tol(),
 	dim = 200, 
 	p_norm = 1, 
 	norm_flag = True)
@@ -63,8 +63,8 @@ model_e = NegativeSampling(
 	batch_size = train_dataloader.get_batch_size())
 
 transr = TransR(
-	ent_tot = train_dataloader.get_ent_tot(),
-	rel_tot = train_dataloader.get_rel_tot(),
+	ent_tot = train_dataloader.get_ent_tol(),
+	rel_tot = train_dataloader.get_rel_tol(),
 	dim_e = 200,
 	dim_r = 200,
 	p_norm = 1, 

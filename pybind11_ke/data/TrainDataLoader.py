@@ -32,8 +32,8 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 
 	# define the model
 	transe = TransE(
-		ent_tot = train_dataloader.get_ent_tot(),
-		rel_tot = train_dataloader.get_rel_tot(),
+		ent_tot = train_dataloader.get_ent_tol(),
+		rel_tot = train_dataloader.get_rel_tol(),
 		dim = 200, 
 		p_norm = 1, 
 		norm_flag = True)
@@ -289,7 +289,7 @@ class TrainDataLoader(object):
 
 		return self.batch_size
 
-	def get_ent_tot(self):
+	def get_ent_tol(self):
 
 		"""返回 :py:attr:`ent_tol`
 
@@ -299,7 +299,7 @@ class TrainDataLoader(object):
 
 		return self.ent_tol
 
-	def get_rel_tot(self):
+	def get_rel_tol(self):
 
 		"""返回 :py:attr:`rel_tol`
 

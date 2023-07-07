@@ -23,8 +23,8 @@
 
 	# define the model
 	transd = TransD(
-		ent_tot = train_dataloader.get_ent_tot(),
-		rel_tot = train_dataloader.get_rel_tot(),
+		ent_tot = train_dataloader.get_ent_tol(),
+		rel_tot = train_dataloader.get_rel_tol(),
 		dim_e = 200, 
 		dim_r = 200, 
 		p_norm = 1, 

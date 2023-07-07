@@ -18,7 +18,7 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 	from pybind11_ke.data import TestDataLoader
 
 	# dataloader for test
-	test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link")
+	test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link_test")
 
 	# test the model
 	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
@@ -83,7 +83,7 @@ class TestDataLoader(object):
 
 	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
 		train_file = "train2id.txt", valid_file = "valid2id.txt", test_file = "test2id.txt",
-		sampling_mode = 'link', type_constrain = True):
+		sampling_mode = 'link_test', type_constrain = True):
 
 		"""创建 TestDataLoader 对象。
 
@@ -99,7 +99,7 @@ class TestDataLoader(object):
 		:type valid_file: str
 		:param test_file: test2id.txt
 		:type test_file: str
-		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，``tc`` 表示为分类进行负采样
+		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
 		:type sampling_mode: str
 		:param type_constrain: 是否用 type_constrain.txt 进行负采样
 		:type type_constrain: bool
@@ -117,7 +117,7 @@ class TestDataLoader(object):
 		self.valid_file = self.in_path + valid_file
 		#: test2id.txt
 		self.test_file = self.in_path + test_file
-		#: 数据采样模式，``link`` 表示为链接预测进行负采样，``tc`` 表示为分类进行负采样
+		#: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
 		self.sampling_mode = sampling_mode
 		#: 是否用 type_constrain.txt 进行负采样
 		self.type_constrain = type_constrain
@@ -128,6 +128,8 @@ class TestDataLoader(object):
 		self.rel_tol = 0
 		#: 测试集三元组的个数
 		self.test_tol = 0
+		#: 验证集三元组的个数
+		self.valid_tol = 0
 
 		# 读入数据
 		self.read()
@@ -151,6 +153,7 @@ class TestDataLoader(object):
 		self.ent_tol = base.get_entity_total()
 		self.rel_tol = base.get_relation_total()
 		self.test_tol = base.get_test_total()
+		self.valid_tol = base.get_valid_total()
 
 		# 利用 np.zeros 分配内存
 		self.test_h = np.zeros(self.ent_tol, dtype=np.int64)
@@ -176,14 +179,14 @@ class TestDataLoader(object):
 		"""
 
 		res = []
-		base.get_head_batch(self.test_h, self.test_t, self.test_r)
+		base.get_head_batch(self.test_h, self.test_t, self.test_r, self.sampling_mode)
 		res.append({
 			"batch_h": self.test_h.copy(), 
 			"batch_t": self.test_t[:1].copy(), 
 			"batch_r": self.test_r[:1].copy(),
 			"mode": "head_batch"
 		})
-		base.get_tail_batch(self.test_h, self.test_t, self.test_r)
+		base.get_tail_batch(self.test_h, self.test_t, self.test_r, self.sampling_mode)
 		res.append({
 			"batch_h": self.test_h[:1],
 			"batch_t": self.test_t,
@@ -217,7 +220,7 @@ class TestDataLoader(object):
 	# 		}
 	# 	]
 
-	def get_ent_tot(self):
+	def get_ent_tol(self):
 
 		"""返回 :py:attr:`ent_tol`
 
@@ -227,7 +230,7 @@ class TestDataLoader(object):
 		
 		return self.ent_tol
 
-	def get_rel_tot(self):
+	def get_rel_tol(self):
 
 		"""返回 :py:attr:`rel_tol`
 
@@ -237,7 +240,7 @@ class TestDataLoader(object):
 
 		return self.rel_tol
 
-	def get_test_tot(self):
+	def get_test_tol(self):
 
 		"""返回 :py:attr:`test_tol`
 
@@ -247,11 +250,21 @@ class TestDataLoader(object):
 
 		return self.test_tol
 
+	def get_valid_tol(self):
+
+		"""返回 :py:attr:`test_tol`
+
+		:returns: :py:attr:`test_tol`
+		:rtype: int
+		"""
+
+		return self.valid_tol
+
 	def set_sampling_mode(self, sampling_mode):
 
 		"""设置 :py:attr:`sampling_mode`
 		
-		:param sampling_mode: 数据采样模式，``link`` 表示为链接预测进行负采样，否则为分类进行负采样
+		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
 		:type sampling_mode: str
 		"""
 
@@ -263,9 +276,12 @@ class TestDataLoader(object):
 		根据 :py:attr:`sampling_mode` 选择返回 :py:meth:`sampling_lp` 和
 		:py:meth:`sampling_tc`"""
 
-		if self.sampling_mode == "link":
+		if self.sampling_mode == "link_test":
 			base.init_test()
 			return TestDataSampler(self.test_tol, self.sampling_lp)
+		elif self.sampling_mode == "link_valid":
+			base.init_test()
+			return TestDataSampler(self.valid_tol, self.sampling_lp)
 		elif self.sampling_mode == "tc":
 			base.init_test()
 			return TestDataSampler(1, self.sampling_tc)

@@ -39,27 +39,44 @@ void init_test() {
 }
 
 // 对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.
-void get_head_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
+void get_head_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py, std::string sampling_mode) {
     auto ph = ph_py.mutable_unchecked<1>();
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
-    for (INT i = 0; i < entity_total; i++) {
-        ph(i) = i;
-        pt(i) = test_list[last_head].t;
-        pr(i) = test_list[last_head].r;
+    if (sampling_mode == "link_test") {
+        for (INT i = 0; i < entity_total; i++) {
+            ph(i) = i;
+            pt(i) = test_list[last_head].t;
+            pr(i) = test_list[last_head].r;
+        }
+    } else if (sampling_mode == "link_valid") {
+        for (INT i = 0; i < entity_total; i++) {
+            ph(i) = i;
+            pt(i) = valid_list[last_head].t;
+            pr(i) = valid_list[last_head].r;
+        }
     }
     last_head++;
 }
 
 // 对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.
-void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py) {
+void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<INT> pr_py, std::string sampling_mode) {
     auto ph = ph_py.mutable_unchecked<1>();
 	auto pt = pt_py.mutable_unchecked<1>();
 	auto pr = pr_py.mutable_unchecked<1>();
-    for (INT i = 0; i < entity_total; i++) {
-        ph(i) = test_list[last_tail].h;
-        pt(i) = i;
-        pr(i) = test_list[last_tail].r;
+
+    if (sampling_mode == "link_test") {
+        for (INT i = 0; i < entity_total; i++) {
+            ph(i) = test_list[last_tail].h;
+            pt(i) = i;
+            pr(i) = test_list[last_tail].r;
+        }
+    } else if (sampling_mode == "link_valid") {
+        for (INT i = 0; i < entity_total; i++) {
+            ph(i) = valid_list[last_tail].h;
+            pt(i) = i;
+            pr(i) = valid_list[last_tail].r;
+        }
     }
     last_tail++;
 }
@@ -75,11 +92,19 @@ void getRelBatch(INT *ph, INT *pt, INT *pr) {
 }
 
 // 替换 head, 评估 head 的 rank.
-void test_head(py::array_t<REAL> con_py, bool type_constrain = false) {
+void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::string sampling_mode = "link_test") {
 
-    INT h = test_list[last_head - 1].h;
-    INT t = test_list[last_head - 1].t;
-    INT r = test_list[last_head - 1].r;
+    INT h, t, r;
+
+    if (sampling_mode == "link_test") {
+        h = test_list[last_head - 1].h;
+        t = test_list[last_head - 1].t;
+        r = test_list[last_head - 1].r;
+    } else if (sampling_mode == "link_valid") {
+        h = valid_list[last_head - 1].h;
+        t = valid_list[last_head - 1].t;
+        r = valid_list[last_head - 1].r;
+    }
 
     // lef: 记录关系 r 的 head 类型在 head_type 中第一次出现的位置
 	// rig: 记录关系 r 的 head 类型在 head_type 中最后一次出现的后一个位置
@@ -153,11 +178,19 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false) {
 }
 
 // 替换 tail, 评估 tail 的 rank.
-void test_tail(py::array_t<REAL> con_py, bool type_constrain = false) {
+void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::string sampling_mode = "link_test") {
 
-    INT h = test_list[last_tail - 1].h;
-    INT t = test_list[last_tail - 1].t;
-    INT r = test_list[last_tail - 1].r;
+    INT h, t, r;
+
+    if (sampling_mode == "link_test") {
+        h = test_list[last_tail - 1].h;
+        t = test_list[last_tail - 1].t;
+        r = test_list[last_tail - 1].r;
+    } else if (sampling_mode == "link_valid") {
+        h = valid_list[last_tail - 1].h;
+        t = valid_list[last_tail - 1].t;
+        r = valid_list[last_tail - 1].r;
+    }
 
     // lef: 记录关系 r 的 tail 类型在 tail_type 中第一次出现的位置
 	// rig: 记录关系 r 的 tail 类型在 tail_type 中最后一次出现的后一个位置

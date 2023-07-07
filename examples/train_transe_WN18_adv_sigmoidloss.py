@@ -64,8 +64,8 @@ test_dataloader = TestDataLoader("../benchmarks/WN18RR/", "link")
 
 # define the model
 transe = TransE(
-	ent_tot = train_dataloader.get_ent_tot(),
-	rel_tot = train_dataloader.get_rel_tot(),
+	ent_tot = train_dataloader.get_ent_tol(),
+	rel_tot = train_dataloader.get_rel_tol(),
 	dim = 1024, 
 	p_norm = 1,
 	norm_flag = False,

@@ -135,10 +135,9 @@ INT get_test_total() {
 	return test_total;
 }
 
-// extern "C"
-// INT getValidTotal() {
-// 	return valid_total;
-// }
+INT get_valid_total() {
+	return valid_total;
+}
 
 /*
 ============================================================

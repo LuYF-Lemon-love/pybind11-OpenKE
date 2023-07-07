@@ -23,8 +23,8 @@
 
 	# define the model
 	rotate = RotatE(
-		ent_tot = train_dataloader.get_ent_tot(),
-		rel_tot = train_dataloader.get_rel_tot(),
+		ent_tot = train_dataloader.get_ent_tol(),
+		rel_tot = train_dataloader.get_rel_tol(),
 		dim = 1024,
 		margin = 6.0,
 		epsilon = 2.0,

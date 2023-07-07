@@ -22,10 +22,6 @@ void setOutPath(char *path);
 extern "C"
 INT getTripleTotal();
 
-// defined in Setting.h
-extern "C"
-INT getValidTotal();
-
 // Python 与 C++ 之间传递的数据结构
 // id: 线程 ID
 // batch_h_py: head entity
@@ -166,18 +162,21 @@ PYBIND11_MODULE(base, m) {
 	m.def("read_test_files", &read_test_files);
 	m.def("read_type_files", &read_type_files);
 	m.def("get_test_total", &get_test_total);
+	m.def("get_valid_total", &get_valid_total);
 	m.def("get_head_batch", &get_head_batch, "对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.",
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
-		py::arg("pr_py").noconvert());
+		py::arg("pr_py").noconvert(), py::arg("sampling_mode").noconvert());
 	m.def("get_tail_batch", &get_tail_batch, "对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.",
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
-		py::arg("pr_py").noconvert());
+		py::arg("pr_py").noconvert(), py::arg("sampling_mode").noconvert());
 	m.def("init_test", &init_test);
 
 	m.def("test_head", &test_head, "替换 head, 评估 head 的 rank.",
-		py::arg("con_py").noconvert(), py::arg("type_constrain") = false);
+		py::arg("con_py").noconvert(), py::arg("type_constrain") = false,
+		py::arg("sampling_mode") = "link_test");
 	m.def("test_tail", &test_tail, "替换 tail, 评估 tail 的 rank.",
-		py::arg("con_py").noconvert(), py::arg("type_constrain") = false);
+		py::arg("con_py").noconvert(), py::arg("type_constrain") = false,
+		py::arg("sampling_mode") = "link_test");
 	m.def("test_link_prediction", &test_link_prediction, "链接预测入口函数",
 		py::arg("type_constrain") = false);
 	m.def("get_test_link_MRR", &get_test_link_MRR, "return MRR",

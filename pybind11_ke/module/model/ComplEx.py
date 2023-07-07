@@ -23,8 +23,8 @@
 
     # define the model
     complEx = ComplEx(
-    	ent_tot = train_dataloader.get_ent_tot(),
-    	rel_tot = train_dataloader.get_rel_tot(),
+    	ent_tot = train_dataloader.get_ent_tol(),
+    	rel_tot = train_dataloader.get_rel_tol(),
     	dim = 200
     )
 
