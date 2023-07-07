@@ -101,7 +101,6 @@ trainer = Trainer(model = model, data_loader = train_dataloader,
 	train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
 	log_interval = 100, save_interval = 100, save_path = "../../checkpoint/transe.pth")
 trainer.run()
-transe.save_checkpoint('../../checkpoint/transe.pth')
 
 ######################################################################
 # --------------
