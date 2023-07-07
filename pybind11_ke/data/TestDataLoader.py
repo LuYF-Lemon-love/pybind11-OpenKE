@@ -182,7 +182,7 @@ class TestDataLoader(object):
 		base.get_head_batch(self.test_h, self.test_t, self.test_r, self.sampling_mode)
 		res.append({
 			"batch_h": self.test_h.copy(), 
-			"batch_t": self.test_t[:1].copy(), 
+			"batch_t": self.test_t[:1].copy(),
 			"batch_r": self.test_r[:1].copy(),
 			"mode": "head_batch"
 		})
