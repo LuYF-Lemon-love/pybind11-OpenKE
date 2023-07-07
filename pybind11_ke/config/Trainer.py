@@ -15,11 +15,12 @@ Trainer - 训练循环类。
 .. code-block:: python
 
 	# Import Trainer
-	from openke.config import Trainer
+	from pybind11_ke.config import Trainer
 	
 	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 1.0, use_gpu = True)
+		train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+		log_interval = 100, save_interval = 100, save_path = "../../checkpoint/transe.pth")
 	trainer.run()
 """
 
@@ -149,7 +150,7 @@ class Trainer(object):
 				res += loss
 			timer.stop()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} sec/epoch")
+				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.model.save_checkpoint(path)
