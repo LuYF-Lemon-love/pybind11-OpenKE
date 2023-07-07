@@ -158,7 +158,7 @@ class Trainer(object):
 		print(f"[{self.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
 		if self.save_path:
 			self.model.model.save_checkpoint(self.save_path)
-			print(f"[GPU{self.gpu_id}] Model saved at {self.save_path}.")
+			print(f"[GPU{self.device}] Model saved at {self.save_path}.")
 
 	def to_var(self, x, use_gpu):
 
