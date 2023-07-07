@@ -290,8 +290,11 @@ class TestDataLoader(object):
 		
 		"""len() 要求 :py:meth:`object.__len__`
 		
-		:returns: :py:attr:`test_tol`
+		:returns: :py:attr:`test_tol` 或 :py:attr:`valid_tol`
 		:rtype: int
 		"""
 		
-		return self.test_tol
+		if self.sampling_mode == "link_test":
+			return self.test_tol
+		elif self.sampling_mode == "link_valid":
+			return self.valid_tol
