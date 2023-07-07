@@ -149,6 +149,9 @@ class TrainerDataParallel(object):
 				self.model.module.save_checkpoint(path)
 				print(f"[GPU{self.gpu_id}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		print(f"[GPU{self.gpu_id}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+		if self.gpu_id == 0 and self.save_path:
+			self.model.module.save_checkpoint(self.save_path)
+			print(f"[GPU{self.gpu_id}] Model saved at {self.save_path}.")
 
 	def to_var(self, x):
 

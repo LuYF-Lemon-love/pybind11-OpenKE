@@ -100,7 +100,6 @@ if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 600, alpha = 0.02, opt_method = "sgd", log_interval = 50,
 		save_interval = 50, save_path = "../../checkpoint/transe.pth")
-	transe.save_checkpoint('../../checkpoint/transe.pth')
 
 ######################################################################
 # --------------
