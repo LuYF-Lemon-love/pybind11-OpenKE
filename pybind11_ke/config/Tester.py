@@ -3,7 +3,7 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 7, 2023
 #
 # 该脚本定义了验证模型类.
 
@@ -23,7 +23,6 @@ Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
 """
 
 import torch
-from torch.autograd import Variable
 import numpy as np
 from tqdm import tqdm
 import base
@@ -34,7 +33,7 @@ class Tester(object):
 	:py:class:`Tester` 主要用于 KGE 模型的验证。
 	"""
 
-    def __init__(self, model = None, data_loader = None, use_gpu = True):
+    def __init__(self, model = None, data_loader = None, use_gpu = True, device = "cuda:0"):
 
         """创建 Tester 对象。
 
@@ -44,6 +43,8 @@ class Tester(object):
 		:type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
+        :param device: 使用哪个 gpu
+		:type device: str
 		"""
 
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
@@ -52,41 +53,11 @@ class Tester(object):
         self.data_loader = data_loader
         #: 是否使用 gpu
         self.use_gpu = use_gpu
+        #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
+		self.device = torch.device(device)
 
         if self.use_gpu:
-            self.model.cuda()
-
-    def set_model(self, model):
-
-        """设置 :py:attr:`model`
-        
-        :param model: KGE 模型
-        :type model: :py:class:`pybind11_ke.module.model.Model`
-        """
-
-        self.model = model
-
-    def set_data_loader(self, data_loader):
-
-        """设置 :py:attr:`data_loader`
-        
-        :param data_loader: TestDataLoader
-        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
-        """
-
-        self.data_loader = data_loader
-
-    def set_use_gpu(self, use_gpu):
-
-        """设置 :py:attr:`use_gpu`
-        
-        :param use_gpu: 是否使用 gpu
-        :type use_gpu: bool
-        """
-
-        self.use_gpu = use_gpu
-        if self.use_gpu and self.model != None:
-            self.model.cuda()
+            self.model.cuda(device = self.device)
 
     def to_var(self, x, use_gpu):
 
@@ -101,14 +72,13 @@ class Tester(object):
 		"""
 
         if use_gpu:
-            return Variable(torch.from_numpy(x).cuda())
+            return torch.from_numpy(x).to(self.device)
         else:
-            return Variable(torch.from_numpy(x))
+            return torch.from_numpy(x)
 
     def test_one_step(self, data):
 
-        """根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
-		模型验证 1 步。
+        """根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将模型验证 1 步。
 
 		:param data: :py:attr:`data_loader` 利用
 		 			 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 函数生成的数据
@@ -126,35 +96,30 @@ class Tester(object):
 
     def run_link_prediction(self, type_constrain = False):
         
-        """进行链接预测
+        """进行链接预测。
         
         :param type_constrain: 是否用 type_constrain.txt 进行负采样
         :type type_constrain: bool
-        :returns: 经典指标分别为 MRR，MR，Hits@10，Hits@3，Hits@1
+        :returns: 经典指标分别为 MRR，MR，Hits@1，Hits@3，Hits@10
         :rtype: tuple
         """
 
-        base.initTest()
+        base.init_test()
         self.data_loader.set_sampling_mode('link')
-        if type_constrain:
-            type_constrain = 1
-        else:
-            type_constrain = 0
         training_range = tqdm(self.data_loader)
         for index, [data_head, data_tail] in enumerate(training_range):
             score = self.test_one_step(data_head)
-            base.testHead(score, index, type_constrain)
+            base.test_head(score, index, type_constrain)
             score = self.test_one_step(data_tail)
-            base.testTail(score, index, type_constrain)
+            base.test_tail(score, index, type_constrain)
         base.test_link_prediction(type_constrain)
 
-        mrr = base.getTestLinkMRR(type_constrain)
-        mr = base.getTestLinkMR(type_constrain)
-        hit10 = base.getTestLinkHit10(type_constrain)
-        hit3 = base.getTestLinkHit3(type_constrain)
-        hit1 = base.getTestLinkHit1(type_constrain)
-        # print(hit10)
-        return mrr, mr, hit10, hit3, hit1
+        mrr = base.get_test_link_MRR(type_constrain)
+        mr = base.get_test_link_MR(type_constrain)
+        hit1 = base.get_test_link_Hit1(type_constrain)
+        hit3 = base.get_test_link_Hit3(type_constrain)
+        hit10 = base.get_test_link_Hit10(type_constrain)
+        return mrr, mr, hit1, hit3, hit10
 
     # def get_best_threshlod(self, score, ans):
     #     res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
@@ -178,7 +143,7 @@ class Tester(object):
     #     return threshlod, res_mx
 
     # def run_triple_classification(self, threshlod = None):
-    #     self.lib.initTest()
+    #     self.lib.init_test()
     #     self.data_loader.set_sampling_mode('classification')
     #     score = []
     #     ans = []

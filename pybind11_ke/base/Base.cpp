@@ -172,24 +172,24 @@ PYBIND11_MODULE(base, m) {
 	m.def("get_tail_batch", &get_tail_batch, "对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.",
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
 		py::arg("pr_py").noconvert());
-	m.def("initTest", &initTest);
+	m.def("init_test", &init_test);
 
-	m.def("testHead", &testHead, "替换 head, 评估 head 的 rank.",
+	m.def("test_head", &test_head, "替换 head, 评估 head 的 rank.",
 		py::arg("con_py").noconvert(), py::arg("last_head"),
 		py::arg("type_constrain") = false);
-	m.def("testTail", &testTail, "替换 tail, 评估 tail 的 rank.",
+	m.def("test_tail", &test_tail, "替换 tail, 评估 tail 的 rank.",
 		py::arg("con_py").noconvert(), py::arg("last_tail"),
 		py::arg("type_constrain") = false);
 	m.def("test_link_prediction", &test_link_prediction, "链接预测入口函数",
 		py::arg("type_constrain") = false);
-	m.def("getTestLinkMRR", &getTestLinkMRR, "return MRR",
+	m.def("get_test_link_MRR", &get_test_link_MRR, "return MRR",
 		py::arg("type_constrain") = false);
-	m.def("getTestLinkMR", &getTestLinkMR, "return MR",
+	m.def("get_test_link_MR", &get_test_link_MR, "return MR",
 		py::arg("type_constrain") = false);
-	m.def("getTestLinkHit10", &getTestLinkHit10, "return Hit10",
+	m.def("get_test_link_Hit10", &get_test_link_Hit10, "return Hit10",
 		py::arg("type_constrain") = false);
-	m.def("getTestLinkHit3", &getTestLinkHit3, "return Hit3",
+	m.def("get_test_link_Hit3", &get_test_link_Hit3, "return Hit3",
 		py::arg("type_constrain") = false);
-	m.def("getTestLinkHit1", &getTestLinkHit1, "return Hit1",
+	m.def("get_test_link_Hit1", &get_test_link_Hit1, "return Hit1",
 		py::arg("type_constrain") = false);
 }

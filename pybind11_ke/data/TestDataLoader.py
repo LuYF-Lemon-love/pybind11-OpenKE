@@ -264,10 +264,10 @@ class TestDataLoader(object):
 		:py:meth:`sampling_tc`"""
 
 		if self.sampling_mode == "link":
-			base.initTest()
+			base.init_test()
 			return TestDataSampler(self.test_tol, self.sampling_lp)
 		elif self.sampling_mode == "tc":
-			base.initTest()
+			base.init_test()
 			return TestDataSampler(1, self.sampling_tc)
 
 	def __len__(self):
