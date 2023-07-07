@@ -124,6 +124,16 @@ class Tester(object):
         hit3 = base.get_test_link_Hit3(type_constrain)
         hit10 = base.get_test_link_Hit10(type_constrain)
         return mrr, mr, hit1, hit3, hit10
+    
+    def set_sampling_mode(self, sampling_mode):
+
+		"""设置 :py:attr:`sampling_mode`
+		
+		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
+		:type sampling_mode: str
+		"""
+
+		self.sampling_mode = sampling_mode
 
     # def get_best_threshlod(self, score, ans):
     #     res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
