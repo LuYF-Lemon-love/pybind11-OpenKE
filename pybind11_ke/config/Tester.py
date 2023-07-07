@@ -30,22 +30,22 @@ import base
 class Tester(object):
 
     """
-	:py:class:`Tester` 主要用于 KGE 模型的验证。
-	"""
+    :py:class:`Tester` 主要用于 KGE 模型的验证。
+    """
 
     def __init__(self, model = None, data_loader = None, use_gpu = True, device = "cuda:0"):
 
         """创建 Tester 对象。
-
-		:param model: KGE 模型
-		:type model: :py:class:`pybind11_ke.module.model.Model`
-		:param data_loader: TestDataLoader
-		:type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
-		:param use_gpu: 是否使用 gpu
-		:type use_gpu: bool
+        
+        :param model: KGE 模型
+        :type model: :py:class:`pybind11_ke.module.model.Model`
+        :param data_loader: TestDataLoader
+        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
+        :param use_gpu: 是否使用 gpu
+        :type use_gpu: bool
         :param device: 使用哪个 gpu
-		:type device: str
-		"""
+        :type device: str
+        """
 
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
         self.model = model
@@ -54,22 +54,22 @@ class Tester(object):
         #: 是否使用 gpu
         self.use_gpu = use_gpu
         #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
-		self.device = torch.device(device)
-
+        self.device = torch.device(device)
+        
         if self.use_gpu:
             self.model.cuda(device = self.device)
 
     def to_var(self, x, use_gpu):
 
         """根据 ``use_gpu`` 返回 ``x`` 的张量
-
-		:param x: 数据
-		:type x: numpy.ndarray
-		:param use_gpu: 是否使用 gpu
-		:type use_gpu: bool
-		:returns: 张量
-		:rtype: torch.Tensor
-		"""
+        
+        :param x: 数据
+        :type x: numpy.ndarray
+        :param use_gpu: 是否使用 gpu
+        :type use_gpu: bool
+        :returns: 张量
+        :rtype: torch.Tensor
+        """
 
         if use_gpu:
             return torch.from_numpy(x).to(self.device)
@@ -79,13 +79,13 @@ class Tester(object):
     def test_one_step(self, data):
 
         """根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将模型验证 1 步。
-
-		:param data: :py:attr:`data_loader` 利用
-		 			 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 函数生成的数据
-		:type data: dict
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
+        
+        :param data: :py:attr:`data_loader` 利用
+                        :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 函数生成的数据
+        :type data: dict
+        :returns: 三元组的得分
+        :rtype: numpy.ndarray
+        """
                 
         return self.model.predict({
             'batch_h': self.to_var(data['batch_h'], self.use_gpu),
