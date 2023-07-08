@@ -96,11 +96,18 @@ model = NegativeSampling(
 # 或者使用 :py:func:`pybind11_ke.config.TrainerDataParallel.trainer_distributed_data_parallel` 函数进行并行训练，
 # 该函数必须由 ``if __name__ == '__main__'`` 保护。
 
+# dataloader for test
+test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
+	
+# test the model
+tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+
 # train the model
-# trainer = Trainer(model = model, data_loader = train_dataloader,
-# 	train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-# 	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
-# trainer.run()
+trainer = Trainer(model = model, data_loader = train_dataloader,
+	train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+	tester = tester, test = True, valid_interval = 100,
+	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+trainer.run()
 
 ######################################################################
 # --------------
@@ -113,13 +120,13 @@ model = NegativeSampling(
 # 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
-# dataloader for test
-test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
+# # dataloader for test
+# test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
 	
-# test the model
-transe.load_checkpoint('../../checkpoint/transe.pth')
-tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
-tester.run_link_prediction(type_constrain = False)
+# # test the model
+# transe.load_checkpoint('../../checkpoint/transe.pth')
+# tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+# tester.run_link_prediction(type_constrain = False)
 
-tester.set_sampling_mode("link_valid")
-tester.run_link_prediction(type_constrain = True)
+# tester.set_sampling_mode("link_valid")
+# tester.run_link_prediction(type_constrain = True)
