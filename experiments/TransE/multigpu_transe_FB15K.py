@@ -37,15 +37,17 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 # 
 # :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
-# dataloader for training
-train_dataloader = TrainDataLoader(
-	in_path = "../../benchmarks/FB15K/", 
-	nbatches = 100,
-	threads = 8, 
-	sampling_mode = "normal", 
-	bern = False,  
-	neg_ent = 25,
-	neg_rel = 0)
+if __name__ == "__main__":
+
+	# dataloader for training
+	train_dataloader = TrainDataLoader(
+		in_path = "../../benchmarks/FB15K/", 
+		nbatches = 100,
+		threads = 8, 
+		sampling_mode = "normal", 
+		bern = False,  
+		neg_ent = 25,
+		neg_rel = 0)
 
 ######################################################################
 # --------------
@@ -57,13 +59,13 @@ train_dataloader = TrainDataLoader(
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
 # :py:class:`pybind11_ke.module.model.TransE`，它是最简单的平移模型。
 
-# define the model
-transe = TransE(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
-	dim = 50, 
-	p_norm = 1, 
-	norm_flag = True)
+	# define the model
+	transe = TransE(
+		ent_tot = train_dataloader.get_ent_tol(),
+		rel_tot = train_dataloader.get_rel_tol(),
+		dim = 50, 
+		p_norm = 1, 
+		norm_flag = True)
 
 ######################################################################
 # --------------
@@ -77,12 +79,12 @@ transe = TransE(
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
 # :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 
-# define the loss function
-model = NegativeSampling(
-	model = transe, 
-	loss = MarginLoss(margin = 1.0),
-	batch_size = train_dataloader.get_batch_size()
-)
+	# define the loss function
+	model = NegativeSampling(
+		model = transe, 
+		loss = MarginLoss(margin = 1.0),
+		batch_size = train_dataloader.get_batch_size()
+	)
 
 ######################################################################
 # --------------
@@ -96,10 +98,18 @@ model = NegativeSampling(
 # 或者使用 :py:func:`pybind11_ke.config.TrainerDataParallel.trainer_distributed_data_parallel` 函数进行并行训练，
 # 该函数必须由 ``if __name__ == '__main__'`` 保护。
 
-if __name__ == "__main__":
+	# dataloader for test
+	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
+	
+	# test the model
+	transe.load_checkpoint('../../checkpoint/transe.pth')
+	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+	tester.run_link_prediction(type_constrain = False)
+
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.02, opt_method = "sgd", log_interval = 50,
-		save_interval = 50, save_path = "../../checkpoint/transe.pth")
+		train_times = 1000, alpha = 0.02, opt_method = "sgd",
+		tester = tester, test = test, valid_interval = 100,
+		log_interval = 100, save_interval = 100, save_path = "../../checkpoint/transe.pth")
 
 ######################################################################
 # --------------
@@ -112,10 +122,4 @@ if __name__ == "__main__":
 # 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
 
-	# dataloader for test
-	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
 	
-	# test the model
-	transe.load_checkpoint('../../checkpoint/transe.pth')
-	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-	tester.run_link_prediction(type_constrain = False)
