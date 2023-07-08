@@ -100,13 +100,10 @@ if __name__ == "__main__":
 
 	# dataloader for test
 	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
-	
-	# test the model
-	tester = Tester(model = transe, data_loader = test_dataloader)
 
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.02, opt_method = "sgd",
-		tester = tester, test = True, valid_interval = 10,
+		test_dataloader = test_dataloader, test = True, valid_interval = 10,
 		log_interval = 10, save_interval = 10, save_path = "../../checkpoint/transe.pth")
 
 ######################################################################
@@ -119,11 +116,3 @@ if __name__ == "__main__":
 # :py:class:`pybind11_ke.data.TestDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 # 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
-
-	# # dataloader for test
-	# test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
-	
-	# # test the model
-	# transe.load_checkpoint('../../checkpoint/transe.pth')
-	# tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-	# tester.run_link_prediction(type_constrain = False)

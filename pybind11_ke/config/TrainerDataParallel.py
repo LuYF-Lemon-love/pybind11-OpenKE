@@ -214,7 +214,7 @@ def train(rank,
 	train_times,
 	alpha,
 	opt_method,
-	tester,
+	test_dataloader,
 	test,
 	valid_interval,
 	log_interval,
@@ -252,7 +252,7 @@ def train(rank,
 	"""
 	
 	ddp_setup(rank, world_size)
-	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
+	# test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
 	# test the model
 	tester = Tester(model = model.model, data_loader = test_dataloader)
 	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method,
@@ -265,7 +265,7 @@ def trainer_distributed_data_parallel(model = None,
 	train_times = 1000,
 	alpha = 0.5,
 	opt_method = "sgd",
-	tester = None,
+	test_dataloader = None,
 	test = False,
 	valid_interval = None,
 	log_interval = None,
@@ -303,5 +303,5 @@ def trainer_distributed_data_parallel(model = None,
 	
 	world_size = torch.cuda.device_count()
 	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method,
-							tester, test, valid_interval, log_interval, save_interval, save_path),
+							test_dataloader, test, valid_interval, log_interval, save_interval, save_path),
 				nprocs = world_size)
