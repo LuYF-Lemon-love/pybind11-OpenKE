@@ -43,6 +43,9 @@ class Trainer(object):
 		opt_method = "sgd",
 		use_gpu = True,
 		device = "cuda:0",
+		tester = None,
+		test = False,
+		valid_interval = None,
 		log_interval = None,
 		save_interval = None,
 		save_path = None):
@@ -63,6 +66,12 @@ class Trainer(object):
 		:type use_gpu: bool
 		:param device: 使用哪个 gpu
 		:type device: str
+		:param tester: 用于模型评估的验证模型类
+		:type tester: :py:class:`pybind11_ke.config.Tester`
+		:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+		:type test: bool
+		:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+		:type valid_interval: int
 		:param log_interval: 训练几轮输出一次日志
 		:type log_interval: int
 		:param save_interval: 训练几轮保存一次模型
@@ -90,6 +99,13 @@ class Trainer(object):
 		self.use_gpu = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
 		self.device = torch.device(device)
+
+		#: 用于模型评估的验证模型类
+		self.tester = tester
+		#: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+		self.test = test
+		#: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+		self.valid_interval = valid_interval
 
 		#: 训练几轮输出一次日志
 		self.log_interval = log_interval
@@ -149,6 +165,9 @@ class Trainer(object):
 				loss = self.train_one_step(data)
 				res += loss
 			timer.stop()
+			if self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+				self.tester.set_sampling_mode("link_valid")
+				self.tester.run_link_prediction(type_constrain = False)
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
@@ -159,6 +178,9 @@ class Trainer(object):
 		if self.save_path:
 			self.model.model.save_checkpoint(self.save_path)
 			print(f"[{self.device}] Model saved at {self.save_path}.")
+		if self.test and self.tester:
+			self.tester.set_sampling_mode("link_test")
+			self.tester.run_link_prediction(type_constrain = False)
 
 	def to_var(self, x, use_gpu):
 

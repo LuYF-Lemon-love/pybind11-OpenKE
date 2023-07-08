@@ -122,4 +122,4 @@ tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, d
 tester.run_link_prediction(type_constrain = False)
 
 tester.set_sampling_mode("link_valid")
-tester.run_link_prediction(type_constrain = False)
+tester.run_link_prediction(type_constrain = True)
