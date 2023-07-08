@@ -103,7 +103,6 @@ if __name__ == "__main__":
 	
 	# test the model
 	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-	tester.run_link_prediction(type_constrain = False)
 
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.02, opt_method = "sgd",
