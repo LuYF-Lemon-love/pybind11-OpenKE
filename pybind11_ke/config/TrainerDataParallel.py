@@ -152,6 +152,7 @@ class TrainerDataParallel(object):
 		"""
 		
 		timer = Timer()
+		print(self.train_times)
 		for epoch in range(self.train_times):
 			print(epoch)
 			res = 0.0
