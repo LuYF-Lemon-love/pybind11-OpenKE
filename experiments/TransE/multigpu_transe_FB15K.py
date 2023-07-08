@@ -102,7 +102,6 @@ if __name__ == "__main__":
 	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
 	
 	# test the model
-	transe.load_checkpoint('../../checkpoint/transe.pth')
 	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
 	tester.run_link_prediction(type_constrain = False)
 
