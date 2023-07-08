@@ -39,14 +39,17 @@ class TrainerDataParallel(object):
 
 	def __init__(self,
 		gpu_id,
-		model = None,
-		data_loader = None,
-		train_times = 1000,
-		alpha = 0.5,
-		opt_method = "sgd",
-		log_interval = None,
-		save_interval = None,
-		save_path = None):
+		model,
+		data_loader,
+		train_times,
+		alpha,
+		opt_method,
+		tester,
+		test,
+		valid_interval,
+		log_interval,
+		save_interval,
+		save_path):
 
 		"""创建 TrainerDataParallel 对象。
 
@@ -62,6 +65,12 @@ class TrainerDataParallel(object):
 		:type alpha: float
 		:param opt_method: 优化器: Adam or adam, SGD or sgd
 		:type opt_method: str
+		:param tester: 用于模型评估的验证模型类
+		:type tester: :py:class:`pybind11_ke.config.Tester`
+		:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+		:type test: bool
+		:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+		:type valid_interval: int
 		:param log_interval: 训练几轮输出一次日志
 		:type log_interval: int
 		:param save_interval: 训练几轮保存一次模型
@@ -86,7 +95,14 @@ class TrainerDataParallel(object):
 		self.opt_method = opt_method
 		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
 		self.optimizer = None
-
+		
+		#: 用于模型评估的验证模型类
+		self.tester = tester
+		#: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+		self.test = test
+		#: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+		self.valid_interval = valid_interval
+		
 		#: 训练几轮输出一次日志
 		self.log_interval = log_interval
 		#: 训练几轮保存一次模型
@@ -142,6 +158,10 @@ class TrainerDataParallel(object):
 				loss = self.train_one_step(data)
 				res += loss
 			timer.stop()
+			if self.gpu_id == 0 and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+				print(f"[GPU{self.gpu_id}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
+				self.tester.set_sampling_mode("link_valid")
+				self.tester.run_link_prediction()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if self.gpu_id == 0 and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
@@ -152,6 +172,10 @@ class TrainerDataParallel(object):
 		if self.gpu_id == 0 and self.save_path:
 			self.model.module.model.save_checkpoint(self.save_path)
 			print(f"[GPU{self.gpu_id}] Model saved at {self.save_path}.")
+		if  self.gpu_id == 0 and self.test and self.tester:
+			print(f"[GPU{self.gpu_id}] The model starts evaluating in the test set.")
+			self.tester.set_sampling_mode("link_test")
+			self.tester.run_link_prediction()
 
 	def to_var(self, x):
 
@@ -181,7 +205,19 @@ def ddp_setup(rank, world_size):
 	init_process_group(backend="gloo", rank=rank, world_size=world_size)
 	torch.cuda.set_device(rank)
 
-def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path):
+def train(rank,
+	world_size,
+	model,
+	data_loader,
+	train_times,
+	alpha,
+	opt_method,
+	tester,
+	test,
+	valid_interval,
+	log_interval,
+	save_interval,
+	save_path):
 
 	"""进程函数。
 
@@ -199,6 +235,12 @@ def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, 
 	:type alpha: float
 	:param opt_method: 优化器: Adam or adam, SGD or sgd
 	:type opt_method: str
+	:param tester: 用于模型评估的验证模型类
+	:type tester: :py:class:`pybind11_ke.config.Tester`
+	:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+	:type test: bool
+	:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+	:type valid_interval: int
 	:param log_interval: 训练几轮输出一次日志
 	:type log_interval: int
 	:param save_interval: 训练几轮保存一次模型
@@ -208,11 +250,22 @@ def train(rank, world_size, model, data_loader, train_times, alpha, opt_method, 
 	"""
 	
 	ddp_setup(rank, world_size)
-	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path)
+	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method,
+		tester, test, valid_interval, log_interval, save_interval, save_path)
 	trainer.run()
 	destroy_process_group()
 	
-def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path):
+def trainer_distributed_data_parallel(model = None,
+	data_loader = None,
+	train_times = 1000,
+	alpha = 0.5,
+	opt_method = "sgd",
+	tester = None,
+	test = False,
+	valid_interval = None,
+	log_interval = None,
+	save_interval = None,
+	save_path = None):
 
 	"""生成进程。
 	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
@@ -229,6 +282,12 @@ def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, op
 	:type alpha: float
 	:param opt_method: 优化器: Adam or adam, SGD or sgd
 	:type opt_method: str
+	:param tester: 用于模型评估的验证模型类
+	:type tester: :py:class:`pybind11_ke.config.Tester`
+	:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+	:type test: bool
+	:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+	:type valid_interval: int
 	:param log_interval: 训练几轮输出一次日志
 	:type log_interval: int
 	:param save_interval: 训练几轮保存一次模型
@@ -238,5 +297,6 @@ def trainer_distributed_data_parallel(model, data_loader, train_times, alpha, op
 	"""
 	
 	world_size = torch.cuda.device_count()
-	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method, log_interval, save_interval, save_path),
-		nprocs = world_size)
+	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method,
+							tester, test, valid_interval, log_interval, save_interval, save_path),
+				nprocs = world_size)
