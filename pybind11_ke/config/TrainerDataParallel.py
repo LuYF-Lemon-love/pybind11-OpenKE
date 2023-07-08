@@ -218,7 +218,10 @@ def train(rank,
 	valid_interval,
 	log_interval,
 	save_interval,
-	save_path):
+	save_path,
+	valid_file,
+	test_file,
+	type_constrain):
 
 	"""进程函数。
 
@@ -246,11 +249,20 @@ def train(rank,
 	:type save_interval: int
 	:param save_path: 模型保存的路径
 	:type save_path: str
+	:param valid_file: valid2id.txt
+	:type valid_file: str
+	:param test_file: test2id.txt
+	:type test_file: str
+	:param type_constrain: 是否用 type_constrain.txt 进行负采样
+	:type type_constrain: bool
 	"""
 	
 	ddp_setup(rank, world_size)
+	tester = None
 	if test:
-		test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
+		test_dataloader = TestDataLoader(in_path = data_loader.in_path, ent_file = data_loader.ent_file,
+			rel_file = data_loader.rel_file, train_file = data_loader.train_file, valid_file = valid_file,
+			test_file = test_file, type_constrain = type_constrain, sampling_mode = 'link')
 		tester = Tester(model = model.model, data_loader = test_dataloader)
 	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method,
 		tester, test, valid_interval, log_interval, save_interval, save_path)
@@ -266,7 +278,10 @@ def trainer_distributed_data_parallel(model = None,
 	valid_interval = None,
 	log_interval = None,
 	save_interval = None,
-	save_path = None):
+	save_path = None,
+	valid_file = "valid2id.txt",
+	test_file = "test2id.txt",
+	type_constrain = True):
 
 	"""生成进程。
 	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
@@ -293,9 +308,16 @@ def trainer_distributed_data_parallel(model = None,
 	:type save_interval: int
 	:param save_path: 模型保存的路径
 	:type save_path: str
+	:param valid_file: valid2id.txt
+	:type valid_file: str
+	:param test_file: test2id.txt
+	:type test_file: str
+	:param type_constrain: 是否用 type_constrain.txt 进行负采样
+	:type type_constrain: bool
 	"""
 	
 	world_size = torch.cuda.device_count()
 	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method,
-							test, valid_interval, log_interval, save_interval, save_path),
+							test, valid_interval, log_interval, save_interval, save_path,
+							valid_file, test_file, type_constrain),
 				nprocs = world_size)

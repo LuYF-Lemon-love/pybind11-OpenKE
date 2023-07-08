@@ -100,8 +100,8 @@ if __name__ == "__main__":
 
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.02, opt_method = "sgd",
-		test = True, valid_interval = 10,
-		log_interval = 10, save_interval = 10, save_path = "../../checkpoint/transe.pth")
+		test = True, valid_interval = 10, log_interval = 10, save_interval = 10,
+		save_path = "../../checkpoint/transe.pth", type_constrain = False)
 
 ######################################################################
 # --------------
