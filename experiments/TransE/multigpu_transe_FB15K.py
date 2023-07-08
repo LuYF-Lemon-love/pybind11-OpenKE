@@ -38,7 +38,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 # :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 if __name__ == "__main__":
-
+	
 	# dataloader for training
 	train_dataloader = TrainDataLoader(
 		in_path = "../../benchmarks/FB15K/", 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
 	
 	# test the model
 	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
-
+	
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.02, opt_method = "sgd",
 		tester = tester, test = True, valid_interval = 100,
