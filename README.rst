@@ -144,15 +144,14 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 
     $ git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
     $ cd pybind11-OpenKE/
-    $ mkdir -p ./checkpoint
     $ pip install .
 
 3. 快速开始。
 
 .. code-block:: console
 
-    $ cd pybind11_ke_examples/
-    $ python train_transe_FB15K237.py
+    $ cd experiments/TransE/
+    $ python single_gpu_transe_FB15K.py
 
 数据
 ----
