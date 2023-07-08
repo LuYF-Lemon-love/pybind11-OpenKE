@@ -153,9 +153,12 @@ class TrainerDataParallel(object):
 		
 		timer = Timer()
 		for epoch in range(self.train_times):
+			print(epoch)
 			res = 0.0
 			for data in self.data_loader:
+				print(data)
 				loss = self.train_one_step(data)
+				print(loss)
 				res += loss
 			timer.stop()
 			if self.gpu_id == 0 and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
