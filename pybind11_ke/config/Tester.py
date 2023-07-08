@@ -19,7 +19,7 @@ Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
     # test the model
     transe.load_checkpoint('../checkpoint/transe.ckpt')
     tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-    tester.run_link_prediction(type_constrain = False)
+    tester.run_link_prediction()
 """
 
 import torch
@@ -98,12 +98,10 @@ class Tester(object):
             'mode': data['mode']
         })
 
-    def run_link_prediction(self, type_constrain = False):
+    def run_link_prediction(self):
         
         """进行链接预测。
-        
-        :param type_constrain: 是否用 type_constrain.txt 进行负采样
-        :type type_constrain: bool
+
         :returns: 经典指标分别为 MRR，MR，Hits@1，Hits@3，Hits@10
         :rtype: tuple
         """
@@ -113,16 +111,16 @@ class Tester(object):
         training_range = tqdm(self.data_loader)
         for [data_head, data_tail] in training_range:
             score = self.test_one_step(data_head)
-            base.test_head(score, type_constrain, self.sampling_mode)
+            base.test_head(score, self.data_loader.type_constrain, self.sampling_mode)
             score = self.test_one_step(data_tail)
-            base.test_tail(score, type_constrain, self.sampling_mode)
-        base.test_link_prediction(type_constrain, self.sampling_mode)
+            base.test_tail(score, self.data_loader.type_constrain, self.sampling_mode)
+        base.test_link_prediction(self.data_loader.type_constrain, self.sampling_mode)
 
-        mrr = base.get_test_link_MRR(type_constrain)
-        mr = base.get_test_link_MR(type_constrain)
-        hit1 = base.get_test_link_Hit1(type_constrain)
-        hit3 = base.get_test_link_Hit3(type_constrain)
-        hit10 = base.get_test_link_Hit10(type_constrain)
+        mrr = base.get_test_link_MRR(self.data_loader.type_constrain)
+        mr = base.get_test_link_MR(self.data_loader.type_constrain)
+        hit1 = base.get_test_link_Hit1(self.data_loader.type_constrain)
+        hit3 = base.get_test_link_Hit3(self.data_loader.type_constrain)
+        hit10 = base.get_test_link_Hit10(self.data_loader.type_constrain)
         return mrr, mr, hit1, hit3, hit10
     
     def set_sampling_mode(self, sampling_mode):

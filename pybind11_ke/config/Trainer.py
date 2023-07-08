@@ -166,6 +166,7 @@ class Trainer(object):
 				res += loss
 			timer.stop()
 			if self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+				print(f"[{self.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.tester.set_sampling_mode("link_valid")
 				self.tester.run_link_prediction(type_constrain = False)
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
@@ -179,6 +180,7 @@ class Trainer(object):
 			self.model.model.save_checkpoint(self.save_path)
 			print(f"[{self.device}] Model saved at {self.save_path}.")
 		if self.test and self.tester:
+			print(f"[{self.device}] The model starts evaluating in the test set.")
 			self.tester.set_sampling_mode("link_test")
 			self.tester.run_link_prediction(type_constrain = False)
 
