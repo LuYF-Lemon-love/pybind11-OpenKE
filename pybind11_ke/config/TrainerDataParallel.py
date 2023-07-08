@@ -214,7 +214,6 @@ def train(rank,
 	train_times,
 	alpha,
 	opt_method,
-	test_dataloader,
 	test,
 	valid_interval,
 	log_interval,
@@ -237,8 +236,6 @@ def train(rank,
 	:type alpha: float
 	:param opt_method: 优化器: Adam or adam, SGD or sgd
 	:type opt_method: str
-	:param tester: 用于模型评估的验证模型类
-	:type tester: :py:class:`pybind11_ke.config.Tester`
 	:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
 	:type test: bool
 	:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
@@ -252,9 +249,9 @@ def train(rank,
 	"""
 	
 	ddp_setup(rank, world_size)
-	# test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
-	# test the model
-	tester = Tester(model = model.model, data_loader = test_dataloader)
+	if test:
+		test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
+		tester = Tester(model = model.model, data_loader = test_dataloader)
 	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method,
 		tester, test, valid_interval, log_interval, save_interval, save_path)
 	trainer.run()
@@ -265,7 +262,6 @@ def trainer_distributed_data_parallel(model = None,
 	train_times = 1000,
 	alpha = 0.5,
 	opt_method = "sgd",
-	test_dataloader = None,
 	test = False,
 	valid_interval = None,
 	log_interval = None,
@@ -287,8 +283,6 @@ def trainer_distributed_data_parallel(model = None,
 	:type alpha: float
 	:param opt_method: 优化器: Adam or adam, SGD or sgd
 	:type opt_method: str
-	:param tester: 用于模型评估的验证模型类
-	:type tester: :py:class:`pybind11_ke.config.Tester`
 	:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
 	:type test: bool
 	:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
@@ -303,5 +297,5 @@ def trainer_distributed_data_parallel(model = None,
 	
 	world_size = torch.cuda.device_count()
 	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method,
-							test_dataloader, test, valid_interval, log_interval, save_interval, save_path),
+							test, valid_interval, log_interval, save_interval, save_path),
 				nprocs = world_size)

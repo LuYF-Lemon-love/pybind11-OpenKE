@@ -98,12 +98,9 @@ model = NegativeSampling(
 
 if __name__ == "__main__":
 
-	# dataloader for test
-	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
-
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.02, opt_method = "sgd",
-		test_dataloader = test_dataloader, test = True, valid_interval = 10,
+		test = True, valid_interval = 10,
 		log_interval = 10, save_interval = 10, save_path = "../../checkpoint/transe.pth")
 
 ######################################################################
