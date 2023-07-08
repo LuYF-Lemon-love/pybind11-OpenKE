@@ -102,7 +102,7 @@ if __name__ == "__main__":
 	test_dataloader = TestDataLoader("../../benchmarks/FB15K/", sampling_mode = 'link')
 	
 	# test the model
-	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
 
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		train_times = 1000, alpha = 0.02, opt_method = "sgd",

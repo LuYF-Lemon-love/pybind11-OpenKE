@@ -297,6 +297,4 @@ def trainer_distributed_data_parallel(model = None,
 	"""
 	
 	world_size = torch.cuda.device_count()
-	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method,
-							tester, test, valid_interval, log_interval, save_interval, save_path),
-				nprocs = world_size)
+	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method, tester, test, valid_interval, log_interval, save_interval, save_path), nprocs = world_size)
