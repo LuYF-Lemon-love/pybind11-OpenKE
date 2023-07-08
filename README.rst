@@ -45,15 +45,25 @@
 New Features
 ------------
 
-- 利用 C++ 重写底层数据处理，利用 C++11 的线程库实现并行，进而能够做到跨平台 (Windows, Linux).
+**易用的**
 
-- 利用 pybind11 实现 Python 和 C++ 的交互.
-
-- 增加了文档。
+- 利用 C++ 重写底层数据处理，利用 C++11 的线程库实现并行，利用 pybind11 实现 Python 和 C++ 的交互，进而能够做到跨平台 (Windows, Linux)。
 
 - 使用 `Setuptools <https://setuptools.pypa.io/en/latest/>`__ 打包了 pybind11-OpenKE， 使得能够像其他第三方库一样使用。
 
+- 增加了文档。
+
+**正确的**
+
 - 修复 `SimplE模型实现的问题 <https://github.com/thunlp/OpenKE/issues/151>`__ 。
+
+**高效的**
+
+- 使用 :py:class:`torch.nn.parallel.DistributedDataParallel` 完成数据并行，使得 ``pybind11-OpenKEd`` 能够利用多个 ``GPU`` 同时训练。
+
+**扩展的**
+
+- 能够在模型训练过程中在验证集上评估模型。
 
 OpenKE-PyTorch
 --------------
