@@ -31,6 +31,13 @@ intersphinx_mapping = {
     'numpy': ('https://numpy.org/doc/stable', None),
 }
 
+sphinx_gallery_conf = {
+     'examples_dirs': ['../../examples', '../../experiments'],   # path to your example scripts
+     'gallery_dirs': ['auto_examples', 'auto_experiments'],  # path to where to save gallery generated output
+     #'download_all_examples': False,
+     #'line_numbers': True,
+}
+
 intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
