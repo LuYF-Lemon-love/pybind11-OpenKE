@@ -20,7 +20,6 @@ Contents
    主页 <self>
    datasets
    opinion
-   api
 
 .. toctree::
    :maxdepth: 2
