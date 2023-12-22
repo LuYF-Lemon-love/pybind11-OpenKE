@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = "Pybind11-OpenKE"
-copyright = "2023, LuYF-Lemon-love"
-author = "LuYF-Lemon-love"
+project = 'Pybind11-OpenKE'
+copyright = '2023, LuYF-Lemon-love'
+author = 'LuYF-Lemon-love'
 
 release = '0.1'
 version = '0.1.0'
@@ -16,13 +16,21 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx_autopackagesummary',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.viewcode',
+    'sphinx_gallery.gen_gallery',
+    'sphinx_copybutton',
 ]
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
     'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
+    # 'torch': ('https://pytorch.org/docs/stable/', None),
+    'torch': ('https://pytorch.org/docs/1.7.0/', None),
+    'numpy': ('https://numpy.org/doc/stable', None),
 }
+
 intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
