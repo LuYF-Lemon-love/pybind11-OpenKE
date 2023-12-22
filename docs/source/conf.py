@@ -42,6 +42,10 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 
+autosummary_generate = True
+
+autodoc_mock_imports = ['base', 'torch', 'numpy', 'tqdm', 'sklearn']
+
 # -- Options for HTML output
 
 html_theme = 'sphinx_rtd_theme'

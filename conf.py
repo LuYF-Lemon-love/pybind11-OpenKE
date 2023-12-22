@@ -14,18 +14,6 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
-# -- General configuration ---------------------------------------------------
-# -- General configuration
-
-autosummary_generate = True
-
-autodoc_mock_imports = ["base", "torch", "numpy", "tqdm", "sklearn"]
-
-
-intersphinx_disabled_domains = ["std"]
-
-templates_path = ["_templates"]
-
 # -- Options for EPUB output
 epub_show_urls = "footnote"
 
