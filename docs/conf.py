@@ -48,14 +48,14 @@ autosummary_generate = True
 
 autodoc_mock_imports = ["base", "torch", "numpy", "tqdm", "sklearn"]
 
-intersphinx_mapping = {
-    "rtd": ("https://docs.readthedocs.io/en/stable/", None),
-    "python": ("https://docs.python.org/3/", None),
-    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
-    # "torch": ("https://pytorch.org/docs/stable/", None),
-    "torch": ("https://pytorch.org/docs/1.7.0/", None),
-    'numpy': ('https://numpy.org/doc/stable', None),
-}
+# intersphinx_mapping = {
+#     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
+#     "python": ("https://docs.python.org/3/", None),
+#     "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
+#     # "torch": ("https://pytorch.org/docs/stable/", None),
+#     "torch": ("https://pytorch.org/docs/1.7.0/", None),
+#     'numpy': ('https://numpy.org/doc/stable', None),
+# }
 intersphinx_disabled_domains = ["std"]
 
 templates_path = ["_templates"]
