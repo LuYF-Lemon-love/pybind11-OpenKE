@@ -33,16 +33,16 @@ extensions = [
     "sphinx_autopackagesummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
-    'sphinx_gallery.gen_gallery',
+    # 'sphinx_gallery.gen_gallery',
     'sphinx_copybutton',
 ]
 
-sphinx_gallery_conf = {
-    #  'examples_dirs': ['../examples', '../experiments'],   # path to your example scripts
-    #  'gallery_dirs': ['auto_examples', 'auto_experiments'],  # path to where to save gallery generated output
-     #'download_all_examples': False,
-     #'line_numbers': True,
-}
+# sphinx_gallery_conf = {
+#      'examples_dirs': ['../examples', '../experiments'],   # path to your example scripts
+#      'gallery_dirs': ['auto_examples', 'auto_experiments'],  # path to where to save gallery generated output
+#      #'download_all_examples': False,
+#      #'line_numbers': True,
+# }
 
 autosummary_generate = True
 
