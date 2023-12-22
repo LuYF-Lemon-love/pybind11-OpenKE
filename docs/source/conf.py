@@ -53,8 +53,13 @@ html_theme = 'sphinx_rtd_theme'
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
 
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-html_static_path = ["_static"]
+html_static_path = ['../_static']
 
-html_logo = "_static/logo.png"
+html_logo = '../_static/logo.png'
+
+html_theme_options = {
+    'style_nav_header_background': '#ED77B6',
+    'logo_only': True,
+}
