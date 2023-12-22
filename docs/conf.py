@@ -38,8 +38,8 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-     'examples_dirs': ['../examples', '../experiments'],   # path to your example scripts
-     'gallery_dirs': ['auto_examples', 'auto_experiments'],  # path to where to save gallery generated output
+    #  'examples_dirs': ['../examples', '../experiments'],   # path to your example scripts
+    #  'gallery_dirs': ['auto_examples', 'auto_experiments'],  # path to where to save gallery generated output
      #'download_all_examples': False,
      #'line_numbers': True,
 }
