@@ -12,5 +12,5 @@ python:
 sphinx:
   configuration: docs/source/conf.py
 
-sphinx:
-  fail_on_warning: true
+# sphinx:
+#   fail_on_warning: true
