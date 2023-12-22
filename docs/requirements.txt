@@ -56,9 +56,5 @@ sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 urllib3==1.26.9
     # via requests
-sphinx-gallery==0.13.0
-    # self add
 sphinx-copybutton
-    # self add
-pillow
     # self add
