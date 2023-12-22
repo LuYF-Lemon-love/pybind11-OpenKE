@@ -1,4 +1,4 @@
-.. include:: ../../README.rst
+.. include:: ../README.rst
 
 欢迎来到 pybind11-OpenKE 文档！
 ===================================
