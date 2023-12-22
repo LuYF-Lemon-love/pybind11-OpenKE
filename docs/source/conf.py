@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = "Pybind11-OpenKE"
+copyright = "2023, LuYF-Lemon-love"
+author = "LuYF-Lemon-love"
 
 release = '0.1'
 version = '0.1.0'
