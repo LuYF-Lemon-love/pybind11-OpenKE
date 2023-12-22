@@ -28,8 +28,8 @@ Contents
    :includehidden:
    :caption: TransE
 
-   auto_experiments/TransE/single_gpu_transe_FB15K
-   auto_experiments/TransE/multigpu_transe_FB15K
+   experiments/TransE/single_gpu_transe_FB15K
+   experiments/TransE/multigpu_transe_FB15K
 
 .. toctree::
    :maxdepth: 2
@@ -37,15 +37,15 @@ Contents
    :includehidden:
    :caption: OpenKE 的例子
 
-   auto_examples/train_rescal_FB15K237
-   auto_examples/train_transe_FB15K237
-   auto_examples/train_transe_WN18_adv_sigmoidloss
-   auto_examples/train_transh_FB15K237
-   auto_examples/train_distmult_WN18RR
-   auto_examples/train_distmult_WN18RR_adv
-   auto_examples/train_transd_FB15K237
-   auto_examples/train_hole_WN18RR
-   auto_examples/train_complex_WN18RR
-   auto_examples/train_analogy_WN18RR
-   auto_examples/train_simple_WN18RR
-   auto_examples/train_rotate_WN18RR_adv
+   examples/train_rescal_FB15K237
+   examples/train_transe_FB15K237
+   examples/train_transe_WN18_adv_sigmoidloss
+   examples/train_transh_FB15K237
+   examples/train_distmult_WN18RR
+   examples/train_distmult_WN18RR_adv
+   examples/train_transd_FB15K237
+   examples/train_hole_WN18RR
+   examples/train_complex_WN18RR
+   examples/train_analogy_WN18RR
+   examples/train_simple_WN18RR
+   examples/train_rotate_WN18RR_adv
