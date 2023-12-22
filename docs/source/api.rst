@@ -1,7 +1,6 @@
 API
 ===
 
-.. autosummary::
-   :toctree: generated
-
-   lumache
+.. autopackagesummary:: pybind11_ke
+   :toctree: _autosummary
+   :template: autosummary/package.rst
