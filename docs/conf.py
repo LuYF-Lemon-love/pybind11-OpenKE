@@ -32,6 +32,8 @@ html_context = {
 }
 
 html_theme_options = {
+    'style_external_links': False,
+    
     'github_url': github_url,
 
     'doc_items': {
