@@ -32,7 +32,9 @@ html_context = {
 }
 
 html_theme_options = {
-    'style_external_links': True,
+    'collapse_navigation': False,
+    'sticky_navigation': True,
+    'includehidden': True,
     
     'github_url': github_url,
 
