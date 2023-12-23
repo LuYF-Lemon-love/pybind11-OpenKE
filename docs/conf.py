@@ -32,7 +32,7 @@ html_context = {
 }
 
 html_theme_options = {
-    'style_external_links': False,
+    'style_external_links': True,
     
     'github_url': github_url,
 
