@@ -54,6 +54,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
     'sphinx_copybutton',
+    'sphinxcontrib.katex',
 ]
 
 sphinx_gallery_conf = {
@@ -86,4 +87,4 @@ html_theme = 'trojanzoo_sphinx_theme'
 
 html_static_path = ['_static']
 
-html_logo = '_static/logo.png'
+katex_prerender = True

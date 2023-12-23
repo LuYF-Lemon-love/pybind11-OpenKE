@@ -9,3 +9,5 @@ pillow
     # self add
 git+https://github.com/ain-soph/trojanzoo_sphinx_theme.git
     # self add
+sphinxcontrib-katex
+    # self add
