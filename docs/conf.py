@@ -54,7 +54,6 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
     'sphinx_copybutton',
-    'sphinxcontrib.katex',
 ]
 
 sphinx_gallery_conf = {
@@ -86,5 +85,3 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'trojanzoo_sphinx_theme'
 
 html_static_path = ['_static']
-
-katex_prerender = True
