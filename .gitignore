@@ -138,8 +138,8 @@ venv.bak/
 
 # self add
 checkpoint/
-docs/auto_examples/
-docs/auto_experiments/
+docs/examples
+docs/experiments
 docs copy
 
 # auto-generated Sphinx api docs
