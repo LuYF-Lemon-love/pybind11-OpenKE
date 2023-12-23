@@ -32,10 +32,10 @@ html_context = {
 }
 
 html_theme_options = {
-    'collapse_navigation': False,
-    'sticky_navigation': True,
-    'includehidden': True,
-    'display_version': True,
+    # 'collapse_navigation': False,
+    # 'sticky_navigation': True,
+    # 'includehidden': True,
+    # 'display_version': True,
     
     'github_url': github_url,
 
@@ -45,8 +45,8 @@ html_theme_options = {
     },
 
     'logo': '_static/logo.png',
-    'logo_dark': '',
-    'logo_icon': '',
+    'logo_dark': '_static/logo.png',
+    'logo_icon': '_static/logo.png',
 }
 
 extensions = [
