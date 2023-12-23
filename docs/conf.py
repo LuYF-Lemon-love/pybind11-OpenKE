@@ -1,10 +1,48 @@
 import os
 import sys
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 
+import pybind11_ke as package
+
+pkg_name = package.__name__
+pkg_file = package.__file__
+pkg_version = str(package.__version__)
+pkg_location = os.path.dirname(os.path.dirname(pkg_file))
+
 project = 'Pybind11-OpenKE'
-copyright = '2023, LuYF-Lemon-love'
 author = 'LuYF-Lemon-love'
+copyright = f'2023, {author}'
+
+github_user = author
+github_repo = 'pybind11-OpenKE'
+github_version = 'pybind11-OpenKE-PyTorch'
+
+github_url = f'https://github.com/{github_user}/{github_repo}/'
+gh_page_url = f'https://pybind11-openke.readthedocs.io/zh-cn/latest/'
+# gh_page_url = f'https://{github_user}.github.io/{github_repo}/'
+
+html_baseurl = gh_page_url
+html_context = {
+    'display_github': True,
+    'github_user': github_user,
+    'github_repo': github_repo,
+    'github_version': github_version,
+    "conf_py_path": "/docs/",
+}
+
+html_theme_options = {
+    'github_url': github_url,
+
+    'doc_items': {
+        'Pybind11-OpenKE': 'https://pybind11-openke.readthedocs.io/zh-cn/latest/',
+        'AD-KGE': 'https://github.com/LuYF-Lemon-love/AD-KGE',
+    },
+
+    'logo': '_static/logo.png',
+    'logo_dark': '',
+    'logo_icon': '',
+}
 
 extensions = [
     'sphinx.ext.duration',
@@ -49,9 +87,3 @@ html_theme = 'trojanzoo_sphinx_theme'
 html_static_path = ['_static']
 
 html_logo = '_static/logo.png'
-
-html_theme_options = {
-    'logo': '_static/logo.png',
-    'logo_dark': '_static/logo.png',
-    'logo_icon': '_static/logo.png',
-}
