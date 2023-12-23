@@ -44,7 +44,8 @@ epub_show_urls = 'footnote'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
+html_theme = 'pytorch_sphinx_theme'
 
 html_static_path = ['_static']
 
