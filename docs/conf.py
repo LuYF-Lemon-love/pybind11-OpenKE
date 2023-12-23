@@ -35,6 +35,7 @@ html_theme_options = {
     'collapse_navigation': False,
     'sticky_navigation': True,
     'includehidden': True,
+    'display_version': True,
     
     'github_url': github_url,
 
