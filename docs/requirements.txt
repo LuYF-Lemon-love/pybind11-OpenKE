@@ -8,5 +8,5 @@ sphinx-copybutton
     # self add
 pillow
     # self add
-pytorch-sphinx-theme
+git+https://github.com/ain-soph/trojanzoo_sphinx_theme.git
     # self add

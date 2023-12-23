@@ -44,20 +44,14 @@ epub_show_urls = 'footnote'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-html_theme = 'sphinx_rtd_theme'
-# html_theme = 'pytorch_sphinx_theme'
+html_theme = 'trojanzoo_sphinx_theme'
 
 html_static_path = ['_static']
 
 html_logo = '_static/logo.png'
 
 html_theme_options = {
-    'style_nav_header_background': '#ED77B6',
-    'logo_only': True,
+    'logo': '_static/logo.png',
+    'logo_dark': '_static/logo.png',
+    'logo_icon': '_static/logo.png',
 }
-
-html_css_files = [
-        'https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css',
-        'css/custom.css',
-        'css/custom2.css'
-    ]
