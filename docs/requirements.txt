@@ -7,5 +7,6 @@ sphinx-copybutton
     # self add
 pillow
     # self add
-git+https://github.com/ain-soph/trojanzoo_sphinx_theme.git
+trojanzoo_sphinx_theme
+# git+https://github.com/ain-soph/trojanzoo_sphinx_theme.git
     # self add
