@@ -1,14 +1,14 @@
 .. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@pybind11-OpenKE-PyTorch/docs/_static/logo-best.svg
     :alt: pybind11-OpenKE logo
 
-pybind11-OpenKE — 知识图谱嵌入学习包
+pybind11-OpenKE — 知识图谱嵌入工具包
 ----------------------------------------------
 
 .. image:: https://readthedocs.org/projects/pybind11-openke/badge/?version=latest
     :target: https://pybind11-openke.readthedocs.io/zh_CN/latest/?badge=latest
     :alt: Documentation Status
 
-基于 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 开发的知识图谱嵌入学习包，
+基于 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 开发的知识图谱嵌入工具包，
 底层数据处理利用 C++ 实现，使用 `pybind11 <https://github.com/pybind/pybind11>`__ 实现 C++ 和 Python 的交互。
 
 不久后将完成, 稍事等待.
