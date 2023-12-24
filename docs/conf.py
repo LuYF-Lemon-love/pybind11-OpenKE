@@ -44,7 +44,8 @@ html_theme_options = {
         'AD-KGE': 'https://github.com/LuYF-Lemon-love/AD-KGE',
     },
 
-    'logo': '_static/logo.png',
+    # 'logo': '_static/logo.png',
+    'logo': '_static/trojanzoo-logo.svg',
     'logo_dark': '_static/logo.png',
     'logo_icon': '_static/logo.png',
 }
