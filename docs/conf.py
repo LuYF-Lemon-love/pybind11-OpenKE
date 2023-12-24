@@ -69,6 +69,9 @@ sphinx_gallery_conf = {
 
 autosummary_generate = True
 
+toc_object_entries = True
+toc_object_entries_show_parents = "hide"
+
 autodoc_mock_imports = ['base', 'torch', 'numpy', 'tqdm', 'sklearn']
 
 intersphinx_mapping = {
