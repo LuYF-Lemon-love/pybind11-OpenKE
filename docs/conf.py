@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('./'))
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../'))
 
 import pybind11_ke as package
 
@@ -44,10 +44,9 @@ html_theme_options = {
         'AD-KGE': 'https://github.com/LuYF-Lemon-love/AD-KGE',
     },
 
-    # 'logo': '_static/logo.png',
-    'logo': '_static/trojanzoo-logo.svg',
-    'logo_dark': '_static/trojanzoo-logo-dark.svg',
-    'logo_icon': '_static/logo.png',
+    'logo': '',
+    'logo_dark': '_static/logo-dark.png',
+    'logo_icon': '',
 }
 
 extensions = [
@@ -60,6 +59,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
     'sphinx_copybutton',
+    'sphinxcontrib.jquery',
 ]
 
 sphinx_gallery_conf = {
@@ -91,3 +91,5 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'trojanzoo_sphinx_theme'
 
 html_static_path = ['_static']
+
+language = 'zh'
