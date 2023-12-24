@@ -1,5 +1,4 @@
-.. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@pybind11-OpenKE-PyTorch/docs/_static/logo-best.png
-    :height: 500
+.. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@pybind11-OpenKE-PyTorch/docs/_static/logo-best.svg
     :alt: pybind11-OpenKE logo
 
 pybind11-OpenKE — 知识图谱嵌入学习包
