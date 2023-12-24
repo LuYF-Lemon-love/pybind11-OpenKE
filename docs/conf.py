@@ -46,7 +46,7 @@ html_theme_options = {
 
     # 'logo': '_static/logo.png',
     'logo': '_static/trojanzoo-logo.svg',
-    'logo_dark': '_static/logo.png',
+    'logo_dark': '_static/trojanzoo-logo-dark.svg',
     'logo_icon': '_static/logo.png',
 }
 
