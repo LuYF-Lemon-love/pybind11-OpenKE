@@ -3,7 +3,7 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
 #
 # 该脚本定义了验证模型类.
 
@@ -23,7 +23,6 @@ Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
 """
 
 import torch
-import numpy as np
 from tqdm import tqdm
 import base
 
@@ -132,63 +131,3 @@ class Tester(object):
         """
         
         self.sampling_mode = sampling_mode
-
-    # def get_best_threshlod(self, score, ans):
-    #     res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
-    #     order = np.argsort(score)
-    #     res = res[order]
-
-    #     total_all = (float)(len(score))
-    #     total_current = 0.0
-    #     total_true = np.sum(ans)
-    #     total_false = total_all - total_true
-
-    #     res_mx = 0.0
-    #     threshlod = None
-    #     for index, [ans, score] in enumerate(res):
-    #         if ans == 1:
-    #             total_current += 1.0
-    #         res_current = (2 * total_current + total_false - index - 1) / total_all
-    #         if res_current > res_mx:
-    #             res_mx = res_current
-    #             threshlod = score
-    #     return threshlod, res_mx
-
-    # def run_triple_classification(self, threshlod = None):
-    #     self.lib.init_test()
-    #     self.data_loader.set_sampling_mode('classification')
-    #     score = []
-    #     ans = []
-    #     training_range = tqdm(self.data_loader)
-    #     for index, [pos_ins, neg_ins] in enumerate(training_range):
-    #         res_pos = self.test_one_step(pos_ins)
-    #         ans = ans + [1 for i in range(len(res_pos))]
-    #         score.append(res_pos)
-
-    #         res_neg = self.test_one_step(neg_ins)
-    #         ans = ans + [0 for i in range(len(res_pos))]
-    #         score.append(res_neg)
-
-    #     score = np.concatenate(score, axis = -1)
-    #     ans = np.array(ans)
-
-    #     if threshlod == None:
-    #         threshlod, _ = self.get_best_threshlod(score, ans)
-
-    #     res = np.concatenate([ans.reshape(-1,1), score.reshape(-1,1)], axis = -1)
-    #     order = np.argsort(score)
-    #     res = res[order]
-
-    #     total_all = (float)(len(score))
-    #     total_current = 0.0
-    #     total_true = np.sum(ans)
-    #     total_false = total_all - total_true
-
-    #     for index, [ans, score] in enumerate(res):
-    #         if score > threshlod:
-    #             acc = (2 * total_current + total_false - index) / total_all
-    #             break
-    #         elif ans == 1:
-    #             total_current += 1.0
-
-    #     return acc, threshlod

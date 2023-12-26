@@ -7,7 +7,6 @@ __version__ = "0.0.1"
 ext_modules = [
     Pybind11Extension("base",
         ["pybind11_ke/base/Base.cpp"],
-        # Example: passing in the version to the compiled code
         define_macros = [('VERSION_INFO', __version__)],
         ),
 ]
@@ -18,8 +17,8 @@ setup(
     author="LuYF-Lemon-love",
     author_email="3555028709@qq.com",
     url="https://github.com/LuYF-Lemon-love/pybind11-OpenKE",
-    description="pybind11-OpenKE 的知识图谱嵌入学习模块",
-    long_description="",
+    description="基于 OpenKE-PyTorch 开发的知识图谱嵌入工具包",
+    long_description="基于 OpenKE-PyTorch 开发的知识图谱嵌入工具包， 底层数据处理利用 C++ 实现，使用 pybind11 实现 C++ 和 Python 的交互。",
     ext_modules=ext_modules,
     extras_require={"test": "pytest"},
     cmdclass={"build_ext": build_ext},

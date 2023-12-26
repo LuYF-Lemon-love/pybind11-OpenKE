@@ -3,7 +3,7 @@
 # pybind11_ke/data/TestDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
 #
 # 该脚本定义了采样数据的函数, 用于验证模型.
 
@@ -31,7 +31,7 @@ class TestDataSampler(object):
 
 	"""将 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
 	或 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_tc` 
-	包装起来。
+	进行封装。
 	"""
 
 	def __init__(self, data_total, sampler):
@@ -194,31 +194,6 @@ class TestDataLoader(object):
 			"mode": "tail_batch"
 		})
 		return res
-
-	# # 为分类进行采样数据
-	# def sampling_tc(self):
-	# 	self.lib.getTestBatch(
-	# 		self.test_pos_h_addr,
-	# 		self.test_pos_t_addr,
-	# 		self.test_pos_r_addr,
-	# 		self.test_neg_h_addr,
-	# 		self.test_neg_t_addr,
-	# 		self.test_neg_r_addr,
-	# 	)
-	# 	return [ 
-	# 		{
-	# 			'batch_h': self.test_pos_h,
-	# 			'batch_t': self.test_pos_t,
-	# 			'batch_r': self.test_pos_r ,
-	# 			"mode": "normal"
-	# 		}, 
-	# 		{
-	# 			'batch_h': self.test_neg_h,
-	# 			'batch_t': self.test_neg_t,
-	# 			'batch_r': self.test_neg_r,
-	# 			"mode": "normal"
-	# 		}
-	# 	]
 
 	def get_ent_tol(self):
 

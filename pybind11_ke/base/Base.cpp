@@ -1,7 +1,7 @@
 // pybind11-ke/base/Base.cpp
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
 // 
 // 该头文件定义了 Python 和 C++ 的交互接口.
 
@@ -151,9 +151,11 @@ PYBIND11_MODULE(base, m) {
 	m.def("set_train_path", &set_train_path);
 	m.def("set_valid_path", &set_valid_path);
 	m.def("set_test_path", &set_test_path);
+
 	m.def("set_bern", &set_bern);
 	m.def("set_work_threads", &set_work_threads);
 	m.def("rand_reset", &rand_reset);
+
 	m.def("read_train_files", &read_train_files);
 	m.def("get_relation_total", &get_relation_total);
 	m.def("get_entity_total", &get_entity_total);
@@ -163,12 +165,14 @@ PYBIND11_MODULE(base, m) {
 	m.def("read_type_files", &read_type_files);
 	m.def("get_test_total", &get_test_total);
 	m.def("get_valid_total", &get_valid_total);
+	
 	m.def("get_head_batch", &get_head_batch, "对于测试集中的给定三元组, 用所有实体替换 head, 返回所有三元组.",
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
 		py::arg("pr_py").noconvert(), py::arg("sampling_mode").noconvert());
 	m.def("get_tail_batch", &get_tail_batch, "对于测试集中的给定三元组, 用所有实体替换 tail, 返回所有三元组.",
 		py::arg("ph_py").noconvert(), py::arg("pt_py").noconvert(),
 		py::arg("pr_py").noconvert(), py::arg("sampling_mode").noconvert());
+	
 	m.def("init_test", &init_test);
 
 	m.def("test_head", &test_head, "替换 head, 评估 head 的 rank.",
@@ -177,16 +181,18 @@ PYBIND11_MODULE(base, m) {
 	m.def("test_tail", &test_tail, "替换 tail, 评估 tail 的 rank.",
 		py::arg("con_py").noconvert(), py::arg("type_constrain") = false,
 		py::arg("sampling_mode") = "link_test");
+
 	m.def("test_link_prediction", &test_link_prediction, "链接预测入口函数",
 		py::arg("type_constrain") = false, py::arg("sampling_mode").noconvert());
-	m.def("get_test_link_MRR", &get_test_link_MRR, "return MRR",
-		py::arg("type_constrain") = false);
+	
 	m.def("get_test_link_MR", &get_test_link_MR, "return MR",
 		py::arg("type_constrain") = false);
-	m.def("get_test_link_Hit10", &get_test_link_Hit10, "return Hit10",
+	m.def("get_test_link_MRR", &get_test_link_MRR, "return MRR",
+		py::arg("type_constrain") = false);
+	m.def("get_test_link_Hit1", &get_test_link_Hit1, "return Hit1",
 		py::arg("type_constrain") = false);
 	m.def("get_test_link_Hit3", &get_test_link_Hit3, "return Hit3",
 		py::arg("type_constrain") = false);
-	m.def("get_test_link_Hit1", &get_test_link_Hit1, "return Hit1",
+	m.def("get_test_link_Hit10", &get_test_link_Hit10, "return Hit10",
 		py::arg("type_constrain") = false);
 }

@@ -3,7 +3,7 @@
 # pybind11_ke/data/TrainDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
 #
 # 该脚本定义了采样数据的函数.
 
@@ -57,7 +57,7 @@ class TrainDataSampler(object):
 
 	"""将 :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 
 	或 :py:meth:`pybind11_ke.data.TrainDataLoader.cross_sampling` 
-	包装起来。
+	进行封装。
 	"""
 
 	def __init__(self, nbatches, sampler):
@@ -124,9 +124,9 @@ class TrainDataLoader(object):
 		:type rel_file: str
 		:param train_file: train2id.txt
 		:type train_file: str
-		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
+		:param batch_size: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供；同时指定时 batch_size 优先级更高
 		:type batch_size: int
-		:param nbatches: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供
+		:param nbatches: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供；同时指定时 batch_size 优先级更高
 		:type nbatches: int
 		:param threads: 底层 C++ 数据处理所需要的线程数
 		:type threads: int
@@ -149,9 +149,9 @@ class TrainDataLoader(object):
 		#: train2id.txt
 		self.train_file = self.in_path + train_file
 
-		#: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供
+		#: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供；同时指定时 batch_size 优先级更高
 		self.batch_size = batch_size
-		#: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供
+		#: nbatches 可以根据 batch_size 计算得出，两者不可以同时不提供；同时指定时 batch_size 优先级更高
 		self.nbatches = nbatches
 		#: 底层 C++ 数据处理所需要的线程数
 		self.threads = threads
@@ -181,9 +181,9 @@ class TrainDataLoader(object):
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 		
 		base.set_in_path(self.in_path)
-		base.set_train_path(self.train_file)
 		base.set_ent_path(self.ent_file)
 		base.set_rel_path(self.rel_file)
+		base.set_train_path(self.train_file)
 		
 		base.set_bern(self.bern)
 		base.set_work_threads(self.threads)
@@ -197,9 +197,11 @@ class TrainDataLoader(object):
 		# 训练集三元组的个数
 		self.train_tot = base.get_train_total()
 
-		if self.batch_size == None:
+		if self.batch_size == None and self.nbatches == None:
+			raise ValueError("batch_size or nbatches must specify one")
+		elif self.batch_size == None:
 			self.batch_size = self.train_tot // self.nbatches
-		if self.nbatches == None:
+		else:
 			self.nbatches = self.train_tot // self.batch_size
 		self.batch_seq_size = self.batch_size * (1 + self.neg_ent + self.neg_rel)
 
@@ -276,8 +278,6 @@ class TrainDataLoader(object):
 			return self.sampling_head()
 		else:
 			return self.sampling_tail()
-
-	"""interfaces to get essential parameters"""
 
 	def get_batch_size(self):
 
