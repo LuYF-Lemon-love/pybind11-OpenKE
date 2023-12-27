@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改数据集"
+git commit -m "增加参考文献和指标页"
 git push

@@ -19,6 +19,7 @@ Contents
 
    主页 <self>
    datasets
+   metric
    opinion
    api
 
@@ -49,3 +50,9 @@ Contents
    examples/train_analogy_WN18RR
    examples/train_simple_WN18RR
    examples/train_rotate_WN18RR_adv
+
+.. toctree::
+   :maxdepth: 1
+   :caption: 参考
+
+   reference
