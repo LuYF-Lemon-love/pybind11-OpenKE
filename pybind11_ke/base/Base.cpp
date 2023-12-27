@@ -1,7 +1,7 @@
 // pybind11-ke/base/Base.cpp
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 27, 2023
 // 
 // 该头文件定义了 Python 和 C++ 的交互接口.
 
@@ -11,16 +11,7 @@
 #include "Corrupt.h"
 #include "Test.h"
 #include <cstdlib>
-#include <pthread.h>
 #include <thread>
-
-// defined in Setting.h
-extern "C"
-void setOutPath(char *path);
-
-// defined in Setting.h
-extern "C"
-INT getTripleTotal();
 
 // Python 与 C++ 之间传递的数据结构
 // id: 线程 ID

@@ -466,37 +466,4 @@ REAL get_test_link_MRR(bool type_constrain = false) {
         return mrrTC;    
     return mrr;
 }
-
-
-/*=====================================================================================
-triple classification
-======================================================================================*/
-Triple *negTestList = NULL;
-
-extern "C"
-void getNegTest() {
-    if (negTestList == NULL)
-        negTestList = (Triple *)calloc(test_total, sizeof(Triple));
-    for (INT i = 0; i < test_total; i++) {
-        negTestList[i] = test_list[i];
-        if (randd(0) % 1000 < 500)
-            negTestList[i].t = corrupt_with_head(0, test_list[i].h, test_list[i].r);
-        else
-            negTestList[i].h = corrupt_with_tail(0, test_list[i].t, test_list[i].r);
-    }
-}
-
-// 生成分类数据集 (一半是负数据集, 一半是原始的测试集)
-extern "C"
-void getTestBatch(INT *ph, INT *pt, INT *pr, INT *nh, INT *nt, INT *nr) {
-    getNegTest();
-    for (INT i = 0; i < test_total; i++) {
-        ph[i] = test_list[i].h;
-        pt[i] = test_list[i].t;
-        pr[i] = test_list[i].r;
-        nh[i] = negTestList[i].h;
-        nt[i] = negTestList[i].t;
-        nr[i] = negTestList[i].r;
-    }
-}
 #endif

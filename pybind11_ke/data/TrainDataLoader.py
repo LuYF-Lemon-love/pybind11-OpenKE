@@ -3,55 +3,16 @@
 # pybind11_ke/data/TrainDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 27, 2023
 #
-# 该脚本定义了采样数据的函数.
+# 该脚本定义了为训练循环采样数据的类.
 
 """
 TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Trainer
-	from pybind11_ke.module.model import TransE
-	from pybind11_ke.module.loss import MarginLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-	from pybind11_ke.data import TrainDataLoader
-
-	# dataloader for training
-	train_dataloader = TrainDataLoader(
-		in_path = "../benchmarks/FB15K237/", 
-		nbatches = 100,
-		threads = 8, 
-		sampling_mode = "normal", 
-		bern = True, 
-		neg_ent = 25,
-		neg_rel = 0)
-
-	# define the model
-	transe = TransE(
-		ent_tot = train_dataloader.get_ent_tol(),
-		rel_tot = train_dataloader.get_rel_tol(),
-		dim = 200, 
-		p_norm = 1, 
-		norm_flag = True)
-
-	# define the loss function
-	model = NegativeSampling(
-		model = transe, 
-		loss = MarginLoss(margin = 5.0),
-		batch_size = train_dataloader.get_batch_size()
-	)
-
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 1.0, use_gpu = True)
 """
 
-import numpy as np
 import base
+import numpy as np
 
 class TrainDataSampler(object):
 
@@ -106,12 +67,52 @@ class TrainDataSampler(object):
 class TrainDataLoader(object):
 
 	"""
-	:py:class:`TrainDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
+	主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
+
+	::
+
+		from pybind11_ke.config import Trainer
+		from pybind11_ke.module.model import TransE
+		from pybind11_ke.module.loss import MarginLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+		from pybind11_ke.data import TrainDataLoader
+
+		# dataloader for training
+		train_dataloader = TrainDataLoader(
+			in_path = "../../benchmarks/FB15K/", 
+			nbatches = 200,
+			threads = 8, 
+			sampling_mode = "normal", 
+			bern = False,  
+			neg_ent = 25,
+			neg_rel = 0)
+
+		# define the model
+		transe = TransE(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = 50, 
+			p_norm = 1, 
+			norm_flag = True)
+
+		# define the loss function
+		model = NegativeSampling(
+			model = transe, 
+			loss = MarginLoss(margin = 1.0),
+			batch_size = train_dataloader.get_batch_size()
+		)
+
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader,
+			train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+			tester = tester, test = True, valid_interval = 100,
+			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+		trainer.run()
 	"""
 
 	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
 		train_file = "train2id.txt", batch_size = None, nbatches = None, threads = 8,
-		sampling_mode = "normal", bern = False,
+		sampling_mode = "normal", bern = True,
 		neg_ent = 1, neg_rel = 0):
 
 		"""创建 TrainDataLoader 对象。
@@ -163,8 +164,6 @@ class TrainDataLoader(object):
 		self.neg_ent = neg_ent
 		#: 对于每一个正三元组, 构建的负三元组的个数, 替换 relation
 		self.neg_rel = neg_rel
-		
-		self.cross_sampling_flag = 0
 
 		#: 实体的个数
 		self.ent_tol = 0
@@ -173,12 +172,14 @@ class TrainDataLoader(object):
 		#: 训练集三元组的个数
 		self.train_tot = 0
 
+		self.cross_sampling_flag = 0
+
 		# 读入数据
 		self.read()
 
 	def read(self):
 
-		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
+		"""利用 `pybind11 <https://github.com/pybind/pybind11>`__ 让底层 C++ 模块读取数据集中的数据"""
 		
 		base.set_in_path(self.in_path)
 		base.set_ent_path(self.ent_file)

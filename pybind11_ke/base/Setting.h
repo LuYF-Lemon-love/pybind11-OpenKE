@@ -1,7 +1,7 @@
 // pybind11-ke/base/Setting.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 27, 2023
 // 
 // 该头文件定义了一些全局配置变量.
 
@@ -11,13 +11,13 @@
 #define REAL float
 
 // 引用头文件
-#include <iostream>									// std::cout
+#include <iostream>
 #include <cstring>
 #include <cstdio>
 #include <string>
-#include <cstdlib>									// rand()
-#include <pybind11/pybind11.h>						// 导入 pybind11
-#include <pybind11/numpy.h>							// 利用 py::array_t 进行 C++ 与 numpy 交互
+#include <cstdlib>
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <algorithm>
 #include <cmath>
 
@@ -32,7 +32,6 @@ namespace py = pybind11;
 // valid_file: valid2id.txt
 // test_file: test2id.txt
 std::string in_path = "";
-// std::string outPath = "../data/FB15K/";
 std::string ent_file = "";
 std::string rel_file = "";
 std::string train_file = "";
@@ -46,15 +45,19 @@ void set_in_path(std::string path) {
               << in_path << std::endl;
 }
 
-// // 设置输出文件路径
-// extern "C"
-// void setOutPath(char *path) {
-// 	INT len = strlen(path);
-// 	outPath = "";
-// 	for (INT i = 0; i < len; i++)
-// 		outPath = outPath + path[i];
-// 	printf("Output Files Path : %s\n", outPath.c_str());
-// }
+// 设置实体数据文件路径
+void set_ent_path(std::string path) {
+	ent_file = std::move(path);
+    std::cout << "Entity Files Path : "
+              << ent_file << std::endl;
+}
+
+// 设置关系数据文件路径
+void set_rel_path(std::string path) {
+	rel_file = std::move(path);
+    std::cout << "Relation Files Path : "
+              << rel_file << std::endl;
+}
 
 // 设置训练集数据文件路径
 void set_train_path(std::string path) {
@@ -77,18 +80,15 @@ void set_test_path(std::string path) {
               << test_file << std::endl;
 }
 
-// 设置实体数据文件路径
-void set_ent_path(std::string path) {
-	ent_file = std::move(path);
-    std::cout << "Entity Files Path : "
-              << ent_file << std::endl;
-}
+/*
+============================================================
+*/
 
-// 设置关系数据文件路径
-void set_rel_path(std::string path) {
-	rel_file = std::move(path);
-    std::cout << "Relation Files Path : "
-              << rel_file << std::endl;
+// TransH 提出的负采样策略
+bool bern = false;
+
+void set_bern(bool flag) {
+	bern = flag;
 }
 
 /*
@@ -122,11 +122,6 @@ INT get_relation_total() {
 	return relation_total;
 }
 
-// extern "C"
-// INT getTripleTotal() {
-// 	return triple_total;
-// }
-
 INT get_train_total() {
 	return train_total;
 }
@@ -137,17 +132,6 @@ INT get_test_total() {
 
 INT get_valid_total() {
 	return valid_total;
-}
-
-/*
-============================================================
-*/
-
-// TransH 提出的负采样策略
-bool bern = false;
-
-void set_bern(bool flag) {
-	bern = flag;
 }
 
 #endif

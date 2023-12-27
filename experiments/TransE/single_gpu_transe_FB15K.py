@@ -8,17 +8,7 @@
 TransE-FB15K-single-gpu
 =========================
 
-这一部分介绍如何用在 ``FB15k`` 知识图谱上训练 TransE。
-
-TransE 原论文: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`__。
-
-下面是 TransE 原论文给出的 FB15k 的模型超参数，是使用 :py:class:`torch.optim.SGD` 进行训练的。
-
-============= =========== ========== ============ ===========
-   向量维度       学习率     margin      距离函数     epochs
-============= =========== ========== ============ ===========
-     50           0.01        1           L1         1,000
-============= =========== ========== ============ ===========
+这一部分介绍如何用在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
 
 导入数据
 -----------------
@@ -26,7 +16,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 :py:class:`pybind11_ke.data.TestDataLoader`。
 """
 
-from pybind11_ke.config import Trainer, Tester, trainer_distributed_data_parallel
+from pybind11_ke.config import Trainer, Tester
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
