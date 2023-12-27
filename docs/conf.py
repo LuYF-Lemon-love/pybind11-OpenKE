@@ -60,6 +60,7 @@ extensions = [
     'sphinx_gallery.gen_gallery',
     'sphinx_copybutton',
     'sphinxcontrib.jquery',
+    'sphinxcontrib.bibtex',
 ]
 
 sphinx_gallery_conf = {
