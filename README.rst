@@ -66,11 +66,6 @@ New Features
 
 - 在模型训练过程中，能够在验证集上评估模型。
 
-OpenKE-PyTorch
---------------
-
-OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框架。
-
 支持的知识图谱嵌入模型：
 
 - RESCAL: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__ .
@@ -94,40 +89,3 @@ OpenKE-PyTorch 是一个基于 PyTorch 实现的知识图谱嵌入的开源框�
 - SimplE: `SimplE Embedding for Link Prediction in Knowledge Graphs <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>`__ .
 
 - RotatE: `RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space <https://openreview.net/forum?id=HkgEQnRqYQ>`__ .
-
-安装 (Linux)
---------------------
-
-.. WARNING:: 由于 :py:class:`pybind11_ke.module.model.HolE` 的
-    :py:meth:`pybind11_ke.module.model.HolE._ccorr` 需要
-    :py:func:`torch.rfft` 和 :py:func:`torch.ifft` 分别计算实数到复数离散傅里叶变换和复数到复数离散傅立叶逆变换。
-    ``pytorch`` 在版本 ``1.8.0`` 移除了上述两个函数，并且在版本 ``1.7.0`` 给出了警告。
-    因此，我们强烈建议安装版本 ``1.6.0``。我们将不久以后修改
-    :py:class:`pybind11_ke.module.model.HolE`，
-    使得能够适配更高版本的 ``pytorch``。
-
-1. 配置环境：
-
-.. code-block:: console
-
-    $ conda create --name pybind11-ke python=3.8 -y
-    $ conda activate pybind11-ke
-    $ pip install torch==1.6.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-2. 克隆 pybind11-OpenKE-PyTorch 分支。
-
-.. code-block:: console
-
-    $ git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
-    $ cd pybind11-OpenKE/
-    $ pip install .
-
-3. 快速开始。
-
-.. code-block:: console
-
-    $ cd experiments/TransE/
-    $ python single_gpu_transe_FB15K.py
