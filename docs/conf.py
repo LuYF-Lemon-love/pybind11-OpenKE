@@ -40,8 +40,9 @@ html_theme_options = {
     'github_url': github_url,
 
     'doc_items': {
+        'Blog': 'https://www.luyf-lemon-love.space/',
+        'AD-KGE': 'https://github.com/LuYF-Lemon-love/AD-KGE/',
         'Pybind11-OpenKE': 'https://pybind11-openke.readthedocs.io/zh-cn/latest/',
-        'AD-KGE': 'https://github.com/LuYF-Lemon-love/AD-KGE',
     },
 
     'logo': '',

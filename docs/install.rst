@@ -2,7 +2,7 @@
 ==================================
 
 Linux
---------------------
+----------------------------------
 
 .. WARNING:: 由于 :py:class:`pybind11_ke.module.model.HolE` 的
     :py:meth:`pybind11_ke.module.model.HolE._ccorr` 需要

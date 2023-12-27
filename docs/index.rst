@@ -25,6 +25,12 @@ Contents
    api
 
 .. toctree::
+   :maxdepth: 1
+   :caption: 教程
+
+   tutorials/models
+
+.. toctree::
    :maxdepth: 2
    :hidden:
    :includehidden:
