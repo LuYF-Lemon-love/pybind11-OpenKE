@@ -14,26 +14,26 @@ Linux
 
 1. 配置环境：
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ conda create --name pybind11-ke python=3.8 -y
-    $ conda activate pybind11-ke
-    $ pip install torch==1.6.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
-    $ pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
+    conda create --name pybind11-ke python=3.8 -y
+    conda activate pybind11-ke
+    pip install torch==1.6.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install scikit-learn -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 2. 克隆 pybind11-OpenKE-PyTorch 分支。
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
-    $ cd pybind11-OpenKE/
-    $ pip install .
+    git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
+    cd pybind11-OpenKE/
+    pip install .
 
 3. 快速开始。
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ cd experiments/TransE/
-    $ python single_gpu_transe_FB15K.py
+    cd experiments/TransE/
+    python single_gpu_transe_FB15K.py

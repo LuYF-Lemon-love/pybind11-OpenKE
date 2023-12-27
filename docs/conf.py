@@ -61,6 +61,7 @@ extensions = [
     'sphinx_copybutton',
     'sphinxcontrib.jquery',
     'sphinxcontrib.bibtex',
+    'sphinx-prompt',
 ]
 
 sphinx_gallery_conf = {

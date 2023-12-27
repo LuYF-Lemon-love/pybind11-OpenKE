@@ -12,3 +12,5 @@ trojanzoo_sphinx_theme
     # self add
 sphinxcontrib-bibtex
     # self add
+sphinx-prompt
+    # self add
