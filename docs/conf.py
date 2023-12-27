@@ -63,6 +63,7 @@ extensions = [
     'sphinxcontrib.jquery',
     'sphinxcontrib.bibtex',
     'sphinx-prompt',
+    'sphinx.ext.mathjax',
 ]
 
 sphinx_gallery_conf = {
