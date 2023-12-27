@@ -12,17 +12,18 @@
 
    这个项目依旧出于积极开发中。
 
-Contents
+目录
 --------
 
 .. toctree::
+   :maxdepth: 1
+   :caption: 概述
 
    主页 <self>
    install
    datasets
    metric
    opinion
-   api
 
 .. toctree::
    :maxdepth: 1
@@ -57,6 +58,12 @@ Contents
    examples/train_analogy_WN18RR
    examples/train_simple_WN18RR
    examples/train_rotate_WN18RR_adv
+
+.. toctree::
+   :maxdepth: 4
+   :caption: API
+
+   api
 
 .. toctree::
    :maxdepth: 1

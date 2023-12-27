@@ -55,7 +55,6 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx_autopackagesummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',

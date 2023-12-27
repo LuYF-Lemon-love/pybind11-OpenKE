@@ -141,6 +141,4 @@ checkpoint/
 docs/examples
 docs/experiments
 docs copy
-
-# auto-generated Sphinx api docs
-docs/_autosummary/
+docs/api/generated
