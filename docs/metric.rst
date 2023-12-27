@@ -16,6 +16,6 @@
 上述设置更多的细节可以从 ``TransE`` :cite:`TransE` 获得。
 
 对于大型知识图谱，用整个实体集合损坏三元组是极其耗时的。
-因此 ``OpenKE-PyTorch`` 提供了名为
+因此提供了名为
 "`type constraint <https://www.dbs.ifi.lmu.de/~krompass/papers/TypeConstrainedRepresentationLearningInKnowledgeGraphs.pdf>`__"
 的实验性的设置用有限的实体集合（取决于相应的关系）损坏三元组。
