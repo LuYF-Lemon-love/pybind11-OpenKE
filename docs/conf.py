@@ -69,6 +69,7 @@ sphinx_gallery_conf = {
 }
 
 autosummary_generate = True
+bibtex_bibfiles = ['refs.bib']
 
 autodoc_mock_imports = ['base', 'torch', 'numpy', 'tqdm', 'sklearn']
 
