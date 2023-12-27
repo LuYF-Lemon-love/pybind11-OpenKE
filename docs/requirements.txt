@@ -10,3 +10,5 @@ pillow
 trojanzoo_sphinx_theme
 # git+https://github.com/ain-soph/trojanzoo_sphinx_theme.git
     # self add
+sphinxcontrib-bibtex
+    # self add
