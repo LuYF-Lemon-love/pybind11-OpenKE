@@ -156,7 +156,7 @@ INT corrupt_rel(INT id, INT h, INT t) {
 	if (tmp > train_rel[rr].r - rr + ll - 1) return tmp + rr - ll + 1;
 	
 	// 第三种：由于 (>= -> rig), (lef + 1 < rig), (tmp + lef - ll + 1)
-	// 因此最终返回取值为 (train_head[lef].t, train_head[rig].t) 的 tail
+	// 因此最终返回取值为 (train_rel[lef].t, train_rel[rig].t) 的 tail
 	lef = ll, rig = rr + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;

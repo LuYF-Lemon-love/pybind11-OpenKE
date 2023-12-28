@@ -3,50 +3,12 @@
 # pybind11_ke/module/model/TransE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
 # 
 # 该头文件定义了 TransE.
 
 """
-:py:class:`TransE` 类 - 第一个平移模型，简单而且高效。
-
-论文地址: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`_ 。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Trainer, Tester
-	from pybind11_ke.module.model import TransE
-	from pybind11_ke.module.loss import MarginLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-
-	# define the model
-	transe = TransE(
-		ent_tot = train_dataloader.get_ent_tol(),
-		rel_tot = train_dataloader.get_rel_tol(),
-		dim = 200, 
-		p_norm = 1, 
-		norm_flag = True)
-
-
-	# define the loss function
-	model = NegativeSampling(
-		model = transe, 
-		loss = MarginLoss(margin = 5.0),
-		batch_size = train_dataloader.get_batch_size()
-	)
-
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 1.0, use_gpu = True)
-	trainer.run()
-	transe.save_checkpoint('../checkpoint/transe.ckpt')
-
-	# test the model
-	transe.load_checkpoint('../checkpoint/transe.ckpt')
-	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-	tester.run_link_prediction(type_constrain = False)
+TransE - 第一个平移模型，简单而且高效。
 """
 
 import torch
@@ -57,13 +19,48 @@ from .Model import Model
 class TransE(Model):
 
 	"""
-	:py:class:`TransE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
-	
-	TransE 提出于 2013 年，是第一个平移模型，开创了平移模型研究方向。由于其简单性和高效性，
+	``TransE`` :cite:`TransE` 提出于 2013 年，是第一个平移模型，开创了平移模型研究方向。由于其简单性和高效性，
 	至今依旧是常用基线模型，在某些数据集上能够比其他更复杂的模型表现的更好。
+	
+	评分函数为: 
+	
+	.. math::
+	
+		\parallel \mathbf{h} + \mathbf{r} - \mathbf{t} \parallel_{L_1/L_2}
+	
+	正三元组的评分函数的值越小越好，如果想获得更详细的信息请访问 :ref:`TransE <transe>`。
 
-	评分函数为: :math:`\parallel \mathbf{h} + \mathbf{r} - \mathbf{t} \parallel_{L_1/L_2}`，
-	正三元组的评分函数的值越小越好。
+	例子::
+
+		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.module.model import TransE
+		from pybind11_ke.module.loss import MarginLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+
+		# define the model
+		transe = TransE(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = 50, 
+			p_norm = 1, 
+			norm_flag = True)
+
+		# define the loss function
+		model = NegativeSampling(
+			model = transe, 
+			loss = MarginLoss(margin = 1.0),
+			batch_size = train_dataloader.get_batch_size()
+		)
+
+		# test the model
+		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader,
+			train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+			tester = tester, test = True, valid_interval = 100,
+			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+		trainer.run()
 	"""
 
 	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,

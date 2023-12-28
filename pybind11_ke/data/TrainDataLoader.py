@@ -68,8 +68,8 @@ class TrainDataLoader(object):
 
 	"""
 	主要从底层 C++ 模块获得数据用于 KGE 模型的训练。
-
-	::
+	
+	例子::
 
 		from pybind11_ke.config import Trainer
 		from pybind11_ke.module.model import TransE
