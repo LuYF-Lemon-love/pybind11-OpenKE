@@ -3,31 +3,12 @@
 # pybind11_ke/module/strategy/NegativeSampling.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
 #
 # 该脚本定义了 KGE 模型的训练策略.
 
 """
 NegativeSampling - 训练策略类，包含损失函数。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Trainer
-	from pybind11_ke.module.loss import MarginLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-
-	# define the loss function
-	model = NegativeSampling(
-		model = transe, 
-		loss = MarginLoss(margin = 5.0),
-		batch_size = train_dataloader.get_batch_size()
-	)
-
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 1.0, use_gpu = True)
 """
 
 from .Strategy import Strategy
@@ -35,9 +16,36 @@ from .Strategy import Strategy
 class NegativeSampling(Strategy):
 
 	"""
-	NegativeSampling 类，继承自 :py:class:`pybind11_ke.module.strategy.Strategy`。
+	将模型和损失函数封装到一起，方便模型训练。
 	
-	配和损失函数完成模型学习。
+	例子::
+
+		from pybind11_ke.config import Trainer
+		from pybind11_ke.module.model import TransE
+		from pybind11_ke.module.loss import MarginLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+		
+		# define the model
+		transe = TransE(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = 50, 
+			p_norm = 1, 
+			norm_flag = True)
+		
+		# define the loss function
+		model = NegativeSampling(
+			model = transe, 
+			loss = MarginLoss(margin = 1.0),
+			batch_size = train_dataloader.get_batch_size()
+		)
+		
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader,
+			train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+			tester = tester, test = True, valid_interval = 100,
+			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+		trainer.run()
 	"""
 
 	def __init__(self, model = None, loss = None, batch_size = 256,

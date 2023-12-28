@@ -9,20 +9,6 @@
 
 """
 MarginLoss - 损失函数类，TransE 原论文中应用这种损失函数完成模型学习。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.module.loss import MarginLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-	
-	# define the loss function
-	model = NegativeSampling(
-		model = transe, 
-		loss = MarginLoss(margin = 5.0),
-		batch_size = train_dataloader.get_batch_size()
-	)
 """
 
 import torch
@@ -33,9 +19,21 @@ from .Loss import Loss
 class MarginLoss(Loss):
 
 	"""
-	MarginLoss 类，继承自 :py:class:`pybind11_ke.module.loss.Loss`。
+	``TransE`` :cite:`TransE` 原论文中应用这种损失函数完成模型训练。
 	
-	TransE 原论文中应用这种损失函数完成模型学习。
+	.. Note:: :py:meth:`forward` 中的正样本评分函数的得分应小于负样本评分函数的得分。
+
+	例子::
+
+		from pybind11_ke.module.loss import MarginLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+		
+		# define the loss function
+		model = NegativeSampling(
+			model = transe, 
+			loss = MarginLoss(margin = 1.0),
+			batch_size = train_dataloader.get_batch_size()
+		)
 	"""
 
 	def __init__(self, adv_temperature = None, margin = 6.0):
