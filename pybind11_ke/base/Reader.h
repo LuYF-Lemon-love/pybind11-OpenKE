@@ -16,7 +16,7 @@
 #include <fstream>
 
 std::vector<INT> first_head, end_head, first_tail, end_tail, first_rel, end_rel;
-REAL *left_mean, *right_mean;
+std::vector<REAL> hpt, tph;
 
 Triple *train_list;
 Triple *train_head;
@@ -120,28 +120,25 @@ void read_train_files() {
     first_rel[train_rel[0].h] = 0;
     end_rel[train_rel[train_total - 1].h] = train_total - 1;
     
-    // 获得 left_mean、right_mean，为 train_mode 中的 bern 做准备
-    // 在训练过程中，我们能够构建负三元组进行负采样
-    // bern 算法能根据特定关系的 head 和 tail 种类的比值，选择构建适当的负三元组
-    // train_mode 中的 bern: pr = left_mean / (left_mean + right_mean)
-    // 因此为训练而构建的负三元组比 = tail / (tail + head)
-    left_mean = (REAL *)calloc(relation_total, sizeof(REAL));
-    right_mean = (REAL *)calloc(relation_total, sizeof(REAL));
+    // 为 bern 负采样做准备
+    std::vector<REAL> heads_rel(relation_total, 0.0), tails_rel(relation_total, 0.0);
+    hpt.resize(relation_total, 0.0);
+    tph.resize(relation_total, 0.0);
     for (INT i = 0; i < entity_total; i++) {
         for (INT j = first_head[i] + 1; j <= end_head[i]; j++)
             if (train_head[j].r != train_head[j - 1].r)
-                left_mean[train_head[j].r] += 1.0;
+                heads_rel[train_head[j].r] += 1.0;
         if (first_head[i] <= end_head[i])
-            left_mean[train_head[first_head[i]].r] += 1.0;
+            heads_rel[train_head[first_head[i]].r] += 1.0;
         for (INT j = first_tail[i] + 1; j <= end_tail[i]; j++)
             if (train_tail[j].r != train_tail[j - 1].r)
-                right_mean[train_tail[j].r] += 1.0;
+                tails_rel[train_tail[j].r] += 1.0;
         if (first_tail[i] <= end_tail[i])
-            right_mean[train_tail[first_tail[i]].r] += 1.0;
+            tails_rel[train_tail[first_tail[i]].r] += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
-        left_mean[i] = freq_rel[i] / left_mean[i];
-        right_mean[i] = freq_rel[i] / right_mean[i];
+        tph[i] = freq_rel[i] / heads_rel[i];
+        hpt[i] = freq_rel[i] / tails_rel[i];
     }
 }
 

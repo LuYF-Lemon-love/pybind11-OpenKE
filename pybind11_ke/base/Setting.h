@@ -7,8 +7,6 @@
 
 #ifndef SETTING_H
 #define SETTING_H
-#define INT long
-#define REAL float
 
 // 引用头文件
 #include <iostream>
@@ -23,6 +21,9 @@
 
 // pybind11 的命名空间
 namespace py = pybind11;
+
+using INT = long;
+using REAL = float;
 
 // 文件路径
 // in_path: 数据集目录
