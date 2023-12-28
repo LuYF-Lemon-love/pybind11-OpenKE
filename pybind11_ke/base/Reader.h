@@ -15,9 +15,7 @@
 #include <cmath>
 #include <fstream>
 
-std::vector<INT> first_head, end_head;
-INT *first_tail, *end_tail;
-INT *first_rel, *end_rel;
+std::vector<INT> first_head, end_head, first_tail, end_tail, first_rel, end_rel;
 REAL *left_mean, *right_mean;
 
 Triple *train_list;
@@ -91,10 +89,10 @@ void read_train_files() {
     
     first_head.resize(entity_total);
     end_head.resize(entity_total);
-    first_tail = (INT *)calloc(entity_total, sizeof(INT));
-    end_tail = (INT *)calloc(entity_total, sizeof(INT));
-    first_rel = (INT *)calloc(entity_total, sizeof(INT));
-    end_rel = (INT *)calloc(entity_total, sizeof(INT));
+    first_tail.resize(entity_total);
+    end_tail.resize(entity_total);
+    first_rel.resize(entity_total);
+    end_rel.resize(entity_total);
     for (INT i = 1; i < train_total; i++) {
         // first_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
         // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
