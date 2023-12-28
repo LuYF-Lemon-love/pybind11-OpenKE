@@ -1,7 +1,7 @@
 // pybind11-ke/base/Reader.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
 // 
 // 该头文件从数据集中读取三元组.
 
@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cmath>
+#include <fstream>
 
 INT *freq_rel, *freq_ent;
 INT *left_head, *right_head;
@@ -29,32 +30,26 @@ Triple *train_rel;
 void read_train_files() {
 
     std::cout << "The toolkit is importing datasets." << std::endl;
-    FILE *fin;
+    std::ifstream istrm;
     int tmp;
 
     // 读取关系的个数
-    // rel_file: 定义于 Setting.h
-    fin = fopen(rel_file.c_str(), "r");
-    // relation2id.txt 第一行是关系的个数
-    tmp = fscanf(fin, "%ld", &relation_total);
+    istrm.open(rel_file, std::ifstream::in);
+    istrm >> relation_total;
+    istrm.close();
     std::cout << "The total of relations is " << relation_total
         << "." << std::endl;
-    fclose(fin);
 
     // 读取实体的个数
-    // ent_file: defined in Setting.h
-    fin = fopen(ent_file.c_str(), "r");
-    // entity2id.txt 第一行是实体的个数
-    tmp = fscanf(fin, "%ld", &entity_total);
+    istrm.open(ent_file, std::ifstream::in);
+    istrm >> entity_total;
+    istrm.close();
     std::cout << "The total of entities is " << entity_total
         << "." << std::endl;
-    fclose(fin);
 
     // 读取训练数据集
-    // train_file: 定义于 Setting.h
-    fin = fopen(train_file.c_str(), "r");
-    // train2id.txt 第一行是三元组的个数.
-    tmp = fscanf(fin, "%ld", &train_total);
+    istrm.open(train_file, std::ifstream::in);
+    istrm >> train_total;
     // train_list: 保存训练集中的三元组集合.
     train_list = (Triple *)calloc(train_total, sizeof(Triple));
     train_head = (Triple *)calloc(train_total, sizeof(Triple));
@@ -65,11 +60,9 @@ void read_train_files() {
     freq_ent = (INT *)calloc(entity_total, sizeof(INT));
     // 读取训练集三元组集合, 保存在 train_list.
     for (INT i = 0; i < train_total; i++) {
-        tmp = fscanf(fin, "%ld", &train_list[i].h);
-        tmp = fscanf(fin, "%ld", &train_list[i].t);
-        tmp = fscanf(fin, "%ld", &train_list[i].r);
+        istrm >> train_list[i].h >> train_list[i].t >> train_list[i].r;
     }
-    fclose(fin);
+    istrm.close();
     // 对 train_list 中的三元组排序 (比较顺序: h, r, t).
     std::sort(train_list, train_list + train_total, Triple::cmp_head);
     // tmp: 保存训练集三元组的个数

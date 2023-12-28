@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改 C++ 随机数生成器"
+git commit -m "修改读取训练数据文件读取函数"
 git push
