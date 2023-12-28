@@ -17,11 +17,7 @@
 
 std::vector<INT> first_head, end_head, first_tail, end_tail, first_rel, end_rel;
 std::vector<REAL> hpt, tph;
-
-Triple *train_list;
-Triple *train_head;
-Triple *train_tail;
-Triple *train_rel;
+std::vector<Triple> train_list, train_head, train_tail, train_rel;
 
 // 读取训练集
 void read_train_files() {
@@ -48,10 +44,10 @@ void read_train_files() {
     istrm.open(train_file, std::ifstream::in);
     istrm >> train_total;
     // train_list: 保存训练集中的三元组集合.
-    train_list = (Triple *)calloc(train_total, sizeof(Triple));
-    train_head = (Triple *)calloc(train_total, sizeof(Triple));
-    train_tail = (Triple *)calloc(train_total, sizeof(Triple));
-    train_rel = (Triple *)calloc(train_total, sizeof(Triple));
+    train_list.resize(train_total);
+    train_head.resize(train_total);
+    train_tail.resize(train_total);
+    train_rel.resize(train_total);
     // freq_rel 元素值被初始化为 0.
     std::vector<INT> freq_rel(relation_total, 0);
     // 读取训练集三元组集合, 保存在 train_list.
@@ -60,7 +56,7 @@ void read_train_files() {
     }
     istrm.close();
     // 对 train_list 中的三元组排序 (比较顺序: h, r, t).
-    std::sort(train_list, train_list + train_total, Triple::cmp_head);
+    std::sort(train_list.begin(), train_list.end(), Triple::cmp_head);
     // tmp: 保存训练集三元组的个数
     tmp = train_total; train_total = 1;
     train_head[0] = train_tail[0] = train_rel[0] = train_list[0];
@@ -81,9 +77,9 @@ void read_train_files() {
     // train_head: 以 h, r, t 排序
     // train_tail: 以 t, r, h 排序
     // train_rel: 以 h, t, r 排序
-    std::sort(train_head, train_head + train_total, Triple::cmp_head);
-    std::sort(train_tail, train_tail + train_total, Triple::cmp_tail);
-    std::sort(train_rel, train_rel + train_total, Triple::cmp_rel);
+    std::sort(train_head.begin(), train_head.end(), Triple::cmp_head);
+    std::sort(train_tail.begin(), train_tail.end(), Triple::cmp_tail);
+    std::sort(train_rel.begin(), train_rel.end(), Triple::cmp_rel);
     std::cout << "The total of train triples is " << train_total
         << "." << std::endl;
     
