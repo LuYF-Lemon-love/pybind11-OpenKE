@@ -15,7 +15,6 @@
 #include <cmath>
 #include <fstream>
 
-INT *freq_rel, *freq_ent;
 INT *left_head, *right_head;
 INT *left_tail, *right_tail;
 INT *left_rel, *right_rel;
@@ -55,9 +54,8 @@ void read_train_files() {
     train_head = (Triple *)calloc(train_total, sizeof(Triple));
     train_tail = (Triple *)calloc(train_total, sizeof(Triple));
     train_rel = (Triple *)calloc(train_total, sizeof(Triple));
-    // freq_rel, freq_ent: 元素值被初始化为 0.
-    freq_rel = (INT *)calloc(relation_total, sizeof(INT));
-    freq_ent = (INT *)calloc(entity_total, sizeof(INT));
+    // freq_rel 元素值被初始化为 0.
+    std::vector<INT> freq_rel(relation_total, 0);
     // 读取训练集三元组集合, 保存在 train_list.
     for (INT i = 0; i < train_total; i++) {
         istrm >> train_list[i].h >> train_list[i].t >> train_list[i].r;
@@ -68,10 +66,7 @@ void read_train_files() {
     // tmp: 保存训练集三元组的个数
     tmp = train_total; train_total = 1;
     train_head[0] = train_tail[0] = train_rel[0] = train_list[0];
-    // freq_ent: 保存实体在训练集中出现的总数
-    // freq_rel: 保存关系在训练集中出现的总数
-    freq_ent[train_list[0].t] += 1;
-    freq_ent[train_list[0].h] += 1;
+    // freq_rel: 保存每个关系训练集中三元组的个数
     freq_rel[train_list[0].r] += 1;
     // 对训练集中的三元组去重
     for (INT i = 1; i < tmp; i++)
@@ -82,8 +77,6 @@ void read_train_files() {
                 = train_rel[train_total] = train_list[train_total]
                 = train_list[i];
             train_total++;
-            freq_ent[train_list[i].t]++;
-            freq_ent[train_list[i].h]++;
             freq_rel[train_list[i].r]++;
         }
 
