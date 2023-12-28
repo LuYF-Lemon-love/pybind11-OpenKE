@@ -11,31 +11,31 @@
 
 // 所有线程的随机种子.
 unsigned long long *next_random;
+std::random_device rd;
+std::vector<std::mt19937_64> gens;
+std::vector<std::uniform_int_distribution<INT>> dists;
+
+std::mt19937_64 gen{rd()};
+std::uniform_int_distribution<INT> dist{0, 10};
+
+// 生成一个 [a,b) 范围内的随机整数.
+INT rand(INT a, INT b){
+	decltype(dist)::param_type param{a, b-1};
+	return dist(gen, param);
+}
 
 // 重新设定所有线程的随机种子.
 void rand_reset() {
-	next_random = (unsigned long long *)calloc(work_threads, sizeof(unsigned long long));
-	for (INT i = 0; i < work_threads; i++)
-		next_random[i] = rand();
-}
-
-// 为 id 对应的线程生成下一个随机整数.
-unsigned long long randd(INT id) {
-	next_random[id] = next_random[id] * (unsigned long long)(25214903917) + 11;
-	return next_random[id];
+	for (INT i = 0; i < work_threads; i++) {
+		gens.emplace_back(rd());
+		dists.emplace_back(0, 10);
+	}
 }
 
 // 为 id 对应的线程生成一个 [0,x) 范围内的随机整数.
 INT rand_max(INT id, INT x) {
-	INT res = randd(id) % x;
-	while (res < 0)
-		res += x;
-	return res;
-}
-
-// 为 id 对应的线程生成一个 [a,b) 范围内的随机整数.
-INT rand(INT a, INT b){
-	return (rand() % (b-a)) + a;
+	std::uniform_int_distribution<INT>::param_type param{0, x-1};
+	return dists[id](gens[id], param);
 }
 
 #endif

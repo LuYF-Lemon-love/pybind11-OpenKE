@@ -1,7 +1,7 @@
 // pybind11-ke/base/Setting.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 27, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
 // 
 // 该头文件定义了一些全局配置变量.
 
@@ -15,11 +15,11 @@
 #include <cstring>
 #include <cstdio>
 #include <string>
-#include <cstdlib>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <algorithm>
 #include <cmath>
+#include <random>
 
 // pybind11 的命名空间
 namespace py = pybind11;
