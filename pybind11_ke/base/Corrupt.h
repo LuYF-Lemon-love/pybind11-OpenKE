@@ -18,8 +18,8 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 
 	// lef: head(h) 在 train_head 中第一次出现的前一个位置
 	// rig: head(h) 在 train_head 中最后一次出现的位置
-	lef = left_head[h] - 1;
-	rig = right_head[h];
+	lef = first_head[h] - 1;
+	rig = end_head[h];
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
@@ -29,8 +29,8 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 	}
 	ll = rig;
 
-	lef = left_head[h];
-	rig = right_head[h] + 1;
+	lef = first_head[h];
+	rig = end_head[h] + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
@@ -71,8 +71,8 @@ INT corrupt_with_tail(INT id, INT t, INT r) {
 
 	// lef: tail(t) 在 train_tail 中第一次出现的前一个位置
 	// rig: tail(t) 在 train_tail 中最后一次出现的位置
-	lef = left_tail[t] - 1;
-	rig = right_tail[t];
+	lef = first_tail[t] - 1;
+	rig = end_tail[t];
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
@@ -82,8 +82,8 @@ INT corrupt_with_tail(INT id, INT t, INT r) {
 	}
 	ll = rig;
 
-	lef = left_tail[t];
-	rig = right_tail[t] + 1;
+	lef = first_tail[t];
+	rig = end_tail[t] + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
@@ -124,8 +124,8 @@ INT corrupt_rel(INT id, INT h, INT t) {
 
 	// lef: head(h) 在 train_rel 中第一次出现的前一个位置
 	// rig: head(h) 在 train_rel 中最后一次出现的位置
-	lef = left_rel[h] - 1;
-	rig = right_rel[h];
+	lef = first_rel[h] - 1;
+	rig = end_rel[h];
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
@@ -135,8 +135,8 @@ INT corrupt_rel(INT id, INT h, INT t) {
 	}
 	ll = rig;
 
-	lef = left_rel[h];
-	rig = right_rel[h] + 1;
+	lef = first_rel[h];
+	rig = end_rel[h] + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体

@@ -15,9 +15,9 @@
 #include <cmath>
 #include <fstream>
 
-INT *left_head, *right_head;
-INT *left_tail, *right_tail;
-INT *left_rel, *right_rel;
+std::vector<INT> first_head, end_head;
+INT *first_tail, *end_tail;
+INT *first_rel, *end_rel;
 REAL *left_mean, *right_mean;
 
 Triple *train_list;
@@ -89,38 +89,38 @@ void read_train_files() {
     std::cout << "The total of train triples is " << train_total
         << "." << std::endl;
     
-    left_head = (INT *)calloc(entity_total, sizeof(INT));
-    right_head = (INT *)calloc(entity_total, sizeof(INT));
-    left_tail = (INT *)calloc(entity_total, sizeof(INT));
-    right_tail = (INT *)calloc(entity_total, sizeof(INT));
-    left_rel = (INT *)calloc(entity_total, sizeof(INT));
-    right_rel = (INT *)calloc(entity_total, sizeof(INT));
+    first_head.resize(entity_total);
+    end_head.resize(entity_total);
+    first_tail = (INT *)calloc(entity_total, sizeof(INT));
+    end_tail = (INT *)calloc(entity_total, sizeof(INT));
+    first_rel = (INT *)calloc(entity_total, sizeof(INT));
+    end_rel = (INT *)calloc(entity_total, sizeof(INT));
     for (INT i = 1; i < train_total; i++) {
-        // left_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
-        // right_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
+        // first_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
+        // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
         if (train_head[i].h != train_head[i - 1].h) {
-            right_head[train_head[i - 1].h] = i - 1;
-            left_head[train_head[i].h] = i;
+            end_head[train_head[i - 1].h] = i - 1;
+            first_head[train_head[i].h] = i;
         }
-        // left_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
-        // right_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
+        // first_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
+        // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
         if (train_tail[i].t != train_tail[i - 1].t) {
-            right_tail[train_tail[i - 1].t] = i - 1;
-            left_tail[train_tail[i].t] = i;
+            end_tail[train_tail[i - 1].t] = i - 1;
+            first_tail[train_tail[i].t] = i;
         }
-        // left_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
-        // right_rel (entity_total): 存储每种实体 (head) 在 train_rel 中最后一次出现的位置
+        // first_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
+        // end_rel (entity_total): 存储每种实体 (head) 在 train_rel 中最后一次出现的位置
         if (train_rel[i].h != train_rel[i - 1].h) {
-            right_rel[train_rel[i - 1].h] = i - 1;
-            left_rel[train_rel[i].h] = i;
+            end_rel[train_rel[i - 1].h] = i - 1;
+            first_rel[train_rel[i].h] = i;
         }
     }
-    left_head[train_head[0].h] = 0;
-    right_head[train_head[train_total - 1].h] = train_total - 1;
-    left_tail[train_tail[0].t] = 0;
-    right_tail[train_tail[train_total - 1].t] = train_total - 1;
-    left_rel[train_rel[0].h] = 0;
-    right_rel[train_rel[train_total - 1].h] = train_total - 1;
+    first_head[train_head[0].h] = 0;
+    end_head[train_head[train_total - 1].h] = train_total - 1;
+    first_tail[train_tail[0].t] = 0;
+    end_tail[train_tail[train_total - 1].t] = train_total - 1;
+    first_rel[train_rel[0].h] = 0;
+    end_rel[train_rel[train_total - 1].h] = train_total - 1;
     
     // 获得 left_mean、right_mean，为 train_mode 中的 bern 做准备
     // 在训练过程中，我们能够构建负三元组进行负采样
@@ -130,16 +130,16 @@ void read_train_files() {
     left_mean = (REAL *)calloc(relation_total, sizeof(REAL));
     right_mean = (REAL *)calloc(relation_total, sizeof(REAL));
     for (INT i = 0; i < entity_total; i++) {
-        for (INT j = left_head[i] + 1; j <= right_head[i]; j++)
+        for (INT j = first_head[i] + 1; j <= end_head[i]; j++)
             if (train_head[j].r != train_head[j - 1].r)
                 left_mean[train_head[j].r] += 1.0;
-        if (left_head[i] <= right_head[i])
-            left_mean[train_head[left_head[i]].r] += 1.0;
-        for (INT j = left_tail[i] + 1; j <= right_tail[i]; j++)
+        if (first_head[i] <= end_head[i])
+            left_mean[train_head[first_head[i]].r] += 1.0;
+        for (INT j = first_tail[i] + 1; j <= end_tail[i]; j++)
             if (train_tail[j].r != train_tail[j - 1].r)
                 right_mean[train_tail[j].r] += 1.0;
-        if (left_tail[i] <= right_tail[i])
-            right_mean[train_tail[left_tail[i]].r] += 1.0;
+        if (first_tail[i] <= end_tail[i])
+            right_mean[train_tail[first_tail[i]].r] += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
         left_mean[i] = freq_rel[i] / left_mean[i];
