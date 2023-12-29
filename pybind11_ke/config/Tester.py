@@ -103,14 +103,15 @@ class Tester(object):
         :rtype: tuple
         """
 
-        base.init_test()
         self.data_loader.set_sampling_mode(self.sampling_mode)
         training_range = tqdm(self.data_loader)
-        for [data_head, data_tail] in training_range:
-            score = self.test_one_step(data_head)
-            base.test_head(score, self.data_loader.type_constrain, self.sampling_mode)
-            score = self.test_one_step(data_tail)
-            base.test_tail(score, self.data_loader.type_constrain, self.sampling_mode)
+        self.model.eval()
+        with torch.no_grad():
+            for [data_head, data_tail] in training_range:
+                score = self.test_one_step(data_head)
+                base.test_head(score, self.data_loader.type_constrain, self.sampling_mode)
+                score = self.test_one_step(data_tail)
+                base.test_tail(score, self.data_loader.type_constrain, self.sampling_mode)
         base.test_link_prediction(self.data_loader.type_constrain, self.sampling_mode)
 
         mrr = base.get_test_link_MRR(self.data_loader.type_constrain)

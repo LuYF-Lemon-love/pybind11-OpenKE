@@ -3,44 +3,42 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 29, 2023
 #
 # 该脚本定义了训练循环类.
 
 """
 Trainer - 训练循环类。
-
-基本用法如下：
-
-.. code-block:: python
-
-	# Import Trainer
-	from pybind11_ke.config import Trainer
-	
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
-		log_interval = 100, save_interval = 100, save_path = "../../checkpoint/transe.pth")
-	trainer.run()
 """
 
+import os
 import torch
 import torch.optim as optim
-import os
 from ..utils.Timer import Timer
 
 class Trainer(object):
 
 	"""
-	:py:class:`Trainer` 主要用于 KGE 模型的训练。
+	主要用于 KGE 模型的训练。
+
+	例子::
+
+		from pybind11_ke.config import Trainer
+
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader,
+			epochs = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+			tester = tester, test = True, valid_interval = 100,
+			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+		trainer.run()
 	"""
 
 	def __init__(self,
 		model = None,
 		data_loader = None,
-		train_times = 1000,
+		epochs = 1000,
 		alpha = 0.5,
-		opt_method = "sgd",
+		opt_method = "Adam",
 		use_gpu = True,
 		device = "cuda:0",
 		tester = None,
@@ -56,8 +54,8 @@ class Trainer(object):
 		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		:param data_loader: TrainDataLoader
 		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
-		:param train_times: 训练轮次数
-		:type train_times: int
+		:param epochs: 训练轮次数
+		:type epochs: int
 		:param alpha: 学习率
 		:type alpha: float
 		:param opt_method: 优化器: Adam or adam, SGD or sgd
@@ -86,7 +84,7 @@ class Trainer(object):
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader = data_loader
 		#: epochs
-		self.train_times = train_times
+		self.epochs = epochs
 
 		#: 学习率
 		self.alpha = alpha
@@ -138,7 +136,7 @@ class Trainer(object):
 
 	def run(self):
 
-		"""训练循环，首先根据 :py:attr:`use_gpu` 设置 :py:attr:`model` 是否处于 gpu，然后根据
+		"""训练循环，首先根据 :py:attr:`use_gpu` 设置 :py:attr:`model` 是否使用 gpu 训练，然后根据
 		:py:attr:`opt_method` 设置 :py:attr:`optimizer`，最后迭代 :py:attr:`data_loader` 获取数据，
 		并利用 :py:meth:`train_one_step` 训练。
 		"""
@@ -159,8 +157,9 @@ class Trainer(object):
 		print("Finish initializing...")
 		
 		timer = Timer()
-		for epoch in range(self.train_times):
+		for epoch in range(self.epochs):
 			res = 0.0
+			self.model.train()
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
@@ -170,7 +169,7 @@ class Trainer(object):
 				self.tester.set_sampling_mode("link_valid")
 				self.tester.run_link_prediction()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
+				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.model.model.save_checkpoint(path)

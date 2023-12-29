@@ -1,9 +1,6 @@
 """
 **TransE-FB15K-single-gpu** ||
-`TransE-WN18RR-adv <train_transe_WN18_adv_sigmoidloss.html>`_ ||
-`TransH-FB15K237 <train_transh_FB15K237.html>`_ ||
-`SimplE-WN18RR <train_simple_WN18RR.html>`_ ||
-`RotatE-WN18RR <train_rotate_WN18RR_adv.html>`_
+`TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_
 
 TransE-FB15K-single-gpu
 =========================
@@ -83,8 +80,9 @@ model = NegativeSampling(
 # -------------
 # pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
-# 或者使用 :py:func:`pybind11_ke.config.TrainerDataParallel.trainer_distributed_data_parallel` 函数进行并行训练，
-# 该函数必须由 ``if __name__ == '__main__'`` 保护。
+# 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
+# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.Tester` 使用
+# :py:class:`pybind11_ke.data.TestDataLoader` 作为数据采样器。
 
 # dataloader for test
 test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
@@ -94,18 +92,7 @@ tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, d
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader,
-	train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+	epochs = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
 	tester = tester, test = True, valid_interval = 100,
 	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
 trainer.run()
-
-######################################################################
-# --------------
-#
-
-######################################################################
-# 评估模型
-# -------------
-# :py:class:`pybind11_ke.data.TestDataLoader` 包含 ``in_path`` 用于传递数据集目录。
-# 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
