@@ -81,16 +81,6 @@ void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
     last_tail++;
 }
 
-// 对于测试集中的给定三元组, 用所有实体替换 relation, 返回所有三元组.
-extern "C"
-void getRelBatch(INT *ph, INT *pt, INT *pr) {
-    for (INT i = 0; i < relation_total; i++) {
-        ph[i] = test_list[lastRel].h;
-        pt[i] = test_list[lastRel].t;
-        pr[i] = i;
-    }
-}
-
 // 替换 head, 评估 head 的 rank.
 void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::string sampling_mode = "link_test") {
 
@@ -262,47 +252,6 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
     }
 }
 
-// 替换 relation, 评估 relation 的 rank.
-extern "C"
-void testRel(REAL *con) {
-    INT h = test_list[lastRel].h;
-    INT t = test_list[lastRel].t;
-    INT r = test_list[lastRel].r;
-
-    // minimal: 正确三元组的 score
-    REAL minimal = con[r];
-    // rel_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 relation) 负三元组个数
-	// rel_filter_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 relation) 负三元组个数, 且负三元组不在数据集中
-    INT rel_s = 0;
-    INT rel_filter_s = 0;
-
-    for (INT j = 0; j < relation_total; j++) {
-        // 替换 relation
-        if (j != r) {
-            REAL value = con[j];
-            if (value < minimal) {
-                rel_s += 1;
-                if (not _find(h, t, j))
-                    rel_filter_s += 1;
-            }
-        }
-    }
-
-    if (rel_filter_s < 10) rel_filter_tot += 1;
-    if (rel_s < 10) rel_tot += 1;
-    if (rel_filter_s < 3) rel3_filter_tot += 1;
-    if (rel_s < 3) rel3_tot += 1;
-    if (rel_filter_s < 1) rel1_filter_tot += 1;
-    if (rel_s < 1) rel1_tot += 1;
-
-    rel_filter_rank += (rel_filter_s+1);
-    rel_rank += (1+rel_s);
-    rel_filter_reci_rank += 1.0/(rel_filter_s+1);
-    rel_reci_rank += 1.0/(rel_s+1);
-
-    lastRel++;
-}
-
 // 链接预测入口函数
 void test_link_prediction(bool type_constrain = false, std::string sampling_mode = "link_test") {
     INT total;
@@ -407,34 +356,6 @@ void test_link_prediction(bool type_constrain = false, std::string sampling_mode
         hit3TC = (l3_filter_tot_constrain+r3_filter_tot_constrain) / 2;
         hit10TC = (l10_filter_tot_constrain+r10_filter_tot_constrain) / 2;
     }
-}
-
-// 链接预测 (relation) 入口函数
-extern "C"
-void test_relation_prediction() {
-    rel_rank /= test_total;
-    rel_reci_rank /= test_total;
-  
-    rel_tot /= test_total;
-    rel3_tot /= test_total;
-    rel1_tot /= test_total;
-
-    // with filter
-    rel_filter_rank /= test_total;
-    rel_filter_reci_rank /= test_total;
-  
-    rel_filter_tot /= test_total;
-    rel3_filter_tot /= test_total;
-    rel1_filter_tot /= test_total;
-
-    printf("no type constraint results:\n");
-    
-    printf("metric:\t\t\t MRR \t\t MR \t\t hit@10 \t hit@3  \t hit@1 \n");
-    printf("averaged(raw):\t\t %f \t %f \t %f \t %f \t %f \n",
-            rel_reci_rank, rel_rank, rel_tot, rel3_tot, rel1_tot);
-    printf("\n");
-    printf("averaged(filter):\t %f \t %f \t %f \t %f \t %f \n",
-            rel_filter_reci_rank, rel_filter_rank, rel_filter_tot, rel3_filter_tot, rel1_filter_tot);
 }
 
 REAL get_test_link_Hit1(bool type_constrain = false) {
