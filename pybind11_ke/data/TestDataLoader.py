@@ -16,9 +16,7 @@ import numpy as np
 
 class TestDataSampler(object):
 
-	"""将 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
-	或 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_tc` 
-	进行封装。
+	"""将 :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 进行封装。
 	"""
 
 	def __init__(self, data_total, sampler):
@@ -28,14 +26,12 @@ class TestDataSampler(object):
 		:param data_total: 测试集多少个三元组 
 		:type data_total: int
 		:param sampler: 采样器
-		:type sampler: :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
-								或 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_tc`
+		:type sampler: :py:meth:`pybind11_ke.data.TestDataLoader.sampling`
 		"""
 
 		#: 测试集多少个三元组
 		self.data_total = data_total
-		#: :py:meth:`pybind11_ke.data.TestDataLoader.sampling_lp` 
-		#: 或 :py:meth:`pybind11_ke.data.TestDataLoader.sampling_tc` 函数
+		#: :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 函数
 		self.sampler = sampler
 		self.total = 0
 
@@ -99,7 +95,7 @@ class TestDataLoader(object):
 		:type valid_file: str
 		:param test_file: test2id.txt
 		:type test_file: str
-		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
+		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
 		:type sampling_mode: str
 		:param type_constrain: 是否用 type_constrain.txt 进行负采样
 		:type type_constrain: bool
@@ -117,7 +113,7 @@ class TestDataLoader(object):
 		self.valid_file = self.in_path + valid_file
 		#: test2id.txt
 		self.test_file = self.in_path + test_file
-		#: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
+		#: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
 		self.sampling_mode = sampling_mode
 		#: 是否用 type_constrain.txt 进行负采样
 		self.type_constrain = type_constrain
@@ -173,7 +169,7 @@ class TestDataLoader(object):
 		self.test_neg_r = np.zeros(self.test_tol, dtype=np.int64)
 
 	# 为链接预测进行采样数据
-	def sampling_lp(self):
+	def sampling(self):
 
 		"""为链接预测进行采样数据，为给定的正三元组，用所有实体依次替换头尾实体得到
 		2 * :py:attr:`ent_tol` 个三元组。
@@ -243,7 +239,7 @@ class TestDataLoader(object):
 
 		"""设置 :py:attr:`sampling_mode`
 		
-		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
+		:param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
 		:type sampling_mode: str
 		"""
 
@@ -252,18 +248,16 @@ class TestDataLoader(object):
 	def __iter__(self):
 
 		"""迭代器函数 :py:meth:`iterator.__iter__`，
-		根据 :py:attr:`sampling_mode` 选择返回 :py:meth:`sampling_lp` 和
-		:py:meth:`sampling_tc`"""
+		根据 :py:attr:`sampling_mode` 决定是评估验证集还是测试集。"""
 
 		if self.sampling_mode == "link_test":
 			base.init_test()
-			return TestDataSampler(self.test_tol, self.sampling_lp)
+			return TestDataSampler(self.test_tol, self.sampling)
 		elif self.sampling_mode == "link_valid":
 			base.init_test()
-			return TestDataSampler(self.valid_tol, self.sampling_lp)
-		elif self.sampling_mode == "tc":
-			base.init_test()
-			return TestDataSampler(1, self.sampling_tc)
+			return TestDataSampler(self.valid_tol, self.sampling)
+		else:
+			raise ValueError("pybind11_ke.data.TestDataLoader.sampling can only be a link_test or link_valid.")
 
 	def __len__(self):
 		
