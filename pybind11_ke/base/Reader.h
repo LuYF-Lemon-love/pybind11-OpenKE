@@ -144,36 +144,29 @@ Triple *triple_list;
 
 // 读取测试集
 void read_test_files() {
-    FILE *fin;
-    INT tmp;
+    std::ifstream istrm;
 
     // 读取关系的个数
-    // rel_file: 定义于 Setting.h
-    fin = fopen(rel_file.c_str(), "r");
-    // relation2id.txt 第一行是关系的个数
-    tmp = fscanf(fin, "%ld", &relation_total);
-    fclose(fin);
+    istrm.open(rel_file, std::ifstream::in);
+    istrm >> relation_total;
+    istrm.close();
 
     // 读取实体的个数
-    // ent_file: 定义于 Setting.h
-    fin = fopen(ent_file.c_str(), "r");
-    // entity2id.txt 第一行是实体的个数
-    tmp = fscanf(fin, "%ld", &entity_total);
-    fclose(fin);
+    istrm.open(ent_file, std::ifstream::in);
+    istrm >> entity_total;
+    istrm.close();
 
-    // test_file: 定义于 Setting.h
-    // train_file: 定义于 Setting.h
-    // valid_file: 定义于 Setting.h
-    FILE* f_kb1, * f_kb2, * f_kb3;
-    f_kb1 = fopen(test_file.c_str(), "r");
-    f_kb2 = fopen(train_file.c_str(), "r");
-    f_kb3 = fopen(valid_file.c_str(), "r");
+    // 读取训练集、验证集和测试集
+    std::ifstream istrm_test, istrm_train, istrm_valid;
+    istrm_test.open(test_file, std::ifstream::in);
+    istrm_train.open(train_file, std::ifstream::in);
+    istrm_valid.open(valid_file, std::ifstream::in);
     // test2id.txt 第一行是三元组的个数
     // train2id.txt 第一行是三元组的个数
     // valid2id.txt 第一行是三元组的个数
-    tmp = fscanf(f_kb1, "%ld", &test_total);
-    tmp = fscanf(f_kb2, "%ld", &train_total);
-    tmp = fscanf(f_kb3, "%ld", &valid_total);
+    istrm_test >> test_total;
+    istrm_train >> train_total;
+    istrm_valid >> valid_total;
     std::cout << "The total of test triples is " << test_total
             << "." << std::endl;
     std::cout << "The total of valid triples is " << valid_total
@@ -186,27 +179,24 @@ void read_test_files() {
     triple_list = (Triple *)calloc(triple_total, sizeof(Triple));
     // 读取测试集三元组
     for (INT i = 0; i < test_total; i++) {
-        tmp = fscanf(f_kb1, "%ld", &test_list[i].h);
-        tmp = fscanf(f_kb1, "%ld", &test_list[i].t);
-        tmp = fscanf(f_kb1, "%ld", &test_list[i].r);
+        istrm_test >> test_list[i].h >> test_list[i].t >> test_list[i].r;
         triple_list[i] = test_list[i];
     }
     // 读取训练集三元组
     for (INT i = 0; i < train_total; i++) {
-        tmp = fscanf(f_kb2, "%ld", &triple_list[i + test_total].h);
-        tmp = fscanf(f_kb2, "%ld", &triple_list[i + test_total].t);
-        tmp = fscanf(f_kb2, "%ld", &triple_list[i + test_total].r);
+        istrm_train >> triple_list[i + test_total].h >> triple_list[i + test_total].t
+                    >> triple_list[i + test_total].r;
     }
     // 读取验证集三元组
     for (INT i = 0; i < valid_total; i++) {
-        tmp = fscanf(f_kb3, "%ld", &triple_list[i + test_total + train_total].h);
-        tmp = fscanf(f_kb3, "%ld", &triple_list[i + test_total + train_total].t);
-        tmp = fscanf(f_kb3, "%ld", &triple_list[i + test_total + train_total].r);
+        istrm_valid >> triple_list[i + test_total + train_total].h 
+                    >> triple_list[i + test_total + train_total].t
+                    >> triple_list[i + test_total + train_total].r;
         valid_list[i] = triple_list[i + test_total + train_total];
     }
-    fclose(f_kb1);
-    fclose(f_kb2);
-    fclose(f_kb3);
+    istrm_test.close();
+    istrm_train.close();
+    istrm_valid.close();
 
     // triple_list: 以 h, r, t 排序
     // test_list: 以 r, h, t 排序

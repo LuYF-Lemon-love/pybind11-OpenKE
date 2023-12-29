@@ -3,29 +3,16 @@
 # pybind11_ke/data/TestDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 29, 2023
 #
 # 该脚本定义了采样数据的函数, 用于验证模型.
 
 """
 TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Tester
-	from pybind11_ke.data import TestDataLoader
-
-	# dataloader for test
-	test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link_test")
-
-	# test the model
-	tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
 """
 
-import numpy as np
 import base
+import numpy as np
 
 class TestDataSampler(object):
 
@@ -79,7 +66,20 @@ class TestDataSampler(object):
 
 class TestDataLoader(object):
 
-	""":py:class:`TestDataLoader` 主要从底层 C++ 模块获得数据用于 KGE 模型的验证。"""
+	"""
+	主要从底层 C++ 模块获得数据用于 KGE 模型的评估。
+	
+	例子::
+
+		from pybind11_ke.config import Tester
+		from pybind11_ke.data import TestDataLoader
+
+		# dataloader for test
+		test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
+
+		# test the model
+		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+	"""
 
 	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
 		train_file = "train2id.txt", valid_file = "valid2id.txt", test_file = "test2id.txt",
@@ -138,6 +138,8 @@ class TestDataLoader(object):
 
 		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
 
+		print("Start reading validation and testing data...")
+
 		base.set_in_path(self.in_path)
 		base.set_ent_path(self.ent_file)
 		base.set_rel_path(self.rel_file)
@@ -149,6 +151,8 @@ class TestDataLoader(object):
 
 		if self.type_constrain:
 			base.read_type_files()
+
+		print("Validation and testing data read completed.\n")
 
 		self.ent_tol = base.get_entity_total()
 		self.rel_tol = base.get_relation_total()

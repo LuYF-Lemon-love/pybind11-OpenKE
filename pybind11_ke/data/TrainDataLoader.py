@@ -180,6 +180,8 @@ class TrainDataLoader(object):
 	def read(self):
 
 		"""利用 `pybind11 <https://github.com/pybind/pybind11>`__ 让底层 C++ 模块读取数据集中的数据"""
+
+		print("\nStart reading training data...")
 		
 		base.set_in_path(self.in_path)
 		base.set_ent_path(self.ent_file)
@@ -190,6 +192,8 @@ class TrainDataLoader(object):
 		base.set_work_threads(self.threads)
 		base.rand_reset()
 		base.read_train_files()
+
+		print("Training data read completed.\n")
 
 		# 实体的个数
 		self.ent_tol = base.get_entity_total()
