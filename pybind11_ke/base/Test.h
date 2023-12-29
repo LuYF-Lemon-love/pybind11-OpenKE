@@ -96,12 +96,12 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
         r = valid_list[last_head - 1].r;
     }
 
-    // lef: 记录关系 r 的 head 类型在 head_type 中第一次出现的位置
-	// rig: 记录关系 r 的 head 类型在 head_type 中最后一次出现的后一个位置
+    // lef: 记录关系 r 的 head 类型在 head_type_rel 中第一次出现的位置
+	// rig: 记录关系 r 的 head 类型在 head_type_rel 中最后一次出现的后一个位置
     INT lef, rig;
     if (type_constrain) {
-        lef = head_lef[r];
-        rig = head_rig[r];
+        lef = first_head_type[r];
+        rig = end_head_type[r];
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
@@ -127,8 +127,8 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     l_filter_s += 1;
             }
             if (type_constrain) {
-                while (lef < rig && head_type[lef] < j) lef++;
-                if (lef < rig && j == head_type[lef]) {
+                while (lef < rig && head_type_rel[lef] < j) lef++;
+                if (lef < rig && j == head_type_rel[lef]) {
                     if (value < minimal) {
                         l_s_constrain += 1;
                         if (not _find(j, t, r)) {
@@ -182,12 +182,12 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
         r = valid_list[last_tail - 1].r;
     }
 
-    // lef: 记录关系 r 的 tail 类型在 tail_type 中第一次出现的位置
-	// rig: 记录关系 r 的 tail 类型在 tail_type 中最后一次出现的后一个位置
+    // lef: 记录关系 r 的 tail 类型在 tail_type_rel 中第一次出现的位置
+	// rig: 记录关系 r 的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
     INT lef, rig;
     if (type_constrain) {
-        lef = tail_lef[r];
-        rig = tail_rig[r];
+        lef = first_tail_type[r];
+        rig = end_tail_type[r];
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
@@ -211,8 +211,8 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     r_filter_s += 1;
             }
             if (type_constrain) {
-                while (lef < rig && tail_type[lef] < j) lef++;
-                if (lef < rig && j == tail_type[lef]) {
+                while (lef < rig && tail_type_rel[lef] < j) lef++;
+                if (lef < rig && j == tail_type_rel[lef]) {
                         if (value < minimal) {
                             r_s_constrain += 1;
                             if (not _find(h, j ,r)) {

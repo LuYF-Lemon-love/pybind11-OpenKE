@@ -184,23 +184,4 @@ bool _find(INT h, INT t, INT r) {
 	// std::cout << "mid = " << mid << std::endl;
     return false;
 }
-
-// 利用 type_constrain.txt 构建负三元组
-INT corrupt(INT h, INT r){
-	INT ll = tail_lef[r];
-	INT rr = tail_rig[r];
-	INT loop = 0;
-	INT t;
-	while(true) {
-		t = tail_type[rand(ll, rr)];
-		if (not _find(h, t, r)) {
-			return t;
-		} else {
-			loop ++;
-			if (loop >= 1000) {
-				return corrupt_with_head(0, h, r);
-			}
-		} 
-	}
-}
 #endif

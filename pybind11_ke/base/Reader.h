@@ -204,18 +204,14 @@ void read_test_files() {
     std::sort(valid_list.begin(), valid_list.end(), Triple::cmp_rel2);
 }
 
-// head_type: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
-// tail_type: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
-INT* head_type;
-INT* tail_type;
-// head_lef: 记录各个关系的 head 类型在 head_type 中第一次出现的位置
-// head_rig: 记录各个关系的 head 类型在 head_type 中最后一次出现的后一个位置
-// tail_lef: 记录各个关系的 tail 类型在 tail_type 中第一次出现的位置
-// tail_rig: 记录各个关系的 tail 类型在 tail_type 中最后一次出现的后一个位置
-INT* head_lef;
-INT* head_rig;
-INT* tail_lef;
-INT* tail_rig;
+// head_type_rel: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
+// tail_type_rel: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
+std::vector<INT> head_type_rel, tail_type_rel;
+// first_head_type: 记录各个关系的 head 类型在 head_type_rel 中第一次出现的位置
+// end_head_type: 记录各个关系的 head 类型在 head_type_rel 中最后一次出现的后一个位置
+// first_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中第一次出现的位置
+// end_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
+std::vector<INT> first_head_type, end_head_type, first_tail_type, end_tail_type;
 
 // 读取 type_constrain.txt
 // type_constrain.txt: 类型约束文件, 第一行是关系的个数
@@ -229,58 +225,61 @@ INT* tail_rig;
 // 1200	4	3123	1034	58	5733
 // 1200	4	12123	4388	11087	11088
 void read_type_files() {
+    std::ifstream istrm;
+    INT tmp;
 
-    head_lef = (INT *)calloc(relation_total, sizeof(INT));
-    head_rig = (INT *)calloc(relation_total, sizeof(INT));
-    tail_lef = (INT *)calloc(relation_total, sizeof(INT));
-    tail_rig = (INT *)calloc(relation_total, sizeof(INT));
     // 统计所有关系头实体类型、尾实体类型的总数
     INT total_head = 0;
     INT total_tail = 0;
-    FILE* f_type = fopen((in_path + "type_constrain.txt").c_str(), "r");
-    INT tmp;
-    tmp = fscanf(f_type, "%ld", &tmp);
+    istrm.open(in_path + "type_constrain.txt", std::ifstream::in);
+    istrm >> tmp;
     for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
-        tmp = fscanf(f_type, "%ld %ld", &rel, &tot);
+        istrm >> rel >> tot;
         for (INT j = 0; j < tot; j++) {
-            tmp = fscanf(f_type, "%ld", &tmp);
+            istrm >> tmp;
             total_head++;
         }
-        tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
+        istrm >> rel >> tot;
         for (INT j = 0; j < tot; j++) {
-            tmp = fscanf(f_type, "%ld", &tmp);
+            istrm >> tmp;
             total_tail++;
         }
     }
-    fclose(f_type);
-    head_type = (INT *)calloc(total_head, sizeof(INT)); 
-    tail_type = (INT *)calloc(total_tail, sizeof(INT));
+    istrm.close();
+
+    head_type_rel.resize(total_head);
+    tail_type_rel.resize(total_tail);
+    first_head_type.resize(relation_total);
+    end_head_type.resize(relation_total);
+    first_tail_type.resize(relation_total);
+    end_tail_type.resize(relation_total);
+
     // 读取 type_constrain.txt
     total_head = 0;
     total_tail = 0;
-    f_type = fopen((in_path + "type_constrain.txt").c_str(),"r");
-    tmp = fscanf(f_type, "%ld", &tmp);
+    istrm.open(in_path + "type_constrain.txt", std::ifstream::in);
+    istrm >> tmp;
     for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
-        tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
-        head_lef[rel] = total_head;
+        istrm >> rel >> tot;
+        first_head_type[rel] = total_head;
         for (INT j = 0; j < tot; j++) {
-            tmp = fscanf(f_type, "%ld", &head_type[total_head]);
+            istrm >> head_type_rel[total_head];
             total_head++;
         }
-        head_rig[rel] = total_head;
-        std::sort(head_type + head_lef[rel], head_type + head_rig[rel]);
-        tmp = fscanf(f_type, "%ld%ld", &rel, &tot);
-        tail_lef[rel] = total_tail;
+        end_head_type[rel] = total_head;
+        std::sort(head_type_rel.begin() + first_head_type[rel], head_type_rel.begin() + end_head_type[rel]);
+        istrm >> rel >> tot;
+        first_tail_type[rel] = total_tail;
         for (INT j = 0; j < tot; j++) {
-            tmp = fscanf(f_type, "%ld", &tail_type[total_tail]);
+            istrm >> tail_type_rel[total_tail];
             total_tail++;
         }
-        tail_rig[rel] = total_tail;
-        std::sort(tail_type + tail_lef[rel], tail_type + tail_rig[rel]);
+        end_tail_type[rel] = total_tail;
+        std::sort(tail_type_rel.begin() + first_tail_type[rel], tail_type_rel.begin() + end_tail_type[rel]);
     }
-    fclose(f_type);
+    istrm.close();
 }
 
 #endif
