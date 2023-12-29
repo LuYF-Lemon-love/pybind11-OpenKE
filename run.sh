@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改读取 type_constrain.txt 函数"
+git commit -m "删除 pip 环境要求文件"
 git push
