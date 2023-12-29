@@ -15,7 +15,7 @@
 #include <cmath>
 #include <fstream>
 
-std::vector<INT> first_head, end_head, first_tail, end_tail, first_rel, end_rel;
+std::vector<INT> begin_head, end_head, begin_tail, end_tail, begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
 std::vector<Triple> train_list, train_head, train_tail, train_rel;
 
@@ -83,37 +83,37 @@ void read_train_files() {
     std::cout << "The total of train triples is " << train_total
         << "." << std::endl;
     
-    first_head.resize(entity_total);
+    begin_head.resize(entity_total);
     end_head.resize(entity_total);
-    first_tail.resize(entity_total);
+    begin_tail.resize(entity_total);
     end_tail.resize(entity_total);
-    first_rel.resize(entity_total);
+    begin_rel.resize(entity_total);
     end_rel.resize(entity_total);
     for (INT i = 1; i < train_total; i++) {
-        // first_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
+        // begin_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
         // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
         if (train_head[i].h != train_head[i - 1].h) {
             end_head[train_head[i - 1].h] = i - 1;
-            first_head[train_head[i].h] = i;
+            begin_head[train_head[i].h] = i;
         }
-        // first_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
+        // begin_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
         // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
         if (train_tail[i].t != train_tail[i - 1].t) {
             end_tail[train_tail[i - 1].t] = i - 1;
-            first_tail[train_tail[i].t] = i;
+            begin_tail[train_tail[i].t] = i;
         }
-        // first_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
+        // begin_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
         // end_rel (entity_total): 存储每种实体 (head) 在 train_rel 中最后一次出现的位置
         if (train_rel[i].h != train_rel[i - 1].h) {
             end_rel[train_rel[i - 1].h] = i - 1;
-            first_rel[train_rel[i].h] = i;
+            begin_rel[train_rel[i].h] = i;
         }
     }
-    first_head[train_head[0].h] = 0;
+    begin_head[train_head[0].h] = 0;
     end_head[train_head[train_total - 1].h] = train_total - 1;
-    first_tail[train_tail[0].t] = 0;
+    begin_tail[train_tail[0].t] = 0;
     end_tail[train_tail[train_total - 1].t] = train_total - 1;
-    first_rel[train_rel[0].h] = 0;
+    begin_rel[train_rel[0].h] = 0;
     end_rel[train_rel[train_total - 1].h] = train_total - 1;
     
     // 为 bern 负采样做准备
@@ -121,16 +121,16 @@ void read_train_files() {
     hpt.resize(relation_total, 0.0);
     tph.resize(relation_total, 0.0);
     for (INT i = 0; i < entity_total; i++) {
-        for (INT j = first_head[i] + 1; j <= end_head[i]; j++)
+        for (INT j = begin_head[i] + 1; j <= end_head[i]; j++)
             if (train_head[j].r != train_head[j - 1].r)
                 heads_rel[train_head[j].r] += 1.0;
-        if (first_head[i] <= end_head[i])
-            heads_rel[train_head[first_head[i]].r] += 1.0;
-        for (INT j = first_tail[i] + 1; j <= end_tail[i]; j++)
+        if (begin_head[i] <= end_head[i])
+            heads_rel[train_head[begin_head[i]].r] += 1.0;
+        for (INT j = begin_tail[i] + 1; j <= end_tail[i]; j++)
             if (train_tail[j].r != train_tail[j - 1].r)
                 tails_rel[train_tail[j].r] += 1.0;
-        if (first_tail[i] <= end_tail[i])
-            tails_rel[train_tail[first_tail[i]].r] += 1.0;
+        if (begin_tail[i] <= end_tail[i])
+            tails_rel[train_tail[begin_tail[i]].r] += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
         tph[i] = freq_rel[i] / heads_rel[i];
@@ -207,11 +207,11 @@ void read_test_files() {
 // head_type_rel: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
 // tail_type_rel: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
 std::vector<INT> head_type_rel, tail_type_rel;
-// first_head_type: 记录各个关系的 head 类型在 head_type_rel 中第一次出现的位置
+// begin_head_type: 记录各个关系的 head 类型在 head_type_rel 中第一次出现的位置
 // end_head_type: 记录各个关系的 head 类型在 head_type_rel 中最后一次出现的后一个位置
-// first_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中第一次出现的位置
+// begin_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中第一次出现的位置
 // end_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
-std::vector<INT> first_head_type, end_head_type, first_tail_type, end_tail_type;
+std::vector<INT> begin_head_type, end_head_type, begin_tail_type, end_tail_type;
 
 // 读取 type_constrain.txt
 // type_constrain.txt: 类型约束文件, 第一行是关系的个数
@@ -250,9 +250,9 @@ void read_type_files() {
 
     head_type_rel.resize(total_head);
     tail_type_rel.resize(total_tail);
-    first_head_type.resize(relation_total);
+    begin_head_type.resize(relation_total);
     end_head_type.resize(relation_total);
-    first_tail_type.resize(relation_total);
+    begin_tail_type.resize(relation_total);
     end_tail_type.resize(relation_total);
 
     // 读取 type_constrain.txt
@@ -263,21 +263,21 @@ void read_type_files() {
     for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
         istrm >> rel >> tot;
-        first_head_type[rel] = total_head;
+        begin_head_type[rel] = total_head;
         for (INT j = 0; j < tot; j++) {
             istrm >> head_type_rel[total_head];
             total_head++;
         }
         end_head_type[rel] = total_head;
-        std::sort(head_type_rel.begin() + first_head_type[rel], head_type_rel.begin() + end_head_type[rel]);
+        std::sort(head_type_rel.begin() + begin_head_type[rel], head_type_rel.begin() + end_head_type[rel]);
         istrm >> rel >> tot;
-        first_tail_type[rel] = total_tail;
+        begin_tail_type[rel] = total_tail;
         for (INT j = 0; j < tot; j++) {
             istrm >> tail_type_rel[total_tail];
             total_tail++;
         }
         end_tail_type[rel] = total_tail;
-        std::sort(tail_type_rel.begin() + first_tail_type[rel], tail_type_rel.begin() + end_tail_type[rel]);
+        std::sort(tail_type_rel.begin() + begin_tail_type[rel], tail_type_rel.begin() + end_tail_type[rel]);
     }
     istrm.close();
 }

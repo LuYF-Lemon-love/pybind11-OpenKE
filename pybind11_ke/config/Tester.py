@@ -3,33 +3,31 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 29, 2023
 #
 # 该脚本定义了验证模型类.
 
 """
 Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
-
-基本用法如下：
-
-.. code-block:: python
-
-    from pybind11_ke.config import Trainer, Tester
-    
-    # test the model
-    transe.load_checkpoint('../checkpoint/transe.ckpt')
-    tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-    tester.run_link_prediction()
 """
 
+import base
 import torch
 from tqdm import tqdm
-import base
 
 class Tester(object):
 
     """
-    :py:class:`Tester` 主要用于 KGE 模型的验证。
+    主要用于 KGE 模型的评估。
+
+    例子::
+
+        from pybind11_ke.config import Trainer, Tester
+
+        # test the model
+        transe.load_checkpoint('../checkpoint/transe.ckpt')
+        tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
+        tester.run_link_prediction()
     """
 
     def __init__(self, model = None, data_loader = None, sampling_mode = 'link_test', use_gpu = True, device = "cuda:0"):
@@ -126,7 +124,7 @@ class Tester(object):
         
         """设置 :py:attr:`sampling_mode`
         
-        :param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样，``tc`` 表示为分类进行负采样
+        :param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
         :type sampling_mode: str
         """
         

@@ -18,7 +18,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 
 	// lef: head(h) 在 train_head 中第一次出现的前一个位置
 	// rig: head(h) 在 train_head 中最后一次出现的位置
-	lef = first_head[h] - 1;
+	lef = begin_head[h] - 1;
 	rig = end_head[h];
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -29,7 +29,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 	}
 	ll = rig;
 
-	lef = first_head[h];
+	lef = begin_head[h];
 	rig = end_head[h] + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -71,7 +71,7 @@ INT corrupt_with_tail(INT id, INT t, INT r) {
 
 	// lef: tail(t) 在 train_tail 中第一次出现的前一个位置
 	// rig: tail(t) 在 train_tail 中最后一次出现的位置
-	lef = first_tail[t] - 1;
+	lef = begin_tail[t] - 1;
 	rig = end_tail[t];
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -82,7 +82,7 @@ INT corrupt_with_tail(INT id, INT t, INT r) {
 	}
 	ll = rig;
 
-	lef = first_tail[t];
+	lef = begin_tail[t];
 	rig = end_tail[t] + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -124,7 +124,7 @@ INT corrupt_rel(INT id, INT h, INT t) {
 
 	// lef: head(h) 在 train_rel 中第一次出现的前一个位置
 	// rig: head(h) 在 train_rel 中最后一次出现的位置
-	lef = first_rel[h] - 1;
+	lef = begin_rel[h] - 1;
 	rig = end_rel[h];
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -135,7 +135,7 @@ INT corrupt_rel(INT id, INT h, INT t) {
 	}
 	ll = rig;
 
-	lef = first_rel[h];
+	lef = begin_rel[h];
 	rig = end_rel[h] + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -176,12 +176,11 @@ bool _find(INT h, INT t, INT r) {
     INT rig = triple_total - 1;
     INT mid;
     while (lef + 1 < rig) {
-        INT mid = (lef + rig) >> 1;
+        mid = (lef + rig) >> 1;
         if ((triple_list[mid]. h < h) || (triple_list[mid]. h == h && triple_list[mid]. r < r) || (triple_list[mid]. h == h && triple_list[mid]. r == r && triple_list[mid]. t < t)) lef = mid; else rig = mid;
     }
     if (triple_list[lef].h == h && triple_list[lef].r == r && triple_list[lef].t == t) return true;
     if (triple_list[rig].h == h && triple_list[rig].r == r && triple_list[rig].t == t) return true;
-	// std::cout << "mid = " << mid << std::endl;
     return false;
 }
 #endif

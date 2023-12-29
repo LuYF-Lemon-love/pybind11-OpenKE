@@ -96,16 +96,15 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
         r = valid_list[last_head - 1].r;
     }
 
-    // lef: 记录关系 r 的 head 类型在 head_type_rel 中第一次出现的位置
-	// rig: 记录关系 r 的 head 类型在 head_type_rel 中最后一次出现的后一个位置
-    INT lef, rig;
+    // begin: 记录关系 r 的 head 类型在 head_type_rel 中第一次出现的位置
+	// end: 记录关系 r 的 head 类型在 head_type_rel 中最后一次出现的后一个位置
+    INT begin, end;
     if (type_constrain) {
-        lef = first_head_type[r];
-        rig = end_head_type[r];
+        begin = begin_head_type[r];
+        end = end_head_type[r];
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
-    // REAL minimal = con[h];
     REAL minimal = con(h);
 
 	// l_s: 记录能量 (d(h + l, t)) 小于测试三元组的 (替换 head) 负三元组个数
@@ -127,8 +126,8 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     l_filter_s += 1;
             }
             if (type_constrain) {
-                while (lef < rig && head_type_rel[lef] < j) lef++;
-                if (lef < rig && j == head_type_rel[lef]) {
+                while (begin < end && head_type_rel[begin] < j) begin++;
+                if (begin < end && j == head_type_rel[begin]) {
                     if (value < minimal) {
                         l_s_constrain += 1;
                         if (not _find(j, t, r)) {
@@ -182,12 +181,12 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
         r = valid_list[last_tail - 1].r;
     }
 
-    // lef: 记录关系 r 的 tail 类型在 tail_type_rel 中第一次出现的位置
-	// rig: 记录关系 r 的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
-    INT lef, rig;
+    // begin: 记录关系 r 的 tail 类型在 tail_type_rel 中第一次出现的位置
+	// end: 记录关系 r 的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
+    INT begin, end;
     if (type_constrain) {
-        lef = first_tail_type[r];
-        rig = end_tail_type[r];
+        begin = begin_tail_type[r];
+        end = end_tail_type[r];
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
@@ -211,8 +210,8 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     r_filter_s += 1;
             }
             if (type_constrain) {
-                while (lef < rig && tail_type_rel[lef] < j) lef++;
-                if (lef < rig && j == tail_type_rel[lef]) {
+                while (begin < end && tail_type_rel[begin] < j) begin++;
+                if (begin < end && j == tail_type_rel[begin]) {
                         if (value < minimal) {
                             r_s_constrain += 1;
                             if (not _find(h, j ,r)) {
@@ -289,18 +288,31 @@ void test_link_prediction(bool type_constrain = false, std::string sampling_mode
     r3_filter_tot /= total;
     r10_filter_tot /= total;
 
-    printf("no type constraint results:\n");
+    std:: cout << "no type constraint results:" << std::endl;
 
-    printf("metric:\t\t\t MRR \t\t MR \t\t hit@1 \t\t hit@3  \t hit@10 \n");
-    printf("l(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", l_reci_rank, l_rank, l1_tot, l3_tot, l10_tot);
-    printf("r(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", r_reci_rank, r_rank, r1_tot, r3_tot, r10_tot);
-    printf("averaged(raw):\t\t %f \t %f \t %f \t %f \t %f \n",
-            (l_reci_rank+r_reci_rank)/2, (l_rank+r_rank)/2, (l1_tot+r1_tot)/2, (l3_tot+r3_tot)/2, (l10_tot+r10_tot)/2);
-    printf("\n");
-    printf("l(filter):\t\t %f \t %f \t %f \t %f \t %f \n", l_filter_reci_rank, l_filter_rank, l1_filter_tot, l3_filter_tot, l10_filter_tot);
-    printf("r(filter):\t\t %f \t %f \t %f \t %f \t %f \n", r_filter_reci_rank, r_filter_rank, r1_filter_tot, r3_filter_tot, r10_filter_tot);
-    printf("averaged(filter):\t %f \t %f \t %f \t %f \t %f \n",
-            (l_filter_reci_rank+r_filter_reci_rank)/2, (l_filter_rank+r_filter_rank)/2, (l1_filter_tot+r1_filter_tot)/2, (l3_filter_tot+r3_filter_tot)/2, (l10_filter_tot+r10_filter_tot)/2);
+    std::cout << "metric:\t\t\t MRR \t\t MR \t\t hit@1 \t\t hit@3  \t hit@10" << std::endl;
+    std::cout << "l(raw):\t\t\t " << l_reci_rank << " \t "
+              << l_rank << " \t " << l1_tot << " \t "
+              << l3_tot << " \t " << l10_tot << std::endl;
+    std::cout << "r(raw):\t\t\t " << r_reci_rank << " \t "
+              << r_rank << " \t " << r1_tot << " \t "
+              << r3_tot << " \t " << r10_tot << std::endl;
+    std::cout << "averaged(raw):\t\t " << (l_reci_rank+r_reci_rank)/2 << " \t "
+              << (l_rank+r_rank)/2 << " \t " << (l1_tot+r1_tot)/2 << " \t "
+              << (l3_tot+r3_tot)/2 << " \t " << (l10_tot+r10_tot)/2
+              << std::endl << std::endl;
+
+    std::cout << "l(filter):\t\t " << l_filter_reci_rank << " \t "
+              << l_filter_rank << " \t " << l1_filter_tot << " \t "
+              << l3_filter_tot << " \t " << l10_filter_tot << std::endl;
+    std::cout << "r(filter):\t\t " << r_filter_reci_rank << " \t "
+              << r_filter_rank << " \t " << r1_filter_tot << " \t "
+              << r3_filter_tot << " \t " << r10_filter_tot << std::endl;
+    std::cout << "averaged(filter):\t " << (l_filter_reci_rank+r_filter_reci_rank)/2 
+              << " \t " << (l_filter_rank+r_filter_rank)/2 << " \t "
+              << (l1_filter_tot+r1_filter_tot)/2 << " \t "
+              << (l3_filter_tot+r3_filter_tot)/2 << " \t "
+              << (l10_filter_tot+r10_filter_tot)/2 << std::endl;
 
     mrr = (l_filter_reci_rank+r_filter_reci_rank) / 2;
     mr = (l_filter_rank+r_filter_rank) / 2;
@@ -337,18 +349,33 @@ void test_link_prediction(bool type_constrain = false, std::string sampling_mode
         r3_filter_tot_constrain /= total;
         r10_filter_tot_constrain /= total;
 
-        printf("type constraint results:\n");
+        std::cout << "type constraint results:" << std::endl;
         
-        printf("metric:\t\t\t MRR \t\t MR \t\t hit@1 \t\t hit@3  \t hit@10 \n");
-        printf("l(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", l_reci_rank_constrain, l_rank_constrain, l1_tot_constrain, l3_tot_constrain, l10_tot_constrain);
-        printf("r(raw):\t\t\t %f \t %f \t %f \t %f \t %f \n", r_reci_rank_constrain, r_rank_constrain, r1_tot_constrain, r3_tot_constrain, r10_tot_constrain);
-        printf("averaged(raw):\t\t %f \t %f \t %f \t %f \t %f \n",
-                (l_reci_rank_constrain+r_reci_rank_constrain)/2, (l_rank_constrain+r_rank_constrain)/2, (l1_tot_constrain+r1_tot_constrain)/2, (l3_tot_constrain+r3_tot_constrain)/2, (l10_tot_constrain+r10_tot_constrain)/2);
-        printf("\n");
-        printf("l(filter):\t\t %f \t %f \t %f \t %f \t %f \n", l_filter_reci_rank_constrain, l_filter_rank_constrain, l1_filter_tot_constrain, l3_filter_tot_constrain, l10_filter_tot_constrain);
-        printf("r(filter):\t\t %f \t %f \t %f \t %f \t %f \n", r_filter_reci_rank_constrain, r_filter_rank_constrain, r1_filter_tot_constrain, r3_filter_tot_constrain, r10_filter_tot_constrain);
-        printf("averaged(filter):\t %f \t %f \t %f \t %f \t %f \n",
-                (l_filter_reci_rank_constrain+r_filter_reci_rank_constrain)/2, (l_filter_rank_constrain+r_filter_rank_constrain)/2, (l1_filter_tot_constrain+r1_filter_tot_constrain)/2, (l3_filter_tot_constrain+r3_filter_tot_constrain)/2, (l10_filter_tot_constrain+r10_filter_tot_constrain)/2);
+        std::cout << "metric:\t\t\t MRR \t\t MR \t\t hit@1 \t\t hit@3  \t hit@10" << std::endl;
+        std::cout << "l(raw):\t\t\t " << l_reci_rank_constrain << " \t "
+                  << l_rank_constrain << " \t " << l1_tot_constrain << " \t "
+                  << l3_tot_constrain << " \t " << l10_tot_constrain << std::endl;
+        std::cout << "r(raw):\t\t\t " << r_reci_rank_constrain << " \t "
+                  << r_rank_constrain << " \t " << r1_tot_constrain << " \t "
+                  << r3_tot_constrain << " \t " << r10_tot_constrain << std::endl;
+        std::cout << "averaged(raw):\t\t " << (l_reci_rank_constrain+r_reci_rank_constrain)/2 << " \t "
+                  << (l_rank_constrain+r_rank_constrain)/2 << " \t "
+                  << (l1_tot_constrain+r1_tot_constrain)/2 << " \t "
+                  << (l3_tot_constrain+r3_tot_constrain)/2 << " \t "
+                  << (l10_tot_constrain+r10_tot_constrain)/2 << std::endl << std::endl;
+        
+        std::cout << "l(filter):\t\t " << l_filter_reci_rank_constrain << " \t "
+                  << l_filter_rank_constrain << " \t " << l1_filter_tot_constrain << " \t "
+                  << l3_filter_tot_constrain << " \t " << l10_filter_tot_constrain << std::endl;
+        std::cout << "r(filter):\t\t " << r_filter_reci_rank_constrain << " \t "
+                  << r_filter_rank_constrain << " \t " << r1_filter_tot_constrain << " \t "
+                  << r3_filter_tot_constrain << " \t " << r10_filter_tot_constrain << std::endl;
+        std::cout << "averaged(filter):\t "
+                  << (l_filter_reci_rank_constrain+r_filter_reci_rank_constrain)/2 << " \t "
+                  << (l_filter_rank_constrain+r_filter_rank_constrain)/2 << " \t "
+                  << (l1_filter_tot_constrain+r1_filter_tot_constrain)/2 << " \t "
+                  << (l3_filter_tot_constrain+r3_filter_tot_constrain)/2 << " \t "
+                  << (l10_filter_tot_constrain+r10_filter_tot_constrain)/2 << std::endl;
 
         mrrTC = (l_filter_reci_rank_constrain+r_filter_reci_rank_constrain)/2;
         mrTC = (l_filter_rank_constrain+r_filter_rank_constrain) / 2;
@@ -356,6 +383,18 @@ void test_link_prediction(bool type_constrain = false, std::string sampling_mode
         hit3TC = (l3_filter_tot_constrain+r3_filter_tot_constrain) / 2;
         hit10TC = (l10_filter_tot_constrain+r10_filter_tot_constrain) / 2;
     }
+}
+
+REAL get_test_link_MR(bool type_constrain = false) {
+    if (type_constrain)
+        return mrTC;
+    return mr;
+}
+
+REAL get_test_link_MRR(bool type_constrain = false) {
+    if (type_constrain)
+        return mrrTC;    
+    return mrr;
 }
 
 REAL get_test_link_Hit1(bool type_constrain = false) {
@@ -374,17 +413,5 @@ REAL get_test_link_Hit10(bool type_constrain = false) {
     if (type_constrain)
         return hit10TC;
     return hit10;
-}
-
-REAL get_test_link_MR(bool type_constrain = false) {
-    if (type_constrain)
-        return mrTC;
-    return mr;
-}
-
-REAL get_test_link_MRR(bool type_constrain = false) {
-    if (type_constrain)
-        return mrrTC;    
-    return mrr;
 }
 #endif
