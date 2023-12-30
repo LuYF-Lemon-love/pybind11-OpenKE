@@ -26,7 +26,7 @@ class TransE(Model):
 	
 	.. math::
 	
-		\parallel \h + r - t \parallel_{L_1/L_2}
+		\parallel h + r - t \parallel_{L_1/L_2}
 	
 	正三元组的评分函数的值越小越好，如果想获得更详细的信息请访问 :ref:`TransE <transe>`。
 

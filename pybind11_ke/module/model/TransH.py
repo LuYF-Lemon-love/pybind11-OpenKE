@@ -25,7 +25,7 @@ class TransH(Model):
 	
 	.. math::
 
-		\Vert (h-r_w^\top hr_w)+r_d-(t-r_w^\top tr_w)\Vert_{L_1/L_2}
+		\Vert (h-r_w^T hr_w)+r_d-(t-r_w^T tr_w)\Vert_{L_1/L_2}
 
 	正三元组的评分函数的值越小越好，如果想获得更详细的信息请访问 :ref:`TransH <transh>`。
 
