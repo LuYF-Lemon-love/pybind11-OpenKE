@@ -47,6 +47,7 @@
    :caption: TransH
 
    experiments/TransH/single_gpu_transh_FB15K237
+   experiments/TransH/multigpu_transh_FB15K237
 
 .. toctree::
    :maxdepth: 2
