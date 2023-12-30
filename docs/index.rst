@@ -44,6 +44,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: TransH
+
+   experiments/TransH/single_gpu_transh_FB15K237
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: OpenKE 的例子
 
    examples/train_rescal_FB15K237

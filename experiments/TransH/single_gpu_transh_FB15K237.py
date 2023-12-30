@@ -1,22 +1,10 @@
 """
-`RESCAL-FB15K237 <train_rescal_FB15K237.html>`_ ||
-`TransE-FB15K237 <train_transe_FB15K237.html>`_ ||
-`TransE-WN18RR-adv <train_transe_WN18_adv_sigmoidloss.html>`_ ||
-**TransH-FB15K237** ||
-`DistMult-WN18RR <train_distmult_WN18RR.html>`_ ||
-`DistMult-WN18RR-adv <train_distmult_WN18RR_adv.html>`_ ||
-`TransD-FB15K237 <train_transd_FB15K237.html>`_ ||
-`HolE-WN18RR <train_hole_WN18RR.html>`_ ||
-`ComplEx-WN18RR <train_complex_WN18RR.html>`_ ||
-`Analogy-WN18RR <train_analogy_WN18RR.html>`_ ||
-`SimplE-WN18RR <train_simple_WN18RR.html>`_ ||
-`RotatE-WN18RR <train_rotate_WN18RR_adv.html>`_
+**TransH-FB15K237-single-gpu** ||
+`DistMult-WN18RR <train_distmult_WN18RR.html>`_
 
-TransH-FB15K237
-===================
-这一部分介绍如何用在 FB15K237 知识图谱上训练 TransH。
-
-TransH 原论文: `Knowledge Graph Embedding by Translating on Hyperplanes <https://ojs.aaai.org/index.php/AAAI/article/view/8870>`__ 。
+TransH-FB15K237-single-gpu
+=====================================================
+这一部分介绍如何用一个 GPU 在 FB15K237 知识图谱上训练 ``TransH`` :cite:`TransH`。
 
 导入数据
 -----------------
