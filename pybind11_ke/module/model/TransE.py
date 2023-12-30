@@ -26,7 +26,7 @@ class TransE(Model):
 	
 	.. math::
 	
-		\parallel \mathbf{h} + \mathbf{r} - \mathbf{t} \parallel_{L_1/L_2}
+		\parallel \h + r - t \parallel_{L_1/L_2}
 	
 	正三元组的评分函数的值越小越好，如果想获得更详细的信息请访问 :ref:`TransE <transe>`。
 
@@ -36,7 +36,7 @@ class TransE(Model):
 		from pybind11_ke.module.model import TransE
 		from pybind11_ke.module.loss import MarginLoss
 		from pybind11_ke.module.strategy import NegativeSampling
-
+		
 		# define the model
 		transe = TransE(
 			ent_tot = train_dataloader.get_ent_tol(),
@@ -44,20 +44,20 @@ class TransE(Model):
 			dim = 50, 
 			p_norm = 1, 
 			norm_flag = True)
-
+		
 		# define the loss function
 		model = NegativeSampling(
 			model = transe, 
 			loss = MarginLoss(margin = 1.0),
 			batch_size = train_dataloader.get_batch_size()
 		)
-
+			
 		# test the model
 		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
-
+		
 		# train the model
 		trainer = Trainer(model = model, data_loader = train_dataloader,
-			train_times = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
+			epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
 			tester = tester, test = True, valid_interval = 100,
 			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
 		trainer.run()
@@ -109,9 +109,9 @@ class TransE(Model):
 		:type t: torch.Tensor
 		:param r: 关系的向量。
 		:type r: torch.Tensor
-		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
 		:type mode: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
