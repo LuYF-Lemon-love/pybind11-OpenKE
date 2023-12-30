@@ -71,7 +71,7 @@ class TestDataLoader(object):
 		from pybind11_ke.data import TestDataLoader
 
 		# dataloader for test
-		test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
+		test_dataloader = TestDataLoader('../../benchmarks/FB15K/')
 
 		# test the model
 		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')

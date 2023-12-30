@@ -5,7 +5,7 @@
 TransE-FB15K-single-gpu
 =========================
 
-这一部分介绍如何用在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
+这一部分介绍如何用一个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
 
 导入数据
 -----------------
@@ -30,7 +30,7 @@ train_dataloader = TrainDataLoader(
 	nbatches = 200,
 	threads = 8, 
 	sampling_mode = "normal", 
-	bern = False,  
+	bern = True,  
 	neg_ent = 25,
 	neg_rel = 0)
 
@@ -85,7 +85,7 @@ model = NegativeSampling(
 # :py:class:`pybind11_ke.data.TestDataLoader` 作为数据采样器。
 
 # dataloader for test
-test_dataloader = TestDataLoader('../../benchmarks/FB15K/', sampling_mode = 'link')
+test_dataloader = TestDataLoader('../../benchmarks/FB15K/')
 	
 # test the model
 tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')

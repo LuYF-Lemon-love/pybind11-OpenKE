@@ -159,7 +159,7 @@ class Trainer(object):
 		timer = Timer()
 		for epoch in range(self.epochs):
 			res = 0.0
-			self.model.train()
+			self.model.model.train()
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss

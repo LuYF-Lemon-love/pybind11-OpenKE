@@ -2,35 +2,22 @@
 #
 # pybind11_ke/config/TrainerDataParallel.py
 #
-# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 6, 2023
+# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 6, 2023
 #
 # 该脚本定义了并行训练循环函数.
 
 """
-:py:func:`trainer_distributed_data_parallel` - 并行训练循环函数。
-
-基本用法如下：
-
-.. code-block:: python
-
-	# Import trainer_distributed_data_parallel
-	from pybind11_ke.config import trainer_distributed_data_parallel
-	
-	# train the model
-	if __name__ == "__main__":
-		trainer_distributed_data_parallel(model = model, data_loader = tra
-			train_times = 1000, alpha = 0.01, opt_method = "sgd", log_inte
-			save_interval = 50, save_path = "../../checkpoint/transe.pth")
+trainer_distributed_data_parallel - 并行训练循环函数。
 """
 
+import os
 import torch
 import torch.optim as optim
-import os
 import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
-from ..utils.Timer import Timer
 from .Tester import Tester
+from ..utils.Timer import Timer
 from ..data import TestDataLoader
 
 class TrainerDataParallel(object):
@@ -43,7 +30,7 @@ class TrainerDataParallel(object):
 		gpu_id,
 		model,
 		data_loader,
-		train_times,
+		epochs,
 		alpha,
 		opt_method,
 		tester,
@@ -61,11 +48,11 @@ class TrainerDataParallel(object):
 		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		:param data_loader: TrainDataLoader
 		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
-		:param train_times: 训练轮次数
-		:type train_times: int
+		:param epochs: 训练轮次数
+		:type epochs: int
 		:param alpha: 学习率
 		:type alpha: float
-		:param opt_method: 优化器: Adam or adam, SGD or sgd
+		:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 		:type opt_method: str
 		:param tester: 用于模型评估的验证模型类
 		:type tester: :py:class:`pybind11_ke.config.Tester`
@@ -89,7 +76,7 @@ class TrainerDataParallel(object):
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader = data_loader	
 		#: epochs
-		self.train_times = train_times
+		self.epochs = epochs
 
 		#: 学习率
 		self.alpha = alpha
@@ -154,8 +141,9 @@ class TrainerDataParallel(object):
 		"""
 		
 		timer = Timer()
-		for epoch in range(self.train_times):
+		for epoch in range(self.epochs):
 			res = 0.0
+			self.model.module.model.train()
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
@@ -165,7 +153,7 @@ class TrainerDataParallel(object):
 				self.tester.set_sampling_mode("link_valid")
 				self.tester.run_link_prediction()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.train_times:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
+				print(f"[GPU{self.gpu_id}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if self.gpu_id == 0 and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.model.module.model.save_checkpoint(path)
@@ -211,7 +199,7 @@ def train(rank,
 	world_size,
 	model,
 	data_loader,
-	train_times,
+	epochs,
 	alpha,
 	opt_method,
 	test,
@@ -233,15 +221,15 @@ def train(rank,
 	:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 	:param data_loader: TrainDataLoader
 	:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
-	:param train_times: 训练轮次数
-	:type train_times: int
+	:param epochs: 训练轮次数
+	:type epochs: int
 	:param alpha: 学习率
 	:type alpha: float
-	:param opt_method: 优化器: Adam or adam, SGD or sgd
+	:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 	:type opt_method: str
-	:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+	:param test: 是否在测试集上评估模型
 	:type test: bool
-	:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+	:param valid_interval: 训练几轮在验证集上评估一次模型
 	:type valid_interval: int
 	:param log_interval: 训练几轮输出一次日志
 	:type log_interval: int
@@ -262,18 +250,18 @@ def train(rank,
 	if test:
 		test_dataloader = TestDataLoader(in_path = data_loader.in_path, ent_file = data_loader.ent_file,
 			rel_file = data_loader.rel_file, train_file = data_loader.train_file, valid_file = valid_file,
-			test_file = test_file, type_constrain = type_constrain, sampling_mode = 'link')
+			test_file = test_file, type_constrain = type_constrain)
 		tester = Tester(model = model.model, data_loader = test_dataloader)
-	trainer = TrainerDataParallel(rank, model, data_loader, train_times, alpha, opt_method,
+	trainer = TrainerDataParallel(rank, model, data_loader, epochs, alpha, opt_method,
 		tester, test, valid_interval, log_interval, save_interval, save_path)
 	trainer.run()
 	destroy_process_group()
 	
 def trainer_distributed_data_parallel(model = None,
 	data_loader = None,
-	train_times = 1000,
+	epochs = 1000,
 	alpha = 0.5,
-	opt_method = "sgd",
+	opt_method = "Adam",
 	test = False,
 	valid_interval = None,
 	log_interval = None,
@@ -283,7 +271,8 @@ def trainer_distributed_data_parallel(model = None,
 	test_file = "test2id.txt",
 	type_constrain = True):
 
-	"""生成进程。
+	"""并行训练循环函数，用于生成单独子进程进行训练模型。
+	
 	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
 	``multiprocessing`` 的生成进程函数必须由 ``if __name__ == '__main__'`` 保护。
 	有效的 batch size 是 :py:attr:`pybind11_ke.data.TrainDataLoader.batch_size` * ``nprocs``。
@@ -292,15 +281,15 @@ def trainer_distributed_data_parallel(model = None,
 	:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 	:param data_loader: TrainDataLoader
 	:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
-	:param train_times: 训练轮次数
-	:type train_times: int
+	:param epochs: 训练轮次数
+	:type epochs: int
 	:param alpha: 学习率
 	:type alpha: float
-	:param opt_method: 优化器: Adam or adam, SGD or sgd
+	:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 	:type opt_method: str
-	:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
+	:param test: 是否在测试集上评估模型
 	:type test: bool
-	:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
+	:param valid_interval: 训练几轮在验证集上评估一次模型
 	:type valid_interval: int
 	:param log_interval: 训练几轮输出一次日志
 	:type log_interval: int
@@ -317,7 +306,7 @@ def trainer_distributed_data_parallel(model = None,
 	"""
 	
 	world_size = torch.cuda.device_count()
-	mp.spawn(train, args = (world_size, model, data_loader, train_times, alpha, opt_method,
+	mp.spawn(train, args = (world_size, model, data_loader, epochs, alpha, opt_method,
 							test, valid_interval, log_interval, save_interval, save_path,
 							valid_file, test_file, type_constrain),
 				nprocs = world_size)
