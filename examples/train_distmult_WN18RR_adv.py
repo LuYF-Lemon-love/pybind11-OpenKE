@@ -104,7 +104,7 @@ model = NegativeSampling(
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 400, alpha = 0.002, use_gpu = True, opt_method = "adam")
+                  train_times = 400, lr = 0.002, use_gpu = True, opt_method = "adam")
 trainer.run()
 distmult.save_checkpoint('../checkpoint/distmult.ckpt')
 

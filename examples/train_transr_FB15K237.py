@@ -78,14 +78,14 @@ model_r = NegativeSampling(
 )
 
 # pretrain transe
-trainer = Trainer(model = model_e, data_loader = train_dataloader, train_times = 1, alpha = 0.5, use_gpu = True)
+trainer = Trainer(model = model_e, data_loader = train_dataloader, train_times = 1, lr = 0.5, use_gpu = True)
 trainer.run()
 parameters = transe.get_parameters()
 transe.save_parameters("./result/transr_transe.json")
 
 # train transr
 transr.set_parameters(parameters)
-trainer = Trainer(model = model_r, data_loader = train_dataloader, train_times = 1000, alpha = 1.0, use_gpu = True)
+trainer = Trainer(model = model_r, data_loader = train_dataloader, train_times = 1000, lr = 1.0, use_gpu = True)
 trainer.run()
 transr.save_checkpoint('./checkpoint/transr.ckpt')
 

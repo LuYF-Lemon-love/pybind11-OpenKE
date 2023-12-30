@@ -40,7 +40,7 @@
 
 	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,
-	                  train_times = 1000, alpha = 1.0, use_gpu = True)
+	                  train_times = 1000, lr = 1.0, use_gpu = True)
 	trainer.run()
 	transd.save_checkpoint('../checkpoint/transd.ckpt')
 

@@ -66,6 +66,8 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 - 在模型训练过程中，能够在验证集上评估模型。
 
+- 增加了学习率调度器。
+
 支持的知识图谱嵌入模型：
 
 - RESCAL: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__ .

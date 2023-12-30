@@ -40,7 +40,7 @@ def train(rank,
 	model,
 	data_loader,
 	epochs,
-	alpha,
+	lr,
 	opt_method,
 	test,
 	valid_interval,
@@ -63,8 +63,8 @@ def train(rank,
 	:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 	:param epochs: 训练轮次数
 	:type epochs: int
-	:param alpha: 学习率
-	:type alpha: float
+	:param lr: 学习率
+	:type lr: float
 	:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 	:type opt_method: str
 	:param test: 是否在测试集上评估模型
@@ -96,7 +96,7 @@ def train(rank,
 		model=model,
 		data_loader=data_loader,
 		epochs=epochs,
-		alpha=alpha,
+		lr=lr,
 		opt_method=opt_method,
 		tester=tester,
 		test=test,
@@ -111,7 +111,7 @@ def train(rank,
 def trainer_distributed_data_parallel(model = None,
 	data_loader = None,
 	epochs = 1000,
-	alpha = 0.5,
+	lr = 0.5,
 	opt_method = "Adam",
 	test = False,
 	valid_interval = None,
@@ -135,7 +135,7 @@ def trainer_distributed_data_parallel(model = None,
 		if __name__ == "__main__":
 		
 			trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
-				epochs = 1000, alpha = 0.02, opt_method = "adam",
+				epochs = 1000, lr = 0.02, opt_method = "adam",
 				test = True, valid_interval = 100, log_interval = 100, save_interval = 100,
 				save_path = "../../checkpoint/transe.pth", type_constrain = False)
 
@@ -145,8 +145,8 @@ def trainer_distributed_data_parallel(model = None,
 	:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 	:param epochs: 训练轮次数
 	:type epochs: int
-	:param alpha: 学习率
-	:type alpha: float
+	:param lr: 学习率
+	:type lr: float
 	:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 	:type opt_method: str
 	:param test: 是否在测试集上评估模型
@@ -168,7 +168,7 @@ def trainer_distributed_data_parallel(model = None,
 	"""
 	
 	world_size = torch.cuda.device_count()
-	mp.spawn(train, args = (world_size, model, data_loader, epochs, alpha, opt_method,
+	mp.spawn(train, args = (world_size, model, data_loader, epochs, lr, opt_method,
 							test, valid_interval, log_interval, save_interval, save_path,
 							valid_file, test_file, type_constrain),
 				nprocs = world_size)

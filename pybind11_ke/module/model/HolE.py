@@ -38,7 +38,7 @@
 
 	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
+		train_times = 1000, lr = 0.5, use_gpu = True, opt_method = "adagrad")
 	trainer.run()
 	hole.save_checkpoint('../checkpoint/hole.ckpt')
 

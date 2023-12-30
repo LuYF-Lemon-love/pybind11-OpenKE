@@ -101,7 +101,7 @@ model = NegativeSampling(
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 2000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
+                  train_times = 2000, lr = 0.5, use_gpu = True, opt_method = "adagrad")
 trainer.run()
 analogy.save_checkpoint('../checkpoint/analogy.ckpt')
 

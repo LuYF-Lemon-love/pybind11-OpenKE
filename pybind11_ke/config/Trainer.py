@@ -28,7 +28,7 @@ class Trainer(object):
 
 		# train the model
 		trainer = Trainer(model = model, data_loader = train_dataloader,
-			epochs = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+			epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
 			tester = tester, test = True, valid_interval = 100,
 			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
 		trainer.run()
@@ -38,7 +38,7 @@ class Trainer(object):
 		model = None,
 		data_loader = None,
 		epochs = 1000,
-		alpha = 0.5,
+		lr = 0.5,
 		opt_method = "Adam",
 		use_gpu = True,
 		device = "cuda:0",
@@ -58,8 +58,8 @@ class Trainer(object):
 		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 		:param epochs: 训练轮次数
 		:type epochs: int
-		:param alpha: 学习率
-		:type alpha: float
+		:param lr: 学习率
+		:type lr: float
 		:param opt_method: 优化器: Adam or adam, SGD or sgd
 		:type opt_method: str
 		:param use_gpu: 是否使用 gpu
@@ -94,11 +94,13 @@ class Trainer(object):
 		self.epochs = epochs
 
 		#: 学习率
-		self.alpha = alpha
+		self.lr = lr
 		#: 用户传入的优化器名字字符串
 		self.opt_method = opt_method
 		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
 		self.optimizer = None
+		#: 学习率调度器
+		self.scheduler = None
 
 		#: 是否使用 gpu
 		self.use_gpu = use_gpu
@@ -120,6 +122,25 @@ class Trainer(object):
 		self.save_path = save_path
 
 		self.print_device = f"GPU{self.gpu_id}" if self.gpu_id is not None else self.device
+
+	def configure_optimizers(self):
+
+		"""可以通过重新实现该方法自定义配置优化器。"""
+
+		if self.opt_method == "Adam" or self.opt_method == "adam":
+			self.optimizer = optim.Adam(
+				self.model.parameters(),
+				lr=self.lr,
+			)
+		elif self.opt_method == "SGD" or self.opt_method == "sgd":
+			self.optimizer = optim.SGD(
+				self.model.parameters(),
+				lr = self.lr,
+				momentum=0.9,
+			)
+			
+		milestones = int(self.epochs / 3)
+		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
 
 	def train_one_step(self, data):
 
@@ -153,16 +174,7 @@ class Trainer(object):
 		if self.gpu_id is None and self.use_gpu:
 			self.model.cuda(device = self.device)
 
-		if self.opt_method == "Adam" or self.opt_method == "adam":
-			self.optimizer = optim.Adam(
-				self.model.parameters(),
-				lr=self.alpha,
-			)
-		elif self.opt_method == "SGD" or self.opt_method == "sgd":
-			self.optimizer = optim.SGD(
-				self.model.parameters(),
-				lr = self.alpha,
-			)
+		self.configure_optimizers()
 		
 		if self.gpu_id is not None or self.use_gpu:
 			print(f"[{self.print_device}] Initialization completed, start model training.")
@@ -180,6 +192,7 @@ class Trainer(object):
 				loss = self.train_one_step(data)
 				res += loss
 			timer.stop()
+			self.scheduler.step()
 			if (self.gpu_id is None or self.gpu_id == 0) and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
 				print(f"[{self.print_device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.tester.set_sampling_mode("link_valid")

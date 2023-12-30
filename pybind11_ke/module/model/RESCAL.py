@@ -37,7 +37,7 @@
 
 	# train the model
 	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, alpha = 0.1, use_gpu = True, opt_method = "adagrad")
+		train_times = 1000, lr = 0.1, use_gpu = True, opt_method = "adagrad")
 	trainer.run()
 	rescal.save_checkpoint('../checkpoint/rescal.ckpt')
 

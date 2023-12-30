@@ -103,7 +103,7 @@ model = NegativeSampling(
 # train the model
 # train_times: 2000 -> 6000
 trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 6000, alpha = 0.5, use_gpu = True, opt_method = "adagrad")
+                  train_times = 6000, lr = 0.5, use_gpu = True, opt_method = "adagrad")
 trainer.run()
 simple.save_checkpoint('../checkpoint/simple.ckpt')
 

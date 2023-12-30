@@ -57,7 +57,7 @@ class TransE(Model):
 
 		# train the model
 		trainer = Trainer(model = model, data_loader = train_dataloader,
-			train_times = 1000, alpha = 0.01, use_gpu = True, device = 'cuda:1',
+			train_times = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
 			tester = tester, test = True, valid_interval = 100,
 			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
 		trainer.run()

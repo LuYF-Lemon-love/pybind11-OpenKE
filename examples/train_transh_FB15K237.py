@@ -101,7 +101,7 @@ model = NegativeSampling(
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 1000, alpha = 0.5, use_gpu = True)
+                  train_times = 1000, lr = 0.5, use_gpu = True)
 trainer.run()
 transh.save_checkpoint('../checkpoint/transh.ckpt')
 
