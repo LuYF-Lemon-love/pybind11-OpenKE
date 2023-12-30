@@ -87,4 +87,4 @@ if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		epochs = 1000, alpha = 0.02, opt_method = "adam",
 		test = True, valid_interval = 100, log_interval = 100, save_interval = 100,
-		save_path = "../../checkpoint/transe.pth", type_constrain = False)
+		save_path = "../../checkpoint/transe.pth", type_constrain = True)

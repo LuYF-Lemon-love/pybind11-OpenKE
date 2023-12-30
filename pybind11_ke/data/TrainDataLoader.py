@@ -144,11 +144,11 @@ class TrainDataLoader(object):
 		#: 数据集目录
 		self.in_path = in_path
 		#: entity2id.txt
-		self.ent_file = self.in_path + ent_file
+		self.ent_file = ent_file
 		#: relation2id.txt
-		self.rel_file = self.in_path + rel_file
+		self.rel_file = rel_file
 		#: train2id.txt
-		self.train_file = self.in_path + train_file
+		self.train_file = train_file
 
 		#: batch_size 可以根据 nbatches 计算得出，两者不可以同时不提供；同时指定时 batch_size 优先级更高
 		self.batch_size = batch_size

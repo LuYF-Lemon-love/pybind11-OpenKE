@@ -1,13 +1,12 @@
 // pybind11-ke/base/Triple.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 8, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 // 
 // 该头文件定义了三元组数据结构.
 
 #ifndef TRIPLE_H
 #define TRIPLE_H
-#include "Setting.h"
 
 // 三元组类, 数据成员的默认访问权限为 public
 struct Triple {

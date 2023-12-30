@@ -1,13 +1,13 @@
 // pybind11-ke/base/Random.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 // 
 // 该头文件定义了一些随机函数.
 
 #ifndef RANDOM_H
 #define RANDOM_H
-#include "Setting.h"
+#include <random>
 
 // 所有线程的随机种子.
 unsigned long long *next_random;

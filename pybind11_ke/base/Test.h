@@ -1,7 +1,7 @@
 // pybind11-ke/base/Setting.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 // 
 // 该头文件进行验证模型.
 

@@ -104,15 +104,15 @@ class TestDataLoader(object):
 		#: 数据集目录
 		self.in_path = in_path
 		#: entity2id.txt
-		self.ent_file = self.in_path + ent_file
+		self.ent_file = ent_file
 		#: relation2id.txt
-		self.rel_file = self.in_path + rel_file
+		self.rel_file = rel_file
 		#: train2id.txt
-		self.train_file = self.in_path + train_file
+		self.train_file = train_file
 		#: valid2id.txt
-		self.valid_file = self.in_path + valid_file
+		self.valid_file = valid_file
 		#: test2id.txt
-		self.test_file = self.in_path + test_file
+		self.test_file = test_file
 		#: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
 		self.sampling_mode = sampling_mode
 		#: 是否用 type_constrain.txt 进行负采样

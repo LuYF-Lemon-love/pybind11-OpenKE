@@ -1,14 +1,13 @@
 // pybind11-ke/base/Corrupt.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 // 
 // 该头文件定义了破坏三元组的方法.
 
 #ifndef CORRUPT_H
 #define CORRUPT_H
 #include "Random.h"
-#include "Triple.h"
 #include "Reader.h"
 
 // 用 head 和 relation 构建负三元组，即替换 tail

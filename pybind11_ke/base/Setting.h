@@ -1,7 +1,7 @@
 // pybind11-ke/base/Setting.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 // 
 // 该头文件定义了一些全局配置变量.
 
@@ -9,15 +9,10 @@
 #define SETTING_H
 
 // 引用头文件
-#include <iostream>
-#include <cstring>
-#include <cstdio>
 #include <string>
+#include <iostream>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
-#include <algorithm>
-#include <cmath>
-#include <random>
 
 // pybind11 的命名空间
 namespace py = pybind11;
@@ -48,35 +43,35 @@ void set_in_path(std::string path) {
 
 // 设置实体数据文件路径
 void set_ent_path(std::string path) {
-	ent_file = std::move(path);
+	ent_file = in_path + std::move(path);
     std::cout << "Entity Files Path : "
               << ent_file << std::endl;
 }
 
 // 设置关系数据文件路径
 void set_rel_path(std::string path) {
-	rel_file = std::move(path);
+	rel_file = in_path + std::move(path);
     std::cout << "Relation Files Path : "
               << rel_file << std::endl;
 }
 
 // 设置训练集数据文件路径
 void set_train_path(std::string path) {
-	train_file = std::move(path);
+	train_file = in_path + std::move(path);
     std::cout << "Training Files Path : "
               << train_file << std::endl;
 }
 
 // 设置验证集数据文件路径
 void set_valid_path(std::string path) {
-	valid_file = std::move(path);
+	valid_file = in_path + std::move(path);
     std::cout << "Valid Files Path : "
               << valid_file << std::endl;
 }
 
 // 设置测试集数据文件路径
 void set_test_path(std::string path) {
-	test_file = std::move(path);
+	test_file = in_path + std::move(path);
     std::cout << "Test Files Path : "
               << test_file << std::endl;
 }

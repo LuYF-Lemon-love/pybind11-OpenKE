@@ -3,7 +3,7 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 29, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 #
 # 该脚本定义了训练循环类.
 
@@ -15,6 +15,7 @@ import os
 import torch
 import torch.optim as optim
 from ..utils.Timer import Timer
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 class Trainer(object):
 
@@ -46,7 +47,8 @@ class Trainer(object):
 		valid_interval = None,
 		log_interval = None,
 		save_interval = None,
-		save_path = None):
+		save_path = None,
+		gpu_id = None):
 
 		"""创建 Trainer 对象。
 
@@ -76,10 +78,15 @@ class Trainer(object):
 		:type save_interval: int
 		:param save_path: 模型保存的路径
 		:type save_path: str
+		:param gpu_id: 第几个 gpu，用于并行训练
+		:type gpu_id: int
 		"""
 
+		#: 第几个 gpu
+		self.gpu_id = gpu_id
+		
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-		self.model = model
+		self.model = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader = data_loader
@@ -96,7 +103,7 @@ class Trainer(object):
 		#: 是否使用 gpu
 		self.use_gpu = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
-		self.device = torch.device(device)
+		self.device = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
 		self.tester = tester
@@ -112,6 +119,8 @@ class Trainer(object):
 		#: 模型保存的路径
 		self.save_path = save_path
 
+		self.print_device = f"GPU{self.gpu_id}" if self.gpu_id is not None else self.device
+
 	def train_one_step(self, data):
 
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
@@ -124,10 +133,10 @@ class Trainer(object):
 		"""
 		self.optimizer.zero_grad()
 		loss = self.model({
-			'batch_h': self.to_var(data['batch_h'], self.use_gpu),
-			'batch_t': self.to_var(data['batch_t'], self.use_gpu),
-			'batch_r': self.to_var(data['batch_r'], self.use_gpu),
-			'batch_y': self.to_var(data['batch_y'], self.use_gpu),
+			'batch_h': self.to_var(data['batch_h']),
+			'batch_t': self.to_var(data['batch_t']),
+			'batch_r': self.to_var(data['batch_r']),
+			'batch_y': self.to_var(data['batch_y']),
 			'mode': data['mode']
 		})
 		loss.backward()
@@ -141,7 +150,7 @@ class Trainer(object):
 		并利用 :py:meth:`train_one_step` 训练。
 		"""
 
-		if self.use_gpu:
+		if self.gpu_id is None and self.use_gpu:
 			self.model.cuda(device = self.device)
 
 		if self.opt_method == "Adam" or self.opt_method == "adam":
@@ -154,48 +163,61 @@ class Trainer(object):
 				self.model.parameters(),
 				lr = self.alpha,
 			)
-		print("Finish initializing...")
+		
+		if self.gpu_id is not None or self.use_gpu:
+			print(f"[{self.print_device}] Initialization completed, start model training.")
+		else:
+			print("Initialization completed, start model training.")
 		
 		timer = Timer()
 		for epoch in range(self.epochs):
 			res = 0.0
-			self.model.model.train()
+			if self.gpu_id is not None:
+				self.model.module.model.train()
+			else:
+				self.model.model.train()
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
 			timer.stop()
-			if self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
-				print(f"[{self.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
+			if (self.gpu_id is None or self.gpu_id == 0) and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+				print(f"[{self.print_device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.tester.set_sampling_mode("link_valid")
 				self.tester.run_link_prediction()
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
-			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
+				print(f"[{self.print_device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
+			if (self.gpu_id is None or self.gpu_id == 0) and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
-				self.model.model.save_checkpoint(path)
-				print(f"[{self.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
-		print(f"[{self.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
-		if self.save_path:
-			self.model.model.save_checkpoint(self.save_path)
-			print(f"[{self.device}] Model saved at {self.save_path}.")
-		if self.test and self.tester:
-			print(f"[{self.device}] The model starts evaluating in the test set.")
+				if self.gpu_id is not None:
+					self.model.module.model.save_checkpoint(path)
+				else:
+					self.model.model.save_checkpoint(path)
+				print(f"[{self.print_device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+		print(f"[{self.print_device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+		if (self.gpu_id is None or self.gpu_id == 0) and self.save_path:
+			if self.gpu_id is not None:
+				self.model.module.model.save_checkpoint(self.save_path)
+			else:
+				self.model.model.save_checkpoint(self.save_path)
+			print(f"[{self.print_device}] Model saved at {self.save_path}.")
+		if (self.gpu_id is None or self.gpu_id == 0) and self.test and self.tester:
+			print(f"[{self.print_device}] The model starts evaluating in the test set.")
 			self.tester.set_sampling_mode("link_test")
 			self.tester.run_link_prediction()
 
-	def to_var(self, x, use_gpu):
+	def to_var(self, x):
 
-		"""根据 ``use_gpu`` 返回 ``x`` 的张量
+		"""将 ``x`` 转移到对应的设备上。
 
 		:param x: 数据
 		:type x: numpy.ndarray
-		:param use_gpu: 是否使用 gpu
-		:type use_gpu: bool
 		:returns: 张量
 		:rtype: torch.Tensor
 		"""
 
-		if use_gpu:
+		if self.gpu_id:
+			return torch.from_numpy(x).to(self.gpu_id)
+		elif self.use_gpu:
 			return torch.from_numpy(x).to(self.device)
 		else:
 			return torch.from_numpy(x)

@@ -1,7 +1,7 @@
 // pybind11-ke/base/Reader.h
 // 
 // git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
+// updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
 // 
 // 该头文件从数据集中读取三元组.
 
@@ -9,11 +9,9 @@
 #define READER_H
 #include "Setting.h"
 #include "Triple.h"
-#include <cstdlib>
-#include <algorithm>
-#include <iostream>
-#include <cmath>
 #include <fstream>
+#include <iostream>
+#include <algorithm>
 
 std::vector<INT> begin_head, end_head, begin_tail, end_tail, begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
