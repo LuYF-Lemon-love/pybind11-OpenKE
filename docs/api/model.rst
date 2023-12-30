@@ -26,6 +26,8 @@ pybind11_ke.module.model
     :nosignatures:
     :template: classtemplate.rst
     
+    TransE
+    TransH
     Analogy
     ComplEx
     DistMult
@@ -34,5 +36,3 @@ pybind11_ke.module.model
     RotatE
     SimplE
     TransD
-    TransE
-    TransH

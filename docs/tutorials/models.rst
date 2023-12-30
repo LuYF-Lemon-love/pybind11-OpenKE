@@ -62,3 +62,5 @@ TransH
 2. 对于训练集中的 :math:`(h,r,t)` 三元组，我们以 :math:`\frac{tph}{tph+hpt}` 概率替换头实体构造负三元组；以 :math:`\frac{hpt}{tph+hpt}` 概率替换尾实体构造负三元组。
 
 由于上面负采样过程中定义了一个伯努利分布（Bernoulli distribution），所以该采样方法被记为 ``bern.``，TransE 中以均等概率替换头尾实体的采样方法被记为 ``unif``。
+
+pybind11-OpenKE 的 TransH 实现传送门：:py:class:`pybind11_ke.module.model.TransH`

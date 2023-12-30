@@ -22,22 +22,17 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # 
-# :py:class:`pybind11_ke.data.TrainDataLoader` 和 :py:class:`pybind11_ke.data.TestDataLoader`
-# 都包含 ``in_path`` 用于传递数据集目录。
+# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
-	in_path = "../benchmarks/FB15K237/", 
+	in_path = "../../benchmarks/FB15K237/", 
 	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
-	bern = 1, 
-	filter_flag = 1, 
+	bern = True,
 	neg_ent = 25,
 	neg_rel = 0)
-
-# dataloader for test
-test_dataloader = TestDataLoader("../benchmarks/FB15K237/", "link")
 
 ######################################################################
 # --------------
@@ -66,7 +61,7 @@ transh = TransH(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了 TransE 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
+# 我们这里使用了 ``TransE`` :cite:`TransE` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
 # :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 
@@ -85,25 +80,20 @@ model = NegativeSampling(
 # 训练模型
 # -------------
 # pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习。
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
+# 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
+# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.Tester` 使用
+# :py:class:`pybind11_ke.data.TestDataLoader` 作为数据采样器。
+
+# dataloader for test
+test_dataloader = TestDataLoader("../../benchmarks/FB15K237/")
+
+# test the model
+tester = Tester(model = transh, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader,
-                  train_times = 1000, lr = 0.5, use_gpu = True)
+	epochs = 1000, lr = 0.5, use_gpu = True, device = 'cuda:1',
+	tester = tester, test = True, valid_interval = 100,
+	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
 trainer.run()
-transh.save_checkpoint('../checkpoint/transh.ckpt')
-
-######################################################################
-# --------------
-#
-
-######################################################################
-# 评估模型
-# -------------
-# 与模型训练一样，pybind11-OpenKE 将评估模型包装成了 :py:class:`pybind11_ke.config.Tester`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.Tester.run_link_prediction` 函数进行链接预测。
-
-# test the model
-transh.load_checkpoint('../checkpoint/transh.ckpt')
-tester = Tester(model = transh, data_loader = test_dataloader, use_gpu = True)
-tester.run_link_prediction(type_constrain = False)
