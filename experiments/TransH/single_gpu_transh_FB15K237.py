@@ -1,6 +1,6 @@
 """
 **TransH-FB15K237-single-gpu** ||
-`DistMult-WN18RR <train_distmult_WN18RR.html>`_
+`TransH-FB15K237-multigpu <multigpu_transh_FB15K237.html>`_
 
 TransH-FB15K237-single-gpu
 =====================================================
@@ -26,7 +26,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
-	in_path = "../../benchmarks/FB15K237/", 
+	in_path = "../../benchmarks/FB15K237/",
 	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
@@ -95,5 +95,5 @@ tester = Tester(model = transh, data_loader = test_dataloader, use_gpu = True, d
 trainer = Trainer(model = model, data_loader = train_dataloader,
 	epochs = 1000, lr = 0.5, use_gpu = True, device = 'cuda:1',
 	tester = tester, test = True, valid_interval = 100,
-	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transh.pth')
 trainer.run()

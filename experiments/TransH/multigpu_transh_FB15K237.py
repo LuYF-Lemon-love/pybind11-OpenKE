@@ -1,11 +1,10 @@
 """
-`TransE-FB15K-single-gpu <single_gpu_transe_FB15K.html>`_ ||
-**TransE-FB15K-multigpu**
+`TransH-FB15K237-single-gpu <single_gpu_transh_FB15K237.html>`_ ||
+**TransH-FB15K237-multigpu**
 
-TransE-FB15K-multigpu
-=========================
-
-这一部分介绍如何用多个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
+TransH-FB15K237-multigpu
+=====================================================
+这一部分介绍如何用多个 GPU 在 FB15K237 知识图谱上训练 ``TransH`` :cite:`TransH`。
 
 导入数据
 -----------------
@@ -14,7 +13,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 """
 
 from pybind11_ke.config import trainer_distributed_data_parallel
-from pybind11_ke.module.model import TransE
+from pybind11_ke.module.model import TransH
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TrainDataLoader
@@ -26,7 +25,7 @@ from pybind11_ke.data import TrainDataLoader
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
-	in_path = "../../benchmarks/FB15K/", 
+	in_path = "../../benchmarks/FB15K237/", 
 	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
@@ -42,13 +41,14 @@ train_dataloader = TrainDataLoader(
 # 导入模型
 # ------------------
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
-# :py:class:`pybind11_ke.module.model.TransE`，它是最简单的平移模型。
+# :py:class:`pybind11_ke.module.model.TransH`，它提出于 2014 年，是第二个平移模型，
+# 将关系建模为超平面上的平移操作。
 
 # define the model
-transe = TransE(
+transh = TransH(
 	ent_tot = train_dataloader.get_ent_tol(),
 	rel_tot = train_dataloader.get_rel_tol(),
-	dim = 50, 
+	dim = 200, 
 	p_norm = 1, 
 	norm_flag = True)
 
@@ -66,8 +66,8 @@ transe = TransE(
 
 # define the loss function
 model = NegativeSampling(
-	model = transe, 
-	loss = MarginLoss(margin = 1.0),
+	model = transh, 
+	loss = MarginLoss(margin = 4.0),
 	batch_size = train_dataloader.get_batch_size()
 )
 
@@ -86,6 +86,6 @@ if __name__ == "__main__":
 	print("Start parallel training...")
 
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
-		epochs = 1000, lr = 0.02, opt_method = "adam",
+		epochs = 1000, lr = 0.5, opt_method = "adam",
 		test = True, valid_interval = 100, log_interval = 100, save_interval = 100,
-		save_path = "../../checkpoint/transe.pth", type_constrain = True)
+		save_path = "../../checkpoint/transh.pth", type_constrain = True)

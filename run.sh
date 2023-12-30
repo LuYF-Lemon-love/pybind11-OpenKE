@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改 TransE TransH 的公式"
+git commit -m "增加 TransH 并行训练示例"
 git push
