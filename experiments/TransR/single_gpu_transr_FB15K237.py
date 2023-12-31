@@ -46,7 +46,7 @@ train_dataloader = TrainDataLoader(
 # 因为为了避免过拟合，:py:class:`pybind11_ke.module.model.TransR` 实体和关系的嵌入向量初始化为
 # :py:class:`pybind11_ke.module.model.TransE` 的结果
 
-# define the model
+# define the transe
 transe = TransE(
 	ent_tot = train_dataloader.get_ent_tol(),
 	rel_tot = train_dataloader.get_rel_tol(),
@@ -82,7 +82,8 @@ transr = TransR(
 model_e = NegativeSampling(
 	model = transe, 
 	loss = MarginLoss(margin = 5.0),
-	batch_size = train_dataloader.get_batch_size())
+	batch_size = train_dataloader.get_batch_size()
+)
 
 model_r = NegativeSampling(
 	model = transr,

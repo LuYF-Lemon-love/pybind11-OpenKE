@@ -139,8 +139,8 @@ class Trainer(object):
 				momentum=0.9,
 			)
 			
-		milestones = int(self.epochs / 3)
-		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
+		# milestones = int(self.epochs / 3)
+		# self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
 
 	def train_one_step(self, data):
 
@@ -192,7 +192,7 @@ class Trainer(object):
 				loss = self.train_one_step(data)
 				res += loss
 			timer.stop()
-			self.scheduler.step()
+			# self.scheduler.step()
 			if (self.gpu_id is None or self.gpu_id == 0) and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
 				print(f"[{self.print_device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.tester.set_sampling_mode("link_valid")
