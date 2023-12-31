@@ -64,3 +64,41 @@ TransH
 由于上面负采样过程中定义了一个伯努利分布（Bernoulli distribution），所以该采样方法被记为 ``bern.``，TransE 中以均等概率替换头尾实体的采样方法被记为 ``unif``。
 
 pybind11-OpenKE 的 TransH 实现传送门：:py:class:`pybind11_ke.module.model.TransH`
+
+.. _transr:
+
+TransR
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``TransR`` :cite:`TransR` 发表于 ``2015`` 年，是一个为实体和关系嵌入向量分别构建了独立的向量空间，将实体向量投影到特定的关系向量空间进行平移操作的模型。如果 :math:`(h,r,t)` 成立，首先使用特定关系矩阵 :math:`M_r` 将头尾实体向量投影到特定关系 :math:`r` 的向量空间：:math:`h_r` 和 :math:`t_r`，然后尾实体投影后的向量 :math:`t_r` 应该接近头实体投影后的向量 :math:`h_r` 加上关系的向量 :math:`r`。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=\Vert hM_r+r-tM_r \Vert^2_2
+
+除此之外还有下面的约束条件：
+
+.. math::
+    
+    \Vert h \Vert_2 \leq 1,\\
+    \Vert r \Vert_2 \leq 1,\\
+    \Vert t \Vert_2 \leq 1,\\
+    \Vert hM_r \Vert_2 \leq 1,\\
+    \Vert tM_r \Vert_2 \leq 1.
+
+.. Important:: 实体和关系嵌入向量的维度不需要相同。
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    [\gamma + f_r(h,t) - f_r(h^{'},t^{'})]_{+}
+    
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数。
+
+.. Important:: 为了避免过拟合，实体和关系的嵌入向量初始化为 TransE 的结果，关系矩阵 :math:`M_r` 初始为单位矩阵。
+
+pybind11-OpenKE 的 TransR 实现传送门：:py:class:`pybind11_ke.module.model.TransR`

@@ -53,6 +53,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: TransR
+
+   experiments/TransR/single_gpu_transr_FB15K237
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: OpenKE 的例子
 
    examples/train_rescal_FB15K237
