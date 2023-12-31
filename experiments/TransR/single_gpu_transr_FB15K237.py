@@ -10,7 +10,6 @@ TransH-FB15K237-single-gpu
 -----------------
 pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
 :py:class:`pybind11_ke.data.TestDataLoader`。
-
 """
 
 from pybind11_ke.config import Trainer, Tester
@@ -44,7 +43,7 @@ train_dataloader = TrainDataLoader(
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们首先导入
 # :py:class:`pybind11_ke.module.model.TransE`，它是最简单的平移模型，
 # 因为为了避免过拟合，:py:class:`pybind11_ke.module.model.TransR` 实体和关系的嵌入向量初始化为
-# :py:class:`pybind11_ke.module.model.TransE` 的结果
+# :py:class:`pybind11_ke.module.model.TransE` 的结果。
 
 # define the transe
 transe = TransE(

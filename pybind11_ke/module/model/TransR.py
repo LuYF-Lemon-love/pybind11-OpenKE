@@ -131,7 +131,7 @@ class TransR(Model):
 		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
 		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
 		self.norm_flag = norm_flag
-		
+		#: 关系矩阵是否采用随机初始化
 		self.rand_init = rand_init
 
 		#: 根据实体个数，创建的实体嵌入

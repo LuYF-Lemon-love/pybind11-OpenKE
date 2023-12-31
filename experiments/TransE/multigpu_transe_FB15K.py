@@ -60,7 +60,7 @@ transe = TransE(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了 TransE 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
+# 我们这里使用了 ``TransE`` :cite:`TransE` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
 # :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 

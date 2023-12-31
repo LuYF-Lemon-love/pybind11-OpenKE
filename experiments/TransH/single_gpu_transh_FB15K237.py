@@ -10,7 +10,6 @@ TransH-FB15K237-single-gpu
 -----------------
 pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
 :py:class:`pybind11_ke.data.TestDataLoader`。
-
 """
 
 from pybind11_ke.config import Trainer, Tester
