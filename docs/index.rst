@@ -56,6 +56,7 @@
    :caption: TransR
 
    experiments/TransR/single_gpu_transr_FB15K237
+   experiments/TransR/multigpu_transr_FB15K237
 
 .. toctree::
    :maxdepth: 2

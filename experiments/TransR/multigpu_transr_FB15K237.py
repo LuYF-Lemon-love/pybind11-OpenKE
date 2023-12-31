@@ -114,6 +114,6 @@ if __name__ == "__main__":
 	print("Start parallel training...")
 
 	trainer_distributed_data_parallel(model = model_r, data_loader = train_dataloader,
-		epochs = 1000, lr = 1.0, opt_method = "adam",
+		epochs = 1000, lr = 1.0, opt_method = "sgd",
 		test = True, valid_interval = 100, log_interval = 100, save_interval = 100,
 		save_path = "../../checkpoint/transr.pth", type_constrain = True)
