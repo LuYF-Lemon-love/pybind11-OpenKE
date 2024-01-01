@@ -119,7 +119,7 @@ tester = Tester(model = transr, data_loader = test_dataloader, use_gpu = True, d
 # train transr
 transr.set_parameters(parameters)
 trainer = Trainer(model = model_r, data_loader = train_dataloader,
-	epochs = 100, lr = 1.0, use_gpu = True, device = 'cuda:1',
+	epochs = 1000, lr = 1.0, opt_method = "sgd", use_gpu = True, device = 'cuda:1',
 	tester = tester, test = True, valid_interval = 10,
 	log_interval = 10, save_interval = 10, save_path = '../../checkpoint/transr.pth')
 trainer.run()
