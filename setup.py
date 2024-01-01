@@ -25,5 +25,11 @@ setup(
     zip_safe=False,
     python_requires=">=3.7",
     packages=find_namespace_packages(include=['pybind11_ke*'],
-                                     exclude=['pybind11_ke_examples'])
+                                     exclude=['pybind11_ke_examples']),
+    install_requires=[
+        "torch",
+        "numpy",
+        "tqdm",
+        "wandb",
+        ],
 )
