@@ -105,7 +105,7 @@ model_r = NegativeSampling(
 
 # pretrain transe
 trainer = Trainer(model = model_e, data_loader = train_dataloader,
-	epochs = 1, lr = 0.5, use_gpu = True, device = 'cuda:1')
+	epochs = 1, lr = 0.5, opt_method = "sgd", use_gpu = True, device = 'cuda:1')
 trainer.run()
 parameters = transe.get_parameters()
 transe.save_parameters("../../checkpoint/transr_transe.json")
