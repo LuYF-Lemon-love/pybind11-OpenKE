@@ -102,7 +102,7 @@ model_r = NegativeSampling(
 
 # pretrain transe
 trainer = Trainer(model = model_e, data_loader = train_dataloader,
-	epochs = 1, lr = 0.5, use_gpu = True, device = 'cuda:1')
+	epochs = 1, lr = 0.5, opt_method = "sgd", use_gpu = True, device = 'cuda:1')
 trainer.run()
 parameters = transe.get_parameters()
 transe.save_parameters("../../checkpoint/transr_transe.json")
@@ -114,6 +114,6 @@ if __name__ == "__main__":
 	print("Start parallel training...")
 
 	trainer_distributed_data_parallel(model = model_r, data_loader = train_dataloader,
-		epochs = 1000, lr = 1.0, opt_method = "sgd",
+		epochs = 1000, lr = 1.0, opt_method = "adam",
 		test = True, valid_interval = 100, log_interval = 100, save_interval = 100,
 		save_path = "../../checkpoint/transr.pth", type_constrain = True)
