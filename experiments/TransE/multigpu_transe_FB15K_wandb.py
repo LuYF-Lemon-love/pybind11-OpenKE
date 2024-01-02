@@ -4,7 +4,7 @@
 `TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
 **TransE-FB15K-multigpu-wandb**
 
-TransE-FB15K-multigpu
+TransE-FB15K-multigpu-wandb
 ====================================================================
 
 这一部分介绍如何用多个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`，使用 ``wandb`` 记录实验结果。
@@ -124,4 +124,5 @@ if __name__ == "__main__":
 	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
 		epochs = config.epochs, lr = config.lr, opt_method = config.opt_method,
 		test = config.test, valid_interval = config.valid_interval, log_interval = config.log_interval,
-		save_interval = config.save_interval, save_path = config.save_path, type_constrain = True)
+		save_interval = config.save_interval, save_path = config.save_path,
+		type_constrain = True, use_wandb=True)
