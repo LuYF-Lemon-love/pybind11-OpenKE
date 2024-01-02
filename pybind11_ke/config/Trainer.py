@@ -189,9 +189,9 @@ class Trainer(object):
 		
 		if self.use_wandb:
 			if self.gpu_id is None:
-				wandb.watch(self.model.model)
+				wandb.watch(self.model.model, log_freq=100)
 			elif self.gpu_id == 0:
-				wandb.watch(self.model.module.model)
+				wandb.watch(self.model.module.model, log_freq=100)
 		
 		timer = Timer()
 		for epoch in range(self.epochs):

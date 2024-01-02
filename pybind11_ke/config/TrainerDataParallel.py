@@ -49,7 +49,8 @@ def train(rank,
 	save_path,
 	valid_file,
 	test_file,
-	type_constrain):
+	type_constrain,
+	use_wandb):
 
 	"""进程函数。
 
@@ -83,6 +84,8 @@ def train(rank,
 	:type test_file: str
 	:param type_constrain: 是否用 type_constrain.txt 进行负采样
 	:type type_constrain: bool
+	:param use_wandb: 是否启用 wandb 进行日志输出
+	:type use_wandb: bool
 	"""
 	
 	ddp_setup(rank, world_size)
@@ -104,6 +107,7 @@ def train(rank,
 		log_interval=log_interval,
 		save_interval=save_interval,
 		save_path=save_path,
+		use_wandb=use_wandb,
 		gpu_id=rank)
 	trainer.run()
 	destroy_process_group()
@@ -120,7 +124,8 @@ def trainer_distributed_data_parallel(model = None,
 	save_path = None,
 	valid_file = "valid2id.txt",
 	test_file = "test2id.txt",
-	type_constrain = True):
+	type_constrain = True,
+	use_wandb = False):
 
 	"""并行训练循环函数，用于生成单独子进程进行训练模型。
 	
@@ -165,10 +170,12 @@ def trainer_distributed_data_parallel(model = None,
 	:type test_file: str
 	:param type_constrain: 是否用 type_constrain.txt 进行负采样
 	:type type_constrain: bool
+	:param use_wandb: 是否启用 wandb 进行日志输出
+	:type use_wandb: bool
 	"""
 	
 	world_size = torch.cuda.device_count()
 	mp.spawn(train, args = (world_size, model, data_loader, epochs, lr, opt_method,
 							test, valid_interval, log_interval, save_interval, save_path,
-							valid_file, test_file, type_constrain),
+							valid_file, test_file, type_constrain, use_wandb),
 				nprocs = world_size)

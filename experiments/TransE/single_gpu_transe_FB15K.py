@@ -1,9 +1,11 @@
 """
 **TransE-FB15K-single-gpu** ||
-`TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_
+`TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
+`TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
+`TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_
 
 TransE-FB15K-single-gpu
-=========================
+====================================================================
 
 这一部分介绍如何用一个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
 
