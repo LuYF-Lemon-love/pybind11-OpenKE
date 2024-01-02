@@ -127,7 +127,8 @@ tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = config.
 trainer = Trainer(model = model, data_loader = train_dataloader,
 	epochs = config.epochs, lr = config.lr, use_gpu = config.use_gpu, device = config.device,
 	tester = tester, test = config.test, valid_interval = config.valid_interval,
-	log_interval = config.log_interval, save_interval = config.save_interval, save_path = config.save_path)
+	log_interval = config.log_interval, save_interval = config.save_interval,
+	save_path = config.save_path, use_wandb = True)
 trainer.run()
 
 # close your wandb run

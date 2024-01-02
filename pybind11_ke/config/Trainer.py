@@ -187,6 +187,12 @@ class Trainer(object):
 		else:
 			print("Initialization completed, start model training.")
 		
+		if self.use_wandb:
+			if self.gpu_id is None:
+				wandb.watch(self.model.model)
+			elif self.gpu_id == 0:
+				wandb.watch(self.model.module.model)
+		
 		timer = Timer()
 		for epoch in range(self.epochs):
 			res = 0.0
@@ -204,29 +210,31 @@ class Trainer(object):
 				self.tester.set_sampling_mode("link_valid")
 				if self.tester.data_loader.type_constrain:
 					mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
-					wandb.log({
-						"val/epoch": epoch,
-						"val/mr" : mr,
-						"val/mrr" : mrr,
-						"val/hit1" : hit1,
-						"val/hit3" : hit3,
-						"val/hit10" : hit10,
-						"val/mrTC" : mrTC,
-						"val/mrrTC" : mrrTC,
-						"val/hit1TC" : hit1TC,
-						"val/hit3TC" : hit3TC,
-						"val/hit10TC" : hit10TC,
-					})
+					if self.use_wandb:
+						wandb.log({
+							"val/epoch": epoch,
+							"val/mr" : mr,
+							"val/mrr" : mrr,
+							"val/hit1" : hit1,
+							"val/hit3" : hit3,
+							"val/hit10" : hit10,
+							"val/mrTC" : mrTC,
+							"val/mrrTC" : mrrTC,
+							"val/hit1TC" : hit1TC,
+							"val/hit3TC" : hit3TC,
+							"val/hit10TC" : hit10TC,
+						})
 				else:
 					mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
-					wandb.log({
-						"val/epoch": epoch,
-						"val/mr" : mr,
-						"val/mrr" : mrr,
-						"val/hit1" : hit1,
-						"val/hit3" : hit3,
-						"val/hit10" : hit10,
-					})
+					if self.use_wandb:
+						wandb.log({
+							"val/epoch": epoch,
+							"val/mr" : mr,
+							"val/mrr" : mrr,
+							"val/hit1" : hit1,
+							"val/hit3" : hit3,
+							"val/hit10" : hit10,
+						})
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
@@ -250,27 +258,29 @@ class Trainer(object):
 			self.tester.set_sampling_mode("link_test")
 			if self.tester.data_loader.type_constrain:
 				mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
-				wandb.log({
-					"test/mr" : mr,
-					"test/mrr" : mrr,
-					"test/hit1" : hit1,
-					"test/hit3" : hit3,
-					"test/hit10" : hit10,
-					"test/mrTC" : mrTC,
-					"test/mrrTC" : mrrTC,
-					"test/hit1TC" : hit1TC,
-					"test/hit3TC" : hit3TC,
-					"test/hit10TC" : hit10TC,
-				})
+				if self.use_wandb:
+					wandb.log({
+						"test/mr" : mr,
+						"test/mrr" : mrr,
+						"test/hit1" : hit1,
+						"test/hit3" : hit3,
+						"test/hit10" : hit10,
+						"test/mrTC" : mrTC,
+						"test/mrrTC" : mrrTC,
+						"test/hit1TC" : hit1TC,
+						"test/hit3TC" : hit3TC,
+						"test/hit10TC" : hit10TC,
+					})
 			else:
 				mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
-				wandb.log({
-					"test/mr" : mr,
-					"test/mrr" : mrr,
-					"test/hit1" : hit1,
-					"test/hit3" : hit3,
-					"test/hit10" : hit10,
-				})
+				if self.use_wandb:
+					wandb.log({
+						"test/mr" : mr,
+						"test/mrr" : mrr,
+						"test/hit1" : hit1,
+						"test/hit3" : hit3,
+						"test/hit10" : hit10,
+					})
 			self.tester.run_link_prediction()
 
 	def to_var(self, x):
