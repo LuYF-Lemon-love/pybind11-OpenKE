@@ -126,3 +126,6 @@ if __name__ == "__main__":
 		test = config.test, valid_interval = config.valid_interval, log_interval = config.log_interval,
 		save_interval = config.save_interval, save_path = config.save_path,
 		type_constrain = True, use_wandb=True)
+	
+	# close your wandb run
+	wandb_logger.finish()
