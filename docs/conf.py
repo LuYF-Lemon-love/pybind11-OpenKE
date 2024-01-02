@@ -74,7 +74,7 @@ sphinx_gallery_conf = {
 autosummary_generate = True
 bibtex_bibfiles = ['refs.bib']
 
-autodoc_mock_imports = ['base', 'torch', 'numpy', 'tqdm', 'sklearn']
+autodoc_mock_imports = ['base', 'torch', 'numpy', 'tqdm', 'wandb']
 
 intersphinx_mapping = {
     'rtd': ('https://docs.readthedocs.io/en/stable/', None),
