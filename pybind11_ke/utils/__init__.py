@@ -13,7 +13,9 @@ from __future__ import division
 from __future__ import print_function
 
 from .Timer import Timer
+from .WandbLogger import WandbLogger
 
 __all__ = [
-	'Timer'
+	'Timer',
+	'WandbLogger'
 ]

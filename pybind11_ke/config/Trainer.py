@@ -12,6 +12,7 @@ Trainer - 训练循环类。
 """
 
 import os
+import wandb
 import torch
 import torch.optim as optim
 from ..utils.Timer import Timer
@@ -48,6 +49,7 @@ class Trainer(object):
 		log_interval = None,
 		save_interval = None,
 		save_path = None,
+		use_wandb = False,
 		gpu_id = None):
 
 		"""创建 Trainer 对象。
@@ -78,6 +80,8 @@ class Trainer(object):
 		:type save_interval: int
 		:param save_path: 模型保存的路径
 		:type save_path: str
+		:param use_wandb: 是否启用 wandb 进行日志输出
+		:type use_wandb: bool
 		:param gpu_id: 第几个 gpu，用于并行训练
 		:type gpu_id: int
 		"""
@@ -120,6 +124,8 @@ class Trainer(object):
 		self.save_interval = save_interval
 		#: 模型保存的路径
 		self.save_path = save_path
+		#: 是否启用 wandb 进行日志输出
+		self.use_wandb = use_wandb
 
 		self.print_device = f"GPU{self.gpu_id}" if self.gpu_id is not None else self.device
 
@@ -196,8 +202,34 @@ class Trainer(object):
 			if (self.gpu_id is None or self.gpu_id == 0) and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
 				print(f"[{self.print_device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.tester.set_sampling_mode("link_valid")
-				self.tester.run_link_prediction()
+				if self.tester.data_loader.type_constrain:
+					mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
+					wandb.log({
+						"val/epoch": epoch,
+						"val/mr" : mr,
+						"val/mrr" : mrr,
+						"val/hit1" : hit1,
+						"val/hit3" : hit3,
+						"val/hit10" : hit10,
+						"val/mrTC" : mrTC,
+						"val/mrrTC" : mrrTC,
+						"val/hit1TC" : hit1TC,
+						"val/hit3TC" : hit3TC,
+						"val/hit10TC" : hit10TC,
+					})
+				else:
+					mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
+					wandb.log({
+						"val/epoch": epoch,
+						"val/mr" : mr,
+						"val/mrr" : mrr,
+						"val/hit1" : hit1,
+						"val/hit3" : hit3,
+						"val/hit10" : hit10,
+					})
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
+				if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
+					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
 				print(f"[{self.print_device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if (self.gpu_id is None or self.gpu_id == 0) and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
@@ -216,6 +248,29 @@ class Trainer(object):
 		if (self.gpu_id is None or self.gpu_id == 0) and self.test and self.tester:
 			print(f"[{self.print_device}] The model starts evaluating in the test set.")
 			self.tester.set_sampling_mode("link_test")
+			if self.tester.data_loader.type_constrain:
+				mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
+				wandb.log({
+					"test/mr" : mr,
+					"test/mrr" : mrr,
+					"test/hit1" : hit1,
+					"test/hit3" : hit3,
+					"test/hit10" : hit10,
+					"test/mrTC" : mrTC,
+					"test/mrrTC" : mrrTC,
+					"test/hit1TC" : hit1TC,
+					"test/hit3TC" : hit3TC,
+					"test/hit10TC" : hit10TC,
+				})
+			else:
+				mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
+				wandb.log({
+					"test/mr" : mr,
+					"test/mrr" : mrr,
+					"test/hit1" : hit1,
+					"test/hit3" : hit3,
+					"test/hit10" : hit10,
+				})
 			self.tester.run_link_prediction()
 
 	def to_var(self, x):

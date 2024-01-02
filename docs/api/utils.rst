@@ -17,3 +17,13 @@ pybind11_ke.utils
     :template: classtemplate.rst
 
     Timer
+
+日志类
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: classtemplate.rst
+
+    WandbLogger

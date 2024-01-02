@@ -99,7 +99,7 @@ class Tester(object):
         
         """进行链接预测。
 
-        :returns: 经典指标分别为 MRR，MR，Hits@1，Hits@3，Hits@10
+        :returns: 经典指标分别为 MR，MRR，Hits@1，Hits@3，Hits@10
         :rtype: tuple
         """
 
@@ -114,12 +114,22 @@ class Tester(object):
                 base.test_tail(score, self.data_loader.type_constrain, self.sampling_mode)
         base.test_link_prediction(self.data_loader.type_constrain, self.sampling_mode)
 
-        mrr = base.get_test_link_MRR(self.data_loader.type_constrain)
-        mr = base.get_test_link_MR(self.data_loader.type_constrain)
-        hit1 = base.get_test_link_Hit1(self.data_loader.type_constrain)
-        hit3 = base.get_test_link_Hit3(self.data_loader.type_constrain)
-        hit10 = base.get_test_link_Hit10(self.data_loader.type_constrain)
-        return mrr, mr, hit1, hit3, hit10
+        mr = base.get_test_link_MR()
+        mrr = base.get_test_link_MRR()
+        hit1 = base.get_test_link_Hit1()
+        hit3 = base.get_test_link_Hit3()
+        hit10 = base.get_test_link_Hit10()
+
+        if self.data_loader.type_constrain:
+            mrTC = base.get_test_link_MR(True)
+            mrrTC = base.get_test_link_MRR(True)
+            hit1TC = base.get_test_link_Hit1(True)
+            hit3TC = base.get_test_link_Hit3(True)
+            hit10TC = base.get_test_link_Hit10(True)
+
+            return mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC, 
+        
+        return mr, mrr, hit1, hit3, hit10
     
     def set_sampling_mode(self, sampling_mode):
         

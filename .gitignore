@@ -140,5 +140,6 @@ venv.bak/
 checkpoint/
 docs/examples
 docs/experiments
+experiments/TransE/wandb
 docs copy
 docs/api/generated
