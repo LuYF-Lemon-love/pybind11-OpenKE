@@ -3,7 +3,7 @@
 # pybind11_ke/module/BaseModule.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 27, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 # 
 # 该头文件定义了 BaseModule.
 
@@ -15,10 +15,11 @@ import os
 import json
 
 class BaseModule(nn.Module):
-	""":py:class:`BaseModule` 继承自 :py:class:`torch.nn.Module`，
-	并且封装了一些常用功能，如加载和保存模型。"""
+
+	"""继承自 :py:class:`torch.nn.Module`，并且封装了一些常用功能，如加载和保存模型。"""
 
 	def __init__(self):
+
 		"""创建 BaseModule 对象。"""
 
 		super(BaseModule, self).__init__()
@@ -32,6 +33,7 @@ class BaseModule(nn.Module):
 		self.pi_const.requires_grad = False
 
 	def load_checkpoint(self, path):
+		
 		"""加载模型权重。
 
 		:param path: 模型保存的路径

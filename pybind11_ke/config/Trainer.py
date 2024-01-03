@@ -3,7 +3,7 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了训练循环类.
 
@@ -299,3 +299,29 @@ class Trainer(object):
 			return torch.from_numpy(x).to(self.device)
 		else:
 			return torch.from_numpy(x)
+
+def get_trainer_hpo_config():
+
+	"""返回 :py:class:`Trainer` 的默认超参数优化配置。"""
+
+	parameters_dict = {
+		'epochs': {
+			'values': [50, 100]
+		},
+		'lr': {
+			'distribution': 'uniform',
+			'min': 0,
+			'max': 1.0
+		},
+		'opt_method': {
+			'values': ['adam', 'sgd']
+		},
+		'valid_interval': {
+			'value': 10
+		},
+		'log_interval': {
+			'value': 10
+		},
+	}
+		
+	return parameters_dict

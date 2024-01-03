@@ -22,6 +22,7 @@ from pybind11_ke.module.loss import get_margin_loss_hpo_config
 from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
 from pybind11_ke.data import get_test_data_loader_hpo_config
 from pybind11_ke.config import get_tester_hpo_config
+from pybind11_ke.config import get_trainer_hpo_config
 from pybind11_ke.config import set_hpo_config, start_hpo_train
 
 ######################################################################
@@ -125,6 +126,22 @@ print()
 #
 
 ################################
+# 定义训练器超参数优化范围
+# ---------------------------------------------------------
+# :py:func:`pybind11_ke.config.get_trainer_hpo_config` 返回了
+# :py:class:`pybind11_ke.config.Trainer` 的默认超参数优化范围。
+
+# set the hpo config
+trainer_config = get_trainer_hpo_config()
+print("trainer_config:")
+pprint.pprint(trainer_config)
+print()
+
+######################################################################
+# --------------
+#
+
+################################
 # 设置超参数优化参数
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.config.set_hpo_config` 可以设置超参数优化参数。
@@ -136,7 +153,8 @@ sweep_config = set_hpo_config(
     loss_config = loss_config,
     strategy_config = strategy_config,
     test_data_loader_config = test_data_loader_config,
-    tester_config = tester_config)
+    tester_config = tester_config,
+    trainer_config = trainer_config)
 print("sweep_config:")
 pprint.pprint(sweep_config)
 print()

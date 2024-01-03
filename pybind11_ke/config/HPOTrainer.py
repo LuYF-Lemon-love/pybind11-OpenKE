@@ -3,7 +3,7 @@
 # pybind11_ke/config/HPOTrainer.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 2, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 2, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了并行训练循环函数.
 
@@ -27,9 +27,10 @@ def set_hpo_config(
 	loss_config = None,
 	strategy_config = None,
 	test_data_loader_config = None,
-	tester_config = None):
+	tester_config = None,
+	trainer_config = None):
 
-	"""返回超参数优化配置的默认优化参数。
+	"""设置超参数优化范围。
 	
 	:param method: 超参数优化的方法，``grid`` 或 ``random`` 或 ``bayes``
 	:type param: str
@@ -51,7 +52,9 @@ def set_hpo_config(
 	:type test_data_loader_config: dict
 	:param tester_config: :py:class:`pybind11_ke.config.Tester` 的超参数优化配置
 	:type tester_config: dict
-	:returns: 超参数优化配置的默认优化参数
+	:param trainer_config: :py:class:`pybind11_ke.config.Trainer` 的超参数优化配置
+	:type trainer_config: dict
+	:returns: 超参数优化范围
 	:rtype: dict
 	"""
 
@@ -72,6 +75,7 @@ def set_hpo_config(
 	parameters_dict.update(strategy_config)
 	parameters_dict.update(test_data_loader_config)
 	parameters_dict.update(tester_config)
+	parameters_dict.update(trainer_config)
 
 	sweep_config['metric'] = metric
 	sweep_config['parameters'] = parameters_dict
@@ -163,27 +167,18 @@ def hpo_train(config=None):
 			device = config.device
 		)
 
-		# train the model
-		trainer = Trainer(model = model, data_loader = train_dataloader,
-		    epochs = 50, lr = 0.01, use_gpu = True, device = 'cuda:0',
-		    tester = tester, test = True, valid_interval = 10,
-		    log_interval = 10, save_interval = 10, save_path = './checkpoint/transe.pth', use_wandb=True)
-		trainer.run()
-
 		# # train the model
-		# trainer = Trainer(
-		# 	model = model,
-		# 	data_loader = train_dataloader,
-		#     epochs = config.epochs,
-		# 	lr = config.lr,
-		# 	opt_method = config.opt_method,
-		# 	use_gpu = config.use_gpu,
-		# 	# device = config.device,
-		#     tester = tester,
-		# 	test = config.test,
-		# 	valid_interval = config.valid_interval,
-		#     log_interval = config.log_interval,
-		# 	save_interval = config.save_interval,
-		#     save_path = config.save_path,
-		# 	use_wandb = True)
-		# trainer.run()
+		trainer = Trainer(
+			model = model,
+			data_loader = train_dataloader,
+		    epochs = config.epochs,
+			lr = config.lr,
+			opt_method = config.opt_method,
+			use_gpu = config.use_gpu,
+			device = config.device,
+		    tester = tester,
+			test = True,
+			valid_interval = config.valid_interval,
+		    log_interval = config.log_interval,
+			use_wandb = True)
+		trainer.run()

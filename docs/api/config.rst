@@ -45,7 +45,8 @@ pybind11_ke.config
     :toctree: generated
     :nosignatures:
     :template: functiontemplate.rst
-
+    
+    get_trainer_hpo_config
     get_tester_hpo_config
 
 超参数优化训练循环函数
