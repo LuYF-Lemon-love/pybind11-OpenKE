@@ -44,5 +44,6 @@ pybind11_ke.module.model
 .. autosummary::
     :toctree: generated
     :nosignatures:
+    :template: functiontemplate.rst
 
     get_transe_hpo_config

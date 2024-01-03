@@ -34,6 +34,6 @@ pybind11_ke.module.strategy
 .. autosummary::
     :toctree: generated
     :nosignatures:
-    :template: methodtemplate.rst
+    :template: functiontemplate.rst
 
     get_negative_sampling_hpo_config

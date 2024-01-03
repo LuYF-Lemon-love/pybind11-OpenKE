@@ -36,6 +36,6 @@ pybind11_ke.module.loss
 .. autosummary::
     :toctree: generated
     :nosignatures:
-    :template: methodtemplate.rst
+    :template: functiontemplate.rst
 
     get_margin_loss_hpo_config

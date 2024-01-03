@@ -34,6 +34,7 @@ pybind11_ke.data
 .. autosummary::
     :toctree: generated
     :nosignatures:
+    :template: functiontemplate.rst
 
     get_train_data_loader_hpo_config
     get_test_data_loader_hpo_config

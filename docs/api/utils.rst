@@ -34,5 +34,6 @@ pybind11_ke.utils
 .. autosummary::
     :toctree: generated
     :nosignatures:
+    :template: functiontemplate.rst
 
     import_class

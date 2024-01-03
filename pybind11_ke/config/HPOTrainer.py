@@ -26,7 +26,8 @@ def set_hpo_config(
 	kge_config = None,
 	loss_config = None,
 	strategy_config = None,
-	test_data_loader_config = None):
+	test_data_loader_config = None,
+	tester_config = None):
 
 	"""返回超参数优化配置的默认优化参数。
 	
@@ -48,6 +49,8 @@ def set_hpo_config(
 	:type strategy_config: dict
 	:param test_data_loader_config: :py:class:`pybind11_ke.data.TestDataLoader` 的超参数优化配置
 	:type test_data_loader_config: dict
+	:param tester_config: :py:class:`pybind11_ke.config.Tester` 的超参数优化配置
+	:type tester_config: dict
 	:returns: 超参数优化配置的默认优化参数
 	:rtype: dict
 	"""
@@ -68,6 +71,7 @@ def set_hpo_config(
 	parameters_dict.update(loss_config)
 	parameters_dict.update(strategy_config)
 	parameters_dict.update(test_data_loader_config)
+	parameters_dict.update(tester_config)
 
 	sweep_config['metric'] = metric
 	sweep_config['parameters'] = parameters_dict
@@ -152,22 +156,19 @@ def hpo_train(config=None):
 		)
 
 		# test the model
-		tester = Tester(model = kge_model, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+		tester = Tester(
+			model = kge_model,
+			data_loader = test_dataloader,
+			use_gpu = config.use_gpu,
+			device = config.device
+		)
 
 		# train the model
 		trainer = Trainer(model = model, data_loader = train_dataloader,
-		    epochs = 50, lr = 0.01, use_gpu = True, device = 'cuda:1',
+		    epochs = 50, lr = 0.01, use_gpu = True, device = 'cuda:0',
 		    tester = tester, test = True, valid_interval = 10,
 		    log_interval = 10, save_interval = 10, save_path = './checkpoint/transe.pth', use_wandb=True)
 		trainer.run()
-
-		# # test the model
-		# tester = Tester(
-		# 	model = kge_model,
-		# 	data_loader = test_dataloader,
-		# 	use_gpu = config.use_gpu,
-		# 	# device = config.device
-		# )
 
 		# # train the model
 		# trainer = Trainer(

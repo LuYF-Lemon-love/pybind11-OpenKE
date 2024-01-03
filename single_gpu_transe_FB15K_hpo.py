@@ -21,6 +21,7 @@ from pybind11_ke.module.model import get_transe_hpo_config
 from pybind11_ke.module.loss import get_margin_loss_hpo_config
 from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
 from pybind11_ke.data import get_test_data_loader_hpo_config
+from pybind11_ke.config import get_tester_hpo_config
 from pybind11_ke.config import set_hpo_config, start_hpo_train
 
 ######################################################################
@@ -108,6 +109,22 @@ print()
 #
 
 ################################
+# 定义评估器超参数优化范围
+# ---------------------------------------------------------
+# :py:func:`pybind11_ke.config.get_tester_hpo_config` 返回了
+# :py:class:`pybind11_ke.config.Tester` 的默认超参数优化范围。
+
+# set the hpo config
+tester_config = get_tester_hpo_config()
+print("tester_config:")
+pprint.pprint(tester_config)
+print()
+
+######################################################################
+# --------------
+#
+
+################################
 # 设置超参数优化参数
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.config.set_hpo_config` 可以设置超参数优化参数。
@@ -118,7 +135,8 @@ sweep_config = set_hpo_config(
     kge_config = kge_config,
     loss_config = loss_config,
     strategy_config = strategy_config,
-    test_data_loader_config = test_data_loader_config)
+    test_data_loader_config = test_data_loader_config,
+    tester_config = tester_config)
 print("sweep_config:")
 pprint.pprint(sweep_config)
 print()

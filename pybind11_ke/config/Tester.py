@@ -3,7 +3,7 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 29, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了验证模型类.
 
@@ -140,3 +140,18 @@ class Tester(object):
         """
         
         self.sampling_mode = sampling_mode
+
+def get_tester_hpo_config():
+
+	"""返回 :py:class:`Tester` 的默认超参数优化配置。"""
+
+	parameters_dict = {
+        'use_gpu': {
+			'value': True
+		},
+		'device': {
+			'value': 'cuda:0'
+		},
+	}
+		
+	return parameters_dict

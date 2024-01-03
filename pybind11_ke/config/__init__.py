@@ -14,13 +14,14 @@ from __future__ import division
 from __future__ import print_function
 
 from .Trainer import Trainer
-from .Tester import Tester
+from .Tester import Tester, get_tester_hpo_config
 from .TrainerDataParallel import trainer_distributed_data_parallel
 from .HPOTrainer import set_hpo_config, start_hpo_train, hpo_train
 
 __all__ = [
 	'Trainer',
 	'Tester',
+	'get_tester_hpo_config',
 	'trainer_distributed_data_parallel',
 	'set_hpo_config',
 	'start_hpo_train',

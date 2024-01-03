@@ -34,8 +34,19 @@ pybind11_ke.config
 .. autosummary::
     :toctree: generated
     :nosignatures:
+    :template: functiontemplate.rst
 
     trainer_distributed_data_parallel
+
+超参数优化默认搜索范围
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: functiontemplate.rst
+
+    get_tester_hpo_config
 
 超参数优化训练循环函数
 ----------------------------------
@@ -43,6 +54,7 @@ pybind11_ke.config
 .. autosummary::
     :toctree: generated
     :nosignatures:
+    :template: functiontemplate.rst
 
     set_hpo_config
     start_hpo_train
