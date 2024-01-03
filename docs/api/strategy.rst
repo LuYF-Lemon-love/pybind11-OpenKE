@@ -27,3 +27,13 @@ pybind11_ke.module.strategy
     :template: classtemplate.rst
     
     NegativeSampling
+
+超参数优化默认搜索范围
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: methodtemplate.rst
+
+    get_negative_sampling_hpo_config

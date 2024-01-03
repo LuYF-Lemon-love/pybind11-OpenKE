@@ -10,7 +10,7 @@ TransE-FB15K-single-gpu-hpo
 
 这一部分介绍如何用一个 GPU 在 ``FB15k`` 知识图谱上寻找 ``TransE`` :cite:`TransE` 的超参数。
 
-导入训练数据加载器超参数默认配置
+定义训练数据加载器超参数优化范围
 ---------------------------------------------------------
 pybind11-OpenKE 有 1 个工具用于导入超参数默认配置: :py:func:`pybind11_ke.config.get_hpo_config`。
 """
@@ -19,6 +19,7 @@ import pprint
 from pybind11_ke.data import get_train_data_loader_hpo_config
 from pybind11_ke.module.model import get_transe_hpo_config
 from pybind11_ke.module.loss import get_margin_loss_hpo_config
+from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
 from pybind11_ke.config import set_hpo_config, start_hpo_train
 
 ######################################################################
@@ -41,7 +42,7 @@ train_data_loader_config.update({
 #
 
 ################################
-# 定义模型超参数优化
+# 定义模型超参数优化范围
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.module.model.get_transe_hpo_config` 返回了
 # :py:class:`pybind11_ke.module.model.TransE` 的默认超参数优化范围。
@@ -56,7 +57,7 @@ pprint.pprint(kge_config)
 #
 
 ################################
-# 定义损失函数超参数优化
+# 定义损失函数超参数优化范围
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.module.loss.get_margin_loss_hpo_config` 返回了
 # :py:class:`pybind11_ke.module.loss.MarginLoss` 的默认超参数优化范围。
@@ -71,6 +72,21 @@ pprint.pprint(loss_config)
 #
 
 ################################
+# 定义训练策略超参数优化范围
+# ---------------------------------------------------------
+# :py:func:`pybind11_ke.module.strategy.get_negative_sampling_hpo_config` 返回了
+# :py:class:`pybind11_ke.module.strategy.NegativeSampling` 的默认超参数优化范围。
+
+# set the hpo config
+strategy_config = get_negative_sampling_hpo_config()
+print("strategy_config:")
+pprint.pprint(strategy_config)
+
+######################################################################
+# --------------
+#
+
+################################
 # 设置超参数优化参数
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.config.set_hpo_config` 可以设置超参数优化参数。
@@ -79,7 +95,8 @@ pprint.pprint(loss_config)
 sweep_config = set_hpo_config(
     train_data_loader_config = train_data_loader_config,
     kge_config = kge_config,
-    loss_config = loss_config)
+    loss_config = loss_config,
+    strategy_config = strategy_config)
 print("sweep_config:")
 pprint.pprint(sweep_config)
 

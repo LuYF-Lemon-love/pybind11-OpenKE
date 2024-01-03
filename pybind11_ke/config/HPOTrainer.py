@@ -14,13 +14,10 @@ hpo_train - 超参数优化训练循环函数。
 import wandb
 from ..utils import import_class
 from ..config import Trainer, Tester
-from pybind11_ke.module.loss import MarginLoss
-from pybind11_ke.module.strategy import NegativeSampling
+from ..module.strategy import NegativeSampling
 from ..data import TrainDataLoader, TestDataLoader
 
 from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.module.loss import MarginLoss
-from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TestDataLoader
 
 def set_hpo_config(
@@ -30,7 +27,8 @@ def set_hpo_config(
 	metric_goal = 'maximize',
 	train_data_loader_config = None,
 	kge_config = None,
-	loss_config = None):
+	loss_config = None,
+	strategy_config = None):
 
 	"""返回超参数优化配置的默认优化参数。
 	
@@ -48,6 +46,8 @@ def set_hpo_config(
 	:type kge_config: dict
 	:param loss_config: :py:class:`pybind11_ke.module.loss.Loss` 的超参数优化配置
 	:type loss_config: dict
+	:param strategy_config: :py:class:`pybind11_ke.module.strategy.Strategy` 的超参数优化配置
+	:type strategy_config: dict
 	:returns: 超参数优化配置的默认优化参数
 	:rtype: dict
 	"""
@@ -66,6 +66,7 @@ def set_hpo_config(
 	parameters_dict.update(train_data_loader_config)
 	parameters_dict.update(kge_config)
 	parameters_dict.update(loss_config)
+	parameters_dict.update(strategy_config)
 
 	sweep_config['metric'] = metric
 	sweep_config['parameters'] = parameters_dict
@@ -133,7 +134,9 @@ def hpo_train(config=None):
 				adv_temperature = config.adv_temperature,
 				margin = config.margin
 				),
-		    batch_size = train_dataloader.get_batch_size()
+		    batch_size = train_dataloader.get_batch_size(),
+			regul_rate = config.regul_rate,
+			l3_regul_rate = config.l3_regul_rate
 		)
 
 		# dataloader for test
@@ -148,17 +151,6 @@ def hpo_train(config=None):
 		    tester = tester, test = True, valid_interval = 10,
 		    log_interval = 10, save_interval = 10, save_path = './checkpoint/transe.pth', use_wandb=True)
 		trainer.run()
-
-		# # define the loss function
-		# model = NegativeSampling(
-		#     model = kge_model,
-		#     loss = loss_class(
-		# 		# adv_temperature = config.adv_temperature,
-		# 		margin = config.margin),
-		#     batch_size = train_dataloader.get_batch_size(),
-		# 	regul_rate = config.regul_rate,
-		# 	l3_regul_rate = config.l3_regul_rate
-		# )
 
 		# # dataloader for test
 		# test_dataloader = TestDataLoader(

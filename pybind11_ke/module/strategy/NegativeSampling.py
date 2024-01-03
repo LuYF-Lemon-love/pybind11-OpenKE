@@ -3,7 +3,7 @@
 # pybind11_ke/module/strategy/NegativeSampling.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了 KGE 模型的训练策略.
 
@@ -129,3 +129,18 @@ class NegativeSampling(Strategy):
 		if self.l3_regul_rate != 0:
 			loss_res += self.l3_regul_rate * self.model.l3_regularization()
 		return loss_res
+
+def get_negative_sampling_hpo_config():
+
+	"""返回 :py:class:`NegativeSampling` 的默认超参数优化配置。"""
+
+	parameters_dict = {
+		'regul_rate': {
+			'value': 0.0
+		},
+		'l3_regul_rate': {
+			'value': 0.0
+		}
+	}
+		
+	return parameters_dict
