@@ -108,7 +108,22 @@ class MarginLoss(Loss):
 
 def get_margin_loss_hpo_config():
 
-	"""返回 :py:class:`MarginLoss` 的默认超参数优化配置。"""
+	"""返回 :py:class:`MarginLoss` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'loss': {
+				'value': 'MarginLoss'
+			},
+			'adv_temperature': {
+				'value': None
+			},
+			'margin': {
+				'values': [1.0, 3.0]
+			}
+		}
+	"""
 
 	parameters_dict = {
 		'loss': {

@@ -143,7 +143,19 @@ class Tester(object):
 
 def get_tester_hpo_config():
 
-	"""返回 :py:class:`Tester` 的默认超参数优化配置。"""
+	"""返回 :py:class:`Tester` 的默认超参数优化配置。
+    
+    默认配置为::
+    
+     	parameters_dict = {
+            'use_gpu': {
+    			'value': True
+    		},
+    		'device': {
+    			'value': 'cuda:0'
+    		},
+    	}   
+    """
 
 	parameters_dict = {
         'use_gpu': {

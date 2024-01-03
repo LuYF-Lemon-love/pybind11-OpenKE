@@ -62,13 +62,15 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 - 使用 :py:class:`torch.nn.parallel.DistributedDataParallel` 完成数据并行，使得 ``pybind11-OpenKE`` 能够利用多个 ``GPU`` 同时训练。
 
+- 增加超参数扫描功能。
+
 **扩展的**
 
 - 在模型训练过程中，能够在验证集上评估模型。
 
 - 增加了学习率调度器。
 
-- 增加了利用 `wandb <https://wandb.ai/>`_ 输出日志。
+- 能够利用 `wandb <https://wandb.ai/>`_ 输出日志。
 
 支持的知识图谱嵌入模型：
 

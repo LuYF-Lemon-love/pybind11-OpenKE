@@ -346,7 +346,43 @@ class TrainDataLoader(object):
 
 def get_train_data_loader_hpo_config():
 
-	"""返回 :py:class:`TrainDataLoader` 的默认超参数优化配置。"""
+	"""返回 :py:class:`TrainDataLoader` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+		    'in_path': {
+				'value': './'
+		    },
+			'ent_file': {
+				'value': 'entity2id.txt'
+		    },
+			'rel_file': {
+				'value': 'relation2id.txt'
+		    },
+			'train_file': {
+				'value': 'train2id.txt'
+		    },
+		    'batch_size': {
+				'values': [512, 1024, 2048, 4096]
+		    },
+		    'threads': {
+				'value': 8
+		    },
+			'sampling_mode': {
+				'value': 'normal'
+			},
+			'bern': {
+				'value': True
+			},
+			'neg_ent': {
+				'values': [1, 4, 16, 64]
+			},
+			'neg_rel': {
+				'value': 0
+			}
+		}
+	"""
 
 	parameters_dict = {
 	    'in_path': {

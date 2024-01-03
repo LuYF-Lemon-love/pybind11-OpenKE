@@ -197,7 +197,25 @@ class TransE(Model):
 
 def get_transe_hpo_config():
 
-	"""返回 :py:class:`TransE` 的默认超参数优化配置。"""
+	"""返回 :py:class:`TransE` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'model': {
+				'value': 'TransE'
+			},
+			'dim': {
+				'values': [50, 100, 200]
+			},
+			'p_norm': {
+				'values': [1, 2]
+			},
+			'norm_flag': {
+				'value': True
+			}
+		}
+	"""
 
 	parameters_dict = {
 		'model': {

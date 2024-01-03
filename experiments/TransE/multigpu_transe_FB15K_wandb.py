@@ -1,6 +1,7 @@
 """
 `TransE-FB15K-single-gpu <single_gpu_transe_FB15K.html>`_ ||
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
+`TransE-FB15K-single-gpu-hpo <single_gpu_transe_FB15K_hpo.html>`_ ||
 `TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
 **TransE-FB15K-multigpu-wandb**
 

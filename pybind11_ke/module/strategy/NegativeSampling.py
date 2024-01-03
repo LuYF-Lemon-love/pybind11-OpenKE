@@ -132,7 +132,19 @@ class NegativeSampling(Strategy):
 
 def get_negative_sampling_hpo_config():
 
-	"""返回 :py:class:`NegativeSampling` 的默认超参数优化配置。"""
+	"""返回 :py:class:`NegativeSampling` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'regul_rate': {
+				'value': 0.0
+			},
+			'l3_regul_rate': {
+				'value': 0.0
+			}
+		}	
+	"""
 
 	parameters_dict = {
 		'regul_rate': {

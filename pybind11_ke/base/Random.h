@@ -10,7 +10,6 @@
 #include <random>
 
 // 所有线程的随机种子.
-unsigned long long *next_random;
 std::random_device rd;
 std::vector<std::mt19937_64> gens;
 std::vector<std::uniform_int_distribution<INT>> dists;

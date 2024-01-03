@@ -274,7 +274,28 @@ class TestDataLoader(object):
 
 def get_test_data_loader_hpo_config():
 
-	"""返回 :py:class:`TestDataLoader` 的默认超参数优化配置。"""
+	"""返回 :py:class:`TestDataLoader` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+		    'valid_file': {
+				'value': 'valid2id.txt'
+		    },
+			'test_file': {
+				'value': 'test2id.txt'
+		    },
+			'type_constrain': {
+				'value': True
+			},
+			'neg_ent': {
+				'values': [1, 4, 16, 64]
+			},
+			'neg_rel': {
+				'value': 0
+			}
+		}
+	"""
 
 	parameters_dict = {
 	    'valid_file': {

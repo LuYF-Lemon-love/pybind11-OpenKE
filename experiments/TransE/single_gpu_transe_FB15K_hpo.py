@@ -37,7 +37,7 @@ print()
 
 train_data_loader_config.update({
     'in_path': {
-        'value': './benchmarks/FB15K/'
+        'value': '../../benchmarks/FB15K/'
     }
 })
 

@@ -302,7 +302,30 @@ class Trainer(object):
 
 def get_trainer_hpo_config():
 
-	"""返回 :py:class:`Trainer` 的默认超参数优化配置。"""
+	"""返回 :py:class:`Trainer` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'epochs': {
+				'values': [50, 100]
+			},
+			'lr': {
+				'distribution': 'uniform',
+				'min': 0,
+				'max': 1.0
+			},
+			'opt_method': {
+				'values': ['adam', 'sgd']
+			},
+			'valid_interval': {
+				'value': 10
+			},
+			'log_interval': {
+				'value': 10
+			},
+		}	
+	"""
 
 	parameters_dict = {
 		'epochs': {
