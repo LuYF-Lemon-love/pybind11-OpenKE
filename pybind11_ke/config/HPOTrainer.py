@@ -12,7 +12,6 @@ hpo_train - 超参数优化训练循环函数。
 """
 
 import wandb
-import pprint
 from ..utils import import_class
 from ..config import Trainer, Tester
 from pybind11_ke.module.loss import MarginLoss
@@ -25,161 +24,69 @@ from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
-def get_hpo_config():
+def set_hpo_config(
+	method = 'bayes',
+	sweep_name = 'pybind11_ke_hpo',
+	metric_name = 'val/hit10',
+	metric_goal = 'maximize',
+	train_data_loader_config = None):
 
 	"""返回超参数优化配置的默认优化参数。
 	
+	:param method: 超参数优化的方法，``grid`` 或 ``random`` 或 ``bayes``
+	:type param: str
+	:param sweep_name: 超参数优化 sweep 的名字
+	:type sweep_name: str
+	:param metric_name: 超参数优化的指标名字
+	:type metric_name: str
+	:param metric_goal: 超参数优化的指标目标，``maximize`` 或 ``minimize``
+	:type metric_goal: str
+	:param train_data_loader_config: :py:class:`pybind11_ke.data.TrainDataLoader` 的超参数优化配置
+	:type train_data_loader_config: dict
 	:returns: 超参数优化配置的默认优化参数
 	:rtype: dict
 	"""
 
-	wandb.login()
-
 	sweep_config = {
-		'method': 'bayes',
-		'name': 'pybind11_ke_hpo'
+		'method': method,
+		'name': sweep_name
 	}
 
 	metric = {
-		'name': 'val/hit10',
-		'goal': 'maximize'
+		'name': metric_name,
+		'goal': metric_goal
 	}
 
-	# parameters_dict = {
-	# 	'in_path': {
-	# 		'value': './benchmarks/FB15K/'
-	# 	},
-	# 	'ent_file': {
-	# 		'value': 'entity2id.txt'
-	# 	},
-	# 	'rel_file': {
-	# 		'value': 'relation2id.txt'
-	# 	},
-	# 	'train_file': {
-	# 		'value': 'train2id.txt'
-	# 	},
-	# 	'batch_size': {
-	# 		'value': None
-	# 	},
-	# 	'nbatches': {
-	# 		'value': 100
-	# 	},
-	# 	'threads': {
-	# 		'value': 8
-	# 	},
-	# 	'sampling_mode': {
-	# 		'value': 'normal'
-	# 	},
-	# 	'bern': {
-	# 		'value': True
-	# 	},
-	# 	'neg_ent': {
-	# 		'value': [1, 10, 20]
-	# 	},
-	#     'neg_rel': {
-	#         'values': 0
-	#     },
-	# 	'model': {
-	#         'values': 'TransE'
-	#     },
-	# 	# 'dim': {
-	#     #     'values': 50
-	#     # },
-	# 	'p_norm': {
-	#         'values': 1
-	#     },
-	# 	'norm_flag': {
-	#         'values': True
-	#     },
-	# 	'loss': {
-	#         'values': 'MarginLoss'
-	#     },
-	# 	# 'adv_temperature': {
-	#     #     'values': None
-	#     # },
-	# 	'margin': {
-	#         'values': 1.0
-	#     },
-	# 	'regul_rate': {
-	#         'values': 0.0
-	#     },
-	# 	'l3_regul_rate': {
-	#         'values': 0.0
-	#     },
-	# 	'valid_file': {
-	# 		'value': 'valid2id.txt'
-	# 	},
-	# 	'test_file': {
-	# 		'value': 'test2id.txt'
-	# 	},
-	# 	'type_constrain': {
-	#         'values': True
-	#     },
-	# 	'use_gpu': {
-	#         'values': True
-	#     },
-	# 	# 'device': {
-	#     #     'values': 'cuda:0'
-	#     # },
-	# 	'epochs': {
-	#         'values': 50
-	#     },
-	# 	'lr': {
-	#         'distribution': 'uniform',
-	#         'min': 0,
-	#         'max': 1.0
-	#     },
-	# 	'opt_method': {
-	#         'values': ['adam', 'sgd']
-	#     },
-	#     'test': {
-	#         'values': True
-	#     },
-	# 	'valid_interval': {
-	#         'values': 10
-	#     },
-	# 	'log_interval': {
-	#         'values': 10
-	#     },
-	# 	'save_interval': {
-	#         'values': None
-	#     },
-	# 	'save_path': {
-	#         'values': './checkpoint/transe.pth'
-	#     },
-	# 	'use_wandb': {
-	#         'values': True
-	#     },
-	# }
-
 	parameters_dict = {
-		'nbatches': {
-			'value': 100
-		},
-		'threads': {
-			'value': 8
-		},
-		'sampling_mode': {
-			'value': 'normal'
-		},
-		'bern': {
-			'value': True
-		},
 		'p_norm': {
 	        'values': [1, 2]
 	    },
 	}
 
+	parameters_dict.update(train_data_loader_config)
+
 	sweep_config['metric'] = metric
 	sweep_config['parameters'] = parameters_dict
 
-	pprint.pprint(sweep_config)
-
-	sweep_id = wandb.sweep(sweep_config, project="pytorch-sweeps-demo")
-
-	wandb.agent(sweep_id, hpo_train, count=1)
-
 	return sweep_config
+
+def start_hpo_train(config = None, project = "pybind11-ke-sweeps", count = 2):
+
+	"""开启超参数优化。
+	
+	:param config: wandb 的超参数优化配置。
+	:type config: dict
+	:param project: 项目名
+	:type param: str
+	:param count: 进行几次尝试。
+	:type count: int
+	"""
+
+	wandb.login()
+
+	sweep_id = wandb.sweep(config, project=project)
+
+	wandb.agent(sweep_id, hpo_train, count=count)
 
 def hpo_train(config=None):
 
@@ -195,13 +102,17 @@ def hpo_train(config=None):
 
 		# dataloader for training
 		train_dataloader = TrainDataLoader(
-		    in_path = "./benchmarks/FB15K/",
-		    nbatches = config.nbatches,
-		    threads = config.threads,
-		    sampling_mode = config.sampling_mode,
-		    bern = config.bern,
-		    neg_ent = 25,
-		    neg_rel = 0)
+		    in_path = config.in_path,
+			ent_file = config.ent_file,
+			rel_file = config.rel_file,
+			train_file = config.train_file,
+			batch_size = config.batch_size,
+			threads = config.threads,
+			sampling_mode = config.sampling_mode,
+			bern = config.bern,
+			neg_ent = config.neg_ent,
+			neg_rel = config.neg_rel
+		)
 
 		# define the model
 		transe = TransE(
@@ -226,24 +137,10 @@ def hpo_train(config=None):
 
 		# train the model
 		trainer = Trainer(model = model, data_loader = train_dataloader,
-		    epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
-		    tester = tester, test = True, valid_interval = 100,
-		    log_interval = 100, save_interval = 100, save_path = './checkpoint/transe.pth', use_wandb=True)
+		    epochs = 100, lr = 0.01, use_gpu = True, device = 'cuda:1',
+		    tester = tester, test = True, valid_interval = 10,
+		    log_interval = 10, save_interval = 10, save_path = './checkpoint/transe.pth', use_wandb=True)
 		trainer.run()
-
-		# # dataloader for training
-		# train_dataloader = TrainDataLoader(
-		#     in_path = config.in_path,
-		# 	ent_file = config.ent_file,
-		# 	rel_file = config.rel_file,
-		# 	train_file = config.train_file,
-		# 	batch_size = config.batch_size,
-		# 	nbatches = config.nbatches,
-		# 	threads = config.threads,
-		# 	sampling_mode = config.sampling_mode,
-		# 	bern = config.bern,
-		# 	neg_ent = config.neg_ent,
-		# 	neg_rel = config.neg_rel)
 
 		# model_class = import_class(f"..module.model.{config.model}")
 

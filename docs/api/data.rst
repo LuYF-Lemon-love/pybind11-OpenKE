@@ -27,3 +27,12 @@ pybind11_ke.data
     :template: classtemplate.rst
 
     TestDataLoader
+
+超参数优化默认搜索范围
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+
+    get_train_data_loader_hpo_config

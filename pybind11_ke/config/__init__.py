@@ -16,12 +16,13 @@ from __future__ import print_function
 from .Trainer import Trainer
 from .Tester import Tester
 from .TrainerDataParallel import trainer_distributed_data_parallel
-from .HPOTrainer import get_hpo_config, hpo_train
+from .HPOTrainer import set_hpo_config, start_hpo_train, hpo_train
 
 __all__ = [
 	'Trainer',
 	'Tester',
 	'trainer_distributed_data_parallel',
-	'get_hpo_config',
+	'set_hpo_config',
+	'start_hpo_train',
 	'hpo_train'
 ]

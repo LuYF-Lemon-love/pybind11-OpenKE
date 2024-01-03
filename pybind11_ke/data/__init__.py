@@ -13,10 +13,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .TrainDataLoader import TrainDataLoader
+from .TrainDataLoader import TrainDataLoader, get_train_data_loader_hpo_config
 from .TestDataLoader import TestDataLoader
 
 __all__ = [
 	'TrainDataLoader',
+	'get_train_data_loader_hpo_config'
 	'TestDataLoader'
 ]
