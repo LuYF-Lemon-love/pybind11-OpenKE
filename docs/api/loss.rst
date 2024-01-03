@@ -29,3 +29,12 @@ pybind11_ke.module.loss
     MarginLoss
     SigmoidLoss
     SoftplusLoss
+
+超参数优化默认搜索范围
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+
+    get_margin_loss_hpo_config

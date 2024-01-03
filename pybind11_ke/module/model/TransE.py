@@ -203,9 +203,9 @@ def get_transe_hpo_config():
 		'model': {
 			'value': 'TransE'
 		},
-	    'dim': {
+		'dim': {
 			'values': [50, 100, 200]
-	    },
+		},
 		'p_norm': {
 			'values': [1, 2]
 		},

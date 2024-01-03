@@ -14,13 +14,14 @@ from __future__ import division
 from __future__ import print_function
 
 from .Loss import Loss
-from .MarginLoss import MarginLoss
+from .MarginLoss import MarginLoss, get_margin_loss_hpo_config
 from .SoftplusLoss import SoftplusLoss
 from .SigmoidLoss import SigmoidLoss
 
 __all__ = [
     'Loss',
     'MarginLoss',
+    'get_margin_loss_hpo_config',
     'SoftplusLoss',
     'SigmoidLoss',
 ]

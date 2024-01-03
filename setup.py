@@ -31,5 +31,5 @@ setup(
         "numpy",
         "tqdm",
         "wandb",
-        ],
+    ],
 )

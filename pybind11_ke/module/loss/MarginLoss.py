@@ -3,7 +3,7 @@
 # pybind11_ke/module/loss/MarginLoss.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 26, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了 margin-based ranking criterion 损失函数.
 
@@ -105,3 +105,21 @@ class MarginLoss(Loss):
 
 		score = self.forward(p_score, n_score)
 		return score.cpu().data.numpy()
+
+def get_margin_loss_hpo_config():
+
+	"""返回 :py:class:`MarginLoss` 的默认超参数优化配置。"""
+
+	parameters_dict = {
+		'loss': {
+			'value': 'MarginLoss'
+		},
+		'adv_temperature': {
+			'value': None
+		},
+		'margin': {
+			'values': [1.0, 3.0]
+		}
+	}
+		
+	return parameters_dict
