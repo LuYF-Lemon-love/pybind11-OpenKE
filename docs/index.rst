@@ -39,6 +39,7 @@
 
    experiments/TransE/single_gpu_transe_FB15K
    experiments/TransE/single_gpu_transe_FB15K_wandb
+   experiments/TransE/single_gpu_transe_FB15K_hpo
    experiments/TransE/multigpu_transe_FB15K
    experiments/TransE/multigpu_transe_FB15K_wandb
 
