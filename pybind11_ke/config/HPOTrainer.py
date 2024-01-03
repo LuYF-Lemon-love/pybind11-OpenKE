@@ -19,17 +19,17 @@ from pybind11_ke.module.strategy import NegativeSampling
 from ..data import TrainDataLoader, TestDataLoader
 
 from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
-from pybind11_ke.data import TrainDataLoader, TestDataLoader
+from pybind11_ke.data import TestDataLoader
 
 def set_hpo_config(
 	method = 'bayes',
 	sweep_name = 'pybind11_ke_hpo',
 	metric_name = 'val/hit10',
 	metric_goal = 'maximize',
-	train_data_loader_config = None):
+	train_data_loader_config = None,
+	kge_config = None):
 
 	"""返回超参数优化配置的默认优化参数。
 	
@@ -43,6 +43,8 @@ def set_hpo_config(
 	:type metric_goal: str
 	:param train_data_loader_config: :py:class:`pybind11_ke.data.TrainDataLoader` 的超参数优化配置
 	:type train_data_loader_config: dict
+	:param kge_config: :py:class:`pybind11_ke.module.model.Model` 的超参数优化配置
+	:type kge_config: dict
 	:returns: 超参数优化配置的默认优化参数
 	:rtype: dict
 	"""
@@ -57,13 +59,9 @@ def set_hpo_config(
 		'goal': metric_goal
 	}
 
-	parameters_dict = {
-		'p_norm': {
-	        'values': [1, 2]
-	    },
-	}
-
+	parameters_dict = {}
 	parameters_dict.update(train_data_loader_config)
+	parameters_dict.update(kge_config)
 
 	sweep_config['metric'] = metric
 	sweep_config['parameters'] = parameters_dict
@@ -115,16 +113,17 @@ def hpo_train(config=None):
 		)
 
 		# define the model
-		transe = TransE(
+		model_class = import_class(f"pybind11_ke.module.model.{config.model}")
+		kge_model = model_class(
 		    ent_tot = train_dataloader.get_ent_tol(),
 		    rel_tot = train_dataloader.get_rel_tol(),
-		    dim = 50,
+		    dim = config.dim,
 		    p_norm = config.p_norm,
-		    norm_flag = True)
+		    norm_flag = config.norm_flag)
 
 		# define the loss function
 		model = NegativeSampling(
-		    model = transe,
+		    model = kge_model,
 		    loss = MarginLoss(margin = 1.0),
 		    batch_size = train_dataloader.get_batch_size()
 		)
@@ -133,24 +132,14 @@ def hpo_train(config=None):
 		test_dataloader = TestDataLoader('./benchmarks/FB15K/')
 
 		# test the model
-		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+		tester = Tester(model = kge_model, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
 
 		# train the model
 		trainer = Trainer(model = model, data_loader = train_dataloader,
-		    epochs = 100, lr = 0.01, use_gpu = True, device = 'cuda:1',
+		    epochs = 50, lr = 0.01, use_gpu = True, device = 'cuda:1',
 		    tester = tester, test = True, valid_interval = 10,
 		    log_interval = 10, save_interval = 10, save_path = './checkpoint/transe.pth', use_wandb=True)
 		trainer.run()
-
-		# model_class = import_class(f"..module.model.{config.model}")
-
-		# # define the model
-		# kge_model = model_class(
-		#     ent_tot = train_dataloader.get_ent_tol(),
-		#     rel_tot = train_dataloader.get_rel_tol(),
-		#     # dim = config.dim,
-		#     p_norm = config.p_norm,
-		#     norm_flag = config.norm_flag)
 
 		# loss_class = import_class(f"..module.loss.{config.loss}")
 

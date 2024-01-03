@@ -3,7 +3,7 @@
 # pybind11_ke/data/TrainDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 27, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了为训练循环采样数据的类.
 

@@ -37,3 +37,12 @@ pybind11_ke.module.model
     RotatE
     SimplE
     TransD
+
+超参数优化默认搜索范围
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+
+    get_transe_hpo_config

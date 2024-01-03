@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 28, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 # 
 # 该头文件定义了 TransE.
 
@@ -194,3 +194,24 @@ class TransE(Model):
 		
 		score = self.forward(data)
 		return score.cpu().data.numpy()
+
+def get_transe_hpo_config():
+
+	"""返回 :py:class:`TransE` 的默认超参数优化配置。"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'TransE'
+		},
+	    'dim': {
+			'values': [50, 100, 200]
+	    },
+		'p_norm': {
+			'values': [1, 2]
+		},
+		'norm_flag': {
+			'value': True
+		}
+	}
+		
+	return parameters_dict

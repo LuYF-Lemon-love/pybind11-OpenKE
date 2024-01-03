@@ -14,7 +14,7 @@ from __future__ import division
 from __future__ import print_function
 
 from .Model import Model
-from .TransE import TransE
+from .TransE import TransE, get_transe_hpo_config
 from .TransD import TransD
 from .TransR import TransR
 from .TransH import TransH
@@ -29,6 +29,7 @@ from .HolE import HolE
 __all__ = [
     'Model',
     'TransE',
+    'get_transe_hpo_config',
     'TransD',
     'TransR',
     'TransH',

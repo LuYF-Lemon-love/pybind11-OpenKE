@@ -44,5 +44,6 @@ pybind11_ke.config
     :toctree: generated
     :nosignatures:
 
-    get_hpo_config
+    set_hpo_config
+    start_hpo_train
     hpo_train
