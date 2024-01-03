@@ -36,3 +36,4 @@ pybind11_ke.data
     :nosignatures:
 
     get_train_data_loader_hpo_config
+    get_test_data_loader_hpo_config

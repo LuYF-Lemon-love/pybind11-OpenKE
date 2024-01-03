@@ -20,6 +20,7 @@ from pybind11_ke.data import get_train_data_loader_hpo_config
 from pybind11_ke.module.model import get_transe_hpo_config
 from pybind11_ke.module.loss import get_margin_loss_hpo_config
 from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
+from pybind11_ke.data import get_test_data_loader_hpo_config
 from pybind11_ke.config import set_hpo_config, start_hpo_train
 
 ######################################################################
@@ -30,6 +31,7 @@ from pybind11_ke.config import set_hpo_config, start_hpo_train
 train_data_loader_config = get_train_data_loader_hpo_config()
 print("train_data_loader_config:")
 pprint.pprint(train_data_loader_config)
+print()
 
 train_data_loader_config.update({
     'in_path': {
@@ -51,6 +53,7 @@ train_data_loader_config.update({
 kge_config = get_transe_hpo_config()
 print("kge_config:")
 pprint.pprint(kge_config)
+print()
 
 ######################################################################
 # --------------
@@ -66,6 +69,7 @@ pprint.pprint(kge_config)
 loss_config = get_margin_loss_hpo_config()
 print("loss_config:")
 pprint.pprint(loss_config)
+print()
 
 ######################################################################
 # --------------
@@ -81,6 +85,23 @@ pprint.pprint(loss_config)
 strategy_config = get_negative_sampling_hpo_config()
 print("strategy_config:")
 pprint.pprint(strategy_config)
+print()
+
+######################################################################
+# --------------
+#
+
+################################
+# 定义测试数据加载器超参数优化范围
+# ---------------------------------------------------------
+# :py:func:`pybind11_ke.data.get_test_data_loader_hpo_config` 返回了
+# :py:class:`pybind11_ke.data.TestDataLoader` 的默认超参数优化范围。
+
+# set the hpo config
+test_data_loader_config = get_test_data_loader_hpo_config()
+print("test_data_loader_config:")
+pprint.pprint(test_data_loader_config)
+print()
 
 ######################################################################
 # --------------
@@ -96,9 +117,11 @@ sweep_config = set_hpo_config(
     train_data_loader_config = train_data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,
-    strategy_config = strategy_config)
+    strategy_config = strategy_config,
+    test_data_loader_config = test_data_loader_config)
 print("sweep_config:")
 pprint.pprint(sweep_config)
+print()
 
 ######################################################################
 # --------------

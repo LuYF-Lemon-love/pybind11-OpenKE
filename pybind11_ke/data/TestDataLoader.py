@@ -3,7 +3,7 @@
 # pybind11_ke/data/TestDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 29, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
 #
 # 该脚本定义了采样数据的函数, 用于验证模型.
 
@@ -271,3 +271,27 @@ class TestDataLoader(object):
 			return self.test_tol
 		elif self.sampling_mode == "link_valid":
 			return self.valid_tol
+
+def get_test_data_loader_hpo_config():
+
+	"""返回 :py:class:`TestDataLoader` 的默认超参数优化配置。"""
+
+	parameters_dict = {
+	    'valid_file': {
+			'value': 'valid2id.txt'
+	    },
+		'test_file': {
+			'value': 'test2id.txt'
+	    },
+		'type_constrain': {
+			'value': True
+		},
+		'neg_ent': {
+			'values': [1, 4, 16, 64]
+		},
+		'neg_rel': {
+			'value': 0
+		}
+	}
+		
+	return parameters_dict

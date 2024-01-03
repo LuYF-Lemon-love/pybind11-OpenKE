@@ -14,10 +14,11 @@ from __future__ import division
 from __future__ import print_function
 
 from .TrainDataLoader import TrainDataLoader, get_train_data_loader_hpo_config
-from .TestDataLoader import TestDataLoader
+from .TestDataLoader import TestDataLoader, get_test_data_loader_hpo_config
 
 __all__ = [
 	'TrainDataLoader',
-	'get_train_data_loader_hpo_config'
-	'TestDataLoader'
+	'get_train_data_loader_hpo_config',
+	'TestDataLoader',
+	'get_test_data_loader_hpo_config'
 ]

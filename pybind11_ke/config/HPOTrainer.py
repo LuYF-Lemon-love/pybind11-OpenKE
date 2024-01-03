@@ -12,13 +12,10 @@ hpo_train - 超参数优化训练循环函数。
 """
 
 import wandb
-from ..utils import import_class
-from ..config import Trainer, Tester
-from ..module.strategy import NegativeSampling
 from ..data import TrainDataLoader, TestDataLoader
-
-from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.data import TestDataLoader
+from ..utils import import_class
+from ..module.strategy import NegativeSampling
+from ..config import Trainer, Tester
 
 def set_hpo_config(
 	method = 'bayes',
@@ -28,7 +25,8 @@ def set_hpo_config(
 	train_data_loader_config = None,
 	kge_config = None,
 	loss_config = None,
-	strategy_config = None):
+	strategy_config = None,
+	test_data_loader_config = None):
 
 	"""返回超参数优化配置的默认优化参数。
 	
@@ -48,6 +46,8 @@ def set_hpo_config(
 	:type loss_config: dict
 	:param strategy_config: :py:class:`pybind11_ke.module.strategy.Strategy` 的超参数优化配置
 	:type strategy_config: dict
+	:param test_data_loader_config: :py:class:`pybind11_ke.data.TestDataLoader` 的超参数优化配置
+	:type test_data_loader_config: dict
 	:returns: 超参数优化配置的默认优化参数
 	:rtype: dict
 	"""
@@ -67,6 +67,7 @@ def set_hpo_config(
 	parameters_dict.update(kge_config)
 	parameters_dict.update(loss_config)
 	parameters_dict.update(strategy_config)
+	parameters_dict.update(test_data_loader_config)
 
 	sweep_config['metric'] = metric
 	sweep_config['parameters'] = parameters_dict
@@ -140,7 +141,15 @@ def hpo_train(config=None):
 		)
 
 		# dataloader for test
-		test_dataloader = TestDataLoader('./benchmarks/FB15K/')
+		test_dataloader = TestDataLoader(
+			in_path = train_dataloader.in_path,
+			ent_file = train_dataloader.ent_file,
+			rel_file = train_dataloader.rel_file,
+			train_file = train_dataloader.train_file,
+			valid_file = config.valid_file,
+			test_file = config.test_file,
+			type_constrain = config.type_constrain
+		)
 
 		# test the model
 		tester = Tester(model = kge_model, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
@@ -151,17 +160,6 @@ def hpo_train(config=None):
 		    tester = tester, test = True, valid_interval = 10,
 		    log_interval = 10, save_interval = 10, save_path = './checkpoint/transe.pth', use_wandb=True)
 		trainer.run()
-
-		# # dataloader for test
-		# test_dataloader = TestDataLoader(
-		# 	in_path = train_dataloader.in_path,
-		# 	ent_file = train_dataloader.ent_file,
-		# 	rel_file = train_dataloader.rel_file,
-		# 	train_file = train_dataloader.train_file,
-		# 	valid_file = config.valid_file,
-		# 	test_file = config.test_file,
-		# 	type_constrain = config.type_constrain
-		# )
 
 		# # test the model
 		# tester = Tester(
