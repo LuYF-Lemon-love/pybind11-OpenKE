@@ -36,3 +36,13 @@ pybind11_ke.config
     :nosignatures:
 
     trainer_distributed_data_parallel
+
+超参数优化训练循环函数
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+
+    get_hpo_config
+    hpo_train

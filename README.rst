@@ -68,6 +68,8 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 - 增加了学习率调度器。
 
+- 增加了利用 `wandb <https://wandb.ai/>`_ 输出日志。
+
 支持的知识图谱嵌入模型：
 
 - RESCAL: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__ .

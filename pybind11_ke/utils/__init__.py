@@ -14,8 +14,10 @@ from __future__ import print_function
 
 from .Timer import Timer
 from .WandbLogger import WandbLogger
+from .tools import import_class
 
 __all__ = [
 	'Timer',
 	'WandbLogger'
+	'import_class'
 ]

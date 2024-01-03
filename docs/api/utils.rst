@@ -27,3 +27,12 @@ pybind11_ke.utils
     :template: classtemplate.rst
 
     WandbLogger
+
+导入模块类函数
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+
+    import_class

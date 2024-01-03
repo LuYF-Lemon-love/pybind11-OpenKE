@@ -112,8 +112,7 @@ class TrainDataLoader(object):
 
 	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
 		train_file = "train2id.txt", batch_size = None, nbatches = None, threads = 8,
-		sampling_mode = "normal", bern = True,
-		neg_ent = 1, neg_rel = 0):
+		sampling_mode = "normal", bern = True, neg_ent = 1, neg_rel = 0):
 
 		"""创建 TrainDataLoader 对象。
 
