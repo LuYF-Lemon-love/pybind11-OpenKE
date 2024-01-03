@@ -279,12 +279,12 @@ def get_test_data_loader_hpo_config():
 	默认配置为::
 	
 		parameters_dict = {
-		    'valid_file': {
+			'valid_file': {
 				'value': 'valid2id.txt'
-		    },
+			},
 			'test_file': {
 				'value': 'test2id.txt'
-		    },
+			},
 			'type_constrain': {
 				'value': True
 			},
@@ -298,12 +298,12 @@ def get_test_data_loader_hpo_config():
 	"""
 
 	parameters_dict = {
-	    'valid_file': {
+		'valid_file': {
 			'value': 'valid2id.txt'
-	    },
+		},
 		'test_file': {
 			'value': 'test2id.txt'
-	    },
+		},
 		'type_constrain': {
 			'value': True
 		},

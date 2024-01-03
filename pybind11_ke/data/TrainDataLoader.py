@@ -351,24 +351,24 @@ def get_train_data_loader_hpo_config():
 	默认配置为::
 	
 		parameters_dict = {
-		    'in_path': {
+			'in_path': {
 				'value': './'
-		    },
+			},
 			'ent_file': {
 				'value': 'entity2id.txt'
-		    },
+			},
 			'rel_file': {
 				'value': 'relation2id.txt'
-		    },
+			},
 			'train_file': {
 				'value': 'train2id.txt'
-		    },
-		    'batch_size': {
+			},
+			'batch_size': {
 				'values': [512, 1024, 2048, 4096]
-		    },
-		    'threads': {
+			},
+			'threads': {
 				'value': 8
-		    },
+			},
 			'sampling_mode': {
 				'value': 'normal'
 			},
@@ -385,24 +385,24 @@ def get_train_data_loader_hpo_config():
 	"""
 
 	parameters_dict = {
-	    'in_path': {
+		'in_path': {
 			'value': './'
-	    },
+		},
 		'ent_file': {
 			'value': 'entity2id.txt'
-	    },
+		},
 		'rel_file': {
 			'value': 'relation2id.txt'
-	    },
+		},
 		'train_file': {
 			'value': 'train2id.txt'
-	    },
-	    'batch_size': {
+		},
+		'batch_size': {
 			'values': [512, 1024, 2048, 4096]
-	    },
-	    'threads': {
+		},
+		'threads': {
 			'value': 8
-	    },
+		},
 		'sampling_mode': {
 			'value': 'normal'
 		},

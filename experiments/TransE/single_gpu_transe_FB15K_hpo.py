@@ -1,7 +1,7 @@
 """
 `TransE-FB15K-single-gpu <single_gpu_transe_FB15K.html>`_ ||
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
-**TransE-FB15K-single-gpu-hpo**
+**TransE-FB15K-single-gpu-hpo** ||
 `TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
 `TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_
 
@@ -12,7 +12,6 @@ TransE-FB15K-single-gpu-hpo
 
 定义训练数据加载器超参数优化范围
 ---------------------------------------------------------
-pybind11-OpenKE 有 1 个工具用于导入超参数默认配置: :py:func:`pybind11_ke.config.get_hpo_config`。
 """
 
 import pprint
