@@ -27,11 +27,11 @@ class BaseModule(nn.Module):
 		super(BaseModule, self).__init__()
 
 		#: 常数 0
-		self.zero_const: torch.nn.Parameter = nn.Parameter(torch.Tensor([0]))
+		self.zero_const: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([0]))
 		self.zero_const.requires_grad = False
 
 		#: 常数 pi
-		self.pi_const: torch.nn.Parameter = nn.Parameter(torch.Tensor([3.14159265358979323846]))
+		self.pi_const: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([3.14159265358979323846]))
 		self.pi_const.requires_grad = False
 
 	def load_checkpoint(self, path: str):

@@ -11,6 +11,7 @@
 WandbLogger - 使用 Weights and Biases 记录实验结果。
 """
 
+import typing
 import wandb
 
 class WandbLogger:
@@ -20,7 +21,7 @@ class WandbLogger:
     def __init__(self,
         project: str ="pybind11-ke",
         name: str = "transe",
-        config: dict | None = None):
+        config: dict[str, typing.Any] | None = None):
 
         """创建 WandbLogger 对象。
 
@@ -29,7 +30,7 @@ class WandbLogger:
 		:param name: wandb 的 run name
 		:type name: str
 		:param config: wandb 的项目配置如超参数。
-		:type config: dict | None
+		:type config: dict[str, typing.Any] | None
 		"""
 
         wandb.login()

@@ -54,11 +54,11 @@ class MarginLoss(Loss):
 		super(MarginLoss, self).__init__()
 
 		#: gamma
-		self.margin: torch.nn.Parameter = nn.Parameter(torch.Tensor([margin]))
+		self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
 		self.margin.requires_grad = False
 		if adv_temperature != None:
 			#: RotatE 提出的自我对抗负采样中的温度。
-			self.adv_temperature: torch.nn.Parameter = nn.Parameter(torch.Tensor([adv_temperature]))
+			self.adv_temperature: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([adv_temperature]))
 			self.adv_temperature.requires_grad = False
 			#: 是否启用 RotatE 提出的自我对抗负采样。
 			self.adv_flag: bool = True
