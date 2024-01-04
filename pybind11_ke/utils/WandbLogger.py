@@ -3,7 +3,7 @@
 # pybind11_ke/utils/WandbLogger.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 1, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 2, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2024
 #
 # 该脚本定义了 WandbLogger 类.
 
@@ -36,7 +36,7 @@ class WandbLogger:
         wandb.init(project=project, name=name, config=config)
         
         #: config 的副本
-        self.config = wandb.config
+        self.config: dict = wandb.config
     
     def finish(self):
 

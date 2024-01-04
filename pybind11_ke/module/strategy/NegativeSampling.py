@@ -3,7 +3,7 @@
 # pybind11_ke/module/strategy/NegativeSampling.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
 #
 # 该脚本定义了 KGE 模型的训练策略.
 
@@ -11,6 +11,10 @@
 NegativeSampling - 训练策略类，包含损失函数。
 """
 
+import torch
+from typing import Any
+from ..loss import Loss
+from ..model import Model
 from .Strategy import Strategy
 
 class NegativeSampling(Strategy):
@@ -48,8 +52,13 @@ class NegativeSampling(Strategy):
 		trainer.run()
 	"""
 
-	def __init__(self, model = None, loss = None, batch_size = 256,
-	      regul_rate = 0.0, l3_regul_rate = 0.0):
+	def __init__(
+		self,
+		model: Model = None,
+		loss: Loss = None,
+		batch_size: int = 256,
+		regul_rate: float = 0.0,
+		l3_regul_rate: float = 0.0):
 		
 		"""创建 NegativeSampling 对象。
 
@@ -67,17 +76,17 @@ class NegativeSampling(Strategy):
 
 		super(NegativeSampling, self).__init__()
 		#: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
-		self.model = model
+		self.model: Model = model
 		#: 损失函数，即 :py:class:`pybind11_ke.module.loss.Loss`
-		self.loss = loss
+		self.loss: Loss = loss
 		#: batch size
-		self.batch_size = batch_size
+		self.batch_size: int = batch_size
 		#: 权重衰减系数
-		self.regul_rate = regul_rate
+		self.regul_rate: float = regul_rate
 		#: l3 正则化系数
-		self.l3_regul_rate = l3_regul_rate
+		self.l3_regul_rate: float = l3_regul_rate
 
-	def _get_positive_score(self, score):
+	def _get_positive_score(self, score: torch.Tensor) -> torch.Tensor:
 
 		"""
 		获得正样本的得分，由于底层 C++ 处理模块的原因，
@@ -93,7 +102,7 @@ class NegativeSampling(Strategy):
 		positive_score = positive_score.view(-1, self.batch_size).permute(1, 0)
 		return positive_score
 
-	def _get_negative_score(self, score):
+	def _get_negative_score(self, score: torch.Tensor) -> torch.Tensor:
 
 		"""
 		获得负样本的得分，由于底层 C++ 处理模块的原因，
@@ -109,7 +118,7 @@ class NegativeSampling(Strategy):
 		negative_score = negative_score.view(-1, self.batch_size).permute(1, 0)
 		return negative_score
 
-	def forward(self, data):
+	def forward(self, data: dict[str, torch.Tensor]) -> torch.Tensor:
 		
 		"""计算最后的损失值。定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
@@ -130,7 +139,7 @@ class NegativeSampling(Strategy):
 			loss_res += self.l3_regul_rate * self.model.l3_regularization()
 		return loss_res
 
-def get_negative_sampling_hpo_config():
+def get_negative_sampling_hpo_config() -> dict[str, dict[str, Any]]:
 
 	"""返回 :py:class:`NegativeSampling` 的默认超参数优化配置。
 	
@@ -143,7 +152,10 @@ def get_negative_sampling_hpo_config():
 			'l3_regul_rate': {
 				'value': 0.0
 			}
-		}	
+		}
+	
+	:returns: :py:class:`NegativeSampling` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
 	"""
 
 	parameters_dict = {
