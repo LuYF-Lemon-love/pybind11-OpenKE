@@ -17,7 +17,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Any
 from .Model import Model
-from torch.nn import Embedding
+from typing_extensions import override
 
 class TransE(Model):
 
@@ -100,9 +100,9 @@ class TransE(Model):
 		self.norm_flag: bool = norm_flag
 		
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings: Embedding = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings: Embedding = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
@@ -151,17 +151,18 @@ class TransE(Model):
 		# 利用距离函数计算得分
 		score = torch.norm(score, self.p_norm, -1).flatten()
 		return score
-
+	
+	@override
 	def forward(
 		self,
-		data: dict[str, torch.Tensor]) -> torch.Tensor:
+		data: dict[str, torch.Tensor | str]) -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict[str, torch.Tensor]
+		:type data: dict[str, torch.Tensor | str]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -178,12 +179,12 @@ class TransE(Model):
 
 	def regularization(
 		self,
-		data: dict[str, torch.Tensor]) -> torch.Tensor:
+		data: dict[str, torch.Tensor | str]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict[str, torch.Tensor]
+		:type data: dict[str, torch.Tensor | str]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -199,14 +200,15 @@ class TransE(Model):
 				 torch.mean(r ** 2)) / 3
 		return regul
 
+	@override
 	def predict(
 		self,
-		data: dict[str, torch.Tensor]) -> np.ndarray:
+		data: dict[str, torch.Tensor | str]) -> np.ndarray:
 		
 		"""TransE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict[str, torch.Tensor]
+		:type data: dict[str, torch.Tensor | str]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""

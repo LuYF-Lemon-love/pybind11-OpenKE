@@ -118,13 +118,13 @@ class NegativeSampling(Strategy):
 		negative_score = negative_score.view(-1, self.batch_size).permute(1, 0)
 		return negative_score
 
-	def forward(self, data: dict[str, torch.Tensor]) -> torch.Tensor:
+	def forward(self, data: dict[str, torch.Tensor | str]) -> torch.Tensor:
 		
 		"""计算最后的损失值。定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据
-		:type data: dict[str, torch.Tensor]
+		:type data: dict[str, torch.Tensor | str]
 		:returns: 损失值
 		:rtype: torch.Tensor
 		"""
