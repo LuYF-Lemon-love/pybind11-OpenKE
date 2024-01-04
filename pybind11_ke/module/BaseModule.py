@@ -27,11 +27,11 @@ class BaseModule(nn.Module):
 		super(BaseModule, self).__init__()
 
 		#: 常数 0
-		self.zero_const = nn.Parameter(torch.Tensor([0]))
+		self.zero_const: torch.nn.Parameter = nn.Parameter(torch.Tensor([0]))
 		self.zero_const.requires_grad = False
 
 		#: 常数 pi
-		self.pi_const = nn.Parameter(torch.Tensor([3.14159265358979323846]))
+		self.pi_const: torch.nn.Parameter = nn.Parameter(torch.Tensor([3.14159265358979323846]))
 		self.pi_const.requires_grad = False
 
 	def load_checkpoint(self, path: str):
@@ -65,10 +65,10 @@ class BaseModule(nn.Module):
 
 		"""获得模型权重。
 
-		:param mode: 模型保存的格式，可以选择 ``numpy``、``list`` 和 ``Tensor``。
+		:param mode: 模型保存的格式，可以选择 ``numpy`` 、 ``list`` 和 ``Tensor`` 。
 		:type path: str
 		:param param_dict: 可以选择从哪里获得模型权重。
-		:type param_dict: dict[str, Any] | None
+		:type param_dict: dict[str, typing.Any] | None
 		:returns: 模型权重字典。
 		:rtype: dict[str, numpy.ndarray] | dict[str, list] | dict[str, torch.Tensor]
 		"""
@@ -91,7 +91,7 @@ class BaseModule(nn.Module):
 		"""加载模型权重。
 
 		:param parameters: 模型权重字典。
-		:type parameters: dict[str, Any]
+		:type parameters: dict[str, typing.Any]
 		"""
 
 		for i in parameters:
