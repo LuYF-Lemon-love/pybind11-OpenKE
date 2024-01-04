@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
 # 
 # 该头文件定义了 TransE.
 
@@ -12,9 +12,12 @@ TransE - 第一个平移模型，简单而且高效。
 """
 
 import torch
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
+from typing import Any
 from .Model import Model
+from torch.nn import Embedding
 
 class TransE(Model):
 
@@ -63,8 +66,13 @@ class TransE(Model):
 		trainer.run()
 	"""
 
-	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,
-		norm_flag = True):
+	def __init__(
+		self,
+		ent_tot: int,
+		rel_tot: int,
+		dim: int = 100,
+		p_norm: int = 1,
+		norm_flag: bool = True):
 		
 		"""创建 TransE 对象。
 
@@ -84,22 +92,27 @@ class TransE(Model):
 		super(TransE, self).__init__(ent_tot, rel_tot)
 		
 		#: 实体和关系嵌入向量的维度
-		self.dim = dim
+		self.dim: int = dim
 		#: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
-		self.p_norm = p_norm
+		self.p_norm: int = p_norm
 		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
 		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
-		self.norm_flag = norm_flag
+		self.norm_flag: bool = norm_flag
 		
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_embeddings: Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_embeddings: Embedding = nn.Embedding(self.rel_tot, self.dim)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
-	def _calc(self, h, t, r, mode):
+	def _calc(
+		self,
+		h: torch.Tensor,
+		t: torch.Tensor,
+		r: torch.Tensor,
+		mode: str) -> torch.Tensor:
 
 		"""计算 TransE 的评分函数。
 		
@@ -139,14 +152,16 @@ class TransE(Model):
 		score = torch.norm(score, self.p_norm, -1).flatten()
 		return score
 
-	def forward(self, data):
+	def forward(
+		self,
+		data: dict[str, torch.Tensor]) -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, torch.Tensor]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -161,12 +176,14 @@ class TransE(Model):
 		score = self._calc(h ,t, r, mode)
 		return score
 
-	def regularization(self, data):
+	def regularization(
+		self,
+		data: dict[str, torch.Tensor]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, torch.Tensor]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -182,12 +199,14 @@ class TransE(Model):
 				 torch.mean(r ** 2)) / 3
 		return regul
 
-	def predict(self, data):
+	def predict(
+		self,
+		data: dict[str, torch.Tensor]) -> np.ndarray:
 		
 		"""TransE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, torch.Tensor]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
@@ -195,7 +214,7 @@ class TransE(Model):
 		score = self.forward(data)
 		return score.cpu().data.numpy()
 
-def get_transe_hpo_config():
+def get_transe_hpo_config() -> dict[str, dict[str, Any]]:
 
 	"""返回 :py:class:`TransE` 的默认超参数优化配置。
 	
@@ -215,6 +234,9 @@ def get_transe_hpo_config():
 				'value': True
 			}
 		}
+
+	:returns: :py:class:`TransE` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
 	"""
 
 	parameters_dict = {

@@ -124,7 +124,7 @@ class NegativeSampling(Strategy):
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据
-		:type data: dict
+		:type data: dict[str, torch.Tensor]
 		:returns: 损失值
 		:rtype: torch.Tensor
 		"""

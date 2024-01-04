@@ -15,6 +15,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from typing import Any
+from torch.nn import Parameter
 
 class BaseModule(nn.Module):
 
@@ -27,7 +28,7 @@ class BaseModule(nn.Module):
 		super(BaseModule, self).__init__()
 
 		#: 常数 0
-		self.zero_const: torch.nn.Parameter = nn.Parameter(torch.Tensor([0]))
+		self.zero_const: Parameter = nn.Parameter(torch.Tensor([0]))
 		self.zero_const.requires_grad = False
 
 		#: 常数 pi
