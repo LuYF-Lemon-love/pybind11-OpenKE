@@ -12,7 +12,7 @@ NegativeSampling - 训练策略类，包含损失函数。
 """
 
 import torch
-from typing import Any
+import typing
 from ..loss import Loss
 from ..model import Model
 from .Strategy import Strategy
@@ -118,13 +118,13 @@ class NegativeSampling(Strategy):
 		negative_score = negative_score.view(-1, self.batch_size).permute(1, 0)
 		return negative_score
 
-	def forward(self, data: dict[str, torch.Tensor | str]) -> torch.Tensor:
+	def forward(self, data: dict[str, typing.Union[torch.Tensor,str]]) -> torch.Tensor:
 		
 		"""计算最后的损失值。定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据
-		:type data: dict[str, torch.Tensor | str]
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 损失值
 		:rtype: torch.Tensor
 		"""
@@ -139,7 +139,7 @@ class NegativeSampling(Strategy):
 			loss_res += self.l3_regul_rate * self.model.l3_regularization()
 		return loss_res
 
-def get_negative_sampling_hpo_config() -> dict[str, dict[str, Any]]:
+def get_negative_sampling_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`NegativeSampling` 的默认超参数优化配置。
 	

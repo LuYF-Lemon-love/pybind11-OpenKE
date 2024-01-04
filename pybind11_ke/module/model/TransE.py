@@ -12,10 +12,10 @@ TransE - 第一个平移模型，简单而且高效。
 """
 
 import torch
+import typing
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Any
 from .Model import Model
 from typing_extensions import override
 
@@ -155,14 +155,14 @@ class TransE(Model):
 	@override
 	def forward(
 		self,
-		data: dict[str, torch.Tensor | str]) -> torch.Tensor:
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict[str, torch.Tensor | str]
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -179,12 +179,12 @@ class TransE(Model):
 
 	def regularization(
 		self,
-		data: dict[str, torch.Tensor | str]) -> torch.Tensor:
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict[str, torch.Tensor | str]
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -203,12 +203,12 @@ class TransE(Model):
 	@override
 	def predict(
 		self,
-		data: dict[str, torch.Tensor | str]) -> np.ndarray:
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
 		
 		"""TransE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict[str, torch.Tensor | str]
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
@@ -216,7 +216,7 @@ class TransE(Model):
 		score = self.forward(data)
 		return score.cpu().data.numpy()
 
-def get_transe_hpo_config() -> dict[str, dict[str, Any]]:
+def get_transe_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`TransE` 的默认超参数优化配置。
 	
