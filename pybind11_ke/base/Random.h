@@ -10,11 +10,10 @@
 #include <random>
 
 // 所有线程的随机种子.
-std::random_device rd;
 std::vector<std::mt19937_64> gens;
 std::vector<std::uniform_int_distribution<INT>> dists;
 
-std::mt19937_64 gen{rd()};
+std::mt19937_64 gen{std::random_device{}()};
 std::uniform_int_distribution<INT> dist{0, 10};
 
 // 生成一个 [a,b) 范围内的随机整数.
@@ -25,6 +24,7 @@ INT rand(INT a, INT b){
 
 // 重新设定所有线程的随机种子.
 void rand_reset() {
+	std::random_device rd;
 	for (INT i = 0; i < work_threads; i++) {
 		gens.emplace_back(rd());
 		dists.emplace_back(0, 10);

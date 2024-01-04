@@ -23,8 +23,8 @@ REAL rel3_tot = 0, rel3_filter_tot = 0, rel_filter_tot = 0, rel_filter_rank = 0,
 
 REAL l1_filter_tot_constrain = 0, l1_tot_constrain = 0, r1_tot_constrain = 0, r1_filter_tot_constrain = 0, l10_tot_constrain = 0, r10_tot_constrain = 0, l_filter_rank_constrain = 0, l_rank_constrain = 0, l_filter_reci_rank_constrain = 0, l_reci_rank_constrain = 0;
 REAL l3_filter_tot_constrain = 0, l3_tot_constrain = 0, r3_tot_constrain = 0, r3_filter_tot_constrain = 0, l10_filter_tot_constrain = 0, r10_filter_tot_constrain = 0, r_filter_rank_constrain = 0, r_rank_constrain = 0, r_filter_reci_rank_constrain = 0, r_reci_rank_constrain = 0;
-REAL hit1, hit3, hit10, mr, mrr;
-REAL hit1TC, hit3TC, hit10TC, mrTC, mrrTC;
+REAL hit1 = 0, hit3 = 0, hit10 = 0, mr = 0, mrr = 0;
+REAL hit1TC = 0, hit3TC = 0, hit10TC = 0, mrTC = 0, mrrTC = 0;
 
 void init_test() {
     last_head = 0;

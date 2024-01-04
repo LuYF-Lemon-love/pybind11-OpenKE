@@ -16,3 +16,5 @@ sphinx-prompt
     # self add
 sphinxcontrib-katex
     # self add
+typing-extensions
+    # self add
