@@ -3,6 +3,7 @@
 # pybind11_ke/utils/Timer.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 6, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
 #
 # 该脚本定义了计时器类.
 
@@ -20,16 +21,20 @@ class Timer:
 
         """创建 Timer 对象。"""
 
-        self.times = []
+        #: 存放时间间隔的列表
+        self.times: list[float] = []
         self.restart()
 
     def restart(self):
 
         """重启计时器。"""
-        
-        self.current = self.last = time.time()
 
-    def stop(self):
+        #: 记录当前时间
+        self.current: float = time.time()
+        #: 记录上一次的时间
+        self.last: float = self.current
+
+    def stop(self) -> float:
 
         """停止计时器并将时间记录在列表中。
         
@@ -42,7 +47,7 @@ class Timer:
         self.last = self.current
         return self.times[-1]
 
-    def avg(self):
+    def avg(self) -> float:
 
         """返回平均时间。
         
@@ -52,7 +57,7 @@ class Timer:
         
         return sum(self.times) / len(self.times)
 
-    def sum(self):
+    def sum(self) -> float:
 
         """返回时间总和。
         

@@ -50,6 +50,7 @@
    :caption: TransH
 
    experiments/TransH/single_gpu_transh_FB15K237
+   experiments/TransH/single_gpu_transh_FB15K237_wandb
    experiments/TransH/multigpu_transh_FB15K237
 
 .. toctree::
