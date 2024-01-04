@@ -3,16 +3,18 @@
 # pybind11_ke/module/BaseModule.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
 # 
 # 该头文件定义了 BaseModule.
 
 """BaseModule - 所有模块的基类"""
 
-import torch
-import torch.nn as nn
 import os
 import json
+import torch
+import torch.nn as nn
+import numpy as np
+from typing import Any
 
 class BaseModule(nn.Module):
 
@@ -32,7 +34,7 @@ class BaseModule(nn.Module):
 		self.pi_const = nn.Parameter(torch.Tensor([3.14159265358979323846]))
 		self.pi_const.requires_grad = False
 
-	def load_checkpoint(self, path):
+	def load_checkpoint(self, path: str):
 		
 		"""加载模型权重。
 
@@ -43,7 +45,7 @@ class BaseModule(nn.Module):
 		self.load_state_dict(torch.load(os.path.join(path)))
 		self.eval()
 
-	def save_checkpoint(self, path):
+	def save_checkpoint(self, path: str):
 
 		"""保存模型权重。
 
@@ -55,16 +57,20 @@ class BaseModule(nn.Module):
 			os.makedirs(os.path.split(path)[0], exist_ok=True)
 		torch.save(self.state_dict(), path)
 
-	def get_parameters(self, mode = "numpy", param_dict = None):
+	def get_parameters(
+		self,
+		mode: str = "numpy",
+		param_dict: dict[str, Any] | None = None
+		) -> dict[str, np.ndarray] | dict[str, list] | dict[str, torch.Tensor]:
 
 		"""获得模型权重。
 
 		:param mode: 模型保存的格式，可以选择 ``numpy``、``list`` 和 ``Tensor``。
 		:type path: str
 		:param param_dict: 可以选择从哪里获得模型权重。
-		:type param_dict: dict
+		:type param_dict: dict[str, Any] | None
 		:returns: 模型权重字典。
-		:rtype: dict
+		:rtype: dict[str, numpy.ndarray] | dict[str, list] | dict[str, torch.Tensor]
 		"""
 
 		all_param_dict = self.state_dict()
@@ -80,12 +86,12 @@ class BaseModule(nn.Module):
 				res[param] = all_param_dict[param]
 		return res
 
-	def set_parameters(self, parameters):
+	def set_parameters(self, parameters: dict[str, Any]):
 		
 		"""加载模型权重。
 
 		:param parameters: 模型权重字典。
-		:type parameters: dict
+		:type parameters: dict[str, Any]
 		"""
 
 		for i in parameters:
@@ -93,7 +99,7 @@ class BaseModule(nn.Module):
 		self.load_state_dict(parameters, strict = False)
 		self.eval()
 
-	def load_parameters(self, path):
+	def load_parameters(self, path: str):
 
 		"""加载模型权重。
 
@@ -109,9 +115,9 @@ class BaseModule(nn.Module):
 		self.load_state_dict(parameters, strict = False)
 		self.eval()
 
-	def save_parameters(self, path):
+	def save_parameters(self, path: str):
 
-		"""保存模型权重。
+		"""用 json 格式保存模型权重。
 
 		:param path: 模型保存的路径
 		:type path: str

@@ -16,7 +16,7 @@ def import_class(module_and_class_name: str) -> type:
     :param module_and_class_name: 模块和类名，如 ``pybind11_ke.module.model.TransE`` 。
     :type module_and_class_name: str
     :returns: 类名
-    :rtype: class
+    :rtype: type
     """
 
     module_name, class_name = module_and_class_name.rsplit(".", 1)

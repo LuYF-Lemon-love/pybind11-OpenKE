@@ -18,9 +18,9 @@ class WandbLogger:
     """使用 Weights and Biases 记录实验结果。"""
 
     def __init__(self,
-        project="pybind11-ke",
-        name="transe",
-        config=None):
+        project: str ="pybind11-ke",
+        name: str = "transe",
+        config: dict | None = None):
 
         """创建 WandbLogger 对象。
 
@@ -29,7 +29,7 @@ class WandbLogger:
 		:param name: wandb 的 run name
 		:type name: str
 		:param config: wandb 的项目配置如超参数。
-		:type config: dict
+		:type config: dict | None
 		"""
 
         wandb.login()

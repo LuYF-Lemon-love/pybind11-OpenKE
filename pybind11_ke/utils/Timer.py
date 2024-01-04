@@ -23,16 +23,18 @@ class Timer:
 
         #: 存放时间间隔的列表
         self.times: list[float] = []
+        #: 记录当前时间
+        self.current: float = None
+        #: 记录上一次的时间
+        self.last: float = None
+
         self.restart()
 
     def restart(self):
 
         """重启计时器。"""
 
-        #: 记录当前时间
-        self.current: float = time.time()
-        #: 记录上一次的时间
-        self.last: float = self.current
+        self.last = self.current = time.time()
 
     def stop(self) -> float:
 
