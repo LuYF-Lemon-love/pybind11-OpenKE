@@ -72,6 +72,8 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 - 能够利用 `wandb <https://wandb.ai/>`_ 输出日志。
 
+- 实现了早停止。
+
 支持的知识图谱嵌入模型：
 
 - RESCAL: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__ .
