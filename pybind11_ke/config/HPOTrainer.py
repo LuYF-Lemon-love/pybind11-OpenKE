@@ -3,7 +3,7 @@
 # pybind11_ke/config/HPOTrainer.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 2, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2023
 #
 # 该脚本定义了并行训练循环函数.
 
@@ -12,23 +12,24 @@ hpo_train - 超参数优化训练循环函数。
 """
 
 import wandb
+import typing
 from ..data import TrainDataLoader, TestDataLoader
 from ..utils import import_class
 from ..module.strategy import NegativeSampling
 from ..config import Trainer, Tester
 
 def set_hpo_config(
-	method = 'bayes',
-	sweep_name = 'pybind11_ke_hpo',
-	metric_name = 'val/hit10',
-	metric_goal = 'maximize',
-	train_data_loader_config = None,
-	kge_config = None,
-	loss_config = None,
-	strategy_config = None,
-	test_data_loader_config = None,
-	tester_config = None,
-	trainer_config = None):
+	method: str = 'bayes',
+	sweep_name: str = 'pybind11_ke_hpo',
+	metric_name: str = 'val/hit10',
+	metric_goal: str = 'maximize',
+	train_data_loader_config: dict[str, dict[str, typing.Any]] | None = None,
+	kge_config: dict[str, dict[str, typing.Any]] | None = None,
+	loss_config: dict[str, dict[str, typing.Any]] | None = None,
+	strategy_config: dict[str, dict[str, typing.Any]] | None = None,
+	test_data_loader_config: dict[str, dict[str, typing.Any]] | None = None,
+	tester_config: dict[str, dict[str, typing.Any]] | None = None,
+	trainer_config: dict[str, dict[str, typing.Any]] | None = None) -> dict[str, dict[str, typing.Any]]:
 
 	"""设置超参数优化范围。
 	
@@ -58,17 +59,17 @@ def set_hpo_config(
 	:rtype: dict
 	"""
 
-	sweep_config = {
+	sweep_config: dict[str, str] = {
 		'method': method,
 		'name': sweep_name
 	}
 
-	metric = {
+	metric: dict[str, str] = {
 		'name': metric_name,
 		'goal': metric_goal
 	}
 
-	parameters_dict = {}
+	parameters_dict: dict[str, dict[str, typing.Any]] | None = {}
 	parameters_dict.update(train_data_loader_config)
 	parameters_dict.update(kge_config)
 	parameters_dict.update(loss_config)
@@ -82,7 +83,10 @@ def set_hpo_config(
 
 	return sweep_config
 
-def start_hpo_train(config = None, project = "pybind11-ke-sweeps", count = 2):
+def start_hpo_train(
+	config: dict[str, dict[str, typing.Any]] | None = None,
+	project: str = "pybind11-ke-sweeps",
+	count: int = 2):
 
 	"""开启超参数优化。
 	
@@ -100,15 +104,15 @@ def start_hpo_train(config = None, project = "pybind11-ke-sweeps", count = 2):
 
 	wandb.agent(sweep_id, hpo_train, count=count)
 
-def hpo_train(config=None):
+def hpo_train(config: dict[str, typing.Any] | None = None):
 
 	"""超参数优化训练循环函数。
 	
 	:param config: wandb 的项目配置如超参数。
-	:type config: dict
+	:type config: dict[str, typing.Any] | None
 	"""
 	
-	with wandb.init(config=config):
+	with wandb.init(config = config):
 		
 		config = wandb.config
 
