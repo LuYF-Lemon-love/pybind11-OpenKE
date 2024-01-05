@@ -27,7 +27,7 @@ class TrainDataSampler(object):
 	def __init__(
 		self,
 		nbatches: int,
-		sampler: Callable[[], dict[str, typing.Union[torch.Tensor,str]]]):
+		sampler: Callable[[], dict[str, typing.Union[torch.Tensor, str]]]):
 
 		"""创建 TrainDataSample 对象。
 		
@@ -42,7 +42,7 @@ class TrainDataSampler(object):
 		self.nbatches: int = nbatches
 		#: :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 
 		#: 或 :py:meth:`pybind11_ke.data.TrainDataLoader.cross_sampling` 函数
-		self.sampler: Callable[[], dict[str, typing.Union[torch.Tensor,str]]] = sampler
+		self.sampler: Callable[[], dict[str, typing.Union[torch.Tensor, str]]] = sampler
 		self.batch: int = 0
 
 	def __iter__(self):
@@ -51,12 +51,12 @@ class TrainDataSampler(object):
 
 		return self
 
-	def __next__(self) -> dict[str, typing.Union[torch.Tensor,str]]:
+	def __next__(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
 		"""迭代器函数 :py:meth:`iterator.__next__`
 		
 		:returns: 采样一批数据
-		:rtype: dict[str, typing.Union[torch.Tensor,str]]
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
 		"""
 
 		self.batch += 1 
@@ -235,12 +235,12 @@ class TrainDataLoader(object):
 		self.batch_r = np.zeros(self.batch_seq_size, dtype=np.int64)
 		self.batch_y = np.zeros(self.batch_seq_size, dtype=np.float32)
 
-	def sampling(self) -> dict[str, typing.Union[torch.Tensor,str]]:
+	def sampling(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
 		"""正常采样1 batch 数据，即 ``normal``
 		
 		:returns: 1 batch 数据
-		:rtype: dict[str, typing.Union[torch.Tensor,str]]
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
@@ -253,12 +253,12 @@ class TrainDataLoader(object):
 			"mode": "normal"
 		}
 
-	def sampling_head(self) -> dict[str, typing.Union[torch.Tensor,str]]:
+	def sampling_head(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
 		"""只替换 head 进行负采样, 生成 1 batch 数据
 
 		:returns: 1 batch 数据
-		:rtype: dict[str, typing.Union[torch.Tensor,str]]
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
@@ -271,12 +271,12 @@ class TrainDataLoader(object):
 			"mode": "head_batch"
 		}
 
-	def sampling_tail(self) -> dict[str, typing.Union[torch.Tensor,str]]:
+	def sampling_tail(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
 		"""只替换 tail 进行负采样, 生成 1 batch 数据
 		
 		:returns: 1 batch 数据
-		:rtype: dict[str, typing.Union[torch.Tensor,str]]
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
 		"""
 
 		base.sampling(self.batch_h, self.batch_t, self.batch_r, self.batch_y,
@@ -289,12 +289,12 @@ class TrainDataLoader(object):
 			"mode": "tail_batch"
 		}
 
-	def cross_sampling(self) -> dict[str, typing.Union[torch.Tensor,str]]:
+	def cross_sampling(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
 		"""交替替换 head 和 tail 进行负采样, 生成 1 batch 数据
 		
 		:returns: 1 batch 数据
-		:rtype: dict[str, typing.Union[torch.Tensor,str]]
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
 		"""
 
 		self.cross_sampling_flag = 1 - self.cross_sampling_flag 

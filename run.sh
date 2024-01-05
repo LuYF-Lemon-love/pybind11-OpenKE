@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "torch.nn.parameter.Parameter 类型提示"
+git commit -m "TrainDataLoader 类型提示"
 git push

@@ -3,7 +3,7 @@
 # pybind11_ke/data/TestDataLoader.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
 #
 # 该脚本定义了采样数据的函数, 用于验证模型.
 
@@ -12,14 +12,20 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 """
 
 import base
+import torch
+import typing
 import numpy as np
+from collections.abc import Callable
 
 class TestDataSampler(object):
 
 	"""将 :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 进行封装。
 	"""
 
-	def __init__(self, data_total, sampler):
+	def __init__(
+		self,
+		data_total: int,
+		sampler: Callable[[], dict[str, typing.Union[torch.Tensor, str]]]):
 
 		"""创建 TestDataSampler 对象
 
@@ -30,10 +36,10 @@ class TestDataSampler(object):
 		"""
 
 		#: 测试集多少个三元组
-		self.data_total = data_total
+		self.data_total: int = data_total
 		#: :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 函数
-		self.sampler = sampler
-		self.total = 0
+		self.sampler: Callable[[], dict[str, typing.Union[torch.Tensor, str]]] = sampler
+		self.total: int = 0
 
 	def __iter__(self):
 
@@ -41,16 +47,21 @@ class TestDataSampler(object):
 
 		return self
 
-	def __next__(self):
+	def __next__(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
-		"""迭代器函数 :py:meth:`iterator.__next__`"""
+		"""
+		迭代器函数 :py:meth:`iterator.__next__`
+		
+		:returns: 采样一批数据
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
+		"""
 
 		self.total += 1 
 		if self.total > self.data_total:
 			raise StopIteration()
 		return self.sampler()
 
-	def __len__(self):
+	def __len__(self) -> int:
 
 		"""len() 要求 :py:meth:`object.__len__`
 		
@@ -77,9 +88,16 @@ class TestDataLoader(object):
 		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
 	"""
 
-	def __init__(self, in_path = "./", ent_file = "entity2id.txt", rel_file = "relation2id.txt",
-		train_file = "train2id.txt", valid_file = "valid2id.txt", test_file = "test2id.txt",
-		sampling_mode = 'link_test', type_constrain = True):
+	def __init__(
+		self,
+		in_path: str = "./",
+		ent_file: str = "entity2id.txt",
+		rel_file: str = "relation2id.txt",
+		train_file: str = "train2id.txt",
+		valid_file: str = "valid2id.txt",
+		test_file: str = "test2id.txt",
+		sampling_mode: str = 'link_test',
+		type_constrain: bool = True):
 
 		"""创建 TestDataLoader 对象。
 
@@ -102,37 +120,37 @@ class TestDataLoader(object):
 		"""
 
 		#: 数据集目录
-		self.in_path = in_path
+		self.in_path: str = in_path
 		#: entity2id.txt
-		self.ent_file = ent_file
+		self.ent_file: str = ent_file
 		#: relation2id.txt
-		self.rel_file = rel_file
+		self.rel_file: str = rel_file
 		#: train2id.txt
-		self.train_file = train_file
+		self.train_file: str = train_file
 		#: valid2id.txt
-		self.valid_file = valid_file
+		self.valid_file: str = valid_file
 		#: test2id.txt
-		self.test_file = test_file
+		self.test_file: str = test_file
 		#: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
-		self.sampling_mode = sampling_mode
+		self.sampling_mode: str = sampling_mode
 		#: 是否用 type_constrain.txt 进行负采样
-		self.type_constrain = type_constrain
+		self.type_constrain: bool = type_constrain
 
 		#: 实体的个数
-		self.ent_tol = 0
+		self.ent_tol: int = 0
 		#: 关系的个数
-		self.rel_tol = 0
+		self.rel_tol: int = 0
 		#: 测试集三元组的个数
-		self.test_tol = 0
+		self.test_tol: int = 0
 		#: 验证集三元组的个数
-		self.valid_tol = 0
+		self.valid_tol: int = 0
 
 		# 读入数据
 		self.read()
 
 	def read(self):
 
-		"""利用 ``pybind11`` 让底层 C++ 模块读取数据集中的数据"""
+		"""利用 `pybind11 <https://github.com/pybind/pybind11>`__ 让底层 C++ 模块读取数据集中的数据"""
 
 		print("Start reading validation and testing data...")
 
@@ -169,13 +187,13 @@ class TestDataLoader(object):
 		self.test_neg_r = np.zeros(self.test_tol, dtype=np.int64)
 
 	# 为链接预测进行采样数据
-	def sampling(self):
+	def sampling(self) -> dict[str, typing.Union[torch.Tensor, str]]:
 
 		"""为链接预测进行采样数据，为给定的正三元组，用所有实体依次替换头尾实体得到
 		2 * :py:attr:`ent_tol` 个三元组。
 		
 		:returns: 对于一个正三元组生成的所有可能破化的三元组
-		:rtype: dict
+		:rtype: dict[str, typing.Union[torch.Tensor, str]]
 		"""
 
 		res = []
@@ -195,7 +213,7 @@ class TestDataLoader(object):
 		})
 		return res
 
-	def get_ent_tol(self):
+	def get_ent_tol(self) -> int:
 
 		"""返回 :py:attr:`ent_tol`
 
@@ -205,7 +223,7 @@ class TestDataLoader(object):
 		
 		return self.ent_tol
 
-	def get_rel_tol(self):
+	def get_rel_tol(self) -> int:
 
 		"""返回 :py:attr:`rel_tol`
 
@@ -215,7 +233,7 @@ class TestDataLoader(object):
 
 		return self.rel_tol
 
-	def get_test_tol(self):
+	def get_test_tol(self) -> int:
 
 		"""返回 :py:attr:`test_tol`
 
@@ -225,7 +243,7 @@ class TestDataLoader(object):
 
 		return self.test_tol
 
-	def get_valid_tol(self):
+	def get_valid_tol(self) -> int:
 
 		"""返回 :py:attr:`test_tol`
 
@@ -235,7 +253,7 @@ class TestDataLoader(object):
 
 		return self.valid_tol
 
-	def set_sampling_mode(self, sampling_mode):
+	def set_sampling_mode(self, sampling_mode: str):
 
 		"""设置 :py:attr:`sampling_mode`
 		
@@ -245,7 +263,7 @@ class TestDataLoader(object):
 
 		self.sampling_mode = sampling_mode
 
-	def __iter__(self):
+	def __iter__(self) -> TestDataSampler:
 
 		"""迭代器函数 :py:meth:`iterator.__iter__`，
 		根据 :py:attr:`sampling_mode` 决定是评估验证集还是测试集。"""
@@ -259,7 +277,7 @@ class TestDataLoader(object):
 		else:
 			raise ValueError("pybind11_ke.data.TestDataLoader.sampling can only be a link_test or link_valid.")
 
-	def __len__(self):
+	def __len__(self) -> int:
 		
 		"""len() 要求 :py:meth:`object.__len__`
 		
@@ -272,7 +290,7 @@ class TestDataLoader(object):
 		elif self.sampling_mode == "link_valid":
 			return self.valid_tol
 
-def get_test_data_loader_hpo_config():
+def get_test_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`TestDataLoader` 的默认超参数优化配置。
 	
@@ -295,6 +313,9 @@ def get_test_data_loader_hpo_config():
 				'value': 0
 			}
 		}
+
+	:returns: :py:class:`TestDataLoader` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
 	"""
 
 	parameters_dict = {

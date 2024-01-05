@@ -16,6 +16,7 @@ pybind11_ke.data
     :nosignatures:
     :template: classtemplate.rst
 
+    TrainDataSampler
     TrainDataLoader
 
 评估数据加载器
@@ -26,6 +27,7 @@ pybind11_ke.data
     :nosignatures:
     :template: classtemplate.rst
 
+    TestDataSampler
     TestDataLoader
 
 超参数优化默认搜索范围
