@@ -28,6 +28,16 @@ pybind11_ke.utils
 
     WandbLogger
 
+早停止类
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: classtemplate.rst
+
+    EarlyStopping
+
 导入模块类函数
 ----------------------------------
 
