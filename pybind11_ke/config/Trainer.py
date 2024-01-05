@@ -96,7 +96,7 @@ class Trainer(object):
 		self.gpu_id: int | None = gpu_id
 		
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-		self.model: DDP | NegativeSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
+		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
 		self.data_loader: TrainDataLoader | None = data_loader
@@ -108,14 +108,14 @@ class Trainer(object):
 		#: 用户传入的优化器名字字符串
 		self.opt_method: str = opt_method
 		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
-		self.optimizer: optim.SGD | optim.Adam | None = None
+		self.optimizer: torch.optim.SGD | torch.optim.Adam | None = None
 		#: 学习率调度器
 		self.scheduler: torch.optim.lr_scheduler.MultiStepLR | None = None
 
 		#: 是否使用 gpu
 		self.use_gpu: bool = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
-		self.device: torch.device | str = torch.device(device) if self.use_gpu else "cpu"
+		self.device: torch.Tensor.device | str = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
 		self.tester: Tester | None = tester
