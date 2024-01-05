@@ -114,8 +114,8 @@ class Trainer(object):
 
 		#: 是否使用 gpu
 		self.use_gpu: bool = use_gpu
-		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
-		self.device: torch.Tensor.device | str = torch.device(device) if self.use_gpu else "cpu"
+		#: gpu，利用 ``device`` 构造的 :py:class:`torch.torch.device` 对象
+		self.device: torch.torch.device | str = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
 		self.tester: Tester | None = tester
