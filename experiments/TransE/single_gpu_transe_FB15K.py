@@ -96,5 +96,6 @@ tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, d
 trainer = Trainer(model = model, data_loader = train_dataloader,
 	epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
 	tester = tester, test = True, valid_interval = 100,
-	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+	log_interval = 100, save_interval = 100,
+	save_path = '../../checkpoint/transe.pth', delta = 0.01)
 trainer.run()

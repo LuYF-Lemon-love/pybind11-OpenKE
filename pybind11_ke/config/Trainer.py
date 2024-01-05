@@ -16,10 +16,12 @@ import wandb
 import typing
 import torch
 import numpy as np
+from . import Tester
 import torch.optim as optim
 from ..utils.Timer import Timer
+from ..module.model import Model
 from ..data import TrainDataLoader
-from . import Tester
+from ..utils.EarlyStopping import EarlyStopping
 from ..module.strategy import NegativeSampling
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -55,6 +57,10 @@ class Trainer(object):
 		log_interval: int | None = None,
 		save_interval: int | None = None,
 		save_path: str | None = None,
+		use_early_stopping: bool = True,
+		metric: str = 'hit10',
+		patience: int = 2,
+		delta: float = 0,
 		use_wandb: bool = False,
 		gpu_id: int | None = None):
 
@@ -86,6 +92,15 @@ class Trainer(object):
 		:type save_interval: int
 		:param save_path: 模型保存的路径
 		:type save_path: str
+		:param use_early_stopping: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
+		:type use_early_stopping: bool
+		:param metric: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
+			'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。默认值：'hit10'
+		:type metric: str
+		:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
+		:type patience: int
+		:param delta: :py:attr:`pybind11_ke.utils.EarlyStopping.delta` 参数，监测数量的最小变化才符合改进条件。默认值：0
+		:type delta: float
 		:param use_wandb: 是否启用 wandb 进行日志输出
 		:type use_wandb: bool
 		:param gpu_id: 第几个 gpu，用于并行训练
@@ -130,6 +145,19 @@ class Trainer(object):
 		self.save_interval: int | None = save_interval
 		#: 模型保存的路径
 		self.save_path: str | None = save_path
+
+		#: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
+		self.use_early_stopping: bool = use_early_stopping
+		#: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
+		#: 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。默认值：'hit10'
+		self.metric: str = metric
+		#: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
+		self.patience: int = patience
+		#: :py:attr:`pybind11_ke.utils.EarlyStopping.delta` 参数，监测数量的最小变化才符合改进条件。默认值：0
+		self.delta: float = delta
+		#: 早停对象
+		self.early_stopping: EarlyStopping = None
+
 		#: 是否启用 wandb 进行日志输出
 		self.use_wandb: bool = use_wandb
 
@@ -187,6 +215,12 @@ class Trainer(object):
 		if self.gpu_id is None and self.use_gpu:
 			self.model.cuda(device = self.device)
 
+		if self.use_early_stopping and self.tester is not None and self.save_path is not None:
+			self.early_stopping = EarlyStopping(
+				save_path = os.path.split(self.save_path)[0],
+				patience = self.patience,
+				delta = self.delta)
+
 		self.configure_optimizers()
 		
 		if self.gpu_id is not None or self.use_gpu:
@@ -242,23 +276,43 @@ class Trainer(object):
 							"val/hit3" : hit3,
 							"val/hit10" : hit10,
 						})
+				if self.early_stopping is not None:
+					if self.metric == 'mr':
+						self.early_stopping(-mr, self.get_model())
+					elif self.metric == 'mrr':
+						self.early_stopping(mrr, self.get_model())
+					elif self.metric == 'hit1':
+						self.early_stopping(hit1, self.get_model())
+					elif self.metric == 'hit3':
+						self.early_stopping(hit3, self.get_model())
+					elif self.metric == 'hit10':
+						self.early_stopping(hit10, self.get_model())
+					elif self.metric == 'mrTC':
+						self.early_stopping(-mrTC, self.get_model())
+					elif self.metric == 'mrrTC':
+						self.early_stopping(mrrTC, self.get_model())
+					elif self.metric == 'hit1TC':
+						self.early_stopping(hit1TC, self.get_model())
+					elif self.metric == 'hit3TC':
+						self.early_stopping(hit3TC, self.get_model())
+					elif self.metric == 'hit10TC':
+						self.early_stopping(hit10TC, self.get_model())
+					else:
+						raise ValueError("Early stopping metric is not valid.")
+			if self.early_stopping is not None and self.early_stopping.early_stop:
+				print("Early stopping")
+				break
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
 				print(f"[{self.print_device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | Steps: {self.data_loader.nbatches} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			if (self.gpu_id is None or self.gpu_id == 0) and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
-				if self.gpu_id == 0:
-					self.model.module.model.save_checkpoint(path)
-				else:
-					self.model.model.save_checkpoint(path)
+				self.get_model().save_checkpoint(path)
 				print(f"[{self.print_device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		print(f"[{self.print_device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
 		if (self.gpu_id is None or self.gpu_id == 0) and self.save_path:
-			if self.gpu_id == 0:
-				self.model.module.model.save_checkpoint(self.save_path)
-			else:
-				self.model.model.save_checkpoint(self.save_path)
+			self.get_model().save_checkpoint(self.save_path)
 			print(f"[{self.print_device}] Model saved at {self.save_path}.")
 		if (self.gpu_id is None or self.gpu_id == 0) and self.test and self.tester:
 			print(f"[{self.print_device}] The model starts evaluating in the test set.")
@@ -307,6 +361,15 @@ class Trainer(object):
 		else:
 			return torch.from_numpy(x)
 
+	def get_model(self) -> Model:
+
+		"""返回原始的 KGE 模型"""
+
+		if self.gpu_id == 0:
+			return self.model.module.model
+		else:
+			return self.model.model
+
 def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`Trainer` 的默认超参数优化配置。
@@ -331,6 +394,21 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'log_interval': {
 				'value': 10
 			},
+			'save_path': {
+				'value': './'
+			},
+			'use_early_stopping': {
+				'value': True
+			},
+			'metric': {
+				'value': 'hit10'
+			},
+			'patience': {
+				'value': 2
+			},
+			'delta': {
+				'value': 0
+			},
 		}
 
 	:returns: :py:class:`Trainer` 的默认超参数优化配置
@@ -354,6 +432,21 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 		},
 		'log_interval': {
 			'value': 10
+		},
+		'save_path': {
+			'value': './'
+		},
+		'use_early_stopping': {
+			'value': True
+		},
+		'metric': {
+			'value': 'hit10'
+		},
+		'patience': {
+			'value': 2
+		},
+		'delta': {
+			'value': 0
 		},
 	}
 		
