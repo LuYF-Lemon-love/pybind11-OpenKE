@@ -11,6 +11,7 @@
 #include "Corrupt.h"
 #include "Test.h"
 #include <thread>
+#include <stdexcept>
 
 // Python 与 C++ 之间传递的数据结构
 // id: 线程 ID
@@ -54,10 +55,15 @@ void get_bacth(
 	for (INT batch = lef; batch < rig; batch++) {
 		// 正三元组
 		INT i = rand_max(id, train_total);
-		batch_h(batch) = train_list[i].h;
-		batch_t(batch) = train_list[i].t;
-		batch_r(batch) = train_list[i].r;
-		batch_y(batch) = 1;
+		try {
+			batch_h(batch) = train_list[i].h;
+			batch_t(batch) = train_list[i].t;
+			batch_r(batch) = train_list[i].r;
+			batch_y(batch) = 1;
+		} catch (std::exception err) {
+			std::cout << err.what() << std::endl;
+			std::cout << "rand_max" << std::endl;
+		}
 		// batch + batch_size: 第一个负三元组生成的位置
 		INT last = batch_size;
 		// 负采样 entity
@@ -68,10 +74,20 @@ void get_bacth(
 					prob = 1000 * hpt[train_list[i].r] / (hpt[train_list[i].r] + tph[train_list[i].r]);
 				if (rand_max(id, 1000) < prob) {
 					batch_h(batch + last) = train_list[i].h;
-					batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
+					try {
+						batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
+					} catch (std::exception err) {
+						std::cout << err.what() << std::endl;
+						std::cout << "corrupt_with_head" << std::endl;
+					}
 					batch_r(batch + last) = train_list[i].r;
 				} else {
-					batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
+					try {
+						batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
+					} catch (std::exception err) {
+						std::cout << err.what() << std::endl;
+						std::cout << "corrupt_with_tail" << std::endl;
+					}
 					batch_t(batch + last) = train_list[i].t;
 					batch_r(batch + last) = train_list[i].r;
 				}
