@@ -3,7 +3,7 @@
 # pybind11_ke/config/TrainerDataParallel.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2023
 #
 # 该脚本定义了并行训练循环函数.
 
@@ -17,9 +17,10 @@ import torch.multiprocessing as mp
 from torch.distributed import init_process_group, destroy_process_group
 from .Tester import Tester
 from .Trainer import Trainer
-from ..data import TestDataLoader
+from ..data import TrainDataLoader, TestDataLoader
+from ..module.strategy import NegativeSampling
 
-def ddp_setup(rank, world_size):
+def ddp_setup(rank: int, world_size: int):
 
 	"""
 	构建进程组。在 Windows 上， :py:mod:`torch.distributed` 仅支持 `Gloo` 后端。
@@ -35,22 +36,23 @@ def ddp_setup(rank, world_size):
 	init_process_group(backend="gloo", rank=rank, world_size=world_size)
 	torch.cuda.set_device(rank)
 
-def train(rank,
-	world_size,
-	model,
-	data_loader,
-	epochs,
-	lr,
-	opt_method,
-	test,
-	valid_interval,
-	log_interval,
-	save_interval,
-	save_path,
-	valid_file,
-	test_file,
-	type_constrain,
-	use_wandb):
+def train(
+	rank: int,
+	world_size: int,
+	model: NegativeSampling,
+	data_loader: TrainDataLoader,
+	epochs: int,
+	lr: float,
+	opt_method: str,
+	test: bool,
+	valid_interval: int | None,
+	log_interval: int | None,
+	save_interval: int | None,
+	save_path: str | None,
+	valid_file: str,
+	test_file: str,
+	type_constrain: bool,
+	use_wandb: bool):
 
 	"""进程函数。
 
@@ -113,19 +115,19 @@ def train(rank,
 	destroy_process_group()
 	
 def trainer_distributed_data_parallel(model = None,
-	data_loader = None,
-	epochs = 1000,
-	lr = 0.5,
-	opt_method = "Adam",
-	test = False,
-	valid_interval = None,
-	log_interval = None,
-	save_interval = None,
-	save_path = None,
-	valid_file = "valid2id.txt",
-	test_file = "test2id.txt",
-	type_constrain = True,
-	use_wandb = False):
+	data_loader: TrainDataLoader | None = None,
+	epochs: int = 1000,
+	lr: float = 0.5,
+	opt_method: str = "Adam",
+	test: bool = False,
+	valid_interval: int | None = None,
+	log_interval: int | None = None,
+	save_interval: int | None = None,
+	save_path: str | None = None,
+	valid_file: str = "valid2id.txt",
+	test_file: str = "test2id.txt",
+	type_constrain: bool = True,
+	use_wandb: bool = False):
 
 	"""并行训练循环函数，用于生成单独子进程进行训练模型。
 	

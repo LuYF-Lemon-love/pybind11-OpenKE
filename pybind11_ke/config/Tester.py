@@ -73,7 +73,7 @@ class Tester(object):
     def to_var(
         self,
         x: np.ndarray,
-        use_gpu: bool) -> np.ndarray:
+        use_gpu: bool) -> torch.Tensor:
 
         """根据 ``use_gpu`` 返回 ``x`` 的张量
         
