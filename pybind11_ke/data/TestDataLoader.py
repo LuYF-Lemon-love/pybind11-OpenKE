@@ -12,7 +12,6 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 """
 
 import base
-import torch
 import typing
 import numpy as np
 from collections.abc import Callable
@@ -25,7 +24,7 @@ class TestDataSampler(object):
 	def __init__(
 		self,
 		data_total: int,
-		sampler: Callable[[], dict[str, typing.Union[torch.Tensor, str]]]):
+		sampler: Callable[[], dict[str, typing.Union[np.ndarray, str]]]):
 
 		"""创建 TestDataSampler 对象
 
@@ -38,7 +37,7 @@ class TestDataSampler(object):
 		#: 测试集多少个三元组
 		self.data_total: int = data_total
 		#: :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 函数
-		self.sampler: Callable[[], dict[str, typing.Union[torch.Tensor, str]]] = sampler
+		self.sampler: Callable[[], dict[str, typing.Union[np.ndarray, str]]] = sampler
 		self.total: int = 0
 
 	def __iter__(self):
@@ -47,13 +46,13 @@ class TestDataSampler(object):
 
 		return self
 
-	def __next__(self) -> dict[str, typing.Union[torch.Tensor, str]]:
+	def __next__(self) -> dict[str, typing.Union[np.ndarray, str]]:
 
 		"""
 		迭代器函数 :py:meth:`iterator.__next__`
 		
 		:returns: 采样一批数据
-		:rtype: dict[str, typing.Union[torch.Tensor, str]]
+		:rtype: dict[str, typing.Union[np.ndarray, str]]
 		"""
 
 		self.total += 1 
@@ -187,13 +186,13 @@ class TestDataLoader(object):
 		self.test_neg_r = np.zeros(self.test_tol, dtype=np.int64)
 
 	# 为链接预测进行采样数据
-	def sampling(self) -> dict[str, typing.Union[torch.Tensor, str]]:
+	def sampling(self) -> dict[str, typing.Union[np.ndarray, str]]:
 
 		"""为链接预测进行采样数据，为给定的正三元组，用所有实体依次替换头尾实体得到
 		2 * :py:attr:`ent_tol` 个三元组。
 		
 		:returns: 对于一个正三元组生成的所有可能破化的三元组
-		:rtype: dict[str, typing.Union[torch.Tensor, str]]
+		:rtype: dict[str, typing.Union[np.ndarray, str]]
 		"""
 
 		res = []

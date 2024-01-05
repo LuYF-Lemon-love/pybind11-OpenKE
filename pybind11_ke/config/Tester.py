@@ -13,7 +13,11 @@ Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
 
 import base
 import torch
+import typing
+import numpy as np
 from tqdm import tqdm
+from ..data import TestDataLoader
+from ..module.model import Model
 
 class Tester(object):
 
@@ -30,7 +34,13 @@ class Tester(object):
         tester.run_link_prediction()
     """
 
-    def __init__(self, model = None, data_loader = None, sampling_mode = 'link_test', use_gpu = True, device = "cuda:0"):
+    def __init__(
+        self,
+        model: Model | None = None,
+        data_loader: TestDataLoader | None = None,
+        sampling_mode: str = 'link_test',
+        use_gpu: bool = True,
+        device: str = "cuda:0"):
 
         """创建 Tester 对象。
         
@@ -47,20 +57,23 @@ class Tester(object):
         """
 
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
-        self.model = model
+        self.model: Model | None = model
         #: :py:class:`pybind11_ke.data.TestDataLoader`
-        self.data_loader = data_loader
+        self.data_loader: TestDataLoader | None = data_loader
         #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
-        self.sampling_mode = sampling_mode
+        self.sampling_mode: str = sampling_mode
         #: 是否使用 gpu
-        self.use_gpu = use_gpu
-        #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
-        self.device = torch.device(device)
+        self.use_gpu: bool = use_gpu
+        #: gpu，利用 ``device`` 构造的 :py:class:`torch.torch.device` 对象
+        self.device: torch.torch.device = torch.device(device)
         
         if self.use_gpu:
             self.model.cuda(device = self.device)
 
-    def to_var(self, x, use_gpu):
+    def to_var(
+        self,
+        x: np.ndarray,
+        use_gpu: bool) -> np.ndarray:
 
         """根据 ``use_gpu`` 返回 ``x`` 的张量
         
@@ -77,13 +90,15 @@ class Tester(object):
         else:
             return torch.from_numpy(x)
 
-    def test_one_step(self, data):
+    def test_one_step(
+        self,
+        data: dict[str, typing.Union[np.ndarray, str]]) -> np.ndarray:
 
         """根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将模型验证 1 步。
         
         :param data: :py:attr:`data_loader` 利用
                         :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 函数生成的数据
-        :type data: dict
+        :type data: dict[str, typing.Union[np.ndarray, str]]
         :returns: 三元组的得分
         :rtype: numpy.ndarray
         """
@@ -95,12 +110,12 @@ class Tester(object):
             'mode': data['mode']
         })
 
-    def run_link_prediction(self):
+    def run_link_prediction(self) -> tuple[float, ...]:
         
         """进行链接预测。
 
         :returns: 经典指标分别为 MR，MRR，Hits@1，Hits@3，Hits@10
-        :rtype: tuple
+        :rtype: tuple[float, ...]
         """
 
         self.data_loader.set_sampling_mode(self.sampling_mode)
@@ -131,7 +146,7 @@ class Tester(object):
         
         return mr, mrr, hit1, hit3, hit10
     
-    def set_sampling_mode(self, sampling_mode):
+    def set_sampling_mode(self, sampling_mode: str):
         
         """设置 :py:attr:`sampling_mode`
         
@@ -141,7 +156,7 @@ class Tester(object):
         
         self.sampling_mode = sampling_mode
 
-def get_tester_hpo_config():
+def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`Tester` 的默认超参数优化配置。
     
@@ -154,7 +169,10 @@ def get_tester_hpo_config():
             'device': {
                 'value': 'cuda:0'
             },
-        }  
+        }
+
+    :returns: :py:class:`Tester` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]  
     """
 
 	parameters_dict = {
