@@ -3,7 +3,7 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2023
 #
 # 该脚本定义了训练循环类.
 
@@ -13,9 +13,14 @@ Trainer - 训练循环类。
 
 import os
 import wandb
+import typing
 import torch
+import numpy as np
 import torch.optim as optim
 from ..utils.Timer import Timer
+from ..data import TrainDataLoader
+from . import Tester
+from ..module.strategy import NegativeSampling
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 class Trainer(object):
@@ -35,22 +40,23 @@ class Trainer(object):
 		trainer.run()
 	"""
 
-	def __init__(self,
-		model = None,
-		data_loader = None,
-		epochs = 1000,
-		lr = 0.5,
-		opt_method = "Adam",
-		use_gpu = True,
-		device = "cuda:0",
-		tester = None,
-		test = False,
-		valid_interval = None,
-		log_interval = None,
-		save_interval = None,
-		save_path = None,
-		use_wandb = False,
-		gpu_id = None):
+	def __init__(
+		self,
+		model: NegativeSampling | None = None,
+		data_loader: TrainDataLoader | None = None,
+		epochs: int = 1000,
+		lr: float = 0.5,
+		opt_method: str = "Adam",
+		use_gpu: bool = True,
+		device: str = "cuda:0",
+		tester: Tester | None = None,
+		test: bool = False,
+		valid_interval: int | None = None,
+		log_interval: int | None = None,
+		save_interval: int | None = None,
+		save_path: str | None = None,
+		use_wandb: bool = False,
+		gpu_id: int | None = None):
 
 		"""创建 Trainer 对象。
 
@@ -87,47 +93,47 @@ class Trainer(object):
 		"""
 
 		#: 第几个 gpu
-		self.gpu_id = gpu_id
+		self.gpu_id: int | None = gpu_id
 		
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-		self.model = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
+		self.model: DDP | NegativeSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader`
-		self.data_loader = data_loader
+		self.data_loader: TrainDataLoader | None = data_loader
 		#: epochs
-		self.epochs = epochs
+		self.epochs: int = epochs
 
 		#: 学习率
-		self.lr = lr
+		self.lr: float = lr
 		#: 用户传入的优化器名字字符串
-		self.opt_method = opt_method
+		self.opt_method: str = opt_method
 		#: 根据 :py:meth:`__init__` 的 ``opt_method`` 生成对应的优化器
-		self.optimizer = None
+		self.optimizer: optim.SGD | optim.Adam | None = None
 		#: 学习率调度器
-		self.scheduler = None
+		self.scheduler: torch.optim.lr_scheduler.MultiStepLR | None = None
 
 		#: 是否使用 gpu
-		self.use_gpu = use_gpu
+		self.use_gpu: bool = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
-		self.device = torch.device(device) if self.use_gpu else "cpu"
+		self.device: torch.device | str = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
-		self.tester = tester
+		self.tester: Tester | None = tester
 		#: 是否在测试集上评估模型, :py:attr:`tester` 不为空
-		self.test = test
+		self.test: bool = test
 		#: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
-		self.valid_interval = valid_interval
+		self.valid_interval: int | None = valid_interval
 
 		#: 训练几轮输出一次日志
-		self.log_interval = log_interval
+		self.log_interval: int | None = log_interval
 		#: 训练几轮保存一次模型
-		self.save_interval = save_interval
+		self.save_interval: int | None = save_interval
 		#: 模型保存的路径
-		self.save_path = save_path
+		self.save_path: str | None = save_path
 		#: 是否启用 wandb 进行日志输出
-		self.use_wandb = use_wandb
+		self.use_wandb: bool = use_wandb
 
-		self.print_device = f"GPU{self.gpu_id}" if self.gpu_id is not None else self.device
+		self.print_device: str = f"GPU{self.gpu_id}" if self.gpu_id is not None else self.device
 
 	def configure_optimizers(self):
 
@@ -148,13 +154,13 @@ class Trainer(object):
 		milestones = int(self.epochs / 3)
 		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
 
-	def train_one_step(self, data):
+	def train_one_step(self, data: dict[str, typing.Union[np.ndarray, str]]) -> float:
 
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
 		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 函数生成的数据
-		:type data: dict
+		:type data: dict[str, typing.Union[np.ndarray, str]]
 		:returns: 损失值
 		:rtype: float
 		"""
@@ -172,7 +178,8 @@ class Trainer(object):
 
 	def run(self):
 
-		"""训练循环，首先根据 :py:attr:`use_gpu` 设置 :py:attr:`model` 是否使用 gpu 训练，然后根据
+		"""
+		训练循环，首先根据 :py:attr:`use_gpu` 设置 :py:attr:`model` 是否使用 gpu 训练，然后根据
 		:py:attr:`opt_method` 设置 :py:attr:`optimizer`，最后迭代 :py:attr:`data_loader` 获取数据，
 		并利用 :py:meth:`train_one_step` 训练。
 		"""
@@ -283,7 +290,7 @@ class Trainer(object):
 					})
 			self.tester.run_link_prediction()
 
-	def to_var(self, x):
+	def to_var(self, x: np.ndarray) -> torch.Tensor:
 
 		"""将 ``x`` 转移到对应的设备上。
 
@@ -300,7 +307,7 @@ class Trainer(object):
 		else:
 			return torch.from_numpy(x)
 
-def get_trainer_hpo_config():
+def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`Trainer` 的默认超参数优化配置。
 	
@@ -324,7 +331,10 @@ def get_trainer_hpo_config():
 			'log_interval': {
 				'value': 10
 			},
-		}	
+		}
+
+	:returns: :py:class:`Trainer` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]	
 	"""
 
 	parameters_dict = {
