@@ -117,7 +117,7 @@ DistMult
 
 .. math::
 
-    f_r(h,t)=<h,r,t>=\sum_{i=1}^{n}h_ir_it_i
+    f_r(h,t) = \< h,r,t \> = \sum_{i=1}^{n} h_i r_i t_i
 
 损失函数如下：
 

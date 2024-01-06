@@ -155,7 +155,7 @@ class TransE(Model):
 	@override
 	def forward(
 		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> torch.Tensor:
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
@@ -179,7 +179,7 @@ class TransE(Model):
 
 	def regularization(
 		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> torch.Tensor:
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
