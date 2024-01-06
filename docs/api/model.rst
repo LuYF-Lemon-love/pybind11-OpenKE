@@ -29,9 +29,9 @@ pybind11_ke.module.model
     TransE
     TransH
     TransR
-    Analogy
-    ComplEx
     DistMult
+    ComplEx
+    Analogy
     HolE
     RESCAL
     RotatE

@@ -27,7 +27,7 @@ class DistMult(Model):
 
 	.. math::
 	
-		< \mathbf{h}, \mathbf{r}, \mathbf{t} >
+		\sum_{i=1}^{n}h_ir_it_i
 	
 	为逐元素多线性点积（element-wise multi-linear dot product），正三元组的评分函数的值越大越好，负三元组越小越好，如果想获得更详细的信息请访问 :ref:`DistMult <distMult>`。
 

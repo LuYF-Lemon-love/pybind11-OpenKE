@@ -131,3 +131,36 @@ DistMult
 .. Important:: DistMult 不能够区分关系 :math:`r` 和与关系 :math:`r` 相反的关系。
 
 pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.DistMult`
+
+.. _complex:
+
+ComplEx
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``ComplEx`` :cite:`ComplEx` 发表于 ``2016`` 年，是一个复数版本的 DistMult，利用复数共轭建模非对称关系。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=&\operatorname{Re}(<h,r,\overline{t}>)\\
+            =&\operatorname{Re}(\sum_{i=1}^{n}h_ir_i\overline{t}_i)\\
+            =&<\operatorname{Re}(h),\operatorname{Re}(r),\operatorname{Re}(t)>\\
+             &+<\operatorname{Re}(h),\operatorname{Im}(r),\operatorname{Im}(t)>\\
+             &+<\operatorname{Im}(h),\operatorname{Re}(r),\operatorname{Im}(t)>\\
+             &-<\operatorname{Im}(h),\operatorname{Im}(r),\operatorname{Re}(t)>
+
+:math:`h, r, t \in \mathbb{C}^n` 是复数向量。
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    \log(1+exp(-yf_r(h,t)))+\lambda\Vert \theta \Vert^2_2
+
+:math:`\theta` 是模型的参数。
+
+.. Important:: 对数似然损失（log-likelihood loss）比成对排名损失（pairwise ranking loss）效果更好；每一个训练三元组生成更多的负三元组会产生更好的效果。
+
+pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.ComplEx`
