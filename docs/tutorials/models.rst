@@ -143,14 +143,12 @@ ComplEx
 
 .. math::
 
-    f_r(h,t)=&\operatorname{Re}(<h,r,\overline{t}>)\\
-            =&\operatorname{Re}(\sum_{i=1}^{n}h_ir_i\overline{t}_i)\\
-            =&<\operatorname{Re}(h),\operatorname{Re}(r),\operatorname{Re}(t)>\\
+    f_r(h,t)=&<\operatorname{Re}(h),\operatorname{Re}(r),\operatorname{Re}(t)>\\
              &+<\operatorname{Re}(h),\operatorname{Im}(r),\operatorname{Im}(t)>\\
              &+<\operatorname{Im}(h),\operatorname{Re}(r),\operatorname{Im}(t)>\\
              &-<\operatorname{Im}(h),\operatorname{Im}(r),\operatorname{Re}(t)>
 
-:math:`h, r, t \in \mathbb{C}^n` 是复数向量。
+:math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >=\sum_{i=1}^{n}a_ib_ic_i` 为逐元素多线性点积（element-wise multi-linear dot product）。
 
 损失函数如下：
 
