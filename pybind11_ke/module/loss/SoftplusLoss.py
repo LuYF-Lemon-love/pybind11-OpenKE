@@ -21,6 +21,8 @@ class SoftplusLoss(Loss):
 
 	"""
 	``ComplEx`` :cite:`ComplEx` 原论文中应用这种损失函数完成模型训练。
+
+	.. Note:: :py:meth:`forward` 中的正样本评分函数的得分应大于负样本评分函数的得分。
 	
 	例子::
 

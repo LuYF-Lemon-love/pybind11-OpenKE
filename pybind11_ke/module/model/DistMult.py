@@ -84,11 +84,11 @@ class DistMult(Model):
 		super(DistMult, self).__init__(ent_tot, rel_tot)
 
 		#: 实体嵌入向量和关系对角矩阵的维度
-		self.dim = dim
+		self.dim: int = dim
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系对角矩阵
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)

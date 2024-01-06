@@ -6,13 +6,13 @@ API
    :maxdepth: 6
    :caption: Python API
 
-   api/config
-   api/data
    api/utils
+   api/data
    api/module
-   api/loss
    api/model
+   api/loss
    api/strategy
+   api/config
    
 Indices and tables
 ==================

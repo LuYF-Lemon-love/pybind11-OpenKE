@@ -3,69 +3,79 @@
 # pybind11_ke/module/model/ComplEx.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 15, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 6, 2023
 # 
 # 该头文件定义了 ComplEx.
 
 """
-:py:class:`ComplEx` 类 - 第一个真正意义上复数域模型，简单而且高效。
-
-论文地址: `Complex Embeddings for Simple Link Prediction <https://arxiv.org/abs/1606.06357>`__ 。
-
-基本用法如下：
-
-.. code-block:: python
-
-    from pybind11_ke.config import Trainer, Tester
-    from pybind11_ke.module.model import ComplEx
-    from pybind11_ke.module.loss import SoftplusLoss
-    from pybind11_ke.module.strategy import NegativeSampling
-
-    # define the model
-    complEx = ComplEx(
-    	ent_tot = train_dataloader.get_ent_tol(),
-    	rel_tot = train_dataloader.get_rel_tol(),
-    	dim = 200
-    )
-
-    # define the loss function
-    model = NegativeSampling(
-    	model = complEx, 
-    	loss = SoftplusLoss(),
-    	batch_size = train_dataloader.get_batch_size(), 
-    	regul_rate = 1.0
-    )
-
-    # train the model
-    trainer = Trainer(model = model, data_loader = train_dataloader,
-    				train_times = 2000, lr = 0.5, use_gpu = True, opt_method = "adagrad")
-    trainer.run()
-    complEx.save_checkpoint('../checkpoint/complEx.ckpt')
-
-    # test the model
-    complEx.load_checkpoint('../checkpoint/complEx.ckpt')
-    tester = Tester(model = complEx, data_loader = test_dataloader, use_gpu = True)
-    tester.run_link_prediction(type_constrain = False)
+ComplEx - 第一个真正意义上复数域模型，简单而且高效。
 """
 
 import torch
+import typing
+import numpy as np
 import torch.nn as nn
 from .Model import Model
+from typing_extensions import override
 
 class ComplEx(Model):
 
     """
-	:py:class:`ComplEx` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
-	
-	ComplEx 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 
+    ``ComplEx`` :cite:`ComplEx` 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 
         :py:class:`pybind11_ke.module.model.DistMult`。
 
-	评分函数为: :math:`<\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> + <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> - <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})>`，
-        :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
-	正三元组的评分函数的值越大越好，负三元组越小越好。
+    评分函数为:
+
+    .. math::
+
+        f_r(h,t)=<\operatorname{Re}(h),\operatorname{Re}(r),\operatorname{Re}(t)>
+                 +<\operatorname{Re}(h),\operatorname{Im}(r),\operatorname{Im}(t)>
+                 +<\operatorname{Im}(h),\operatorname{Re}(r),\operatorname{Im}(t)>
+                 -<\operatorname{Im}(h),\operatorname{Im}(r),\operatorname{Re}(t)>
+
+    :math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >=\sum_{i=1}^{n}a_ib_ic_i` 为逐元素多线性点积（element-wise multi-linear dot product）。
+	
+    正三元组的评分函数的值越大越好，负三元组越小越好。
+
+    例子::
+
+        from pybind11_ke.config import Trainer, Tester
+        from pybind11_ke.module.model import ComplEx
+        from pybind11_ke.module.loss import SoftplusLoss
+        from pybind11_ke.module.strategy import NegativeSampling
+
+        # define the model
+        complEx = ComplEx(
+        	ent_tot = train_dataloader.get_ent_tol(),
+        	rel_tot = train_dataloader.get_rel_tol(),
+        	dim = config.dim
+        )
+
+        # define the loss function
+        model = NegativeSampling(
+        	model = complEx, 
+        	loss = SoftplusLoss(),
+        	batch_size = train_dataloader.get_batch_size(), 
+        	regul_rate = config.regul_rate
+        )
+
+        # test the model
+        tester = Tester(model = complEx, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
+
+        # train the model
+        trainer = Trainer(model = model, data_loader = train_dataloader, epochs = config.epochs,
+        	lr = config.lr, opt_method = config.opt_method, use_gpu = config.use_gpu, device = config.device,
+        	tester = tester, test = config.test, valid_interval = config.valid_interval,
+        	log_interval = config.log_interval, save_interval = config.save_interval,
+        	save_path = config.save_path, use_wandb = True)
+        trainer.run()
 	"""
 
-    def __init__(self, ent_tot, rel_tot, dim = 100):
+    def __init__(
+        self,
+        ent_tot: int,
+        rel_tot: int,
+        dim: int = 100):
 
         """创建 ComplEx 对象。
 
@@ -80,22 +90,29 @@ class ComplEx(Model):
         super(ComplEx, self).__init__(ent_tot, rel_tot)
 
         #: 实体嵌入向量和关系嵌入向量的维度
-        self.dim = dim
+        self.dim: int = dim
         #: 根据实体个数，创建的实体嵌入的实部
-        self.ent_re_embeddings = nn.Embedding(self.ent_tot, self.dim)
+        self.ent_re_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
         #: 根据实体个数，创建的实体嵌入的虚部
-        self.ent_im_embeddings = nn.Embedding(self.ent_tot, self.dim)
+        self.ent_im_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
         #: 根据关系个数，创建的关系嵌入的实部
-        self.rel_re_embeddings = nn.Embedding(self.rel_tot, self.dim)
+        self.rel_re_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
         #: 根据关系个数，创建的关系嵌入的虚部
-        self.rel_im_embeddings = nn.Embedding(self.rel_tot, self.dim)
+        self.rel_im_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
 
         nn.init.xavier_uniform_(self.ent_re_embeddings.weight.data)
         nn.init.xavier_uniform_(self.ent_im_embeddings.weight.data)
         nn.init.xavier_uniform_(self.rel_re_embeddings.weight.data)
         nn.init.xavier_uniform_(self.rel_im_embeddings.weight.data)
 
-    def _calc(self, h_re, h_im, t_re, t_im, r_re, r_im):
+    def _calc(
+        self,
+        h_re: torch.Tensor,
+        h_im: torch.Tensor,
+        t_re: torch.Tensor,
+        t_im: torch.Tensor,
+        r_re: torch.Tensor,
+        r_im: torch.Tensor) -> torch.Tensor:
 
         """计算 ComplEx 的评分函数。
 		
@@ -122,15 +139,18 @@ class ComplEx(Model):
             - h_im * t_re * r_im,
             -1
         )
-
-    def forward(self, data):
+    
+    @override
+    def forward(
+        self,
+        data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
         """
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -147,12 +167,14 @@ class ComplEx(Model):
         score = self._calc(h_re, h_im, t_re, t_im, r_re, r_im)
         return score
 
-    def regularization(self, data):
+    def regularization(
+        self,
+        data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
         """L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -174,12 +196,15 @@ class ComplEx(Model):
                  torch.mean(r_im ** 2)) / 6
         return regul
 
-    def predict(self, data):
+    @override
+    def predict(
+        self,
+        data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
 
         """ComplEx 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""

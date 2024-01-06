@@ -305,7 +305,7 @@ class Trainer(object):
 					else:
 						raise ValueError("Early stopping metric is not valid.")
 			if self.early_stopping is not None and self.early_stopping.early_stop:
-				print("Early stopping")
+				print(f"[{self.print_device}] Early stopping")
 				break
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
