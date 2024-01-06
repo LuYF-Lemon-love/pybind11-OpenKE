@@ -32,6 +32,37 @@ class DistMult(Model):
 	为逐元素多线性点积（element-wise multi-linear dot product），正三元组的评分函数的值越大越好，负三元组越小越好，如果想获得更详细的信息请访问 :ref:`DistMult <distMult>`。
 
 	例子::
+
+		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.module.model import DistMult
+		from pybind11_ke.module.loss import SoftplusLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+		
+		# define the model
+		distmult = DistMult(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = config.dim
+		)
+		
+		# define the loss function
+		model = NegativeSampling(
+			model = distmult, 
+			loss = SoftplusLoss(),
+			batch_size = train_dataloader.get_batch_size(), 
+			regul_rate = config.regul_rate
+		)
+		
+		# test the model
+		tester = Tester(model = distmult, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
+		
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader, epochs = config.epochs,
+			lr = config.lr, opt_method = config.opt_method, use_gpu = config.use_gpu, device = config.device,
+			tester = tester, test = config.test, valid_interval = config.valid_interval,
+			log_interval = config.log_interval, save_interval = config.save_interval,
+			save_path = config.save_path, use_wandb = True)
+		trainer.run()
 	"""
 
 	def __init__(
