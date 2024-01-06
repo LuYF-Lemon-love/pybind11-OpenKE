@@ -128,8 +128,13 @@ def train(
 		delta=delta,
 		use_wandb=use_wandb,
 		gpu_id=rank)
-	trainer.run()
-	destroy_process_group()
+	try:
+		trainer.run()
+	except RuntimeError as err:
+		print("RuntimeError:", err)
+		print(f"[GPU0] Due to the lack of improvement in validation scores, an early stop has been made, and GPU{rank} also needs to stop model training.")
+	finally:
+		destroy_process_group()
 	
 def trainer_distributed_data_parallel(
 	model = None,
