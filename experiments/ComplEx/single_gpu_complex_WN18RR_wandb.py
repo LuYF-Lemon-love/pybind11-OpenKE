@@ -1,10 +1,10 @@
 """
-**DistMult-WN18RR-single-gpu-wandb**
+**ComplEx-WN18RR-single-gpu-wandb**
 
-DistMult-WN18RR-single-gpu-wandb
+ComplEx-WN18RR-single-gpu-wandb
 ====================================================================
 
-这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上训练 ``DistMult`` :cite:`DistMult`，使用 ``wandb`` 记录实验结果。
+这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上训练 ``ComplEx`` :cite:`ComplEx`，使用 ``wandb`` 记录实验结果。
 
 导入数据
 -----------------
@@ -14,7 +14,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 
 from pybind11_ke.utils import WandbLogger
 from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.module.model import DistMult
+from pybind11_ke.module.model import ComplEx
 from pybind11_ke.module.loss import SoftplusLoss
 from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TrainDataLoader, TestDataLoader
@@ -24,7 +24,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
 wandb_logger = WandbLogger(
 	project="pybind11-ke",
-	name="distMult",
+	name="complex",
 	config=dict(
 		in_path = '../../benchmarks/WN18RR/',
 		nbatches = 100,
@@ -60,7 +60,7 @@ train_dataloader = TrainDataLoader(
 	nbatches = config.nbatches,
 	threads = config.threads, 
 	sampling_mode = config.sampling_mode, 
-	bern = config.bern,
+	bern = config.bern, 
 	neg_ent = config.neg_ent,
 	neg_rel = config.neg_rel
 )
@@ -73,10 +73,10 @@ train_dataloader = TrainDataLoader(
 # 导入模型
 # ------------------
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
-# :py:class:`pybind11_ke.module.model.DistMult`，它是最简单的双线性模型。
+# :py:class:`pybind11_ke.module.model.ComplEx`，它是第一个真正意义上的复数域模型。
 
 # define the model
-distmult = DistMult(
+complEx = ComplEx(
 	ent_tot = train_dataloader.get_ent_tol(),
 	rel_tot = train_dataloader.get_rel_tol(),
 	dim = config.dim
@@ -96,7 +96,7 @@ distmult = DistMult(
 
 # define the loss function
 model = NegativeSampling(
-	model = distmult, 
+	model = complEx, 
 	loss = SoftplusLoss(),
 	batch_size = train_dataloader.get_batch_size(), 
 	regul_rate = config.regul_rate
@@ -119,7 +119,7 @@ model = NegativeSampling(
 test_dataloader = TestDataLoader(in_path = config.in_path)
 
 # test the model
-tester = Tester(model = distmult, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
+tester = Tester(model = complEx, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader, epochs = config.epochs,
