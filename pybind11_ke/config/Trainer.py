@@ -74,7 +74,7 @@ class Trainer(object):
 		:type epochs: int
 		:param lr: 学习率
 		:type lr: float
-		:param opt_method: 优化器: Adam or adam, SGD or sgd
+		:param opt_method: 优化器: Adam or adam, Adagrad or adagrad, SGD or sgd
 		:type opt_method: str
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
@@ -169,6 +169,11 @@ class Trainer(object):
 
 		if self.opt_method == "Adam" or self.opt_method == "adam":
 			self.optimizer = optim.Adam(
+				self.model.parameters(),
+				lr=self.lr,
+			)
+		elif self.opt_method == "Adagrad" or self.opt_method == "adagrad":
+			self.optimizer = optim.Adagrad(
 				self.model.parameters(),
 				lr=self.lr,
 			)
@@ -386,7 +391,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'max': 1.0
 			},
 			'opt_method': {
-				'values': ['adam', 'sgd']
+				'values': ['adam', 'adagrad', 'sgd']
 			},
 			'valid_interval': {
 				'value': 10
@@ -425,7 +430,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'max': 1.0
 		},
 		'opt_method': {
-			'values': ['adam', 'sgd']
+			'values': ['adam', 'adagrad', 'sgd']
 		},
 		'valid_interval': {
 			'value': 10

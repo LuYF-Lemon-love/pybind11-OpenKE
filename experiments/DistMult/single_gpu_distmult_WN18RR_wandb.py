@@ -26,10 +26,10 @@ wandb_logger = WandbLogger(
 	project="pybind11-ke",
 	name="distMult",
 	config=dict(
-		in_path = "../../benchmarks/WN18RR/",
+		in_path = '../../benchmarks/WN18RR/',
 		nbatches = 100,
 		threads = 8,
-		sampling_mode = "normal",
+		sampling_mode = 'normal',
 		bern = True,
 		neg_ent = 25,
 		neg_rel = 0,
@@ -39,6 +39,7 @@ wandb_logger = WandbLogger(
 		device = 'cuda:1',
 		epochs = 2000,
 		lr = 0.5,
+		opt_method = 'adagrad',
 		test = True,
 		valid_interval = 100,
 		log_interval = 100,
@@ -118,8 +119,8 @@ test_dataloader = TestDataLoader(in_path = config.in_path)
 tester = Tester(model = distmult, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
 
 # train the model
-trainer = Trainer(model = model, data_loader = train_dataloader,
-	epochs = config.epochs, lr = config.lr, use_gpu = config.use_gpu, device = config.device,
+trainer = Trainer(model = model, data_loader = train_dataloader, epochs = config.epochs,
+	lr = config.lr, opt_method = config.opt_method, use_gpu = config.use_gpu, device = config.device,
 	tester = tester, test = config.test, valid_interval = config.valid_interval,
 	log_interval = config.log_interval, save_interval = config.save_interval,
 	save_path = config.save_path, use_wandb = True)
