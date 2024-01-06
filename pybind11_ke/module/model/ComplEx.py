@@ -21,17 +21,16 @@ from typing_extensions import override
 class ComplEx(Model):
 
     """
-    ``ComplEx`` :cite:`ComplEx` 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 
-        :py:class:`pybind11_ke.module.model.DistMult`。
+    ``ComplEx`` :cite:`ComplEx` 提出于 2016 年，第一个真正意义上复数域模型，简单而且高效。复数版本的 :py:class:`pybind11_ke.module.model.DistMult`。
 
     评分函数为:
 
     .. math::
 
-        f_r(h,t)=<\operatorname{Re}(h),\operatorname{Re}(r),\operatorname{Re}(t)>
-                 +<\operatorname{Re}(h),\operatorname{Im}(r),\operatorname{Im}(t)>
-                 +<\operatorname{Im}(h),\operatorname{Re}(r),\operatorname{Im}(t)>
-                 -<\operatorname{Im}(h),\operatorname{Im}(r),\operatorname{Re}(t)>
+        <\operatorname{Re}(h),\operatorname{Re}(r),\operatorname{Re}(t)>
+            +<\operatorname{Re}(h),\operatorname{Im}(r),\operatorname{Im}(t)>
+            +<\operatorname{Im}(h),\operatorname{Re}(r),\operatorname{Im}(t)>
+            -<\operatorname{Im}(h),\operatorname{Im}(r),\operatorname{Re}(t)>
 
     :math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >=\sum_{i=1}^{n}a_ib_ic_i` 为逐元素多线性点积（element-wise multi-linear dot product）。
 	
