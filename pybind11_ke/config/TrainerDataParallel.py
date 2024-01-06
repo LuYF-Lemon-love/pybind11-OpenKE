@@ -3,7 +3,7 @@
 # pybind11_ke/config/TrainerDataParallel.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 6, 2023
 #
 # 该脚本定义了并行训练循环函数.
 
@@ -49,6 +49,10 @@ def train(
 	log_interval: int | None,
 	save_interval: int | None,
 	save_path: str | None,
+	use_early_stopping: bool,
+	metric: str,
+	patience: int,
+	delta: float,
 	valid_file: str,
 	test_file: str,
 	type_constrain: bool,
@@ -80,6 +84,15 @@ def train(
 	:type save_interval: int
 	:param save_path: 模型保存的路径
 	:type save_path: str
+	:param use_early_stopping: 是否启用早停
+	:type use_early_stopping: bool
+	:param metric: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
+		'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。
+	:type metric: str
+	:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。
+	:type patience: int
+	:param delta: :py:attr:`pybind11_ke.utils.EarlyStopping.delta` 参数，监测数量的最小变化才符合改进条件。
+	:type delta: float
 	:param valid_file: valid2id.txt
 	:type valid_file: str
 	:param test_file: test2id.txt
@@ -109,12 +122,17 @@ def train(
 		log_interval=log_interval,
 		save_interval=save_interval,
 		save_path=save_path,
+		use_early_stopping=use_early_stopping,
+		metric=metric,
+		patience=patience,
+		delta=delta,
 		use_wandb=use_wandb,
 		gpu_id=rank)
 	trainer.run()
 	destroy_process_group()
 	
-def trainer_distributed_data_parallel(model = None,
+def trainer_distributed_data_parallel(
+	model = None,
 	data_loader: TrainDataLoader | None = None,
 	epochs: int = 1000,
 	lr: float = 0.5,
@@ -124,6 +142,10 @@ def trainer_distributed_data_parallel(model = None,
 	log_interval: int | None = None,
 	save_interval: int | None = None,
 	save_path: str | None = None,
+	use_early_stopping: bool = True,
+	metric: str = 'hit10',
+	patience: int = 2,
+	delta: float = 0,
 	valid_file: str = "valid2id.txt",
 	test_file: str = "test2id.txt",
 	type_constrain: bool = True,
@@ -166,6 +188,15 @@ def trainer_distributed_data_parallel(model = None,
 	:type save_interval: int
 	:param save_path: 模型保存的路径
 	:type save_path: str
+	:param use_early_stopping: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
+	:type use_early_stopping: bool
+	:param metric: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
+		'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。默认值：'hit10'
+	:type metric: str
+	:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
+	:type patience: int
+	:param delta: :py:attr:`pybind11_ke.utils.EarlyStopping.delta` 参数，监测数量的最小变化才符合改进条件。默认值：0
+	:type delta: float
 	:param valid_file: valid2id.txt
 	:type valid_file: str
 	:param test_file: test2id.txt
@@ -179,5 +210,6 @@ def trainer_distributed_data_parallel(model = None,
 	world_size = torch.cuda.device_count()
 	mp.spawn(train, args = (world_size, model, data_loader, epochs, lr, opt_method,
 							test, valid_interval, log_interval, save_interval, save_path,
+							use_early_stopping, metric, patience, delta,
 							valid_file, test_file, type_constrain, use_wandb),
 				nprocs = world_size)
