@@ -153,7 +153,7 @@ def trainer_distributed_data_parallel(
 
 	"""并行训练循环函数，用于生成单独子进程进行训练模型。
 	
-	py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
+	:py:mod:`torch.multiprocessing` 是 Python 原生 ``multiprocessing`` 的一个 ``PyTorch`` 的包装器。
 	``multiprocessing`` 的生成进程函数必须由 ``if __name__ == '__main__'`` 保护。
 	有效的 batch size 是 :py:attr:`pybind11_ke.data.TrainDataLoader.batch_size` * ``nprocs``。
 
