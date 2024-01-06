@@ -102,3 +102,32 @@ TransR
 .. Important:: 为了避免过拟合，实体和关系的嵌入向量初始化为 TransE 的结果，关系矩阵 :math:`M_r` 初始为单位矩阵。
 
 pybind11-OpenKE 的 TransR 实现传送门：:py:class:`pybind11_ke.module.model.TransR`
+
+语义匹配模型
+----------------------------------
+
+.. _distMult:
+
+DistMult
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``DistMult`` :cite:`DistMult` 发表于 ``2015`` 年，是一个简单的双线性模型，限制关系矩阵 :math:`M_r` 为对角矩阵。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=<h,r,t>=\sum_{i=1}^{n}h_ir_it_i
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    [1 + f_r(h^{'},t^{'}) - f_r(h,t)]_{+}
+
+.. Important:: 原论文为训练集中的每一个三元组构建了 2 个负三元组：一个通过替换头实体得到的和一个通过替换尾实体得到的。每次更新参数后，实体向量被重新规范为单位向量。对关系向量施加了 :math:`L_2` 正则化。
+
+.. Important:: DistMult 不能够区分关系 :math:`r` 和与关系 :math:`r` 相反的关系。
+
+pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.DistMult`

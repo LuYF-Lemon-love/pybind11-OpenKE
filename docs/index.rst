@@ -67,6 +67,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: DistMult
+
+   experiments/DistMult/single_gpu_distmult_WN18RR_wandb
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: OpenKE 的例子
 
    examples/train_rescal_FB15K237
