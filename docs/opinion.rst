@@ -36,7 +36,7 @@ SimplE
 ---------
 
 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 实现的 `SimplE <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/SimplE.py>`__ 存在问题。
-下面是 `SimplE <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>`__ 的作者给出的声明：
+下面是 ``SimplE`` :cite:`SimplE` 的作者给出的声明：
 
 .. Important::
 

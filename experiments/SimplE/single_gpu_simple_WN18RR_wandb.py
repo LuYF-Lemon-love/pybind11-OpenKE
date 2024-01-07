@@ -24,7 +24,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
 wandb_logger = WandbLogger(
 	project="pybind11-ke",
-	name="complex",
+	name="simple",
 	config=dict(
 		in_path = '../../benchmarks/WN18RR/',
 		nbatches = 100,

@@ -34,7 +34,7 @@ class ComplEx(Model):
 
     :math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >=\sum_{i=1}^{n}a_ib_ic_i` 为逐元素多线性点积（element-wise multi-linear dot product）。
 	
-    正三元组的评分函数的值越大越好，负三元组越小越好。
+    正三元组的评分函数的值越大越好，负三元组越小越好，如果想获得更详细的信息请访问 :ref:`ComplEx <complex>`。
 
     例子::
 
