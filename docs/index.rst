@@ -67,7 +67,7 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
-   :caption: TransR
+   :caption: TransD
 
    experiments/TransD/single_gpu_transd_FB15K237_wandb
 
