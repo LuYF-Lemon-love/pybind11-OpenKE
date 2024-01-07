@@ -83,6 +83,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: SimplE
+
+   experiments/SimplE/single_gpu_simple_WN18RR_wandb
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: OpenKE 的例子
 
    examples/train_rescal_FB15K237

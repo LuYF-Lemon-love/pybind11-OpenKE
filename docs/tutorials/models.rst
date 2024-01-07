@@ -162,3 +162,29 @@ ComplEx
 .. Important:: 对数似然损失（log-likelihood loss）比成对排名损失（pairwise ranking loss）效果更好；每一个训练三元组生成更多的负三元组会产生更好的效果。
 
 pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.ComplEx`
+
+.. _simple:
+
+SimplE
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``SimplE`` :cite:`SimplE` 发表于 ``2018`` 年，是一个双线性模型，为每一个实体构建了 2 个向量：:math:`h_e` 和 :math:`t_e`，为每一个关系构建了 2 个向量：:math:`r` 和 :math:`r^{-1}`。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=\frac{1}{2}(\sum_{i=1}^{n}h_{hi}r_it_{ti}+\sum_{i=1}^{n}h_{ti}r^{-1}_it_{hi})
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    \log(1+exp(-yf_r(h,t)))+\lambda\Vert \theta \Vert^2_2
+
+:math:`\theta` 是模型的参数。
+
+.. Important:: 平均倒数排名（mean reciprocal rank，MRR(filter)）比平均排名（mean rank，MR(filter)）更具有鲁棒性，由于仅仅 1 个坏的 rank 能够很大的影响 MR。
+
+pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.SimplE`
