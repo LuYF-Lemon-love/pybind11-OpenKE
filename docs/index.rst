@@ -67,6 +67,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: TransR
+
+   experiments/TransD/single_gpu_transd_FB15K237_wandb
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: DistMult
 
    experiments/DistMult/single_gpu_distmult_WN18RR_wandb

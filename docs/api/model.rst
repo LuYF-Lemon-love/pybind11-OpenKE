@@ -29,6 +29,7 @@ pybind11_ke.module.model
     TransE
     TransH
     TransR
+    TransD
     DistMult
     ComplEx
     SimplE
@@ -36,7 +37,6 @@ pybind11_ke.module.model
     HolE
     RESCAL
     RotatE
-    TransD
 
 超参数优化默认搜索范围
 ----------------------------------

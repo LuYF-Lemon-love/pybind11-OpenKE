@@ -1,10 +1,10 @@
 """
-**ComplEx-WN18RR-single-gpu-wandb**
+**TransD-FB15K237-single-gpu-wandb**
 
-ComplEx-WN18RR-single-gpu-wandb
+TransD-FB15K237-single-gpu-wandb
 ====================================================================
 
-这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上训练 ``ComplEx`` :cite:`ComplEx`，使用 ``wandb`` 记录实验结果。
+这一部分介绍如何用一个 GPU 在 ``FB15K237`` 知识图谱上训练 ``TransD`` :cite:`TransD`，使用 ``wandb`` 记录实验结果。
 
 导入数据
 -----------------
@@ -14,8 +14,8 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 
 from pybind11_ke.utils import WandbLogger
 from pybind11_ke.config import Trainer, Tester
-from pybind11_ke.module.model import ComplEx
-from pybind11_ke.module.loss import SoftplusLoss
+from pybind11_ke.module.model import TransD
+from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
@@ -24,27 +24,30 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 
 wandb_logger = WandbLogger(
 	project="pybind11-ke",
-	name="complex",
+	name="transd",
 	config=dict(
-		in_path = '../../benchmarks/WN18RR/',
+		in_path = '../../benchmarks/FB15K237/',
 		nbatches = 100,
 		threads = 8,
 		sampling_mode = 'normal',
 		bern = True,
 		neg_ent = 25,
 		neg_rel = 0,
-		dim = 200,
-		regul_rate = 1.0,
+		dim_e = 200,
+		dim_r = 200,
+		p_norm = 1,
+		norm_flag = True,
+		margin = 4.0,
 		use_gpu = True,
 		device = 'cuda:1',
-		epochs = 2000,
-		lr = 0.5,
-		opt_method = 'adagrad',
+		epochs = 1000,
+		lr = 1.0,
+		opt_method = 'adam',
 		test = True,
 		valid_interval = 100,
 		log_interval = 100,
 		save_interval = 100,
-		save_path = '../../checkpoint/complex.pth'
+		save_path = '../../checkpoint/transd.pth'
 	)
 )
 
@@ -60,10 +63,9 @@ train_dataloader = TrainDataLoader(
 	nbatches = config.nbatches,
 	threads = config.threads, 
 	sampling_mode = config.sampling_mode, 
-	bern = config.bern, 
+	bern = config.bern,
 	neg_ent = config.neg_ent,
-	neg_rel = config.neg_rel
-)
+	neg_rel = config.neg_rel)
 
 ######################################################################
 # --------------
@@ -73,14 +75,16 @@ train_dataloader = TrainDataLoader(
 # 导入模型
 # ------------------
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
-# :py:class:`pybind11_ke.module.model.ComplEx`，它是第一个真正意义上的复数域模型。
+# :py:class:`pybind11_ke.module.model.TransD`，它是动态构建映射矩阵的平移模型。
 
 # define the model
-complEx = ComplEx(
+transd = TransD(
 	ent_tot = train_dataloader.get_ent_tol(),
 	rel_tot = train_dataloader.get_rel_tol(),
-	dim = config.dim
-)
+	dim_e = config.dim_e, 
+	dim_r = config.dim_r, 
+	p_norm = config.p_norm, 
+	norm_flag = config.norm_flag)
 
 ######################################################################
 # --------------
@@ -90,16 +94,15 @@ complEx = ComplEx(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了逻辑损失函数：:py:class:`pybind11_ke.module.loss.SoftplusLoss`，
+# 我们这里使用了 TransD 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
-# :py:class:`pybind11_ke.module.loss.SoftplusLoss` 进行了封装，加入权重衰减等额外项。
+# :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 
 # define the loss function
 model = NegativeSampling(
-	model = complEx, 
-	loss = SoftplusLoss(),
-	batch_size = train_dataloader.get_batch_size(), 
-	regul_rate = config.regul_rate
+	model = transd, 
+	loss = MarginLoss(margin = config.margin),
+	batch_size = train_dataloader.get_batch_size()
 )
 
 ######################################################################
@@ -119,7 +122,7 @@ model = NegativeSampling(
 test_dataloader = TestDataLoader(in_path = config.in_path)
 
 # test the model
-tester = Tester(model = complEx, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
+tester = Tester(model = transd, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
 
 # train the model
 trainer = Trainer(model = model, data_loader = train_dataloader, epochs = config.epochs,

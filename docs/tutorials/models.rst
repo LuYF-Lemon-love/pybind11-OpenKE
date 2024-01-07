@@ -103,6 +103,46 @@ TransR
 
 pybind11-OpenKE 的 TransR 实现传送门：:py:class:`pybind11_ke.module.model.TransR`
 
+.. _transd:
+
+TransD
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``TransD`` :cite:`TransD` 发表于 ``2015`` 年，是 ``TransR`` :cite:`TransR` 的改进版，为实体和关系分别定义了两个向量。第一个向量表示实体或关系的意义；另一个向量（投影向量）表示如何将实体嵌入向量投影到关系向量空间，投影向量被用来构建映射矩阵。因此，每个实体-关系对有独一无二的映射矩阵。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=\Vert (\mathbf{r}_p \mathbf{h}_p^T + \mathbf{I})\mathbf{h} + \mathbf{r} - (\mathbf{r}_p \mathbf{t}_p^T + \mathbf{I})\mathbf{t} \Vert^2_2
+
+对于三元组 :math:`(h, r, t)`，:math:`h,r,t` 分别表示头实体、关系和尾实体的嵌入向量，:math:`h_p,r_p,t_p` 分别表示头实体、关系和尾实体的投影向量，:math:`I` 表示单位矩阵。
+
+除此之外还有下面的约束条件：
+	
+.. math::
+    
+    \Vert \mathbf{h} \Vert_2 \leq 1,\\
+    \Vert \mathbf{r} \Vert_2 \leq 1,\\
+    \Vert \mathbf{t} \Vert_2 \leq 1,\\
+    \Vert (\mathbf{r}_p \mathbf{h}_p^T + \mathbf{I})\mathbf{h} \Vert_2 \leq 1,\\
+    \Vert (\mathbf{r}_p \mathbf{t}_p^T + \mathbf{I})\mathbf{t} \Vert_2 \leq 1.
+
+.. Important:: 实体和关系嵌入向量的维度不需要相同。
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    [\gamma + f_r(h,t) - f_r(h^{'},t^{'})]_{+}
+    
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数。
+
+.. Important:: 为了加速收敛和避免过拟合，实体和关系的嵌入向量初始化为 TransE 的结果。
+
+pybind11-OpenKE 的 TransD 实现传送门：:py:class:`pybind11_ke.module.model.TransD`
+
 语义匹配模型
 ----------------------------------
 
