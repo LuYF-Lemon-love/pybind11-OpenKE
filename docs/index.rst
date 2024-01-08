@@ -23,7 +23,7 @@
    install
    datasets
    metric
-   opinion
+   details
 
 .. toctree::
    :maxdepth: 1
