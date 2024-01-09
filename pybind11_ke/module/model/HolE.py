@@ -3,70 +3,75 @@
 # pybind11_ke/module/model/HolE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 10, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 9, 2023
 # 
 # 该头文件定义了 HolE.
 
 """
-:py:class:`HolE` 类 - 利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
-
-论文地址: `Holographic Embeddings of Knowledge Graphs <https://ojs.aaai.org/index.php/AAAI/article/view/10314>`__ 。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Trainer, Tester
-	from pybind11_ke.module.model import HolE
-	from pybind11_ke.module.loss import SoftplusLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-
-	# define the model
-	hole = HolE(
-		ent_tot = train_dataloader.get_ent_tol(),
-		rel_tot = train_dataloader.get_rel_tol(),
-		dim = 100
-	)
-
-	# define the loss function
-	model = NegativeSampling(
-		model = hole, 
-		loss = SoftplusLoss(),
-		batch_size = train_dataloader.get_batch_size(), 
-		regul_rate = 1.0
-	)
-
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-		train_times = 1000, lr = 0.5, use_gpu = True, opt_method = "adagrad")
-	trainer.run()
-	hole.save_checkpoint('../checkpoint/hole.ckpt')
-
-	# test the model
-	hole.load_checkpoint('../checkpoint/hole.ckpt')
-	tester = Tester(model = hole, data_loader = test_dataloader, use_gpu = True)
-	tester.run_link_prediction(type_constrain = False)
+HolE - 利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
 """
 
 import torch
+import typing
+import numpy as np
 import torch.nn as nn
 from .Model import Model
+from typing_extensions import override
 
 class HolE(Model):
 
 	"""
-	:py:class:`HolE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
-	
-	HolE 提出于 2016 年，利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
+	``HolE`` :cite:`HolE` 提出于 2016 年，利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本，因此非常容易的应用于大型的知识图谱。
 
-	评分函数为: :math:`\mathbf{r}^T (\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{t})))`，
-	:math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，
-	:math:`\overline{\mathbf{x}}` 表示复数共轭，
-	:math:`\odot` 表示哈达玛积。
-	正三元组的评分函数的值越大越好，负三元组越小越好。
+	评分函数为:
+
+	.. math::
+	
+		\mathbf{r}^T (\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{t})))
+	
+	其中 :math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，:math:`\overline{\mathbf{x}}` 表示复数共轭，:math:`\odot` 表示哈达玛积。
+	
+	正三元组的评分函数的值越大越好，负三元组越小越好，如果想获得更详细的信息请访问 :ref:`HolE <hole>`。
+
+	例子::
+
+		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.module.model import HolE
+		from pybind11_ke.module.loss import SoftplusLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+
+		# define the model
+		hole = HolE(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = config.dim
+		)
+
+		# define the loss function
+		model = NegativeSampling(
+			model = hole, 
+			loss = SoftplusLoss(),
+			batch_size = train_dataloader.get_batch_size(), 
+			regul_rate = config.regul_rate
+		)
+
+		# test the model
+		tester = Tester(model = hole, data_loader = test_dataloader, use_gpu = config.use_gpu, device = config.device)
+
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader, epochs = config.epochs,
+			lr = config.lr, opt_method = config.opt_method, use_gpu = config.use_gpu, device = config.device,
+			tester = tester, test = config.test, valid_interval = config.valid_interval,
+			log_interval = config.log_interval, save_interval = config.save_interval,
+			save_path = config.save_path, use_wandb = True)
+		trainer.run()
 	"""
 
-	def __init__(self, ent_tot, rel_tot, dim = 100, margin = None, epsilon = None):
+	def __init__(
+		self,
+		ent_tot: int,
+		rel_tot: int,
+		dim: int = 100):
 
 		"""创建 HolE 对象。
 
@@ -76,115 +81,30 @@ class HolE(Model):
 		:type rel_tot: int
 		:param dim: 实体和关系嵌入向量的维度
 		:type dim: int
-		:param margin: 原论文中损失函数的 gamma。
-		:type margin: float
-		:param epsilon: 对于 HolE 没什么用
-		:type epsilon: float
 		"""
 
 		super(HolE, self).__init__(ent_tot, rel_tot)
 
 		#: 实体和关系嵌入向量的维度
 		self.dim = dim
-		#: 原论文中损失函数的 gamma。
-		self.margin = margin
-		#: 对于 HolE 没什么用
-		self.epsilon = epsilon
 
 		#: 根据实体个数，创建的实体嵌入
 		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入
 		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
 
-		if margin == None or epsilon == None:
-			nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
-			nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
-		else:
-			self.embedding_range = nn.Parameter(
-				torch.Tensor([(self.margin + self.epsilon) / self.dim]), requires_grad=False
-			)
-			nn.init.uniform_(
-				tensor = self.ent_embeddings.weight.data, 
-				a = -self.embedding_range.item(), 
-				b = self.embedding_range.item()
-			)
-			nn.init.uniform_(
-				tensor = self.rel_embeddings.weight.data, 
-				a= -self.embedding_range.item(), 
-				b= self.embedding_range.item()
-			)
-	
-	def _conj(self, tensor):
-		"""获得复数共轭。
+		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
+		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
-		tensor 减去 2 倍的虚部得到共轭复数。
+	def _ccorr(
+		self,
+		a: torch.Tensor,
+		b: torch.Tensor) -> torch.Tensor:
 
-		:param tensor: 复数。
-		:type tensor: torch.Tensor
-		:returns: 返回共轭复数。
-		:rtype: torch.Tensor
-		"""
-
-		zero_shape = (list)(tensor.shape)
-		one_shape = (list)(tensor.shape)
-		zero_shape[-1] = 1
-		one_shape[-1] -= 1
-		ze = torch.zeros(size = zero_shape, device = tensor.device)
-		on = torch.ones(size = one_shape, device = tensor.device)
-		matrix = torch.cat([ze, on], -1)
-		matrix = 2 * matrix
-		return tensor - matrix * tensor
-	
-	def _real(self, tensor):
-		"""获得复数的实部。
-
-		利用 :py:func:`torch.narrow` 获得复数的实部。
-
-		:param tensor: 复数。
-		:type tensor: torch.Tensor
-		:returns: 返回复数的实部。
-		:rtype: torch.Tensor
-		"""
-
-		dimensions = len(tensor.shape)
-		return tensor.narrow(dimensions - 1, 0, 1)
-
-	def _imag(self, tensor):
-		"""获得复数的虚部。
-
-		利用 :py:func:`torch.narrow` 获得复数的虚部。
-
-		:param tensor: 复数。
-		:type tensor: torch.Tensor
-		:returns: 返回复数的虚部。
-		:rtype: torch.Tensor
-		"""
-
-		dimensions = len(tensor.shape)
-		return tensor.narrow(dimensions - 1, 1, 1)
-
-	def _mul(self, real_1, imag_1, real_2, imag_2):
-		"""复数的乘法。
-
-		公式为: :math:`(a+b\mathcal{i}) \cdot (c+d\mathcal{i}) = (ac-bd)+(ad+bc)\mathcal{i}`。
-
-		:param a: 头实体的向量。
-		:type a: torch.Tensor
-		:param b: 尾实体的向量。
-		:type b: torch.Tensor
-		:returns: 返回循环相关计算结果。
-		:rtype: torch.Tensor
-		"""
-
-		real = real_1 * real_2 - imag_1 * imag_2
-		imag = real_1 * imag_2 + imag_1 * real_2
-		return torch.cat([real, imag], -1)
-
-	def _ccorr(self, a, b):
 		"""计算循环相关 :math:`\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{t}))`。
 		
-		利用 :py:func:`torch.rfft` 计算实数到复数离散傅里叶变换，
-		利用 :py:func:`torch.ifft` 计算复数到复数离散傅立叶逆变换。
+		利用 :py:func:`torch.fft.rfft` 计算实数到复数离散傅里叶变换，:py:func:`torch.fft.irfft` 是其逆变换；
+		利用 :py:func:`torch.conj` 计算复数的共轭。
 
 		:param a: 头实体的向量。
 		:type a: torch.Tensor
@@ -193,14 +113,27 @@ class HolE(Model):
 		:returns: 返回循环相关计算结果。
 		:rtype: torch.Tensor
 		"""
+		
+		# 计算傅里叶变换
+		a_fft = torch.fft.rfft(a, dim=-1)
+		b_fft = torch.fft.rfft(b, dim=-1)
+		
+		# 复数的共轭
+		a_fft = torch.conj(a_fft)
+		
+		# 哈达玛积
+		p_fft = a_fft * b_fft
+    	
+		# 傅里叶变换的逆变换
+		return torch.fft.irfft(p_fft, n=a.shape[-1], dim=-1)
 
-		a = self._conj(torch.rfft(a, signal_ndim = 1, onesided = False))
-		b = torch.rfft(b, signal_ndim = 1, onesided = False)
-		res = self._mul(self._real(a), self._imag(a), self._real(b), self._imag(b))
-		res = torch.ifft(res, signal_ndim = 1)
-		return self._real(res).flatten(start_dim = -2)
+	def _calc(
+		self,
+		h: torch.Tensor,
+		t: torch.Tensor,
+		r: torch.Tensor,
+		mode: str) -> torch.Tensor:
 
-	def _calc(self, h, t, r, mode):
 		"""计算 HolE 的评分函数。
 		
 		:param h: 头实体的向量。
@@ -209,9 +142,9 @@ class HolE(Model):
 		:type t: torch.Tensor
 		:param r: 关系的向量。
 		:type r: torch.Tensor
-		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
 		:type mode: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
@@ -225,13 +158,17 @@ class HolE(Model):
 		score = torch.sum(score, -1).flatten()
 		return score
 
-	def forward(self, data):
+	@override
+	def forward(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -246,11 +183,14 @@ class HolE(Model):
 		score = self._calc(h ,t, r, mode)
 		return score
 
-	def regularization(self, data):
+	def regularization(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -264,7 +204,8 @@ class HolE(Model):
 		regul = (torch.mean(h ** 2) + torch.mean(t ** 2) + torch.mean(r ** 2)) / 3
 		return regul
 
-	def l3_regularization(self):
+	def l3_regularization(self) -> torch.Tensor:
+
 		"""L3 正则化函数，在损失函数中用到。
 
 		:returns: 模型参数的正则损失
@@ -272,12 +213,16 @@ class HolE(Model):
 		"""
 		
 		return (self.ent_embeddings.weight.norm(p = 3)**3 + self.rel_embeddings.weight.norm(p = 3)**3)
-
-	def predict(self, data):
+	
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> np.ndarray:
+		
 		"""HolE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""

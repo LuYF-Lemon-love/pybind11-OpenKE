@@ -83,6 +83,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: HolE
+
+   experiments/HolE/single_gpu_hole_WN18RR_wandb
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: ComplEx
 
    experiments/ComplEx/single_gpu_complex_WN18RR_wandb
