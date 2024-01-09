@@ -53,3 +53,18 @@ SimplE
 因此，遵从 ``SimplE`` 作者的建议，依据 https://github.com/baharefatemi/SimplE/blob/master/SimplE.py 实现 ``SimplE`` 。
 
 最终实现可以从 `这里 <_modules/pybind11_ke/module/model/SimplE.html#SimplE>`_ 得到。
+
+.. _details_hole:
+
+HolE
+---------
+
+.. WARNING:: 由于 :py:class:`pybind11_ke.module.model.HolE` 的
+    :py:meth:`pybind11_ke.module.model.HolE._ccorr` （`OpenKE-PyTorch 的原始实现 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/HolE.py#L60>`__）需要
+    :py:func:`torch-1-7.rfft` 和 :py:func:`torch-1-7.ifft` 分别计算实数到复数离散傅里叶变换和复数到复数离散傅立叶逆变换。
+    ``pytorch`` 在版本 ``1.8.0`` 移除了上述两个函数，并且在版本 ``1.7.0`` 给出了警告。
+    因此，需要适配到更高版本的 ``pytorch``。
+
+.. Important::
+    我们参考了 `PyKEEN 的 hole_interaction 实现 <https://pykeen.readthedocs.io/en/stable/api/pykeen.nn.functional.hole_interaction.html#pykeen.nn.functional.hole_interaction>`_ 重新实现了 :py:class:`pybind11_ke.module.model.HolE`，
+    使其能够适配到更高版本的 ``pytorch``。

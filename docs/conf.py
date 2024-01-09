@@ -32,10 +32,10 @@ html_context = {
 }
 
 html_theme_options = {
-    # 'collapse_navigation': False,
-    # 'sticky_navigation': True,
-    # 'includehidden': True,
-    # 'display_version': True,
+    'collapse_navigation': False,
+    'sticky_navigation': True,
+    'includehidden': True,
+    'display_version': True,
     
     'github_url': github_url,
 
@@ -80,8 +80,8 @@ intersphinx_mapping = {
     'rtd': ('https://docs.readthedocs.io/en/stable/', None),
     'python': ('https://docs.python.org/3/', None),
     'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
-    # 'torch': ('https://pytorch.org/docs/stable/', None),
-    'torch': ('https://pytorch.org/docs/1.7.0/', None),
+    'torch': ('https://pytorch.org/docs/stable/', None),
+    'torch-1-7': ('https://pytorch.org/docs/1.7.0/', None),
     'numpy': ('https://numpy.org/doc/stable', None),
 }
 

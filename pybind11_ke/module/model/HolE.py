@@ -86,12 +86,12 @@ class HolE(Model):
 		super(HolE, self).__init__(ent_tot, rel_tot)
 
 		#: 实体和关系嵌入向量的维度
-		self.dim = dim
+		self.dim: int = dim
 
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)

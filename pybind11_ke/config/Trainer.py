@@ -347,7 +347,6 @@ class Trainer(object):
 						"test/hit3" : hit3,
 						"test/hit10" : hit10,
 					})
-			self.tester.run_link_prediction()
 
 	def to_var(self, x: np.ndarray) -> torch.Tensor:
 
