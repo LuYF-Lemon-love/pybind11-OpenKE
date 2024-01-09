@@ -58,7 +58,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 - 修复了 `SimplE模型实现的问题 <https://github.com/thunlp/OpenKE/issues/151>`__ 。
 
-- 修复了 :ref:`HolE <details_hole>` ``pytorch`` 的版本适配问题。
+- 修复了 :ref:`HolE <details_hole>` 深度学习框架（pytorch）的版本适配问题。
 
 **高效的**
 

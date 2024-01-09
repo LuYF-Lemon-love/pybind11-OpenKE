@@ -81,7 +81,6 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
     'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
     'torch': ('https://pytorch.org/docs/stable/', None),
-    'torch-1-7': ('https://pytorch.org/docs/1.7.0/', None),
     'numpy': ('https://numpy.org/doc/stable', None),
 }
 

@@ -61,7 +61,7 @@ HolE
 
 .. WARNING:: 由于 :py:class:`pybind11_ke.module.model.HolE` 的
     :py:meth:`pybind11_ke.module.model.HolE._ccorr` （`OpenKE-PyTorch 的原始实现 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/HolE.py#L60>`__）需要
-    :py:func:`torch-1-7.rfft` 和 :py:func:`torch-1-7.ifft` 分别计算实数到复数离散傅里叶变换和复数到复数离散傅立叶逆变换。
+    `torch.rfft <https://pytorch.org/docs/1.7.0/generated/torch.rfft.html#torch.rfft>`_ 和 `torch.ifft <https://pytorch.org/docs/1.7.0/generated/torch.ifft.html#torch.ifft>`_ 分别计算实数到复数离散傅里叶变换和复数到复数离散傅立叶逆变换。
     ``pytorch`` 在版本 ``1.8.0`` 移除了上述两个函数，并且在版本 ``1.7.0`` 给出了警告。
     因此，需要适配到更高版本的 ``pytorch``。
 
