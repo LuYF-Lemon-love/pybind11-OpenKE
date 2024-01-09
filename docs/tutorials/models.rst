@@ -172,6 +172,46 @@ DistMult
 
 pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.DistMult`
 
+.. _hole:
+
+HolE
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``HolE`` :cite:`HolE` 发表于 ``2016`` 年，全息嵌入（HolE）利用循环相关算子来计算实体和关系之间的交互。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)= \sigma(\textbf{r}^{T}(\textbf{h} \star \textbf{t}))
+
+其中循环相关算子 $\star: \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}^d$ 定义为：
+
+.. math::
+    
+    [\textbf{a} \star \textbf{b}]_i = \sum_{k=0}^{d-1} \textbf{a}_{k} \textbf{b}_{(i+k)\ mod \ d}
+
+通过使用循环相关运算符，$[\textbf{h} \star \textbf{t}]_i$ 每个分量在成对交互中表示固定分区的总和。这使模型能够将语义相似的交互放入同一分区中，并通过 $\textbf{r}$ 共享权重。同样，不相关的特征交互也可以放在同一个分区中，该分区可以在 $\textbf{r}$ 中分配较小的权重。
+
+可以通过快速傅里叶变换（fast Fourier transform，FFT）实现循环相关算子，进而评分函数可以表示为如下形式：
+
+.. math::
+    
+    f_r(h,t)=\mathbf{r}^T (\mathcal{F}^{-1}(\overline{\mathcal{F}(\mathbf{h})} \odot \mathcal{F}(\mathbf{t})))
+
+其中 :math:`\mathcal{F}(\cdot)` 和 :math:`\mathcal{F}^{-1}(\cdot)` 表示快速傅里叶变换，:math:`\overline{\mathbf{x}}` 表示复数共轭，:math:`\odot` 表示哈达玛积。
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    [\gamma + f_r(h^{'},t^{'}) - f_r(h,t)]_{+}
+    
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数。
+
+pybind11-OpenKE 的 HolE 实现传送门：:py:class:`pybind11_ke.module.model.HolE`
+
 .. _complex:
 
 ComplEx

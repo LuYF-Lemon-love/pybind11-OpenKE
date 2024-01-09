@@ -31,10 +31,10 @@ pybind11_ke.module.model
     TransR
     TransD
     DistMult
+    HolE
     ComplEx
     SimplE
     Analogy
-    HolE
     RESCAL
     RotatE
 
