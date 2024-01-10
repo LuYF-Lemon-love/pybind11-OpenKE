@@ -75,6 +75,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: RotatE
+
+   experiments/RotatE/single_gpu_rotate_WN18RR_adv_wandb
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: DistMult
 
    experiments/DistMult/single_gpu_distmult_WN18RR_wandb

@@ -18,7 +18,7 @@ TransE
     \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
     [\gamma + d(h+r,t) - d(h^{'}+r,t^{'})]_{+}
 
-:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数，:math:`d` 是 :math:`L_{1}-norm` 或 :math:`L_{2}-norm`，
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 超参数，:math:`d` 是 :math:`L_{1}-norm` 或 :math:`L_{2}-norm`，
 
 .. math::
 
@@ -51,7 +51,7 @@ TransH
     [\gamma + f_r(h,t) - f_r(h^{'},t^{'})]_{+}+
     C\Bigg\{ \sum_{e \in E}[\Vert e \Vert^2_2 - 1]_{+} + \sum_{r \in R}\bigg[ \frac{(r_w^\top r_d)^2}{\Vert r_d \Vert^2_2} - \epsilon^2\bigg]_{+} \Bigg\}
 
-:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数，:math:`C` 是一个加权软约束的超参数。
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 超参数，:math:`C` 是一个加权软约束的超参数。
 
 .. Important:: 在每次 batch 迭代前，需要将 :math:`r_w` 投影到 :math:`l_2` 单位球上保证 :math:`r_w` 是单位法向量。
 
@@ -97,7 +97,7 @@ TransR
     \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
     [\gamma + f_r(h,t) - f_r(h^{'},t^{'})]_{+}
     
-:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数。
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 超参数。
 
 .. Important:: 为了避免过拟合，实体和关系的嵌入向量初始化为 TransE 的结果，关系矩阵 :math:`M_r` 初始为单位矩阵。
 
@@ -137,11 +137,56 @@ TransD
     \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
     [\gamma + f_r(h,t) - f_r(h^{'},t^{'})]_{+}
     
-:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数。
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 超参数。
 
 .. Important:: 为了加速收敛和避免过拟合，实体和关系的嵌入向量初始化为 TransE 的结果。
 
 pybind11-OpenKE 的 TransD 实现传送门：:py:class:`pybind11_ke.module.model.TransD`
+
+.. _rotate:
+
+RotatE
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``RotatE`` :cite:`RotatE` 发表于 ``2019`` 年，将实体和关系映射到复数向量空间，并将每个关系定义为从头实体到尾实体的旋转。
+
+欧拉恒等式 :math:`e^{i\theta}=\operatorname{cos}\theta + i\operatorname{sin}\theta` 表明酉复数（unitary complex number）可以看作是复平面中的旋转。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=\gamma - \Vert \mathbf{h} \circ \mathbf{r} - \mathbf{t} \Vert_{L_1}
+
+:math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`|r_i|=1`，:math:`\circ` 表示哈达玛积。对于复数向量空间中的每一维度，``RotatE`` :cite:`RotatE` 期待：
+
+.. math::
+
+    t_i = h_i r_i, \text{where} h_i, r_i, t_i \in \mathbb{C} \text{and} |r_i|=1. 
+
+事实证明，这种简单的操作可以有效地模拟所有三种关系模式：对称/非对称（symmetry/antisymmetry）、反转（ inversion）和组合（composition）。
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = -\log\sigma(f_r(h,t))-\sum_{i=1}^{n}\frac{1}{n}\log\sigma(-f_r(h_i^{'},t_i^{'}))
+    
+:math:`\gamma` 是一个 **margin** 超参数，:math:`\sigma` 表示 sigmoid 函数。
+
+由于均匀的负采样存在效率低下的问题，因为随着训练的进行，许多样本显然是假的，这不能提供任何有意义的信息。因此，``RotatE`` :cite:`RotatE` 提出了一种称为自对抗负采样（self-adversarial negative sampling）的方法，该方法根据当前的嵌入模型对负三元组进行采样。具体来说，从以下分布中采样负三元组：
+
+.. math::
+
+    p_r(h_j^{'},t_j^{'}|\{(h,r,t)\})=\frac{\operatorname{exp}af_r(h_j^{'},t_j^{'})}{\sum_i\operatorname{exp}af_r(h_i^{'},t_i^{'})}
+
+其中 :math:`a` 是采样的温度。将上述概率视为负样本的权重，损失函数变为：
+
+.. math::
+
+    \mathcal{L} = -\log\sigma(f_r(h,t))-\sum_{i=1}^{n}p_r(h_i^{'},t_i^{'})\log\sigma(-f_r(h_i^{'},t_i^{'}))
+
+pybind11-OpenKE 的 RotatE 实现传送门：:py:class:`pybind11_ke.module.model.RotatE`
 
 语义匹配模型
 ----------------------------------
@@ -208,7 +253,7 @@ HolE
     \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
     [\gamma + f_r(h^{'},t^{'}) - f_r(h,t)]_{+}
     
-:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 函数。
+:math:`[x]_{+}` 表示 :math:`x` 的正数部分，:math:`\gamma > 0` 是一个 **margin** 超参数。
 
 pybind11-OpenKE 的 HolE 实现传送门：:py:class:`pybind11_ke.module.model.HolE`
 
