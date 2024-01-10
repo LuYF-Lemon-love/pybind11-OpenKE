@@ -158,11 +158,11 @@ RotatE
 
     f_r(h,t)=\gamma - \Vert \mathbf{h} \circ \mathbf{r} - \mathbf{t} \Vert_{L_1}
 
-:math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`|r_i|=1`，:math:`\circ` 表示哈达玛积。对于复数向量空间中的每一维度，``RotatE`` :cite:`RotatE` 期待：
+:math:`\gamma` 是一个 **margin** 超参数，:math:`h, r, t \in \mathbb{C}^n` 是复数向量，:math:`|r_i|=1`，:math:`\circ` 表示哈达玛积。对于复数向量空间中的每一维度，``RotatE`` :cite:`RotatE` 假设：
 
 .. math::
 
-    t_i = h_i r_i, \text{where} h_i, r_i, t_i \in \mathbb{C} \text{and} |r_i|=1. 
+    t_i = h_i r_i, \text{ where } h_i, r_i, t_i \in \mathbb{C} \text{ and } |r_i|=1. 
 
 事实证明，这种简单的操作可以有效地模拟所有三种关系模式：对称/非对称（symmetry/antisymmetry）、反转（ inversion）和组合（composition）。
 
@@ -172,7 +172,7 @@ RotatE
 
     \mathcal{L} = -\log\sigma(f_r(h,t))-\sum_{i=1}^{n}\frac{1}{n}\log\sigma(-f_r(h_i^{'},t_i^{'}))
     
-:math:`\gamma` 是一个 **margin** 超参数，:math:`\sigma` 表示 sigmoid 函数。
+:math:`\sigma` 表示 sigmoid 函数。
 
 由于均匀的负采样存在效率低下的问题，因为随着训练的进行，许多样本显然是假的，这不能提供任何有意义的信息。因此，``RotatE`` :cite:`RotatE` 提出了一种称为自对抗负采样（self-adversarial negative sampling）的方法，该方法根据当前的嵌入模型对负三元组进行采样。具体来说，从以下分布中采样负三元组：
 
