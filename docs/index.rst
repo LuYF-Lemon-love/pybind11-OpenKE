@@ -77,6 +77,7 @@
    :includehidden:
    :caption: RotatE
 
+   experiments/RotatE/single_gpu_rotate_WN18RR_adv
    experiments/RotatE/single_gpu_rotate_WN18RR_adv_wandb
 
 .. toctree::
