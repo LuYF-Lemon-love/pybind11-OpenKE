@@ -18,7 +18,7 @@ pybind11_ke.module.model
     
     Model
 
-模型子类
+平移模型
 ----------------------------------
 
 .. autosummary::
@@ -30,13 +30,22 @@ pybind11_ke.module.model
     TransH
     TransR
     TransD
+    RotatE
+
+语义匹配模型
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: classtemplate.rst
+    
     DistMult
     HolE
     ComplEx
     SimplE
     Analogy
     RESCAL
-    RotatE
 
 超参数优化默认搜索范围
 ----------------------------------

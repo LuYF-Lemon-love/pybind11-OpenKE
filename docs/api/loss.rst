@@ -27,8 +27,8 @@ pybind11_ke.module.loss
     :template: classtemplate.rst
     
     MarginLoss
-    SigmoidLoss
     SoftplusLoss
+    SigmoidLoss
 
 超参数优化默认搜索范围
 ----------------------------------

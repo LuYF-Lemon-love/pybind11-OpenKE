@@ -3,69 +3,77 @@
 # pybind11_ke/module/model/RotatE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 26, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 11, 2023
 # 
 # 该头文件定义了 RotatE.
 
 """
-:py:class:`RotatE` 类 - 将实体表示成复数向量，关系建模为复数向量空间的旋转。
-
-论文地址: `RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space <https://openreview.net/forum?id=HkgEQnRqYQ>`__ 。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Trainer, Tester
-	from pybind11_ke.module.model import RotatE
-	from pybind11_ke.module.loss import SigmoidLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-
-	# define the model
-	rotate = RotatE(
-		ent_tot = train_dataloader.get_ent_tol(),
-		rel_tot = train_dataloader.get_rel_tol(),
-		dim = 1024,
-		margin = 6.0,
-		epsilon = 2.0,
-	)
-
-	# define the loss function
-	model = NegativeSampling(
-		model = rotate, 
-		loss = SigmoidLoss(adv_temperature = 2),
-		batch_size = train_dataloader.get_batch_size(), 
-		regul_rate = 0.0
-	)
-
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-	                  train_times = 6000, lr = 2e-5, use_gpu = True, opt_method = "adam")
-	trainer.run()
-	rotate.save_checkpoint('../checkpoint/rotate.ckpt')
-
-	# test the model
-	rotate.load_checkpoint('../checkpoint/rotate.ckpt')
-	tester = Tester(model = rotate, data_loader = test_dataloader, use_gpu = True)
-	tester.run_link_prediction(type_constrain = False)
+RotatE - 将实体表示成复数向量，关系建模为复数向量空间的旋转。
 """
 
 import torch
+import typing
+import numpy as np
 import torch.nn as nn
 from .Model import Model
+from typing_extensions import override
 
 class RotatE(Model):
 
 	"""
-	:py:class:`RotatE` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
-	
-	RotatE 提出于 2019 年，将实体表示成复数向量，关系建模为复数向量空间的旋转。
+	``RotatE`` :cite:`RotatE` 提出于 2019 年，将实体表示成复数向量，关系建模为复数向量空间的旋转。
 
-	评分函数为: :math:`\gamma - \parallel \mathbf{h} \circ \mathbf{r} - \mathbf{t} \parallel_{L_2}`，
-	:math:`\circ` 表示哈达玛积（Hadamard product），正三元组的评分函数的值越大越好。
+	评分函数为:
+
+	.. math::
+	
+		\gamma - \parallel \mathbf{h} \circ \mathbf{r} - \mathbf{t} \parallel_{L_2}
+	
+	:math:`\circ` 表示哈达玛积（Hadamard product），正三元组的评分函数的值越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+
+	例子::
+
+		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.module.model import RotatE
+		from pybind11_ke.module.loss import SigmoidLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+
+		# define the model
+		rotate = RotatE(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = 1024,
+			margin = 6.0,
+			epsilon = 2.0,
+		)
+
+		# define the loss function
+		model = NegativeSampling(
+			model = rotate, 
+			loss = SigmoidLoss(adv_temperature = 2),
+			batch_size = train_dataloader.get_batch_size(), 
+			regul_rate = 0.0,
+		)
+
+		# test the model
+		tester = Tester(model = rotate, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader, epochs = 6000,
+			lr = 2e-5, opt_method = 'adam', use_gpu = True, device = 'cuda:1',
+			tester = tester, test = True, valid_interval = 100,
+			log_interval = 100, save_interval = 100,
+			save_path = '../../checkpoint/rotate.pth', use_wandb = False)
+		trainer.run()
 	"""
 
-	def __init__(self, ent_tot, rel_tot, dim = 100, margin = 6.0, epsilon = 2.0):
+	def __init__(
+		self,
+		ent_tot: int,
+		rel_tot: int,
+		dim: int = 100,
+		margin: float = 6.0,
+		epsilon: float = 2.0):
 
 		"""创建 RotatE 对象。
 
@@ -84,18 +92,18 @@ class RotatE(Model):
 		super(RotatE, self).__init__(ent_tot, rel_tot)
 
 		#: RotatE 原论文对应的源代码固定为 2.0。
-		self.epsilon = epsilon
+		self.epsilon: int = epsilon
 
 		#: RotatE 原论文的实现中将实体嵌入向量的维度指定为 ``dim`` 的 2 倍。
 		#: 因为实体嵌入向量需要划分为实部和虚部。
-		self.dim_e = dim * 2
+		self.dim_e: int = dim * 2
 		#: 关系嵌入向量的维度，为 ``dim``。
-		self.dim_r = dim
+		self.dim_r: int = dim
 
 		#: 根据实体个数，创建的实体嵌入。
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim_e)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim_e)
 		#: 根据关系个数，创建的关系嵌入。
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim_r)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim_r)
 
 		self.ent_embedding_range = nn.Parameter(
 			torch.Tensor([(margin + self.epsilon) / self.dim_e]), 
@@ -120,10 +128,15 @@ class RotatE(Model):
 		)
 
 		#: 原论文中损失函数的 gamma。
-		self.margin = nn.Parameter(torch.Tensor([margin]))
+		self.margin: torch.nn.Parameter = nn.Parameter(torch.Tensor([margin]))
 		self.margin.requires_grad = False
 
-	def _calc(self, h, t, r, mode):
+	def _calc(
+		self,
+		h: torch.Tensor,
+		t: torch.Tensor,
+		r: torch.Tensor,
+		mode: str) -> torch.Tensor:
 
 		"""计算 RotatE 的评分函数。
 
@@ -136,9 +149,9 @@ class RotatE(Model):
 		:type t: torch.Tensor
 		:param r: 关系的向量。
 		:type r: torch.Tensor
-		:param mode: 如果进行链接预测的话：``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练进行采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示 :py:class:`pybind11_ke.data.TestDataLoader` 为验证模型采样的数据。
+		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
+					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
+					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
 		:type mode: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
@@ -177,14 +190,17 @@ class RotatE(Model):
 		score = score.norm(dim = 0).sum(dim = -1)
 		return score.permute(1, 0).flatten()
 
-	def forward(self, data):
+	@override
+	def forward(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 		
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -199,12 +215,14 @@ class RotatE(Model):
 		score = self.margin - self._calc(h ,t, r, mode)
 		return score
 
-	def regularization(self, data):
+	def regularization(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -220,12 +238,15 @@ class RotatE(Model):
 				 torch.mean(r ** 2)) / 3
 		return regul
 
-	def predict(self, data):
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
 
 		"""RotatE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
