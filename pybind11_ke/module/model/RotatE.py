@@ -128,7 +128,7 @@ class RotatE(Model):
 		)
 
 		#: 原论文中损失函数的 gamma。
-		self.margin: torch.nn.Parameter = nn.Parameter(torch.Tensor([margin]))
+		self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
 		self.margin.requires_grad = False
 
 	def _calc(
@@ -141,7 +141,7 @@ class RotatE(Model):
 		"""计算 RotatE 的评分函数。
 
 		利用 :py:func:`torch.chunk` 拆分实体嵌入向量获得复数的实部和虚部。
-		依据原论文使用的 L2-norm 作为距离函数。
+		原论文使用 L1-norm 作为距离函数，而这里使用的 L2-norm 作为距离函数。
 		
 		:param h: 头实体的向量。
 		:type h: torch.Tensor

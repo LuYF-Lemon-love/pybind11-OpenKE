@@ -66,5 +66,5 @@ HolE
     因此，需要适配到更高版本的 ``pytorch``。
 
 .. Important::
-    我们参考了 `PyKEEN 的 hole_interaction 实现 <https://pykeen.readthedocs.io/en/stable/api/pykeen.nn.functional.hole_interaction.html#pykeen.nn.functional.hole_interaction>`_ 重新实现了 :py:class:`pybind11_ke.module.model.HolE`，
+    我们参考了 `PyKEEN 的 hole_interaction 实现 <https://pykeen.readthedocs.io/en/stable/api/pykeen.nn.functional.hole_interaction.html#pykeen.nn.functional.hole_interaction>`_ ，重新实现了 :py:class:`pybind11_ke.module.model.HolE`，
     使其能够适配到更高版本的 ``pytorch``。
