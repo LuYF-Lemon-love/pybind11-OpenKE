@@ -84,6 +84,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: RESCAL
+
+   experiments/RESCAL/single_gpu_rescal_FB15K237
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: DistMult
 
    experiments/DistMult/single_gpu_distmult_WN18RR_wandb
