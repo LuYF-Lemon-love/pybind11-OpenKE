@@ -46,12 +46,12 @@ RESCAL
 负号，原因如下：
 
 由于 :py:class:`pybind11_ke.module.model.RESCAL` 采用 :py:class:`pybind11_ke.module.loss.MarginLoss` 进行训练，因此需要正样本评分函数的得分应小于负样本评分函数的得分，
-因此，:py:class:`pybind11_ke.module.model.RESCAL` 的评分函数需要添加负号即 :py:class:`pybind11_ke.module.model.RESCAL.forward` 需要添加符号；
-由于 pybind11-OpenKE 使用的底层 C++ 模块进行评估模型性能，该模块需要正样本的得分小于负样本的得分，
+:py:class:`pybind11_ke.module.model.RESCAL` 的评分函数需要添加负号即 :py:class:`pybind11_ke.module.model.RESCAL._calc` 需要添加负号；
+由于 pybind11-OpenKE 使用底层 C++ 模块进行评估模型性能，该模块需要正样本的得分小于负样本的得分，
 因此 :py:class:`pybind11_ke.module.model.RESCAL.predict` 不需要在 :py:class:`pybind11_ke.module.model.RESCAL.forward` 返回的结果上添加负号。
 
 .. Important::
-    实验表明，去掉负号能够大幅度改善模型的评估结果。
+    实验表明，去掉 :py:class:`pybind11_ke.module.model.RESCAL.predict` 负号能够大幅度改善模型的评估结果。
 
 Analogy
 ---------

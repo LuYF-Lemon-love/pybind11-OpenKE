@@ -204,7 +204,7 @@ RESCAL
 
     f_r(h,t)=\mathbf{h}^T \mathbf{M}_r \mathbf{t}
 
-:math:`\mathbf{M}_r` 是关系 :math:`r` 对应的矩阵。
+:math:`\mathbf{M}_r` 是关系 :math:`r` 对应的关系矩阵。
 
 pybind11-OpenKE 的 RESCAL 实现传送门：:py:class:`pybind11_ke.module.model.RESCAL`
 
