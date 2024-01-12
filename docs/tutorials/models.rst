@@ -191,6 +191,23 @@ pybind11-OpenKE 的 RotatE 实现传送门：:py:class:`pybind11_ke.module.model
 语义匹配模型
 ----------------------------------
 
+.. _rescal:
+
+RESCAL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``RESCAL`` :cite:`RESCAL` 发表于 ``2011`` 年，是 ``DistMult`` :cite:`DistMult` 的基石，即没有限制关系矩阵 :math:`M_r` 为对角矩阵。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=\mathbf{h}^T \mathbf{M}_r \mathbf{t}
+
+:math:`\mathbf{M}_r` 是关系 :math:`r` 对应的矩阵。
+
+pybind11-OpenKE 的 RESCAL 实现传送门：:py:class:`pybind11_ke.module.model.RESCAL`
+
 .. _distMult:
 
 DistMult

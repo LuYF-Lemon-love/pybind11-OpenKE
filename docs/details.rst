@@ -1,37 +1,6 @@
 实现细节
 ==================================
 
-Analogy
----------
-
-我去掉了原始 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``Analogy`` 的
-`_calc <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
-负号，原因如下：
-
-在旧版的 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch(old)>`__ 中，
-`DistMult <https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch(old)/models/DistMult.py#L23>`__、
-`ComplEx <https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch(old)/models/ComplEx.py#L36>`__、
-`Analogy <https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch(old)/models/Analogy.py#L30>`__ 3 者的
-``_calc`` 函数都带了负号，并且在
-`Analogy 原论文的实现 <https://github.com/quark0/ANALOGY>`__ 中，
-`DistMult <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L487>`__、
-`ComplEx <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L527>`__、
-`Analogy <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L583>`__ 3 者的
-``score`` 函数都未带符号。从原论文中也能发现，三者的评分函数的符号应该是一致的。
-但是在新版的 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 中，
-三者 `DistMult <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/DistMult.py#L40>`__、
-`ComplEx <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/ComplEx.py#L21>`__、
-`Analogy <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
-`_calc` 函数实现中，仅仅 ``Analogy`` 带了负号。
-
-因此，我最终决定去掉 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``Analogy`` 的
-`_calc <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
-负号。
-
-从 `运行结果 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_ 也没发现差异。 
-
-最终实现可以从 `这里 <_modules/pybind11_ke/module/model/HolE.html#HolE>`_ 得到。
-
 SimplE
 ---------
 
@@ -66,5 +35,51 @@ HolE
     因此，需要适配到更高版本的 ``pytorch``。
 
 .. Important::
-    我们参考了 `PyKEEN 的 hole_interaction 实现 <https://pykeen.readthedocs.io/en/stable/api/pykeen.nn.functional.hole_interaction.html#pykeen.nn.functional.hole_interaction>`_ ，重新实现了 :py:class:`pybind11_ke.module.model.HolE`，
+    我参考了 `PyKEEN 的 hole_interaction 实现 <https://pykeen.readthedocs.io/en/stable/api/pykeen.nn.functional.hole_interaction.html#pykeen.nn.functional.hole_interaction>`_ ，重新实现了 :py:class:`pybind11_ke.module.model.HolE`，
     使其能够适配到更高版本的 ``pytorch``。
+
+RESCAL
+---------
+
+我去掉了原始 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``RESCAL`` 的
+`predict <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/RESCAL.py#L45>`__ 的
+负号，原因如下：
+
+由于 :py:class:`pybind11_ke.module.model.RESCAL` 采用 :py:class:`pybind11_ke.module.loss.MarginLoss` 进行训练，因此需要正样本评分函数的得分应小于负样本评分函数的得分，
+因此，:py:class:`pybind11_ke.module.model.RESCAL` 的评分函数需要添加负号即 :py:class:`pybind11_ke.module.model.RESCAL.forward` 需要添加符号；
+由于 pybind11-OpenKE 使用的底层 C++ 模块进行评估模型性能，该模块需要正样本的得分小于负样本的得分，
+因此 :py:class:`pybind11_ke.module.model.RESCAL.predict` 不需要在 :py:class:`pybind11_ke.module.model.RESCAL.forward` 返回的结果上添加负号。
+
+.. Important::
+    实验表明，去掉负号能够大幅度改善模型的评估结果。
+
+Analogy
+---------
+
+我去掉了原始 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``Analogy`` 的
+`_calc <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
+负号，原因如下：
+
+在旧版的 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch(old)>`__ 中，
+`DistMult <https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch(old)/models/DistMult.py#L23>`__、
+`ComplEx <https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch(old)/models/ComplEx.py#L36>`__、
+`Analogy <https://github.com/thunlp/OpenKE/blob/OpenKE-PyTorch(old)/models/Analogy.py#L30>`__ 3 者的
+``_calc`` 函数都带了负号，并且在
+`Analogy 原论文的实现 <https://github.com/quark0/ANALOGY>`__ 中，
+`DistMult <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L487>`__、
+`ComplEx <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L527>`__、
+`Analogy <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L583>`__ 3 者的
+``score`` 函数都未带符号。从原论文中也能发现，三者的评分函数的符号应该是一致的。
+但是在新版的 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 中，
+三者 `DistMult <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/DistMult.py#L40>`__、
+`ComplEx <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/ComplEx.py#L21>`__、
+`Analogy <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
+`_calc` 函数实现中，仅仅 ``Analogy`` 带了负号。
+
+因此，我最终决定去掉 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``Analogy`` 的
+`_calc <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
+负号。
+
+从 `运行结果 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_ 也没发现差异。 
+
+最终实现可以从 `这里 <_modules/pybind11_ke/module/model/HolE.html#HolE>`_ 得到。
