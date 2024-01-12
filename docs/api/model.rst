@@ -40,12 +40,12 @@ pybind11_ke.module.model
     :nosignatures:
     :template: classtemplate.rst
     
+    RESCAL
     DistMult
     HolE
     ComplEx
     SimplE
     Analogy
-    RESCAL
 
 超参数优化默认搜索范围
 ----------------------------------
