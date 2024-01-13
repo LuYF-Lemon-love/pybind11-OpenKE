@@ -46,14 +46,14 @@ RESCAL
 负号，原因如下：
 
 由于 :py:class:`pybind11_ke.module.model.RESCAL` 采用 :py:class:`pybind11_ke.module.loss.MarginLoss` 进行训练，因此需要正样本评分函数的得分应小于负样本评分函数的得分，
-:py:class:`pybind11_ke.module.model.RESCAL` 的评分函数需要添加负号即 :py:class:`pybind11_ke.module.model.RESCAL._calc` 需要添加负号；
+:py:class:`pybind11_ke.module.model.RESCAL` 的评分函数需要添加负号即 :py:meth:`pybind11_ke.module.model.RESCAL._calc` 需要添加负号；
 由于 pybind11-OpenKE 使用底层 C++ 模块进行评估模型性能，该模块需要正样本的得分小于负样本的得分，
-因此 :py:class:`pybind11_ke.module.model.RESCAL.predict` 不需要在 :py:class:`pybind11_ke.module.model.RESCAL.forward` 返回的结果上添加负号。
+因此 :py:meth:`pybind11_ke.module.model.RESCAL.predict` 不需要在 :py:meth:`pybind11_ke.module.model.RESCAL.forward` 返回的结果上添加负号。
 
 .. Important::
-    实验表明，去掉 :py:class:`pybind11_ke.module.model.RESCAL.predict` 负号能够大幅度改善模型的评估结果。
+    实验表明，去掉 :py:meth:`pybind11_ke.module.model.RESCAL.predict` 负号能够大幅度改善模型的评估结果。
 
-Analogy
+ANALOGY
 ---------
 
 我去掉了原始 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 的 ``Analogy`` 的
@@ -80,6 +80,6 @@ Analogy
 `_calc <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/Analogy.py#L27>`__ 的
 负号。
 
-从 `运行结果 <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_ 也没发现差异。 
+从运行结果也没发现差异。 
 
-最终实现可以从 `这里 <_modules/pybind11_ke/module/model/HolE.html#HolE>`_ 得到。
+最终实现可以从 :py:class:`pybind11_ke.module.model.Analogy` 得到。

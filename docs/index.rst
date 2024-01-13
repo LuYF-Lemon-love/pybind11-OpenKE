@@ -116,6 +116,14 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
+   :caption: ANALOGY
+
+   experiments/ANALOGY/single_gpu_analogy_WN18RR
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
    :caption: SimplE
 
    experiments/SimplE/single_gpu_simple_WN18RR_wandb

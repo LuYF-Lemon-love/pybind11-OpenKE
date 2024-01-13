@@ -303,7 +303,64 @@ ComplEx
 
 .. Important:: 对数似然损失（log-likelihood loss）比成对排名损失（pairwise ranking loss）效果更好；每一个训练三元组生成更多的负三元组会产生更好的效果。
 
-pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.ComplEx`
+pybind11-OpenKE 的 ComplEx 实现传送门：:py:class:`pybind11_ke.module.model.ComplEx`
+
+.. _analogy:
+
+ANALOGY
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``ANALOGY`` :cite:`ANALOGY` 发表于 ``2017`` 年，是一个显式地建模类比结构的模型；但实际上是 ``DistMult`` :cite:`DistMult`、 ``HolE`` :cite:`HolE` 和 ``ComplEx`` :cite:`ComplEx` 的集大成者，效果与 ``HolE`` :cite:`HolE` 和 ``ComplEx`` :cite:`ComplEx` 差不多。
+
+当且仅当 :math:`A^TA = AA^T`，实矩阵 :math:`A`` 是正规的（normal）。
+
+评分函数如下：
+
+.. math::
+
+    f_r(h,t)=\mathbf{h}^T \mathbf{M}_r \mathbf{t}
+
+:math:`\mathbf{M}_r` 是关系 :math:`r` 对应的关系矩阵。
+
+为了显式地建模类比结构，:math:`\mathbf{M}_r` 还需要满足下面的约束条件（分别为正规性和交换性）：
+	
+.. math::
+    
+    \mathbf{M}_r\mathbf{M}_r^T = \mathbf{M}_r^T\mathbf{M}_r\\
+    \mathbf{M}_r\mathbf{M}_{r^{'}} = \mathbf{M}_{r^{'}}\mathbf{M}_r
+
+直接优化上面的模型需要大量的计算，经过作者的推理发现，:math:`\mathbf{M}_r` 是块对角矩阵（a block-diagonal matrix），:math:`\mathbf{M}_r` 的每个对角块是下面两种情况之一：
+
+- 一个实数标量（real scalar）；
+- :math:`\begin{bmatrix} x & -y \\y & x \end{bmatrix}` 形式的二维实数矩阵，:math:`x` 和 :math:`y` 都是实数标量。
+
+通过将 :math:`\mathbf{M}_r` 的实数标量和二维实数矩阵的系数各自绑定到一起，结果是：
+
+- 实数标量绑定到一起会形成一个对角矩阵，如同 ``DistMult`` :cite:`DistMult` 的关系矩阵一样。
+- 二维实数矩阵绑定到一起会形成一个类似 ``ComplEx`` :cite:`ComplEx` 的关系矩阵，原因如下：第 :math:`i` 块可以表示为 :math:`\begin{bmatrix} \operatorname{Re}(r) & -\operatorname{Im}(r) \\ \operatorname{Im}(r) & \operatorname{Re}(r) \end{bmatrix}`，如果实体也是复数向量，这一部分的得分函数 :math:`f_r(h,t)=\mathbf{h}^T \mathbf{M}_r \mathbf{t}` 的计算结果会和 ``ComplEx`` :cite:`ComplEx` 的得分函数一样。
+
+在原论文中，实数标量和二维实数矩阵的维度相同，即占关系矩阵一半的维度。因此，最终的评分函数实际上是 ``DistMult`` :cite:`DistMult` 评分函数和 ``ComplEx`` :cite:`ComplEx` 评分函数的和：
+
+.. math::
+
+    f_r(h,t)=<\operatorname{Re}(h_c),\operatorname{Re}(r_c),\operatorname{Re}(t_c)>
+             +<\operatorname{Re}(h_c),\operatorname{Im}(r_c),\operatorname{Im}(t_c)>
+             +<\operatorname{Im}(h_c),\operatorname{Re}(r_c),\operatorname{Im}(t_c)>
+             -<\operatorname{Im}(h_c),\operatorname{Im}(r_c),\operatorname{Re}(t_c)>
+             +<\mathbf{h_d}, \mathbf{r_d}, \mathbf{t_d}>
+
+:math:`h_c, r_c, t_c` 是 ``ComplEx`` :cite:`ComplEx` 对应的头实体、关系和尾实体的嵌入向量，:math:`h_d, r_d, t_d` 是 ``DistMult`` :cite:`DistMult` 对应的头实体、关系和尾实体的嵌入向量。
+
+损失函数如下：
+
+.. math::
+
+    \mathcal{L} = \sum_{(h,r,t) \in S} \sum_{(h^{'},r,t^{'}) \in S^{'}_{(h,r,t)}}
+    \log(1+exp(-yf_r(h,t)))+\lambda\Vert \theta \Vert^2_2
+
+:math:`\theta` 是模型的参数。
+
+pybind11-OpenKE 的 ANALOGY 实现传送门：:py:class:`pybind11_ke.module.model.Analogy`
 
 .. _simple:
 

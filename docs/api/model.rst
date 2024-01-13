@@ -44,8 +44,8 @@ pybind11_ke.module.model
     DistMult
     HolE
     ComplEx
-    SimplE
     Analogy
+    SimplE
 
 超参数优化默认搜索范围
 ----------------------------------
