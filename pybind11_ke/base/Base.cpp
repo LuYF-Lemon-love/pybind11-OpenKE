@@ -56,12 +56,13 @@ void get_bacth(
 		// 正三元组
 		INT i = rand_max(id, train_total);
 		try {
-			batch_h(batch) = train_list[i].h;
-			batch_t(batch) = train_list[i].t;
-			batch_r(batch) = train_list[i].r;
+			batch_h(batch) = train_list.at(i).h;
+			batch_t(batch) = train_list.at(i).t;
+			batch_r(batch) = train_list.at(i).r;
 			batch_y(batch) = 1;
 		} catch (std::exception err) {
 			std::cout << err.what() << std::endl;
+			std::cout << i << std::endl;
 			std::cout << "rand_max" << std::endl;
 		}
 		// batch + batch_size: 第一个负三元组生成的位置
@@ -76,16 +77,16 @@ void get_bacth(
 					batch_h(batch + last) = train_list[i].h;
 					try {
 						batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
-					} catch (std::exception err) {
-						std::cout << err.what() << std::endl;
+					} catch (std::out_of_range const& exc) {
+						std::cout << exc.what() << std::endl;
 						std::cout << "corrupt_with_head" << std::endl;
 					}
 					batch_r(batch + last) = train_list[i].r;
 				} else {
 					try {
 						batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
-					} catch (std::exception err) {
-						std::cout << err.what() << std::endl;
+					} catch (std::out_of_range const& exc) {
+						std::cout << exc.what() << std::endl;
 						std::cout << "corrupt_with_tail" << std::endl;
 					}
 					batch_t(batch + last) = train_list[i].t;
