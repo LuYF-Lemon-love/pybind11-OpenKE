@@ -72,7 +72,8 @@ class TransE(Model):
 		rel_tot: int,
 		dim: int = 100,
 		p_norm: int = 1,
-		norm_flag: bool = True):
+		norm_flag: bool = True,
+		margin: float | None = None):
 		
 		"""创建 TransE 对象。
 
@@ -87,6 +88,8 @@ class TransE(Model):
 		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
 						  对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
+		:param margin: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+		:type margin: float
 		"""
 		
 		super(TransE, self).__init__(ent_tot, rel_tot)
@@ -103,6 +106,14 @@ class TransE(Model):
 		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入
 		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
+
+		if margin != None:
+			#: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+			self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
+			self.margin.requires_grad = False
+			self.margin_flag = True
+		else:
+			self.margin_flag = False
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
@@ -175,7 +186,10 @@ class TransE(Model):
 		t = self.ent_embeddings(batch_t)
 		r = self.rel_embeddings(batch_r)
 		score = self._calc(h ,t, r, mode)
-		return score
+		if self.margin_flag:
+			return self.margin - score
+		else:
+			return score
 
 	def regularization(
 		self,
@@ -214,7 +228,11 @@ class TransE(Model):
 		"""
 		
 		score = self.forward(data)
-		return score.cpu().data.numpy()
+		if self.margin_flag:
+			score = self.margin - score
+			return score.cpu().data.numpy()
+		else:
+			return score.cpu().data.numpy()
 
 def get_transe_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

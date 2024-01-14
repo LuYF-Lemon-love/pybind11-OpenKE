@@ -43,6 +43,7 @@
    experiments/TransE/multigpu_transe_FB15K
    experiments/TransE/multigpu_transe_FB15K_wandb
    experiments/TransE/single_gpu_transe_FB15K237_wandb
+   experiments/TransE/single_gpu_transe_WN18_adv_sigmoidloss_wandb
 
 .. toctree::
    :maxdepth: 2
