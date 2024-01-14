@@ -97,6 +97,7 @@
    :caption: DistMult
 
    experiments/DistMult/single_gpu_distmult_WN18RR_wandb
+   experiments/DistMult/single_gpu_distmult_WN18RR_adv_sigmoidloss_wandb
 
 .. toctree::
    :maxdepth: 2
