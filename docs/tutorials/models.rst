@@ -312,7 +312,7 @@ ANALOGY
 
 ``ANALOGY`` :cite:`ANALOGY` 发表于 ``2017`` 年，是一个显式地建模类比结构的模型；但实际上是 ``DistMult`` :cite:`DistMult`、 ``HolE`` :cite:`HolE` 和 ``ComplEx`` :cite:`ComplEx` 的集大成者，效果与 ``HolE`` :cite:`HolE` 和 ``ComplEx`` :cite:`ComplEx` 差不多。
 
-当且仅当 :math:`A^TA = AA^T`，实矩阵 :math:`A`` 是正规的（normal）。
+当且仅当 :math:`A^TA = AA^T`，实矩阵 :math:`A` 是正规的（normal）。
 
 评分函数如下：
 
@@ -334,22 +334,22 @@ ANALOGY
 - 一个实数标量（real scalar）；
 - :math:`\begin{bmatrix} x & -y \\y & x \end{bmatrix}` 形式的二维实数矩阵，:math:`x` 和 :math:`y` 都是实数标量。
 
-通过将 :math:`\mathbf{M}_r` 的实数标量和二维实数矩阵的系数各自绑定到一起，结果是：
+通过将 :math:`\mathbf{M}_r` 的实数标量和二维实数矩阵的系数各自绑定到一起：
 
 - 实数标量绑定到一起会形成一个对角矩阵，如同 ``DistMult`` :cite:`DistMult` 的关系矩阵一样。
 - 二维实数矩阵绑定到一起会形成一个类似 ``ComplEx`` :cite:`ComplEx` 的关系矩阵，原因如下：第 :math:`i` 块可以表示为 :math:`\begin{bmatrix} \operatorname{Re}(r) & -\operatorname{Im}(r) \\ \operatorname{Im}(r) & \operatorname{Re}(r) \end{bmatrix}`，如果实体也是复数向量，这一部分的得分函数 :math:`f_r(h,t)=\mathbf{h}^T \mathbf{M}_r \mathbf{t}` 的计算结果会和 ``ComplEx`` :cite:`ComplEx` 的得分函数一样。
 
-在原论文中，实数标量和二维实数矩阵的维度相同，即占关系矩阵一半的维度。因此，最终的评分函数实际上是 ``DistMult`` :cite:`DistMult` 评分函数和 ``ComplEx`` :cite:`ComplEx` 评分函数的和：
+在原论文中，实数标量和二维实数矩阵的维度相同，即各占关系矩阵一半的维度。因此，最终的评分函数实际上是 ``DistMult`` :cite:`DistMult` 评分函数和 ``ComplEx`` :cite:`ComplEx` 评分函数的和：
 
 .. math::
 
-    f_r(h,t)=<\operatorname{Re}(h_c),\operatorname{Re}(r_c),\operatorname{Re}(t_c)>
-             +<\operatorname{Re}(h_c),\operatorname{Im}(r_c),\operatorname{Im}(t_c)>
-             +<\operatorname{Im}(h_c),\operatorname{Re}(r_c),\operatorname{Im}(t_c)>
-             -<\operatorname{Im}(h_c),\operatorname{Im}(r_c),\operatorname{Re}(t_c)>
+    f_r(h,t)=<\operatorname{Re}(\mathbf{h_c}),\operatorname{Re}(\mathbf{r_c}),\operatorname{Re}(\mathbf{t_c})>
+             +<\operatorname{Re}(\mathbf{h_c}),\operatorname{Im}(\mathbf{r_c}),\operatorname{Im}(\mathbf{t_c})>
+             +<\operatorname{Im}(\mathbf{h_c}),\operatorname{Re}(\mathbf{r_c}),\operatorname{Im}(\mathbf{t_c})>
+             -<\operatorname{Im}(\mathbf{h_c}),\operatorname{Im}(\mathbf{r_c}),\operatorname{Re}(\mathbf{t_c})>
              +<\mathbf{h_d}, \mathbf{r_d}, \mathbf{t_d}>
 
-:math:`h_c, r_c, t_c` 是 ``ComplEx`` :cite:`ComplEx` 对应的头实体、关系和尾实体的嵌入向量，:math:`h_d, r_d, t_d` 是 ``DistMult`` :cite:`DistMult` 对应的头实体、关系和尾实体的嵌入向量。
+:math:`h_c, r_c, t_c` 是 ``ComplEx`` :cite:`ComplEx` 部分对应的头实体、关系和尾实体的嵌入向量，:math:`h_d, r_d, t_d` 是 ``DistMult`` :cite:`DistMult` 部分对应的头实体、关系和尾实体的嵌入向量。
 
 损失函数如下：
 

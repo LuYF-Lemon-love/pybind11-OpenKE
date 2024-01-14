@@ -3,70 +3,80 @@
 # pybind11_ke/module/model/Analogy.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on June 17, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 13, 2023
 # 
 # 该头文件定义了 Analogy.
 
 """
-:py:class:`pybind11_ke.module.model.Analogy` 类 - DistMult、HolE 和 ComplEx 的集大成者，效果与 HolE、ComplEx 差不多。
-
-论文地址: `Analogical Inference for Multi-relational Embeddings <https://proceedings.mlr.press/v70/liu17d.html>`__ 。
-
-基本用法如下：
-
-.. code-block:: python
-
-	from pybind11_ke.config import Trainer, Tester
-	from pybind11_ke.module.model import Analogy
-	from pybind11_ke.module.loss import SoftplusLoss
-	from pybind11_ke.module.strategy import NegativeSampling
-
-	# define the model
-	analogy = Analogy(
-		ent_tot = train_dataloader.get_ent_tol(),
-		rel_tot = train_dataloader.get_rel_tol(),
-		dim = 200
-	)
-
-	# define the loss function
-	model = NegativeSampling(
-		model = analogy, 
-		loss = SoftplusLoss(),
-		batch_size = train_dataloader.get_batch_size(), 
-		regul_rate = 1.0
-	)
-
-	# train the model
-	trainer = Trainer(model = model, data_loader = train_dataloader,
-	                  train_times = 2000, lr = 0.5, use_gpu = True, opt_method = "adagrad")
-	trainer.run()
-	analogy.save_checkpoint('../checkpoint/analogy.ckpt')
-
-	# test the model
-	analogy.load_checkpoint('../checkpoint/analogy.ckpt')
-	tester = Tester(model = analogy, data_loader = test_dataloader, use_gpu = True)
-	tester.run_link_prediction(type_constrain = False)
+Analogy 类 - DistMult、HolE 和 ComplEx 的集大成者，效果与 HolE、ComplEx 差不多。
 """
 
 import torch
+import typing
+import numpy as np
 import torch.nn as nn
 from .Model import Model
+from typing_extensions import override
 
 class Analogy(Model):
 
 	"""
-	:py:class:`Analogy` 类，继承自 :py:class:`pybind11_ke.module.model.Model`。
-	
-	Analogy 提出于 2017 年，:py:class:`pybind11_ke.module.model.DistMult`、:py:class:`pybind11_ke.module.model.HolE` 和 :py:class:`pybind11_ke.module.model.ComplEx` 的集大成者，
+	``Analogy`` :cite:`Analogy` 提出于 2017 年，:py:class:`pybind11_ke.module.model.DistMult`、:py:class:`pybind11_ke.module.model.HolE` 和 :py:class:`pybind11_ke.module.model.ComplEx` 的集大成者，
 	效果与 :py:class:`pybind11_ke.module.model.HolE`、:py:class:`pybind11_ke.module.model.ComplEx` 差不多。 
 
+	评分函数为:
+
+	.. math::
+
+	    <\operatorname{Re}(\mathbf{h_c}),\operatorname{Re}(\mathbf{r_c}),\operatorname{Re}(\mathbf{t_c})>
+	        +<\operatorname{Re}(\mathbf{h_c}),\operatorname{Im}(\mathbf{r_c}),\operatorname{Im}(\mathbf{t_c})>
+	        +<\operatorname{Im}(\mathbf{h_c}),\operatorname{Re}(\mathbf{r_c}),\operatorname{Im}(\mathbf{t_c})>
+	        -<\operatorname{Im}(\mathbf{h_c}),\operatorname{Im}(\mathbf{r_c}),\operatorname{Re}(\mathbf{t_c})>
+	        +<\mathbf{h_d}, \mathbf{r_d}, \mathbf{t_d}>
+
 	评分函数为: :py:class:`pybind11_ke.module.model.DistMult` 和 :py:class:`pybind11_ke.module.model.ComplEx` 两者
-	评分函数的和。数学表示为: :math:`<\operatorname{Re}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\operatorname{Re}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> + <\operatorname{Im}(\mathbf{r}), \operatorname{Re}(\mathbf{h}), \operatorname{Im}(\mathbf{t})> - <\operatorname{Im}(\mathbf{r}), \operatorname{Im}(\mathbf{h}), \operatorname{Re}(\mathbf{t})> + <\mathbf{h}, \mathbf{r}, \mathbf{t}>`，
-        :math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
-	正三元组的评分函数的值越大越好，负三元组越小越好。
+	评分函数的和。:math:`< \mathbf{a}, \mathbf{b}, \mathbf{c} >` 为逐元素多线性点积（element-wise multi-linear dot product），
+	正三元组的评分函数的值越大越好，负三元组越小越好，如果想获得更详细的信息请访问 :ref:`ANALOGY <analogy>`。
+
+	例子::
+
+		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.module.model import Analogy
+		from pybind11_ke.module.loss import SoftplusLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+
+		# define the model
+		analogy = Analogy(
+			ent_tot = train_dataloader.get_ent_tol(),
+			rel_tot = train_dataloader.get_rel_tol(),
+			dim = 200
+		)
+
+		# define the loss function
+		model = NegativeSampling(
+			model = analogy, 
+			loss = SoftplusLoss(),
+			batch_size = train_dataloader.get_batch_size(), 
+			regul_rate = 1.0
+		)
+
+		# test the model
+		tester = Tester(model = analogy, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+
+		# train the model
+		trainer = Trainer(model = model, data_loader = train_dataloader,
+			epochs = 2000, lr = 0.5, opt_method = "adagrad", use_gpu = True, device = 'cuda:1',
+			tester = tester, test = True, valid_interval = 100,
+			log_interval = 100, save_interval = 100,
+			save_path = '../../checkpoint/analogy.pth', delta = 0.01)
+		trainer.run()
 	"""
 
-	def __init__(self, ent_tot, rel_tot, dim = 100):
+	def __init__(
+		self,
+		ent_tot: int,
+		rel_tot: int,
+		dim: int = 100):
 
 		"""创建 Analogy 对象。
 
@@ -81,19 +91,19 @@ class Analogy(Model):
 		super(Analogy, self).__init__(ent_tot, rel_tot)
 
 		#: 实体嵌入向量和关系嵌入向量的维度
-		self.dim = dim
+		self.dim: int = dim
 		#: 根据实体个数，创建的实体嵌入的实部
-		self.ent_re_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_re_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据实体个数，创建的实体嵌入的虚部
-		self.ent_im_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_im_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入的实部
-		self.rel_re_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_re_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
 		#: 根据关系个数，创建的关系嵌入的虚部
-		self.rel_im_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_im_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
 		#: 根据实体个数，创建的实体嵌入，维度为 2 * :py:attr:`dim`
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim * 2)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim * 2)
 		#: 根据关系个数，创建的关系嵌入, 维度为 2 * :py:attr:`dim`
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim * 2)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim * 2)
 		
 		nn.init.xavier_uniform_(self.ent_re_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.ent_im_embeddings.weight.data)
@@ -102,7 +112,17 @@ class Analogy(Model):
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
-	def _calc(self, h_re, h_im, h, t_re, t_im, t, r_re, r_im, r):
+	def _calc(
+		self,
+		h_re: torch.Tensor,
+		h_im: torch.Tensor,
+		h: torch.Tensor,
+		t_re: torch.Tensor,
+		t_im: torch.Tensor,
+		t: torch.Tensor,
+		r_re: torch.Tensor,
+		r_im: torch.Tensor,
+		r: torch.Tensor) -> torch.Tensor:
 
 		"""计算 Analogy 的评分函数。
 		
@@ -134,14 +154,17 @@ class Analogy(Model):
 						   r_im * h_im * t_re, -1)
 				+ torch.sum(h * t * r, -1))
 
-	def forward(self, data):
+	@override
+	def forward(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 		
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -161,12 +184,14 @@ class Analogy(Model):
 		score = self._calc(h_re, h_im, h, t_re, t_im, t, r_re, r_im, r)
 		return score
 
-	def regularization(self, data):
+	def regularization(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -194,12 +219,15 @@ class Analogy(Model):
 				 torch.mean(r ** 2)) / 9
 		return regul
 
-	def predict(self, data):
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
 
 		"""Analogy 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
