@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "add DistMult-WN18RR-adv example"
+git commit -m "change examples"
 git push

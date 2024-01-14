@@ -24,7 +24,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
     所有的文档源文件保存在 ``docs/``。 所有的 ``*.rst`` 构成了文档中的各个部分。
 
 🌰 `examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/examples/>`_
-    pybind11-OpenKE 的例子保存在 ``examples/``，取自 ``OpenKE-PyTorch``。
+    pybind11-OpenKE 的例子保存在 ``examples/``，修改自 ``OpenKE-PyTorch``。
 
 💡 `benchmarks <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
     常用的知识图谱保存在 ``benchmarks/``。

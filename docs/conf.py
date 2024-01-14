@@ -67,8 +67,8 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-     'examples_dirs': ['../examples', '../experiments'],
-     'gallery_dirs': ['examples', 'experiments'],
+     'examples_dirs': ['../examples'],
+     'gallery_dirs': ['examples'],
 }
 
 autosummary_generate = True
