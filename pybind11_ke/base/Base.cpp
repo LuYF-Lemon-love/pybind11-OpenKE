@@ -60,7 +60,7 @@ void get_bacth(
 			batch_t(batch) = train_list.at(i).t;
 			batch_r(batch) = train_list.at(i).r;
 			batch_y(batch) = 1;
-		} catch (std::exception err) {
+		} catch (std::out_of_range const& exc) {
 			std::cout << err.what() << std::endl;
 			std::cout << i << std::endl;
 			std::cout << "rand_max" << std::endl;
@@ -72,38 +72,38 @@ void get_bacth(
 			if (mode == 0){
 				// TransH 负采样策略
 				if (bern)
-					prob = 1000 * hpt[train_list[i].r] / (hpt[train_list[i].r] + tph[train_list[i].r]);
+					prob = 1000 * hpt.at(train_list.at(i).r) / (hpt.at(train_list.at(i).r) + tph.at(train_list.at(i).r));
 				if (rand_max(id, 1000) < prob) {
-					batch_h(batch + last) = train_list[i].h;
+					batch_h(batch + last) = train_list.at(i).h;
 					try {
-						batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
+						batch_t(batch + last) = corrupt_with_head(id, train_list.at(i).h, train_list.at(i).r);
 					} catch (std::out_of_range const& exc) {
 						std::cout << exc.what() << std::endl;
 						std::cout << "corrupt_with_head" << std::endl;
 					}
-					batch_r(batch + last) = train_list[i].r;
+					batch_r(batch + last) = train_list.at(i).r;
 				} else {
 					try {
-						batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
+						batch_h(batch + last) = corrupt_with_tail(id, train_list.at(i).t, train_list.at(i).r);
 					} catch (std::out_of_range const& exc) {
 						std::cout << exc.what() << std::endl;
 						std::cout << "corrupt_with_tail" << std::endl;
 					}
-					batch_t(batch + last) = train_list[i].t;
-					batch_r(batch + last) = train_list[i].r;
+					batch_t(batch + last) = train_list.at(i).t;
+					batch_r(batch + last) = train_list.at(i).r;
 				}
 				batch_y(batch + last) = -1;
 				// 下一负三元组的位置
 				last += batch_size;
 			} else {
 				if(mode == 1){
-					batch_h(batch + last) = corrupt_with_tail(id, train_list[i].t, train_list[i].r);
-					batch_t(batch + last) = train_list[i].t;
-					batch_r(batch + last) = train_list[i].r;
+					batch_h(batch + last) = corrupt_with_tail(id, train_list.at(i).t, train_list.at(i).r);
+					batch_t(batch + last) = train_list.at(i).t;
+					batch_r(batch + last) = train_list.at(i).r;
 				} else if (mode == -1){
-					batch_h(batch + last) = train_list[i].h;
-					batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
-					batch_r(batch + last) = train_list[i].r;
+					batch_h(batch + last) = train_list.at(i).h;
+					batch_t(batch + last) = corrupt_with_head(id, train_list.at(i).h, train_list.at(i).r);
+					batch_r(batch + last) = train_list.at(i).r;
 				}
 				batch_y(batch + last) = -1;
 				last += batch_size;
@@ -111,9 +111,9 @@ void get_bacth(
 		}
 		// 负采样 relation
 		for (INT times = 0; times < neg_rel; times++) {
-			batch_h(batch + last) = train_list[i].h;
-			batch_t(batch + last) = train_list[i].t;
-			batch_r(batch + last) = corrupt_rel(id, train_list[i].h, train_list[i].t);
+			batch_h(batch + last) = train_list.at(i).h;
+			batch_t(batch + last) = train_list.at(i).t;
+			batch_r(batch + last) = corrupt_rel(id, train_list.at(i).h, train_list.at(i).t);
 			batch_y(batch + last) = -1;
 			last += batch_size;
 		}

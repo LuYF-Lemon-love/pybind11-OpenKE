@@ -34,7 +34,7 @@ void rand_reset() {
 // 为 id 对应的线程生成一个 [0,x) 范围内的随机整数.
 INT rand_max(INT id, INT x) {
 	std::uniform_int_distribution<INT>::param_type param{0, x-1};
-	return dists[id](gens[id], param);
+	return dists.at(id)(gens.at(id), param);
 }
 
 #endif
