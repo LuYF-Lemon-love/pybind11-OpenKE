@@ -69,7 +69,7 @@ ANALOGY
 `DistMult <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L487>`__、
 `ComplEx <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L527>`__、
 `Analogy <https://github.com/quark0/ANALOGY/blob/master/main.cpp#L583>`__ 3 者的
-``score`` 函数都未带符号。从原论文中也能发现，三者的评分函数的符号应该是一致的。
+``score`` 函数都未带负号。从原论文中也能发现，三者的评分函数的符号应该是一致的。
 但是在新版的 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 中，
 三者 `DistMult <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/DistMult.py#L40>`__、
 `ComplEx <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/blob/thunlp-OpenKE-PyTorch/openke/module/model/ComplEx.py#L21>`__、

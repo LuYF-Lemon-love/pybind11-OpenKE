@@ -64,7 +64,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 - 使用 :py:class:`torch.nn.parallel.DistributedDataParallel` 完成数据并行，使得 ``pybind11-OpenKE`` 能够利用多个 ``GPU`` 同时训练。
 
-- 增加超参数扫描功能。
+- 增加超参数扫描功能（随机搜索、网格搜索和贝叶斯搜索）。
 
 **扩展的**
 
@@ -78,24 +78,13 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 支持的知识图谱嵌入模型：
 
-- RESCAL: `A Three-Way Model for Collective Learning on Multi-Relational Data <https://icml.cc/Conferences/2011/papers/438_icmlpaper.pdf>`__ .
+.. list-table::
+    :widths: 10 50
+    :header-rows: 1
 
-- TransE: `Translating Embeddings for Modeling Multi-relational Data <https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html>`__ .
-
-- TransH: `Knowledge Graph Embedding by Translating on Hyperplanes <https://ojs.aaai.org/index.php/AAAI/article/view/8870>`__ .
-
-- DistMult: `Embedding Entities and Relations for Learning and Inference in Knowledge Bases <https://arxiv.org/abs/1412.6575>`__ .
-
-- TransR: `Learning Entity and Relation Embeddings for Knowledge Graph Completion <https://ojs.aaai.org/index.php/AAAI/article/view/9491>`__ .
-
-- TransD: `Knowledge Graph Embedding via Dynamic Mapping Matrix <https://aclanthology.org/P15-1067/>`__ .
-
-- HolE: `Holographic Embeddings of Knowledge Graphs <https://ojs.aaai.org/index.php/AAAI/article/view/10314>`__ .
-
-- ComplEx: `Complex Embeddings for Simple Link Prediction <https://arxiv.org/abs/1606.06357>`__ .
-
-- ANALOGY: `Analogical Inference for Multi-relational Embeddings <https://proceedings.mlr.press/v70/liu17d.html>`__ .
-
-- SimplE: `SimplE Embedding for Link Prediction in Knowledge Graphs <https://proceedings.neurips.cc/paper_files/paper/2018/hash/b2ab001909a8a6f04b51920306046ce5-Abstract.html>`__ .
-
-- RotatE: `RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space <https://openreview.net/forum?id=HkgEQnRqYQ>`__ .
+    * - 类型
+      - 模型
+    * - 平移模型
+      - ``TransE`` :cite:`TransE`, ``TransH`` :cite:`TransH`, ``TransR`` :cite:`TransR`, ``TransD`` :cite:`TransD`, ``RotatE`` :cite:`RotatE`
+    * - 语义匹配模型
+      - ``RESCAL`` :cite:`RESCAL`, ``DistMult`` :cite:`DistMult`, ``HolE`` :cite:`HolE`, ``ComplEx`` :cite:`ComplEx`, ``Analogy`` :cite:`ANALOGY`, ``SimplE`` :cite:`SimplE`
