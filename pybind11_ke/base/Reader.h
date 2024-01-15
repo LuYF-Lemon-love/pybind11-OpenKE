@@ -50,26 +50,26 @@ void read_train_files() {
     std::vector<INT> freq_rel(relation_total, 0);
     // 读取训练集三元组集合, 保存在 train_list.
     for (INT i = 0; i < train_total; i++) {
-        istrm >> train_list[i].h >> train_list[i].t >> train_list[i].r;
+        istrm >> train_list.at(i).h >> train_list.at(i).t >> train_list.at(i).r;
     }
     istrm.close();
     // 对 train_list 中的三元组排序 (比较顺序: h, r, t).
     std::sort(train_list.begin(), train_list.end(), Triple::cmp_head);
     // tmp: 保存训练集三元组的个数
     tmp = train_total; train_total = 1;
-    train_head[0] = train_tail[0] = train_rel[0] = train_list[0];
+    train_head.at(0) = train_tail.at(0) = train_rel.at(0) = train_list.at(0);
     // freq_rel: 保存每个关系训练集中三元组的个数
-    freq_rel[train_list[0].r] += 1;
+    freq_rel.at(train_list.at(0).r) += 1;
     // 对训练集中的三元组去重
     for (INT i = 1; i < tmp; i++)
-        if (train_list[i].h != train_list[i - 1].h
-            || train_list[i].r != train_list[i - 1].r
-            || train_list[i].t != train_list[i - 1].t) {
-            train_head[train_total] = train_tail[train_total]
-                = train_rel[train_total] = train_list[train_total]
-                = train_list[i];
+        if (train_list.at(i).h != train_list.at(i - 1).h
+            || train_list.at(i).r != train_list.at(i - 1).r
+            || train_list.at(i).t != train_list.at(i - 1).t) {
+            train_head.at(train_total) = train_tail.at(train_total)
+                = train_rel.at(train_total) = train_list.at(train_total)
+                = train_list.at(i);
             train_total++;
-            freq_rel[train_list[i].r]++;
+            freq_rel.at(train_list.at(i).r)++;
         }
 
     // train_head: 以 h, r, t 排序
@@ -90,49 +90,49 @@ void read_train_files() {
     for (INT i = 1; i < train_total; i++) {
         // begin_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
         // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
-        if (train_head[i].h != train_head[i - 1].h) {
-            end_head[train_head[i - 1].h] = i - 1;
-            begin_head[train_head[i].h] = i;
+        if (train_head.at(i).h != train_head.at(i - 1).h) {
+            end_head.at(train_head.at(i - 1).h) = i - 1;
+            begin_head.at(train_head.at(i).h) = i;
         }
         // begin_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
         // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
-        if (train_tail[i].t != train_tail[i - 1].t) {
-            end_tail[train_tail[i - 1].t] = i - 1;
-            begin_tail[train_tail[i].t] = i;
+        if (train_tail.at(i).t != train_tail.at(i - 1).t) {
+            end_tail.at(train_tail.at(i - 1).t) = i - 1;
+            begin_tail.at(train_tail.at(i).t) = i;
         }
         // begin_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
         // end_rel (entity_total): 存储每种实体 (head) 在 train_rel 中最后一次出现的位置
-        if (train_rel[i].h != train_rel[i - 1].h) {
-            end_rel[train_rel[i - 1].h] = i - 1;
-            begin_rel[train_rel[i].h] = i;
+        if (train_rel.at(i).h != train_rel.at(i - 1).h) {
+            end_rel.at(train_rel.at(i - 1).h) = i - 1;
+            begin_rel.at(train_rel.at(i).h) = i;
         }
     }
-    begin_head[train_head[0].h] = 0;
-    end_head[train_head[train_total - 1].h] = train_total - 1;
-    begin_tail[train_tail[0].t] = 0;
-    end_tail[train_tail[train_total - 1].t] = train_total - 1;
-    begin_rel[train_rel[0].h] = 0;
-    end_rel[train_rel[train_total - 1].h] = train_total - 1;
+    begin_head.at(train_head.at(0).h) = 0;
+    end_head.at(train_head.at(train_total - 1).h) = train_total - 1;
+    begin_tail.at(train_tail.at(0).t) = 0;
+    end_tail.at(train_tail.at(train_total - 1).t) = train_total - 1;
+    begin_rel.at(train_rel.at(0).h) = 0;
+    end_rel.at(train_rel.at(train_total - 1).h) = train_total - 1;
     
     // 为 bern 负采样做准备
     std::vector<REAL> heads_rel(relation_total, 0.0), tails_rel(relation_total, 0.0);
     hpt.resize(relation_total, 0.0);
     tph.resize(relation_total, 0.0);
     for (INT i = 0; i < entity_total; i++) {
-        for (INT j = begin_head[i] + 1; j <= end_head[i]; j++)
-            if (train_head[j].r != train_head[j - 1].r)
-                heads_rel[train_head[j].r] += 1.0;
-        if (begin_head[i] <= end_head[i])
-            heads_rel[train_head[begin_head[i]].r] += 1.0;
-        for (INT j = begin_tail[i] + 1; j <= end_tail[i]; j++)
-            if (train_tail[j].r != train_tail[j - 1].r)
-                tails_rel[train_tail[j].r] += 1.0;
-        if (begin_tail[i] <= end_tail[i])
-            tails_rel[train_tail[begin_tail[i]].r] += 1.0;
+        for (INT j = begin_head.at(i) + 1; j <= end_head.at(i); j++)
+            if (train_head.at(j).r != train_head.at(j - 1).r)
+                heads_rel.at(train_head.at(j).r) += 1.0;
+        if (begin_head.at(i) <= end_head.at(i))
+            heads_rel.at(train_head.at(begin_head.at(i)).r) += 1.0;
+        for (INT j = begin_tail.at(i) + 1; j <= end_tail.at(i); j++)
+            if (train_tail.at(j).r != train_tail.at(j - 1).r)
+                tails_rel.at(train_tail.at(j).r) += 1.0;
+        if (begin_tail.at(i) <= end_tail.at(i))
+            tails_rel.at(train_tail.at(begin_tail.at(i)).r) += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
-        tph[i] = freq_rel[i] / heads_rel[i];
-        hpt[i] = freq_rel[i] / tails_rel[i];
+        tph.at(i) = freq_rel.at(i) / heads_rel.at(i);
+        hpt.at(i) = freq_rel.at(i) / tails_rel.at(i);
     }
 }
 
@@ -175,20 +175,20 @@ void read_test_files() {
     triple_list.resize(triple_total);
     // 读取测试集三元组
     for (INT i = 0; i < test_total; i++) {
-        istrm_test >> test_list[i].h >> test_list[i].t >> test_list[i].r;
-        triple_list[i] = test_list[i];
+        istrm_test >> test_list.at(i).h >> test_list.at(i).t >> test_list.at(i).r;
+        triple_list.at(i) = test_list.at(i);
     }
     // 读取训练集三元组
     for (INT i = 0; i < train_total; i++) {
-        istrm_train >> triple_list[i + test_total].h >> triple_list[i + test_total].t
-                    >> triple_list[i + test_total].r;
+        istrm_train >> triple_list.at(i + test_total).h >> triple_list.at(i + test_total).t
+                    >> triple_list.at(i + test_total).r;
     }
     // 读取验证集三元组
     for (INT i = 0; i < valid_total; i++) {
-        istrm_valid >> triple_list[i + test_total + train_total].h 
-                    >> triple_list[i + test_total + train_total].t
-                    >> triple_list[i + test_total + train_total].r;
-        valid_list[i] = triple_list[i + test_total + train_total];
+        istrm_valid >> triple_list.at(i + test_total + train_total).h 
+                    >> triple_list.at(i + test_total + train_total).t
+                    >> triple_list.at(i + test_total + train_total).r;
+        valid_list.at(i) = triple_list.at(i + test_total + train_total);
     }
     istrm_test.close();
     istrm_train.close();
@@ -261,21 +261,21 @@ void read_type_files() {
     for (INT i = 0; i < relation_total; i++) {
         INT rel, tot;
         istrm >> rel >> tot;
-        begin_head_type[rel] = total_head;
+        begin_head_type.at(rel) = total_head;
         for (INT j = 0; j < tot; j++) {
-            istrm >> head_type_rel[total_head];
+            istrm >> head_type_rel.at(total_head);
             total_head++;
         }
-        end_head_type[rel] = total_head;
-        std::sort(head_type_rel.begin() + begin_head_type[rel], head_type_rel.begin() + end_head_type[rel]);
+        end_head_type.at(rel) = total_head;
+        std::sort(head_type_rel.begin() + begin_head_type.at(rel), head_type_rel.begin() + end_head_type.at(rel));
         istrm >> rel >> tot;
-        begin_tail_type[rel] = total_tail;
+        begin_tail_type.at(rel) = total_tail;
         for (INT j = 0; j < tot; j++) {
-            istrm >> tail_type_rel[total_tail];
+            istrm >> tail_type_rel.at(total_tail);
             total_tail++;
         }
-        end_tail_type[rel] = total_tail;
-        std::sort(tail_type_rel.begin() + begin_tail_type[rel], tail_type_rel.begin() + end_tail_type[rel]);
+        end_tail_type.at(rel) = total_tail;
+        std::sort(tail_type_rel.begin() + begin_tail_type.at(rel), tail_type_rel.begin() + end_tail_type.at(rel));
     }
     istrm.close();
 }

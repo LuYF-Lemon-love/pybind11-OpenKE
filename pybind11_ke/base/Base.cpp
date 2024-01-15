@@ -65,6 +65,7 @@ void get_bacth(
 			std::cout << i << std::endl;
 			std::cout << "rand_max" << std::endl;
 		}
+		std:: cout << i << std::endl;
 		// batch + batch_size: 第一个负三元组生成的位置
 		INT last = batch_size;
 		// 负采样 entity
@@ -97,12 +98,22 @@ void get_bacth(
 				last += batch_size;
 			} else {
 				if(mode == 1){
-					batch_h(batch + last) = corrupt_with_tail(id, train_list.at(i).t, train_list.at(i).r);
+					try {
+						batch_h(batch + last) = corrupt_with_tail(id, train_list.at(i).t, train_list.at(i).r);
+					} catch (std::out_of_range const& exc) {
+						std::cout << exc.what() << std::endl;
+						std::cout << "corrupt_with_tail" << std::endl;
+					}
 					batch_t(batch + last) = train_list.at(i).t;
 					batch_r(batch + last) = train_list.at(i).r;
 				} else if (mode == -1){
 					batch_h(batch + last) = train_list.at(i).h;
-					batch_t(batch + last) = corrupt_with_head(id, train_list.at(i).h, train_list.at(i).r);
+					try {
+						batch_t(batch + last) = corrupt_with_head(id, train_list.at(i).h, train_list.at(i).r);
+					} catch (std::out_of_range const& exc) {
+						std::cout << exc.what() << std::endl;
+						std::cout << "corrupt_with_head" << std::endl;
+					}
 					batch_r(batch + last) = train_list.at(i).r;
 				}
 				batch_y(batch + last) = -1;

@@ -26,7 +26,7 @@ from pybind11_ke.data import TrainDataLoader, TestDataLoader
 train_dataloader = TrainDataLoader(
 	in_path = "../../benchmarks/WN18RR/", 
 	nbatches = 100,
-	threads = 8, 
+	threads = 1, 
 	sampling_mode = "normal", 
 	bern = True, 
 	neg_ent = 25,
