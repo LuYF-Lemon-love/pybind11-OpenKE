@@ -176,10 +176,10 @@ bool _find(INT h, INT t, INT r) {
     INT mid;
     while (lef + 1 < rig) {
         mid = (lef + rig) >> 1;
-        if ((triple_list[mid]. h < h) || (triple_list[mid]. h == h && triple_list[mid]. r < r) || (triple_list[mid]. h == h && triple_list[mid]. r == r && triple_list[mid]. t < t)) lef = mid; else rig = mid;
+        if ((triple_list.at(mid). h < h) || (triple_list.at(mid). h == h && triple_list.at(mid). r < r) || (triple_list.at(mid). h == h && triple_list.at(mid). r == r && triple_list.at(mid). t < t)) lef = mid; else rig = mid;
     }
-    if (triple_list[lef].h == h && triple_list[lef].r == r && triple_list[lef].t == t) return true;
-    if (triple_list[rig].h == h && triple_list[rig].r == r && triple_list[rig].t == t) return true;
+    if (triple_list.at(lef).h == h && triple_list.at(lef).r == r && triple_list.at(lef).t == t) return true;
+    if (triple_list.at(rig).h == h && triple_list.at(rig).r == r && triple_list.at(rig).t == t) return true;
     return false;
 }
 #endif

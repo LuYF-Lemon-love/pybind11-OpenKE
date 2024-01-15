@@ -46,14 +46,14 @@ void get_head_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
     if (sampling_mode == "link_test") {
         for (INT i = 0; i < entity_total; i++) {
             ph(i) = i;
-            pt(i) = test_list[last_head].t;
-            pr(i) = test_list[last_head].r;
+            pt(i) = test_list.at(last_head).t;
+            pr(i) = test_list.at(last_head).r;
         }
     } else if (sampling_mode == "link_valid") {
         for (INT i = 0; i < entity_total; i++) {
             ph(i) = i;
-            pt(i) = valid_list[last_head].t;
-            pr(i) = valid_list[last_head].r;
+            pt(i) = valid_list.at(last_head).t;
+            pr(i) = valid_list.at(last_head).r;
         }
     }
     last_head++;
@@ -67,15 +67,15 @@ void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
 
     if (sampling_mode == "link_test") {
         for (INT i = 0; i < entity_total; i++) {
-            ph(i) = test_list[last_tail].h;
+            ph(i) = test_list.at(last_tail).h;
             pt(i) = i;
-            pr(i) = test_list[last_tail].r;
+            pr(i) = test_list.at(last_tail).r;
         }
     } else if (sampling_mode == "link_valid") {
         for (INT i = 0; i < entity_total; i++) {
-            ph(i) = valid_list[last_tail].h;
+            ph(i) = valid_list.at(last_tail).h;
             pt(i) = i;
-            pr(i) = valid_list[last_tail].r;
+            pr(i) = valid_list.at(last_tail).r;
         }
     }
     last_tail++;
@@ -87,21 +87,21 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
     INT h, t, r;
 
     if (sampling_mode == "link_test") {
-        h = test_list[last_head - 1].h;
-        t = test_list[last_head - 1].t;
-        r = test_list[last_head - 1].r;
+        h = test_list.at(last_head - 1).h;
+        t = test_list.at(last_head - 1).t;
+        r = test_list.at(last_head - 1).r;
     } else if (sampling_mode == "link_valid") {
-        h = valid_list[last_head - 1].h;
-        t = valid_list[last_head - 1].t;
-        r = valid_list[last_head - 1].r;
+        h = valid_list.at(last_head - 1).h;
+        t = valid_list.at(last_head - 1).t;
+        r = valid_list.at(last_head - 1).r;
     }
 
     // begin: 记录关系 r 的 head 类型在 head_type_rel 中第一次出现的位置
 	// end: 记录关系 r 的 head 类型在 head_type_rel 中最后一次出现的后一个位置
     INT begin, end;
     if (type_constrain) {
-        begin = begin_head_type[r];
-        end = end_head_type[r];
+        begin = begin_head_type.at(r);
+        end = end_head_type.at(r);
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
@@ -126,8 +126,8 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     l_filter_s += 1;
             }
             if (type_constrain) {
-                while (begin < end && head_type_rel[begin] < j) begin++;
-                if (begin < end && j == head_type_rel[begin]) {
+                while (begin < end && head_type_rel.at(begin) < j) begin++;
+                if (begin < end && j == head_type_rel.at(begin)) {
                     if (value < minimal) {
                         l_s_constrain += 1;
                         if (not _find(j, t, r)) {
@@ -172,21 +172,21 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
     INT h, t, r;
 
     if (sampling_mode == "link_test") {
-        h = test_list[last_tail - 1].h;
-        t = test_list[last_tail - 1].t;
-        r = test_list[last_tail - 1].r;
+        h = test_list.at(last_tail - 1).h;
+        t = test_list.at(last_tail - 1).t;
+        r = test_list.at(last_tail - 1).r;
     } else if (sampling_mode == "link_valid") {
-        h = valid_list[last_tail - 1].h;
-        t = valid_list[last_tail - 1].t;
-        r = valid_list[last_tail - 1].r;
+        h = valid_list.at(last_tail - 1).h;
+        t = valid_list.at(last_tail - 1).t;
+        r = valid_list.at(last_tail - 1).r;
     }
 
     // begin: 记录关系 r 的 tail 类型在 tail_type_rel 中第一次出现的位置
 	// end: 记录关系 r 的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
     INT begin, end;
     if (type_constrain) {
-        begin = begin_tail_type[r];
-        end = end_tail_type[r];
+        begin = begin_tail_type.at(r);
+        end = end_tail_type.at(r);
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
@@ -210,8 +210,8 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     r_filter_s += 1;
             }
             if (type_constrain) {
-                while (begin < end && tail_type_rel[begin] < j) begin++;
-                if (begin < end && j == tail_type_rel[begin]) {
+                while (begin < end && tail_type_rel.at(begin) < j) begin++;
+                if (begin < end && j == tail_type_rel.at(begin)) {
                         if (value < minimal) {
                             r_s_constrain += 1;
                             if (not _find(h, j ,r)) {
