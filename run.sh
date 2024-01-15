@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "change .at to [] in corrupt.h and test.h"
+git commit -m "评估结果"
 git push
