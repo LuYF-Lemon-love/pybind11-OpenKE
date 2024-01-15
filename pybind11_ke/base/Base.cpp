@@ -61,7 +61,7 @@ void get_bacth(
 			batch_r(batch) = train_list.at(i).r;
 			batch_y(batch) = 1;
 		} catch (std::out_of_range const& exc) {
-			std::cout << err.what() << std::endl;
+			std::cout << exc.what() << std::endl;
 			std::cout << i << std::endl;
 			std::cout << "rand_max" << std::endl;
 		}
