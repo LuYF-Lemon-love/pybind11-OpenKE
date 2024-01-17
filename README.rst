@@ -56,6 +56,8 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 **正确的**
 
+- 增加了 ``R-GCN`` :cite:`R-GCN` 模型。
+
 - 修复了 `SimplE模型实现的问题 <https://github.com/thunlp/OpenKE/issues/151>`__ 。
 
 - 修复了 :ref:`HolE <details_hole>` 深度学习框架（pytorch）的版本适配问题。
@@ -88,3 +90,5 @@ pybind11-OpenKE — 知识图谱嵌入工具包
       - ``TransE`` :cite:`TransE`, ``TransH`` :cite:`TransH`, ``TransR`` :cite:`TransR`, ``TransD`` :cite:`TransD`, ``RotatE`` :cite:`RotatE`
     * - 语义匹配模型
       - ``RESCAL`` :cite:`RESCAL`, ``DistMult`` :cite:`DistMult`, ``HolE`` :cite:`HolE`, ``ComplEx`` :cite:`ComplEx`, ``Analogy`` :cite:`ANALOGY`, ``SimplE`` :cite:`SimplE`
+    * - 图神经网络模型
+      - ``R-GCN`` :cite:`R-GCN`

@@ -387,3 +387,61 @@ SimplE
 .. Important:: 平均倒数排名（mean reciprocal rank，MRR(filter)）比平均排名（mean rank，MR(filter)）更具有鲁棒性，由于仅仅 1 个坏的 rank 能够很大的影响 MR。
 
 pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.SimplE`
+
+图神经网络模型
+----------------------------------
+
+.. _rgcn:
+
+R-GCN
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``R-GCN`` :cite:`R-GCN` 发表于 ``2017`` 年，本质是一个编码器。在链接预测时，``R-GCN`` 将会生成实体的潜在特征表示；然后利用 ``DistMult`` :cite:`DistMult` 生成三元组的得分。
+
+回顾一下 GCN 模型，第 :math:`(l+1)` 层的节点 :math:`i` 的隐藏表示计算如下（消息传递范式）：
+
+.. math::
+
+    h_i^{(l+1)} = \sigma\left(\sum_{m \in M_i}g_m ( h_i^{(l)}, h_j^{(l)}) \right)~~~~~~~~~~(1)\\
+
+:math:`h_i^{(l)} \in \mathbb{R}^{d^{(l)}}` 是图神经网络第 :math:`l` 层节点 :math:`v_i` 的隐藏状态，其中维度为 :math:`d^{(l)}`。:math:`g_m(.,.)` 是定义在每条边上的消息函数，上面的公式使用 ``sum`` 作为聚合函数，:math:`M_i` 表示节点 :math:`v_i` 的传入消息集合（the set of incoming messages），并且通常被选择为与传入边集合（the set of incoming edges）相同。消息函数 :math:`g_m(.,.)` 可以是简单的一元函数或者二元函数，如 ``copy``, ``add``, ``sub``, ``mul``, ``div``, ``dot``；也可以是权重为 :math:`W` 的线性变换 :math:`g_m(h_i, h_j) = Wh_j`。:math:`\sigma` 是一个激活函数。
+
+R-GCN 模型中第 :math:`(l+1)` 层的节点 :math:`i` 的隐藏表示计算如下：
+
+.. math::
+
+    h_i^{(l+1)} = \sigma\left(W_0^{(l)}h_i^{(l)}+\sum_{r\in R}\sum_{j\in N_i^r}\frac{1}{c_{i,r}}W_r^{(l)}h_j^{(l)}\right)~~~~~~~~~~(2)\\
+
+其中 :math:`N_i^r` 表示关系 :math:`r \in R` 下节点 :math:`i` 的邻居索引集合。:math:`c_{i,r}` 是归一化常数，R-GCN 论文使用 :math:`c_{i,r}=|N_i^r|`。为了确保第 :math:`l + 1`` 层节点的表示能够获悉第 :math:`l` 层的相应表示，作者为数据中的每个节点添加一个特殊关系类型（self-connection），:math:`W_0` 是自循环权重。
+
+.. image:: /_static/images/tutorials/RGCN01.png
+    :align: center
+    :height: 600
+
+为了防止过拟合，作者提出了两种方法正则化 R-GCN 层的权重：
+
+1. 基础正则化（The basis regularization）分解 :math:`W_r` 为：
+
+.. math::
+
+    W_r^{(l)} = \sum_{b=1}^B a_{rb}^{(l)}V_b^{(l)}~~~~~~~~~~(3)\\
+
+其中 :math:`B` 是基矩阵的个数，:math:`a_{rb}^{(l)}` 是取决于关系 :math:`r` 的系数，基矩阵为 :math:`V_b^{(l)} \in \mathbb{R}^{d^{(l+1)} \times d^{(l)}}`。
+
+2. 块对角线分解正则化（The block-diagonal-decomposition regularization）将 :math:`W_r` 分解为 :math:`B` 个块对角矩阵：
+
+.. math::
+
+    W_r^{(l)} = \oplus_{b=1}^B Q_{rb}^{(l)}~~~~~~~~~~(4)\\
+
+:math:`Q_{rb}^{(l)} \in \mathbb{R}^{(d^{(l+1)}/B) \times (d^{(l)}/B)}`，:math:`W_r^{(l)}` 是块对角矩阵：:math:`\operatorname{diag}(Q_{r1}^{(l)},...,Q_{rB}^{(l)})`。
+
+基础正则化（3）可以看作是不同关系类型之间有效权重共享的一种形式，而块对角线分解正则化（4）可以看作对每个关系类型的权重矩阵的稀疏性约束。
+
+.. image:: /_static/images/tutorials/RGCN02.png
+    :align: center
+    :height: 400
+
+链接预测时，R-GCN 作为编码器输出实体的表示，关系的表示来自于 ``DistMult`` 模型。损失函数为 :py:class:`torch.nn.BCEWithLogitsLoss`。
+
+pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.RGCN`
