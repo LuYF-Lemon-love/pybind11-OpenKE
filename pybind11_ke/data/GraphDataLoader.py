@@ -3,18 +3,14 @@
 # pybind11_ke/data/GraphDataLoader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
 #
-# 读取数据.
+# 为图神经网络读取数据.
 
 """
-GraphDataLoader - 读取数据集类。
+GraphDataLoader - 图神经网络读取数据集类。
 """
 
-import os
-import dgl
-import torch
-import numpy as np
 from .GraphSampler import GraphSampler
 from .GraphTestSampler import GraphTestSampler
 from torch.utils.data import DataLoader
@@ -37,18 +33,53 @@ class GraphDataLoader:
         test_batch_size: int | None = None,
         num_workers: int | None = None):
 
-        self.in_path = in_path
-        self.ent_file = ent_file
-        self.rel_file = rel_file
-        self.train_file = train_file
-        self.valid_file = valid_file
-        self.test_file = test_file
-        self.batch_size: int = batch_size
-        self.neg_ent: int = neg_ent
-        self.test_batch_size = test_batch_size
-        self.num_workers = num_workers
+        """创建 GraphDataLoader 对象。
 
-        self.train_sampler = GraphSampler(
+        :param in_path: 数据集目录
+        :type in_path: str
+        :param ent_file: entity2id.txt
+        :type ent_file: str
+        :param rel_file: relation2id.txt
+        :type rel_file: str
+        :param train_file: train2id.txt
+        :type train_file: str
+        :param valid_file: valid2id.txt
+        :type valid_file: str
+        :param test_file: test2id.txt
+        :type test_file: str
+        :param batch_size: batch size
+        :type batch_size: int | None
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        :type neg_ent: int
+        :param test_batch_size: test batch size
+        :type test_batch_size: int | None
+        :param num_workers: 加载数据的进程数
+        :type num_workers: int
+        """
+
+        #: 数据集目录
+        self.in_path: str = in_path
+        #: entity2id.txt
+        self.ent_file: str = ent_file
+        #: relation2id.txt
+        self.rel_file: str = rel_file
+        #: train2id.txt
+        self.train_file: str = train_file
+        #: valid2id.txt
+        self.valid_file: str = valid_file
+        #: test2id.txt
+        self.test_file: str = test_file
+        #: batch size
+        self.batch_size: int = batch_size
+        #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        self.neg_ent: int = neg_ent
+        #: test batch size
+        self.test_batch_size: int = test_batch_size
+        #: 加载数据的进程数
+        self.num_workers: int = num_workers
+
+        #: 训练数据采样器
+        self.train_sampler: GraphSampler = GraphSampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
@@ -58,19 +89,21 @@ class GraphDataLoader:
             batch_size=self.batch_size,
             neg_ent=self.neg_ent
         )
-        self.test_sampler = GraphTestSampler(
+        #: 测试数据采样器
+        self.test_sampler: GraphTestSampler = GraphTestSampler(
             sampler=self.train_sampler
         )
 
-        self.setup()
+        #: 训练集三元组
+        self.data_train: list[tuple[int, int, int]] = self.train_sampler.get_train()
+        #: 验证集三元组
+        self.data_val: list[tuple[int, int, int]] = self.train_sampler.get_valid()
+        #: 测试集三元组
+        self.data_test: list[tuple[int, int, int]] = self.train_sampler.get_test()
 
-    def setup(self):
+    def train_dataloader(self) -> DataLoader:
 
-        self.data_train = self.train_sampler.get_train()
-        self.data_val   = self.train_sampler.get_valid()
-        self.data_test  = self.train_sampler.get_test()
-
-    def train_dataloader(self):
+        """返回训练数据加载器。"""
 
         return DataLoader(
             self.data_train,
@@ -82,7 +115,9 @@ class GraphDataLoader:
             collate_fn=self.train_sampler.sampling,
         )
             
-    def val_dataloader(self):
+    def val_dataloader(self) -> DataLoader:
+
+        """返回验证数据加载器。"""
 
         return DataLoader(
             self.data_val,
@@ -93,7 +128,9 @@ class GraphDataLoader:
             collate_fn=self.test_sampler.sampling,
         )
 
-    def test_dataloader(self):
+    def test_dataloader(self) -> DataLoader:
+
+        """返回测试数据加载器。"""
         
         return DataLoader(
             self.data_test,

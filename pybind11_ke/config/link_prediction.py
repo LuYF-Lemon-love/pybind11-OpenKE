@@ -49,7 +49,7 @@ def head_predict(batch, model):
     pos_triple = batch["positive_sample"]
     idx = pos_triple[:, 0]
     label = batch["head_label"]
-    pred_score = model.get_score(batch, "head_predict")
+    pred_score = model.predict(batch, "head_predict")
     return calc_ranks(idx, label, pred_score)
 
 
@@ -68,7 +68,7 @@ def tail_predict(batch, model):
     pos_triple = batch["positive_sample"]
     idx = pos_triple[:, 2]
     label = batch["tail_label"]
-    pred_score = model.get_score(batch, "tail_predict")
+    pred_score = model.predict(batch, "tail_predict")
     return calc_ranks(idx, label, pred_score)
 
 

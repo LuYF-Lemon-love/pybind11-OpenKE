@@ -5,16 +5,20 @@
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 15, 2024
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
 #
-# 增加相反关系.
+# 为 KGReader 增加相反关系，用于图神经网络模型.
+
+"""
+RevSampler - 为 KGReader 增加相反关系，用于图神经网络模型。
+"""
 
 import os
-import torch
-import numpy as np
-from .Sampler import Sampler
+from .KGReader import KGReader
 
-class RevSampler(Sampler):
+class RevSampler(KGReader):
     
-    """增加相反关系
+    """增加相反关系.
+
+    对于每一个三元组 (h, r, t)，生成相反关系三元组 (t, r`, h): r` = r + rel_tol。
     """
     
     def __init__(
@@ -25,6 +29,22 @@ class RevSampler(Sampler):
         train_file: str = "train2id.txt",
         valid_file: str = "valid2id.txt",
         test_file: str = "test2id.txt"):
+
+        """创建 RevSampler 对象。
+
+        :param in_path: 数据集目录
+        :type in_path: str
+        :param ent_file: entity2id.txt
+        :type ent_file: str
+        :param rel_file: relation2id.txt
+        :type rel_file: str
+        :param train_file: train2id.txt
+        :type train_file: str
+        :param valid_file: valid2id.txt
+        :type valid_file: str
+        :param test_file: test2id.txt
+        :type test_file: str
+        """
         
         super().__init__(
             in_path=in_path,
@@ -34,21 +54,26 @@ class RevSampler(Sampler):
             valid_file=valid_file,
             test_file=test_file
         )
+
         self.add_reverse_relation()
         self.add_reverse_triples()
         self.get_hr2t_rt2h_from_train()
         
     def add_reverse_relation(self):
+
+        """增加相反关系：r` = r + rel_tol"""
         
         with open(os.path.join(self.in_path, self.rel_file)) as f:
-            tol = (int)(f.readline())
+            f.readline()
             for line in f:
                 relation, rid = line.strip().split("\t")
-                self.rel2id[relation + "_reverse"] = int(rid) + tol
-                self.id2rel[int(rid) + tol] = relation + "_reverse"
+                self.rel2id[relation + "_reverse"] = int(rid) + self.rel_tol
+                self.id2rel[int(rid) + self.rel_tol] = relation + "_reverse"
         self.rel_tol = len(self.rel2id)
         
     def add_reverse_triples(self):
+
+        """对于每一个三元组 (h, r, t)，生成相反关系三元组 (t, r`, h): r` = r + rel_tol。"""
 
         tol = int(self.rel_tol / 2)
         
@@ -79,37 +104,3 @@ class RevSampler(Sampler):
         self.all_true_triples = set(
             self.train_triples + self.valid_triples + self.test_triples
         )
-    
-    def corrupt_head(self, t, r, num_max=1):
-        
-        tmp = torch.randint(low=0, high=self.ent_tol, size=(num_max,)).numpy()
-        mask = np.in1d(tmp, self.rt2h_train[(r, t)], assume_unique=True, invert=True)
-        neg = tmp[mask]
-        return neg
-
-    def corrupt_tail(self, h, r, num_max=1):
-
-        tmp = torch.randint(low=0, high=self.ent_tol, size=(num_max,)).numpy()
-        mask = np.in1d(tmp, self.hr2t_train[(h, r)], assume_unique=True, invert=True)
-        neg = tmp[mask]
-        return neg
-
-    def head_batch(self, h, r, t, neg_size=None):
-
-        neg_list = []
-        neg_cur_size = 0
-        while neg_cur_size < neg_size:
-            neg_tmp = self.corrupt_head(t, r, num_max=(neg_size - neg_cur_size) * 2)
-            neg_list.append(neg_tmp)
-            neg_cur_size += len(neg_tmp)
-        return np.concatenate(neg_list)[:neg_size]
-
-    def tail_batch(self, h, r, t, neg_size=None):
-        
-        neg_list = []
-        neg_cur_size = 0
-        while neg_cur_size < neg_size:
-            neg_tmp = self.corrupt_tail(h, r, num_max=(neg_size - neg_cur_size) * 2)
-            neg_list.append(neg_tmp)
-            neg_cur_size += len(neg_tmp)
-        return np.concatenate(neg_list)[:neg_size]

@@ -47,6 +47,16 @@ pybind11_ke.module.model
     Analogy
     SimplE
 
+图神经网络模型
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: classtemplate.rst
+    
+    RGCN
+
 超参数优化默认搜索范围
 ----------------------------------
 

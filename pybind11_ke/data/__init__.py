@@ -15,7 +15,8 @@ from __future__ import print_function
 
 from .TrainDataLoader import TrainDataSampler, TrainDataLoader, get_train_data_loader_hpo_config
 from .TestDataLoader import TestDataSampler, TestDataLoader, get_test_data_loader_hpo_config
-from .Sampler import Sampler
+
+from .KGReader import KGReader
 from .RevSampler import RevSampler
 from .GraphSampler import GraphSampler
 from .GraphTestSampler import GraphTestSampler
@@ -28,7 +29,7 @@ __all__ = [
 	'TestDataSampler',
 	'TestDataLoader',
 	'get_test_data_loader_hpo_config',
-	'Sampler',
+	'KGReader',
 	'RevSampler',
 	'GraphSampler',
 	'GraphTestSampler',

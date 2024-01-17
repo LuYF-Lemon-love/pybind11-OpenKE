@@ -30,6 +30,20 @@ pybind11_ke.data
     TestDataSampler
     TestDataLoader
 
+图数据加载器
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: classtemplate.rst
+
+    KGReader
+    RevSampler
+    GraphSampler
+    GraphTestSampler
+    GraphDataLoader
+
 超参数优化默认搜索范围
 ----------------------------------
 

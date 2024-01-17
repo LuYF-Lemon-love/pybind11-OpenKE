@@ -200,7 +200,7 @@ class RGCNTrainer(object):
 		self.optimizer.zero_grad()
 		loss = self.model({
 			'graph': self.to_var(data['graph']),
-			'triples': self.np_to_var(data['triples']),
+			'triples': self.to_var(data['triples']),
 			'label': self.to_var(data['label']),
 			'entity': self.to_var(data['entity']),
 			'relation': self.to_var(data['relation']),
@@ -366,23 +366,6 @@ class RGCNTrainer(object):
 			return x.to(self.device)
 		else:
 			return x
-
-	def np_to_var(self, x: np.ndarray) -> torch.Tensor:
-
-		"""将 ``x`` 转移到对应的设备上。
-
-		:param x: 数据
-		:type x: numpy.ndarray
-		:returns: 张量
-		:rtype: torch.Tensor
-		"""
-
-		if self.gpu_id is not None:
-			return torch.from_numpy(x).to(self.gpu_id)
-		elif self.use_gpu:
-			return torch.from_numpy(x).to(self.device)
-		else:
-			return torch.from_numpy(x)
 
 	def get_model(self) -> Model:
 

@@ -29,6 +29,7 @@ pybind11_ke.module.loss
     MarginLoss
     SoftplusLoss
     SigmoidLoss
+    RGCNLoss
 
 超参数优化默认搜索范围
 ----------------------------------

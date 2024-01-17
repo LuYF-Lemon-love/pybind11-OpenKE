@@ -1,12 +1,9 @@
 """
-**TransH-FB15K237-single-gpu** ||
-`TransH-FB15K237-single-gpu-wandb <single_gpu_transh_FB15K237_wandb.html>`_ ||
-`TransH-FB15K237-multigpu <multigpu_transh_FB15K237.html>`_ ||
-`TransH-FB15K-multigpu-wandb <multigpu_transh_FB15K237_wandb.html>`_
+**RGCN-FB15K237-single-gpu**
 
 RGCN-FB15K237-single-gpu
 =====================================================
-这一部分介绍如何用一个 GPU 在 FB15K237 知识图谱上训练 ``TransH`` :cite:`TransH`。
+这一部分介绍如何用一个 GPU 在 FB15K237 知识图谱上训练 ``R-GCN`` :cite:`R-GCN`。
 
 导入数据
 -----------------
@@ -22,7 +19,7 @@ from pybind11_ke.config import RGCNTrainer, RGCNTester
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
-# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
+# :py:class:`pybind11_ke.data.GraphDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 dataloader = GraphDataLoader(
 	in_path = "../../benchmarks/FB15K237/",
@@ -40,8 +37,7 @@ dataloader = GraphDataLoader(
 # 导入模型
 # ------------------
 # pybind11-OpenKE 提供了很多 KGE 模型，它们都是目前最常用的基线模型。我们下面将要导入
-# :py:class:`pybind11_ke.module.model.TransH`，它提出于 2014 年，是第二个平移模型，
-# 将关系建模为超平面上的平移操作。
+# :py:class:`pybind11_ke.module.model.RGCN`，它提出于 2017 年，是第一个图神经网络模型，
 
 # define the model
 rgcn = RGCN(
@@ -59,9 +55,9 @@ rgcn = RGCN(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了 ``TransE`` :cite:`TransE` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.MarginLoss`，
+# 我们这里使用了 ``R-GCN`` :cite:`R-GCN` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.RGCNLoss`，
 # :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
-# :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
+# :py:class:`pybind11_ke.module.loss.RGCNLoss` 进行了封装，加入权重衰减等额外项。
 
 # define the loss function
 model = RGCNSampling(

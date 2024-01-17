@@ -3,9 +3,13 @@
 # pybind11_ke/data/GraphTestSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
 #
-# RGCN 的测试数据采样器.
+# R-GCN 的测试数据采样器.
+
+"""
+GraphTestSampler - R-GCN 的测试数据采样器。
+"""
 
 import torch
 import numpy as np
@@ -14,21 +18,36 @@ from collections import defaultdict as ddict
 
 class GraphTestSampler(object):
 
-    """为测试进行图采样
+    """``R-GCN`` :cite:`R-GCN` 的测试数据采样器。
     """
 
     def __init__(
         self,
         sampler: GraphSampler):
 
-        self.sampler = sampler
+        """创建 GraphSampler 对象。
+
+        :param sampler: 训练数据采样器。
+        :type sampler: GraphSampler
+        """
+
+        #: 训练数据采样器
+        self.sampler: GraphSampler = sampler
+        #: 实体的个数
+        self.ent_tol: int = sampler.ent_tol
+        #: #: 训练集三元组
+        self.triples: list = sampler.train_triples
+
+        #: 知识图谱中所有 h-r 对对应的 t 集合
         self.hr2t_all = ddict(set)
+        #: 知识图谱中所有 r-t 对对应的 h 集合
         self.rt2h_all = ddict(set)
+
         self.get_hr2t_rt2h_from_all()
-        self.ent_tol = sampler.ent_tol
-        self.triples = sampler.train_triples
 
     def get_hr2t_rt2h_from_all(self):
+
+        """获得 :py:attr:`hr2t_all` 和 :py:attr:`rt2h_all` 。"""
 
         self.all_true_triples = self.sampler.get_all_true_triples()
         for h, r, t in self.all_true_triples:
@@ -39,7 +58,17 @@ class GraphTestSampler(object):
         for r, t in self.rt2h_all:
             self.rt2h_all[(r, t)] = torch.tensor(list(self.rt2h_all[(r, t)]))
 
-    def sampling(self, data):
+    def sampling(
+        self,
+        data: list[tuple[int, int, int]]) -> dict[str, torch.Tensor]:
+
+        """``R-GCN`` :cite:`R-GCN` 的测试数据采样函数。
+        
+        :param data: 测试的正确三元组
+        :type data: list[tuple[int, int, int]]
+        :returns: ``R-GCN`` :cite:`R-GCN` 的测试数据
+		:rtype: dict[str, torch.Tensor]
+        """
         
         batch_data = {}
         head_label = torch.zeros(len(data), self.ent_tol)

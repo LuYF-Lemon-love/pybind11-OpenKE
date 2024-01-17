@@ -3,9 +3,13 @@
 # pybind11_ke/data/GraphSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
 #
-# RGCN 的数据采样器.
+# R-GCN 的数据采样器.
+
+"""
+GraphSampler - R-GCN 的数据采样器。
+"""
 
 import dgl
 import torch
@@ -17,7 +21,7 @@ warnings.filterwarnings("ignore")
 
 class GraphSampler(RevSampler):
 
-    """基本图神经网络采样器。
+    """``R-GCN`` :cite:`R-GCN` 的训练数据采样器。
     """
     
     def __init__(
@@ -31,6 +35,26 @@ class GraphSampler(RevSampler):
         batch_size: int | None = None,
         neg_ent: int = 1):
 
+        """创建 GraphSampler 对象。
+
+        :param in_path: 数据集目录
+        :type in_path: str
+        :param ent_file: entity2id.txt
+        :type ent_file: str
+        :param rel_file: relation2id.txt
+        :type rel_file: str
+        :param train_file: train2id.txt
+        :type train_file: str
+        :param valid_file: valid2id.txt
+        :type valid_file: str
+        :param test_file: test2id.txt
+        :type test_file: str
+        :param batch_size: batch size
+        :type batch_size: int | None
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        :type neg_ent: int
+        """
+
         super().__init__(
             in_path=in_path,
             ent_file=ent_file,
@@ -40,7 +64,9 @@ class GraphSampler(RevSampler):
             test_file=test_file
         )
 
+        #: batch size
         self.batch_size: int = batch_size
+        #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
         self.neg_ent: int = neg_ent
 
         self.entity   = None
@@ -50,7 +76,17 @@ class GraphSampler(RevSampler):
         self.norm     = None
         self.label    = None
 
-    def sampling(self, pos_triples):
+    def sampling(
+        self,
+        pos_triples: list[tuple[int, int, int]]) -> dict[str, torch.Tensor]:
+
+        """``R-GCN`` :cite:`R-GCN` 的采样函数。
+        
+        :param pos_triples: 知识图谱中的正确三元组
+        :type pos_triples: list[tuple[int, int, int]]
+        :returns: ``R-GCN`` :cite:`R-GCN` 的训练数据
+		:rtype: dict[str, torch.Tensor]
+        """
         
         batch_data = {}
         
@@ -60,7 +96,7 @@ class GraphSampler(RevSampler):
         tail_triples = self.sampling_negative('tail', pos_triples)
         self.triples = np.concatenate((pos_triples,head_triples,tail_triples))
         batch_data['entity']  = self.entity
-        batch_data['triples'] = self.triples
+        batch_data['triples'] = torch.from_numpy(self.triples)
         
         self.label = torch.zeros((len(self.triples),1))
         self.label[0 : self.batch_size] = 1
@@ -83,7 +119,17 @@ class GraphSampler(RevSampler):
 
         return batch_data
 
-    def sampling_positive(self, positive_triples):
+    def sampling_positive(
+        self,
+        positive_triples: list[tuple[int, int, int]]) -> tuple[np.ndarray, torch.Tensor]:
+
+        """为创建子图重新采样三元组子集，重排实体 ID。
+        
+        :param pos_triples: 知识图谱中的正确三元组
+        :type pos_triples: list[tuple[int, int, int]]
+        :returns: 三元组子集和原始的实体 ID
+		:rtype: tuple[numpy.ndarray, torch.Tensor]
+        """
 
         edges = np.random.choice(
             np.arange(len(positive_triples)),
@@ -98,7 +144,20 @@ class GraphSampler(RevSampler):
         return np.stack((head,rela,tail)).transpose(), \
                 torch.from_numpy(entity).view(-1,1).long()
 
-    def sampling_negative(self, mode, pos_triples):
+    def sampling_negative(
+        self,
+        mode: int,
+        pos_triples: list[tuple[int, int, int]]) -> np.ndarray:
+
+        """采样负三元组。
+
+        :param mode: 'head' 或 'tail'
+        :type mode: str
+        :param pos_triples: 知识图谱中的正确三元组
+        :type pos_triples: list[tuple[int, int, int]]
+        :returns: 负三元组
+		:rtype: numpy.ndarray
+        """
 
         neg_random = np.random.choice(
             len(self.entity), 
@@ -111,7 +170,23 @@ class GraphSampler(RevSampler):
             neg_samples[:,2] = neg_random
         return neg_samples
 
-    def build_graph(self, num_ent, triples, power):
+    def build_graph(
+        self,
+        num_ent: int,
+        triples: tuple[torch.Tensor, torch.Tensor, torch.Tensor],
+        power: int = -1) -> tuple[dgl.DGLGraph, torch.Tensor, torch.Tensor]:
+
+        """建立子图。
+
+        :param num_ent: 子图的节点数
+        :type num_ent: int
+        :param triples: 知识图谱中的正确三元组子集
+        :type triples: tuple[torch.Tensor, torch.Tensor, torch.Tensor]
+        :param power: 幂
+        :type power: int
+        :returns: 子图、关系、边的归一化系数
+		:rtype: tuple[dgl.DGLGraph, torch.Tensor, torch.Tensor]
+        """
 
         head, rela, tail = triples[0], triples[1], triples[2]
         graph = dgl.graph(([], []))
@@ -122,7 +197,20 @@ class GraphSampler(RevSampler):
         rela = torch.tensor(rela)
         return graph, rela, edge_norm
 
-    def comp_deg_norm(self, graph, power=-1):
+    def comp_deg_norm(
+        self,
+        graph: dgl.DGLGraph,
+        power: int = -1) -> torch.Tensor:
+
+        """根据目标节点度计算目标节点的归一化系数。
+
+        :param graph: 子图的节点数
+        :type graph: dgl.DGLGraph
+        :param power: 幂
+        :type power: int
+        :returns: 节点的归一化系数
+		:rtype: torch.Tensor
+        """
 
         graph = graph.local_var()
         in_deg = graph.in_degrees(range(graph.number_of_nodes())).float().numpy()
@@ -130,7 +218,20 @@ class GraphSampler(RevSampler):
         norm[np.isinf(norm)] = 0
         return torch.from_numpy(norm)
 
-    def node_norm_to_edge_norm(self, graph, node_norm):
+    def node_norm_to_edge_norm(
+        self,
+        graph: dgl.DGLGraph,
+        node_norm: torch.Tensor) -> torch.Tensor:
+
+        """根据目标节点度计算每条边的归一化系数。
+
+        :param graph: 子图的节点数
+        :type graph: dgl.DGLGraph
+        :param node_norm: 节点的归一化系数
+        :type node_norm: torch.Tensor
+        :returns: 边的归一化系数
+		:rtype: torch.Tensor
+        """
         
         graph = graph.local_var()
         # convert to edge norm
