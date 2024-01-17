@@ -35,7 +35,7 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
-   :caption: TransE
+   :caption: 平移模型
 
    examples/TransE/single_gpu_transe_FB15K
    examples/TransE/single_gpu_transe_FB15K_wandb
@@ -44,41 +44,13 @@
    examples/TransE/multigpu_transe_FB15K_wandb
    examples/TransE/single_gpu_transe_FB15K237_wandb
    examples/TransE/single_gpu_transe_WN18_adv_sigmoidloss_wandb
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: TransH
-
    examples/TransH/single_gpu_transh_FB15K237
    examples/TransH/single_gpu_transh_FB15K237_wandb
    examples/TransH/multigpu_transh_FB15K237
    examples/TransH/multigpu_transh_FB15K237_wandb
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: TransR
-
    examples/TransR/single_gpu_transr_FB15K237
    examples/TransR/multigpu_transr_FB15K237
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: TransD
-
    examples/TransD/single_gpu_transd_FB15K237_wandb
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: RotatE
-
    examples/RotatE/single_gpu_rotate_WN18RR_adv
    examples/RotatE/single_gpu_rotate_WN18RR_adv_wandb
 
@@ -86,56 +58,21 @@
    :maxdepth: 2
    :hidden:
    :includehidden:
-   :caption: RESCAL
+   :caption: 语义匹配模型
 
    examples/RESCAL/single_gpu_rescal_FB15K237
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: DistMult
-
    examples/DistMult/single_gpu_distmult_WN18RR_wandb
    examples/DistMult/single_gpu_distmult_WN18RR_adv_sigmoidloss_wandb
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: HolE
-
    examples/HolE/single_gpu_hole_WN18RR_wandb
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: ComplEx
-
    examples/ComplEx/single_gpu_complex_WN18RR_wandb
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: ANALOGY
-
    examples/ANALOGY/single_gpu_analogy_WN18RR
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :includehidden:
-   :caption: SimplE
-
    examples/SimplE/single_gpu_simple_WN18RR_wandb
 
 .. toctree::
    :maxdepth: 2
    :hidden:
    :includehidden:
-   :caption: SimplE
+   :caption: 图神经网络模型
 
    examples/RGCN/single_gpu_rgcn_FB15K237
 
