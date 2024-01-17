@@ -132,6 +132,14 @@
    examples/SimplE/single_gpu_simple_WN18RR_wandb
 
 .. toctree::
+   :maxdepth: 2
+   :hidden:
+   :includehidden:
+   :caption: SimplE
+
+   examples/RGCN/single_gpu_rgcn_FB15K237
+
+.. toctree::
    :maxdepth: 4
    :caption: API
 

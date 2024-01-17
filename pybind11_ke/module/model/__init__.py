@@ -25,6 +25,7 @@ from .Analogy import Analogy
 from .SimplE import SimplE
 from .RotatE import RotatE
 from .HolE import HolE
+from .RGCN import RGCN
 
 __all__ = [
     'Model',
@@ -40,4 +41,5 @@ __all__ = [
     'SimplE',
     'RotatE',
     'HolE',
+    'RGCN'
 ]

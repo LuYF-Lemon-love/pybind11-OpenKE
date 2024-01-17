@@ -28,8 +28,10 @@ setup(
                                      exclude=['pybind11_ke_examples']),
     install_requires=[
         "torch",
+        "pandas",
         "numpy",
         "tqdm",
         "wandb",
+        "packaging",
     ],
 )

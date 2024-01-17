@@ -14,6 +14,7 @@ Linux
     source env/bin/activate
     which python
     pip install --upgrade pip
+    pip install dgl -f https://data.dgl.ai/wheels/cu117/repo.html
     pip install . -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 2. 快速开始。
