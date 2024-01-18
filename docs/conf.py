@@ -82,7 +82,7 @@ intersphinx_mapping = {
     'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
     'torch': ('https://pytorch.org/docs/stable/', None),
     'numpy': ('https://numpy.org/doc/stable', None),
-    'dgl': ('https://docs.dgl.ai/api/python/', None),
+    'dgl': ('https://docs.dgl.ai/', None),
 }
 
 intersphinx_disabled_domains = ['std']

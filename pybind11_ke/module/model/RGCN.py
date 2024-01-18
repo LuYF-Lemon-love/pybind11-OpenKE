@@ -86,7 +86,7 @@ class RGCN(Model):
         """返回第 idx 的图神经网络层。
         
         :param idx: 数据。
-		:type idx: int
+        :type idx: int
         :returns: 图神经网络层
         :rtype: RelGraphConv
         """
@@ -118,7 +118,7 @@ class RGCN(Model):
         :param norm: 关系的归一化系数
         :type norm: torch.Tensor
         :param triples: 三元组
-        :type triples: torch,Tensor
+        :type triples: torch.Tensor
         :param mode: 模式
         :type mode: str
         :returns: 三元组的得分
