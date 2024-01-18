@@ -18,7 +18,7 @@ import numpy as np
 from tqdm import tqdm
 from ..data import TestDataLoader, GraphDataLoader
 from ..module.model import Model
-from ..module.model import RGCN
+from ..module.model.RGCN import RGCN
 
 class Tester(object):
 
@@ -37,7 +37,7 @@ class Tester(object):
 
     def __init__(
         self,
-        model: Model | RGCN | None = None,
+        model: typing.Union[Model, RGCN, None] = None,
         data_loader: TestDataLoader | GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
         use_gpu: bool = True,
@@ -65,8 +65,8 @@ class Tester(object):
         self.sampling_mode: str = sampling_mode
         #: 是否使用 gpu
         self.use_gpu: bool = use_gpu
-        #: gpu，利用 ``device`` 构造的 :py:class:`torch.torch.device` 对象
-        self.device: torch.torch.device = torch.device(device)
+        #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
+        self.device: torch.device = torch.device(device)
         
         if self.use_gpu:
             self.model.cuda(device = self.device)
