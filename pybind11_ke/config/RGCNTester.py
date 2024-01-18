@@ -20,7 +20,6 @@ from ..data import GraphDataLoader
 from .Tester import Tester
 from ..module.model import RGCN
 from typing_extensions import override
-from torch.utils.data import DataLoader
 
 class RGCNTester(Tester):
 
@@ -59,9 +58,9 @@ class RGCNTester(Tester):
         )
 
         #: 验证数据加载器。
-        self.val_dataloader: DataLoader = self.data_loader.val_dataloader()
+        self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader()
         #: 测试数据加载器。
-        self.test_dataloader: DataLoader = self.data_loader.test_dataloader()
+        self.test_dataloader: torch.utils.data.DataLoader = self.data_loader.test_dataloader()
 
     @override
     def to_var(

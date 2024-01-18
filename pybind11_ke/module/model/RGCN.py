@@ -200,9 +200,9 @@ class RGCN(Model):
         mode: str) -> torch.Tensor:
 
         """R-GCN 的推理方法。
-		
-		:param data: 数据。
-		:type data: dict[str, torch.Tensor]
+        
+        :param data: 数据。
+        :type data: dict[str, torch.Tensor]
         :param mode: 模式
         :type mode: str
         :returns: 三元组的得分

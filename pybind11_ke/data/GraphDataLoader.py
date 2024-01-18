@@ -103,7 +103,11 @@ class GraphDataLoader:
 
     def train_dataloader(self) -> DataLoader:
 
-        """返回训练数据加载器。"""
+        """返回训练数据加载器。
+        
+        :returns: 训练数据加载器
+        :rtype: torch.utils.data.DataLoader
+        """
 
         return DataLoader(
             self.data_train,
@@ -117,7 +121,11 @@ class GraphDataLoader:
             
     def val_dataloader(self) -> DataLoader:
 
-        """返回验证数据加载器。"""
+        """返回验证数据加载器。
+        
+        :returns: 验证数据加载器
+        :rtype: torch.utils.data.DataLoader
+        """
 
         return DataLoader(
             self.data_val,
@@ -130,7 +138,10 @@ class GraphDataLoader:
 
     def test_dataloader(self) -> DataLoader:
 
-        """返回测试数据加载器。"""
+        """返回测试数据加载器。
+        
+        :returns: 测试数据加载器
+        :rtype: torch.utils.data.DataLoader"""
         
         return DataLoader(
             self.data_test,
