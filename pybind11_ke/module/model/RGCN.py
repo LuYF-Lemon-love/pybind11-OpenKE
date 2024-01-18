@@ -81,14 +81,14 @@ class RGCN(Model):
 
     def build_hidden_layer(
         self,
-        idx: int) -> RelGraphConv:
+        idx: int) -> dgl.nn.pytorch.conv.RelGraphConv:
 
         """返回第 idx 的图神经网络层。
         
         :param idx: 数据。
         :type idx: int
         :returns: 图神经网络层
-        :rtype: RelGraphConv
+        :rtype: dgl.nn.pytorch.conv.RelGraphConv
         """
 
         act = F.relu if idx < self.num_layers - 1 else None
