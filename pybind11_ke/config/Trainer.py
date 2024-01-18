@@ -279,7 +279,7 @@ class Trainer(object):
 	def print_test(
 		self,
 		sampling_mode: str,
-		epoch: int):
+		epoch: int = 0):
 
 		"""根据 :py:attr:`tester` 类型进行链接预测 。
 
