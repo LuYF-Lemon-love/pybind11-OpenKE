@@ -17,7 +17,8 @@ import typing
 import numpy as np
 from tqdm import tqdm
 from ..data import TestDataLoader, GraphDataLoader
-from ..module.model import Model, RGCN
+from ..module.model import Model
+from ..module.model import RGCN
 
 class Tester(object):
 
@@ -57,7 +58,7 @@ class Tester(object):
         """
 
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model` or :py:class:`pybind11_ke.module.model.RGCN`
-        self.model: Model | RGCN | None = model
+        self.model: typing.Union[Model, RGCN, None] = model
         #: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
         self.data_loader: TestDataLoader | GraphDataLoader | None = data_loader
         #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``

@@ -58,7 +58,7 @@ class RGCNTrainer(Trainer):
 		:type epochs: int
 		:param lr: 学习率
 		:type lr: float
-		:param opt_method: 优化器: Adam or adam, Adagrad or adagrad, SGD or sgd
+		:param opt_method: 优化器: 'Adam' or 'adam', 'Adagrad' or 'adagrad', 'SGD' or 'sgd'
 		:type opt_method: str
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool

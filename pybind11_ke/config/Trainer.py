@@ -71,12 +71,12 @@ class Trainer(object):
 		:param model: 包装 KGE 模型的训练策略类
 		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling`
 		:param data_loader: TrainDataLoader or DataLoader
-		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader` or torch.utils.data.DataLoader
+		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
 		:param epochs: 训练轮次数
 		:type epochs: int
 		:param lr: 学习率
 		:type lr: float
-		:param opt_method: 优化器: Adam or adam, Adagrad or adagrad, SGD or sgd
+		:param opt_method: 优化器: 'Adam' or 'adam', 'Adagrad' or 'adagrad', 'SGD' or 'sgd'
 		:type opt_method: str
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
@@ -116,7 +116,7 @@ class Trainer(object):
 		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | RGCNSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
-		self.data_loader: typing.Union[TrainDataLoader, DataLoader, None] = data_loader
+		self.data_loader: typing.Union[TrainDataLoader, torch.utils.data.DataLoader, None] = data_loader
 		#: epochs
 		self.epochs: int = epochs
 
@@ -132,7 +132,7 @@ class Trainer(object):
 		#: 是否使用 gpu
 		self.use_gpu: bool = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.torch.device` 对象
-		self.device: torch.torch.device | str = torch.device(device) if self.use_gpu else "cpu"
+		self.device: typing.Union[torch.torch.device, str] = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
 		self.tester: Tester | RGCNTester | None = tester
