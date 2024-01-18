@@ -71,8 +71,8 @@ model = RGCNSampling(
 ######################################################################
 # 训练模型
 # -------------
-# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.RGCNTrainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.RGCNTrainer.run` 函数进行模型学习；
 # 也可以通过传入 :py:class:`pybind11_ke.config.RGCNTester`，
 # 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.RGCNTester` 使用
 # :py:class:`pybind11_ke.data.GraphDataLoader` 作为数据采样器。
@@ -83,7 +83,7 @@ tester = RGCNTester(model = rgcn, data_loader = dataloader, use_gpu = True, devi
 # train the model
 trainer = RGCNTrainer(model = model, data_loader = dataloader.train_dataloader(),
 	epochs = 10000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
-	tester = tester, test = True, valid_interval = 500, #log_interval = 10,
-	# save_interval = 100, save_path = '../../checkpoint/transh.pth'
+	tester = tester, test = True, valid_interval = 500, log_interval = 500,
+	save_interval = 500, save_path = '../../checkpoint/rgcn.pth'
 )
 trainer.run()
