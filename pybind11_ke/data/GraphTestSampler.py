@@ -11,7 +11,9 @@
 GraphTestSampler - R-GCN 的测试数据采样器。
 """
 
+import dgl
 import torch
+import typing
 import numpy as np
 from .GraphSampler import GraphSampler
 from collections import defaultdict as ddict
@@ -60,14 +62,14 @@ class GraphTestSampler(object):
 
     def sampling(
         self,
-        data: list[tuple[int, int, int]]) -> dict[str, torch.Tensor]:
+        data: list[tuple[int, int, int]]) -> dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]:
 
         """``R-GCN`` :cite:`R-GCN` 的测试数据采样函数。
         
         :param data: 测试的正确三元组
         :type data: list[tuple[int, int, int]]
         :returns: ``R-GCN`` :cite:`R-GCN` 的测试数据
-        :rtype: dict[str, torch.Tensor]
+        :rtype: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]
         """
         
         batch_data = {}

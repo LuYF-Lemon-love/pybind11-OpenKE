@@ -27,6 +27,7 @@ pybind11_ke.module.strategy
     :template: classtemplate.rst
     
     NegativeSampling
+    RGCNSampling
 
 超参数优化默认搜索范围
 ----------------------------------

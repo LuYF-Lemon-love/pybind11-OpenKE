@@ -17,9 +17,8 @@ from .Tester import Tester, get_tester_hpo_config
 from .Trainer import Trainer, get_trainer_hpo_config
 from .TrainerDataParallel import trainer_distributed_data_parallel
 from .HPOTrainer import set_hpo_config, start_hpo_train, hpo_train
-from .link_prediction import link_predict
 from .RGCNTrainer import RGCNTrainer
-from .RGCNTester import RGCNTester
+from .RGCNTester import RGCNTester, link_predict, head_predict, tail_predict, calc_ranks
 
 __all__ = [
 	'Tester',
@@ -30,7 +29,10 @@ __all__ = [
 	'set_hpo_config',
 	'start_hpo_train',
 	'hpo_train',
-	'link_predict',
 	'RGCNTrainer',
-	'RGCNTester'
+	'RGCNTester',
+	'link_predict',
+	'head_predict',
+	'tail_predict',
+	'calc_ranks'
 ]

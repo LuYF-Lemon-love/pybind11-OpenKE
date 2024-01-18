@@ -2,54 +2,47 @@
 #
 # pybind11_ke/config/RGCNTester.py
 #
-# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 18, 2023
 #
-# 该脚本定义了验证模型类.
+# 该脚本定义了 R-GCN 验证模型类.
 
 """
-Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
+RGCNTester - R-GCN 验证模型类，内部使用 ``tqmn`` 实现进度条。
 """
 
-import base
+import dgl
 import torch
 import typing
 import numpy as np
 from tqdm import tqdm
-from ..data import TestDataLoader
-from ..module.model import Model
-from .link_prediction import link_predict
+from ..data import GraphDataLoader
+from .Tester import Tester
+from ..module.model import RGCN
+from typing_extensions import override
+from torch.utils.data import DataLoader
 
-class RGCNTester(object):
+class RGCNTester(Tester):
 
     """
-    主要用于 KGE 模型的评估。
-
-    例子::
-
-        from pybind11_ke.config import Trainer, Tester
-
-        # test the model
-        transe.load_checkpoint('../checkpoint/transe.ckpt')
-        tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-        tester.run_link_prediction()
+    主要用于 ``R-GCN`` :cite:`R-GCN` 模型的评估。
     """
 
     def __init__(
         self,
-        model: Model | None = None,
-        data_loader: TestDataLoader | None = None,
+        model: RGCN | None = None,
+        data_loader: GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
         use_gpu: bool = True,
         device: str = "cuda:0"):
 
         """创建 Tester 对象。
         
-        :param model: KGE 模型
-        :type model: :py:class:`pybind11_ke.module.model.Model`
-        :param data_loader: TestDataLoader
-        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
-        :param sampling_mode: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
+        :param model: RGCN 模型
+        :type model: :py:class:`pybind11_ke.module.model.RGCN`
+        :param data_loader: GraphDataLoader
+        :type data_loader: :py:class:`pybind11_ke.data.GraphDataLoader`
+        :param sampling_mode: 评估验证集还是测试集：``link_test`` or ``link_valid``
         :type sampling_mode: str
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
@@ -57,32 +50,29 @@ class RGCNTester(object):
         :type device: str
         """
 
-        #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
-        self.model: Model | None = model
-        #: :py:class:`pybind11_ke.data.TestDataLoader`
-        self.data_loader: TestDataLoader | None = data_loader
-        #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
-        self.sampling_mode: str = sampling_mode
-        #: 是否使用 gpu
-        self.use_gpu: bool = use_gpu
-        #: gpu，利用 ``device`` 构造的 :py:class:`torch.torch.device` 对象
-        self.device: torch.torch.device = torch.device(device)
-        
-        if self.use_gpu:
-            self.model.cuda(device = self.device)
+        super(RGCNTester, self).__init__(
+            model=model,
+            data_loader=data_loader,
+            sampling_mode=sampling_mode,
+            use_gpu=use_gpu,
+            device=device
+        )
 
-        self.val_dataloader = self.data_loader.val_dataloader()
-        self.test_dataloader = self.data_loader.test_dataloader()
+        #: 验证数据加载器。
+        self.val_dataloader: DataLoader = self.data_loader.val_dataloader()
+        #: 测试数据加载器。
+        self.test_dataloader: DataLoader = self.data_loader.test_dataloader()
 
+    @override
     def to_var(
         self,
-        x: np.ndarray,
+        x: torch.Tensor,
         use_gpu: bool) -> torch.Tensor:
 
         """根据 ``use_gpu`` 返回 ``x`` 的张量
         
         :param x: 数据
-        :type x: numpy.ndarray
+        :type x: torch.Tensor
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
         :returns: 张量
@@ -94,6 +84,7 @@ class RGCNTester(object):
         else:
             return x
 
+    @override
     def run_link_prediction(self) -> tuple[float, ...]:
         
         """进行链接预测。
@@ -140,13 +131,105 @@ class RGCNTester(object):
         hit10 = np.around(results["hit10"] / count, decimals=3).item()
         
         return mr, mrr, hit1, hit3, hit10
+
+def link_predict(
+    batch: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]],
+    model: RGCN,
+    prediction: str = "all") -> torch.Tensor:
+
+    """
+    进行链接预测。
     
-    def set_sampling_mode(self, sampling_mode: str):
-        
-        """设置 :py:attr:`sampling_mode`
-        
-        :param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
-        :type sampling_mode: str
-        """
-        
-        self.sampling_mode = sampling_mode
+    :param batch: ``R-GCN`` :cite:`R-GCN` 的测试数据
+    :type batch: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]
+    :param model: ``R-GCN`` :cite:`R-GCN` 模型
+    :type model: RGCN
+    :param prediction: "all", "head", "tail"
+    :type prediction: str
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+    
+    if prediction == "all":
+        tail_ranks = tail_predict(batch, model)
+        head_ranks = head_predict(batch, model)
+        ranks = torch.cat([tail_ranks, head_ranks])
+    elif prediction == "head":
+        ranks = head_predict(batch, model)
+    elif prediction == "tail":
+        ranks = tail_predict(batch, model)
+
+    return ranks.float()
+
+def head_predict(
+    batch: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]],
+    model: RGCN) -> torch.Tensor:
+
+    """
+    进行头实体的链接预测。
+    
+    :param batch: ``R-GCN`` :cite:`R-GCN` 的测试数据
+    :type batch: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]
+    :param model: ``R-GCN`` :cite:`R-GCN` 模型
+    :type model: RGCN
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+    
+    pos_triple = batch["positive_sample"]
+    idx = pos_triple[:, 0]
+    label = batch["head_label"]
+    pred_score = model.predict(batch, "head_predict")
+    return calc_ranks(idx, label, pred_score)
+
+def tail_predict(
+    batch: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]],
+    model: RGCN) -> torch.Tensor:
+
+    """
+    进行尾实体的链接预测。
+    
+    :param batch: ``R-GCN`` :cite:`R-GCN` 的测试数据
+    :type batch: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]
+    :param model: ``R-GCN`` :cite:`R-GCN` 模型
+    :type model: RGCN
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+
+    pos_triple = batch["positive_sample"]
+    idx = pos_triple[:, 2]
+    label = batch["tail_label"]
+    pred_score = model.predict(batch, "tail_predict")
+    return calc_ranks(idx, label, pred_score)
+
+def calc_ranks(
+    idx: torch.Tensor,
+    label: torch.Tensor,
+    pred_score: torch.Tensor) -> torch.Tensor:
+
+    """
+    计算三元组的排名。
+    
+    :param idx: 需要链接预测的实体 ID
+    :type idx: torch.Tensor
+    :param label: 标签
+    :type label: torch.Tensor
+    :param pred_score: 三元组的评分
+    :type pred_score: torch.Tensor
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+
+    b_range = torch.arange(pred_score.size()[0])
+    target_pred = pred_score[b_range, idx]
+    pred_score = torch.where(label.bool(), -torch.ones_like(pred_score) * 10000000, pred_score)
+    pred_score[b_range, idx] = target_pred
+
+    ranks = (
+        1
+        + torch.argsort(
+            torch.argsort(pred_score, dim=1, descending=True), dim=1, descending=False
+        )[b_range, idx]
+    )
+    return ranks

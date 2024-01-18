@@ -16,8 +16,8 @@ import torch
 import typing
 import numpy as np
 from tqdm import tqdm
-from ..data import TestDataLoader
-from ..module.model import Model
+from ..data import TestDataLoader, GraphDataLoader
+from ..module.model import Model, RGCN
 
 class Tester(object):
 
@@ -36,8 +36,8 @@ class Tester(object):
 
     def __init__(
         self,
-        model: Model | None = None,
-        data_loader: TestDataLoader | None = None,
+        model: Model | RGCN | None = None,
+        data_loader: TestDataLoader | GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
         use_gpu: bool = True,
         device: str = "cuda:0"):
@@ -45,9 +45,9 @@ class Tester(object):
         """创建 Tester 对象。
         
         :param model: KGE 模型
-        :type model: :py:class:`pybind11_ke.module.model.Model`
-        :param data_loader: TestDataLoader
-        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader`
+        :type model: :py:class:`pybind11_ke.module.model.Model` or :py:class:`pybind11_ke.module.model.RGCN`
+        :param data_loader: TestDataLoader or GraphDataLoader
+        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
         :param sampling_mode: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
         :type sampling_mode: str
         :param use_gpu: 是否使用 gpu
@@ -56,10 +56,10 @@ class Tester(object):
         :type device: str
         """
 
-        #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
-        self.model: Model | None = model
-        #: :py:class:`pybind11_ke.data.TestDataLoader`
-        self.data_loader: TestDataLoader | None = data_loader
+        #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model` or :py:class:`pybind11_ke.module.model.RGCN`
+        self.model: Model | RGCN | None = model
+        #: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
+        self.data_loader: TestDataLoader | GraphDataLoader | None = data_loader
         #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
         self.sampling_mode: str = sampling_mode
         #: 是否使用 gpu

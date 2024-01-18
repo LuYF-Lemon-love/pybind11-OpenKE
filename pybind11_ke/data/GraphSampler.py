@@ -13,6 +13,7 @@ GraphSampler - R-GCN 的数据采样器。
 
 import dgl
 import torch
+import typing
 import warnings
 import numpy as np
 from .RevSampler import RevSampler
@@ -78,14 +79,14 @@ class GraphSampler(RevSampler):
 
     def sampling(
         self,
-        pos_triples: list[tuple[int, int, int]]) -> dict[str, torch.Tensor]:
+        pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]:
 
         """``R-GCN`` :cite:`R-GCN` 的采样函数。
         
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]
         :returns: ``R-GCN`` :cite:`R-GCN` 的训练数据
-        :rtype: dict[str, torch.Tensor]
+        :rtype: dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]
         """
         
         batch_data = {}

@@ -27,6 +27,20 @@ pybind11_ke.config
     :template: classtemplate.rst
 
     Tester
+    RGCNTester
+
+链接预测函数
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: functiontemplate.rst
+
+    link_predict
+    head_predict
+    tail_predict
+    calc_ranks
 
 并行训练函数
 ----------------------------------

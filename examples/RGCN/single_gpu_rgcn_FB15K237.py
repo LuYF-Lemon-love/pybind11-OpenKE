@@ -55,8 +55,8 @@ rgcn = RGCN(
 # 损失函数
 # ----------------------------------------
 # 我们这里使用了 ``R-GCN`` :cite:`R-GCN` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.RGCNLoss`，
-# :py:class:`pybind11_ke.module.strategy.NegativeSampling` 对
-# :py:class:`pybind11_ke.module.loss.RGCNLoss` 进行了封装，加入权重衰减等额外项。
+# :py:class:`pybind11_ke.module.strategy.RGCNSampling` 对
+# :py:class:`pybind11_ke.module.loss.RGCNLoss` 进行了封装。
 
 # define the loss function
 model = RGCNSampling(
@@ -73,9 +73,9 @@ model = RGCNSampling(
 # -------------
 # pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
 # 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
-# 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
-# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.Tester` 使用
-# :py:class:`pybind11_ke.data.TestDataLoader` 作为数据采样器。
+# 也可以通过传入 :py:class:`pybind11_ke.config.RGCNTester`，
+# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.RGCNTester` 使用
+# :py:class:`pybind11_ke.data.GraphDataLoader` 作为数据采样器。
 
 # test the model
 tester = RGCNTester(model = rgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
