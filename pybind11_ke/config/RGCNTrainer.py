@@ -29,7 +29,7 @@ class RGCNTrainer(Trainer):
 	def __init__(
 		self,
 		model: RGCNSampling | None = None,
-		data_loader: DataLoader | None = None,
+		data_loader: typing.Union[DataLoader, None] = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
 		opt_method: str = "Adam",

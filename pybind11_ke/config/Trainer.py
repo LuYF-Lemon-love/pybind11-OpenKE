@@ -47,7 +47,7 @@ class Trainer(object):
 	def __init__(
 		self,
 		model: NegativeSampling | RGCNSampling | None = None,
-		data_loader: TrainDataLoader | DataLoader | None = None,
+		data_loader: typing.Union[TrainDataLoader, DataLoader, None] = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
 		opt_method: str = "Adam",
@@ -116,7 +116,7 @@ class Trainer(object):
 		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | RGCNSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
-		self.data_loader: TrainDataLoader | torch.utils.data.DataLoader | None = data_loader
+		self.data_loader: typing.Union[TrainDataLoader, DataLoader, None] = data_loader
 		#: epochs
 		self.epochs: int = epochs
 
