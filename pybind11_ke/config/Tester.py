@@ -17,8 +17,7 @@ import typing
 import numpy as np
 from tqdm import tqdm
 from ..data import TestDataLoader, GraphDataLoader
-from ..module.model import Model
-from ..module.model.RGCN import RGCN
+from ..module.model import Model, RGCN
 
 class Tester(object):
 

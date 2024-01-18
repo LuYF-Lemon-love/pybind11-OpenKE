@@ -18,7 +18,7 @@ import numpy as np
 from tqdm import tqdm
 from ..data import GraphDataLoader
 from .Tester import Tester
-from ..module.model import RGCN
+from ..module.model.RGCN import RGCN
 from typing_extensions import override
 
 class RGCNTester(Tester):
@@ -41,7 +41,7 @@ class RGCNTester(Tester):
         :type model: :py:class:`pybind11_ke.module.model.RGCN`
         :param data_loader: GraphDataLoader
         :type data_loader: :py:class:`pybind11_ke.data.GraphDataLoader`
-        :param sampling_mode: 评估验证集还是测试集：`link_test` or `link_valid`
+        :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
         :type sampling_mode: str
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
