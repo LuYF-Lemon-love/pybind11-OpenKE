@@ -17,6 +17,7 @@ pybind11_ke.config
     :template: classtemplate.rst
 
     Trainer
+    RGCNTrainer
 
 评估循环
 ----------------------------------

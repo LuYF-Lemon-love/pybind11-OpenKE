@@ -65,20 +65,17 @@ class RGCNTester(Tester):
     @override
     def to_var(
         self,
-        x: torch.Tensor,
-        use_gpu: bool) -> torch.Tensor:
+        x: torch.Tensor) -> torch.Tensor:
 
-        """根据 ``use_gpu`` 返回 ``x`` 的张量
+        """根据 :py:attr:`use_gpu` 返回 ``x`` 的张量
         
         :param x: 数据
         :type x: torch.Tensor
-        :param use_gpu: 是否使用 gpu
-        :type use_gpu: bool
         :returns: 张量
         :rtype: torch.Tensor
         """
 
-        if use_gpu:
+        if self.use_gpu:
             return x.to(self.device)
         else:
             return x
@@ -108,13 +105,13 @@ class RGCNTester(Tester):
         with torch.no_grad():
             for data in training_range:
                 ranks = link_predict({
-                    "positive_sample": self.to_var(data["positive_sample"], self.use_gpu),
-                    "head_label": self.to_var(data["head_label"], self.use_gpu),
-                    "tail_label": self.to_var(data["tail_label"], self.use_gpu),
-                    "graph": self.to_var(data["graph"], self.use_gpu),
-                    "rela": self.to_var(data["rela"], self.use_gpu),
-                    "norm": self.to_var(data["norm"], self.use_gpu),
-                    "entity": self.to_var(data["entity"], self.use_gpu)
+                    "positive_sample": self.to_var(data["positive_sample"]),
+                    "head_label": self.to_var(data["head_label"]),
+                    "tail_label": self.to_var(data["tail_label"]),
+                    "graph": self.to_var(data["graph"]),
+                    "rela": self.to_var(data["rela"]),
+                    "norm": self.to_var(data["norm"]),
+                    "entity": self.to_var(data["entity"])
                 }, self.model, prediction='all')
                 results["count"] += torch.numel(ranks)
                 results["mr"] += torch.sum(ranks).item()
