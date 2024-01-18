@@ -35,13 +35,13 @@ class GraphTestSampler(object):
         self.sampler: GraphSampler = sampler
         #: 实体的个数
         self.ent_tol: int = sampler.ent_tol
-        #: #: 训练集三元组
+        #: 训练集三元组
         self.triples: list = sampler.train_triples
 
         #: 知识图谱中所有 h-r 对对应的 t 集合
-        self.hr2t_all = ddict(set)
+        self.hr2t_all: ddict[set] = ddict(set)
         #: 知识图谱中所有 r-t 对对应的 h 集合
-        self.rt2h_all = ddict(set)
+        self.rt2h_all: ddict[set] = ddict(set)
 
         self.get_hr2t_rt2h_from_all()
 
@@ -67,7 +67,7 @@ class GraphTestSampler(object):
         :param data: 测试的正确三元组
         :type data: list[tuple[int, int, int]]
         :returns: ``R-GCN`` :cite:`R-GCN` 的测试数据
-		:rtype: dict[str, torch.Tensor]
+        :rtype: dict[str, torch.Tensor]
         """
         
         batch_data = {}

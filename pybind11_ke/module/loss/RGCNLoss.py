@@ -30,9 +30,9 @@ class RGCNLoss(Loss):
         regularization: float):
 
         """创建 RGCNLoss 对象。
-
-		:param model: 模型
-		:type model: RGCN
+        
+        :param model: 模型
+        :type model: RGCN
         :param regularization: 正则率
         :type regularization: float
 		"""
@@ -47,9 +47,9 @@ class RGCNLoss(Loss):
     def reg_loss(self) -> torch.Tensor:
 
         """获得正则部分的损失。
-		
-		:returns: 损失值
-		:rtype: torch.Tensor
+        
+        :returns: 损失值
+        :rtype: torch.Tensor
 		"""
 
         return torch.mean(self.model.Loss_emb.pow(2)) + torch.mean(self.model.rel_emb.pow(2))
@@ -61,13 +61,13 @@ class RGCNLoss(Loss):
 
         """计算 RGCNLoss 损失函数。定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-		
-		:param score: 模型的得分。
-		:type score: torch.Tensor
+        
+        :param score: 模型的得分。
+        :type score: torch.Tensor
         :param labels: 标签
-		:type labels: torch.Tensor
-		:returns: 损失值
-		:rtype: torch.Tensor
+        :type labels: torch.Tensor
+        :returns: 损失值
+        :rtype: torch.Tensor
 		"""
 
         loss = F.binary_cross_entropy_with_logits(score, labels)

@@ -85,7 +85,7 @@ class GraphSampler(RevSampler):
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]
         :returns: ``R-GCN`` :cite:`R-GCN` 的训练数据
-		:rtype: dict[str, torch.Tensor]
+        :rtype: dict[str, torch.Tensor]
         """
         
         batch_data = {}
@@ -128,7 +128,7 @@ class GraphSampler(RevSampler):
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]
         :returns: 三元组子集和原始的实体 ID
-		:rtype: tuple[numpy.ndarray, torch.Tensor]
+        :rtype: tuple[numpy.ndarray, torch.Tensor]
         """
 
         edges = np.random.choice(
@@ -156,7 +156,7 @@ class GraphSampler(RevSampler):
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]
         :returns: 负三元组
-		:rtype: numpy.ndarray
+        :rtype: numpy.ndarray
         """
 
         neg_random = np.random.choice(
@@ -185,7 +185,7 @@ class GraphSampler(RevSampler):
         :param power: 幂
         :type power: int
         :returns: 子图、关系、边的归一化系数
-		:rtype: tuple[dgl.DGLGraph, torch.Tensor, torch.Tensor]
+        :rtype: tuple[dgl.DGLGraph, torch.Tensor, torch.Tensor]
         """
 
         head, rela, tail = triples[0], triples[1], triples[2]
@@ -209,7 +209,7 @@ class GraphSampler(RevSampler):
         :param power: 幂
         :type power: int
         :returns: 节点的归一化系数
-		:rtype: torch.Tensor
+        :rtype: torch.Tensor
         """
 
         graph = graph.local_var()
@@ -230,7 +230,7 @@ class GraphSampler(RevSampler):
         :param node_norm: 节点的归一化系数
         :type node_norm: torch.Tensor
         :returns: 边的归一化系数
-		:rtype: torch.Tensor
+        :rtype: torch.Tensor
         """
         
         graph = graph.local_var()

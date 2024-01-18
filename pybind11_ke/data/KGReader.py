@@ -85,12 +85,12 @@ class KGReader:
         #: 测试集三元组
         self.test_triples: list[tuple[int, int, int]] = []
         #: 知识图谱所有三元组
-        self.all_true_triples: set(tuple[int, int, int]) = set()
+        self.all_true_triples: set[tuple[int, int, int]] = set()
 
         #: 训练集中所有 h-r 对对应的 t 集合
-        self.hr2t_train: ddict(set) = ddict(set)
+        self.hr2t_train: ddict[set] = ddict(set)
         #: 训练集中所有 r-t 对对应的 h 集合
-        self.rt2h_train: ddict(set) = ddict(set)
+        self.rt2h_train: ddict[set] = ddict(set)
 
         self.get_id()
         self.get_triples_id()

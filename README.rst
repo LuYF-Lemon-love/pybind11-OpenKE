@@ -81,7 +81,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 支持的知识图谱嵌入模型：
 
 .. list-table::
-    :widths: 10 50
+    :widths: 20 50
     :header-rows: 1
 
     * - 类型

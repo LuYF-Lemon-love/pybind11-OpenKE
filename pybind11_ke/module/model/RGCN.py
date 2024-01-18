@@ -87,8 +87,8 @@ class RGCN(Model):
         
         :param idx: 数据。
 		:type idx: int
-		:returns: 图神经网络层
-		:rtype: RelGraphConv
+        :returns: 图神经网络层
+        :rtype: RelGraphConv
         """
 
         act = F.relu if idx < self.num_layers - 1 else None
@@ -108,21 +108,21 @@ class RGCN(Model):
         """
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-		
-		:param graph: 子图
-		:type graph: dgl.DGLGraph
+        
+        :param graph: 子图
+        :type graph: dgl.DGLGraph
         :param ent: 子图的实体
-		:type ent: torch.Tensor
+        :type ent: torch.Tensor
         :param rel: 子图的关系
-		:type rel: torch.Tensor
+        :type rel: torch.Tensor
         :param norm: 关系的归一化系数
-		:type norm: torch.Tensor
+        :type norm: torch.Tensor
         :param triples: 三元组
-		:type triples: torch,Tensor
+        :type triples: torch,Tensor
         :param mode: 模式
-		:type mode: str
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
+        :type mode: str
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
 		"""
         
         embedding = self.ent_emb(ent.squeeze())
@@ -142,15 +142,15 @@ class RGCN(Model):
 
         """
 		获得三元组对应头实体、关系和尾实体的嵌入向量。
-		
-		:param embedding: 经过图神经网络更新的实体嵌入向量
-		:type embedding: torch.Tensor
+        
+        :param embedding: 经过图神经网络更新的实体嵌入向量
+        :type embedding: torch.Tensor
         :param triples: 训练的三元组
-		:type triples: torch.Tensor
+        :type triples: torch.Tensor
         :param mode: 模式
-		:type mode: str
-		:returns: 头实体、关系和尾实体的嵌入向量
-		:rtype: torch.Tensor
+        :type mode: str
+        :returns: 头实体、关系和尾实体的嵌入向量
+        :rtype: torch.Tensor
 		"""
 
         rela_emb = self.rel_emb[triples[:, 1]].unsqueeze(1)  # [bs, 1, dim]
@@ -174,15 +174,15 @@ class RGCN(Model):
 
         """
 		计算 DistMult 的评分函数。
-		
-		:param head_emb: 头实体嵌入向量
-		:type head_emb: torch.Tensor
+        
+        :param head_emb: 头实体嵌入向量
+        :type head_emb: torch.Tensor
         :param relation_emb: 关系嵌入向量
-		:type relation_emb: torch.Tensor
+        :type relation_emb: torch.Tensor
         :param tail_emb: 尾实体嵌入向量
-		:type tail_emb: torch.Tensor
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
+        :type tail_emb: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
 		"""
 
         if mode == 'head-batch':
@@ -203,8 +203,10 @@ class RGCN(Model):
 		
 		:param data: 数据。
 		:type data: dict[str, torch.Tensor]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
+        :param mode: 模式
+        :type mode: str
+        :returns: 三元组的得分
+        :rtype: numpy.ndarray
 		"""
 
         triples    = data['positive_sample']
