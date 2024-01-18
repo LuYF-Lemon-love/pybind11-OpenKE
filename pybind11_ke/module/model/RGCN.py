@@ -88,7 +88,7 @@ class RGCN(Model):
         :param idx: 数据。
         :type idx: int
         :returns: 图神经网络层
-        :rtype: dgl.nn.pytorch.conv.RelGraphConv
+        :rtype: py:class:`dgl.nn.pytorch.conv.RelGraphConv`
         """
 
         act = F.relu if idx < self.num_layers - 1 else None
