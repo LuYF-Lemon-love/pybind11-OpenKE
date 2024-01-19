@@ -459,7 +459,7 @@ CompGCN
 
 其中 :math:`S_{(h,r,t)}` 表示知识图谱的所有三元组，:math:`R^{'} = R \cup R_{inv} \cup T`，:math:`R_{inv} = \{r^{-1} | r \in R \}` 表示逆关系，:math:`T` 表示自循环关系。
 
-使用了减法（来自于 ``TransE`` :cite:`TransE` ）、乘法（来自于 ``DistMult`` :cite:`DistMult` ）、循环相关（来自于 ``HolE``）三种知识图谱嵌入组合操作将关系融合到尾实体的信息中，进而使用图神经网络进行编码：
+使用了减法（来自于 ``TransE`` :cite:`TransE` ）、乘法（来自于 ``DistMult`` :cite:`DistMult` ）、循环相关（来自于 ``HolE`` :cite:`HolE` ）三种知识图谱嵌入组合操作将关系融合到尾实体的信息中，进而使用图神经网络进行编码：
 
 .. math::
 
