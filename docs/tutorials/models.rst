@@ -442,4 +442,85 @@ R-GCN 模型中第 :math:`(l+1)` 层的节点 :math:`i` 的隐藏表示计算如
 
 链接预测时，R-GCN 作为编码器输出实体的表示，关系的表示来自于 ``DistMult`` 模型。损失函数为 :py:class:`torch.nn.BCEWithLogitsLoss`。
 
-pybind11-OpenKE 的 DistMult 实现传送门：:py:class:`pybind11_ke.module.model.RGCN`
+pybind11-OpenKE 的 RGCN 实现传送门：:py:class:`pybind11_ke.module.model.RGCN`
+
+.. _compgcn:
+
+CompGCN
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``CompGCN`` :cite:`CompGCN` 发表于 ``2020`` 年，这是一种在图卷积网络中整合多关系信息的新框架，它利用知识图谱嵌入技术中的各种组合操作，将实体和关系共同嵌入到图中。
+
+通过增加反向边（逆关系）对知识图谱的有向边（关系）进行扩展，使得有向边的信息可以双向流动：
+
+.. math::
+
+    S^{'}_{(h,r,t)}=S_{(h,r,t)} \cup \{ (t,r^{-1},h) | (h,r,t) \in S_{(h,r,t)} \} \cup \{ (h, T, h) | h \in E \}~~~~~~~~~~(1)\\
+
+其中 :math:`S_{(h,r,t)}` 表示知识图谱的所有三元组，:math:`R^{'} = R \cup R_{inv} \cup T`，:math:`R_{inv} = \{r^{-1} | r \in R \}` 表示逆关系，:math:`T` 表示自循环关系。
+
+使用了减法（来自于 ``TransE`` :cite:`TransE` ）、乘法（来自于 ``DistMult`` :cite:`DistMult` ）、循环相关（来自于 ``HolE``）三种知识图谱嵌入组合操作将关系融合到尾实体的信息中，进而使用图神经网络进行编码：
+
+.. math::
+
+    t = \phi\left( h, r \right)~~~~~~~~~~(2)\\
+
+:math:`h, r, t` 分表示头实体，关系，尾实体的嵌入向量，:math:`\phi : \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}^d` 表示组合操作计算方式如下：
+
+.. math::
+
+    \phi\left( h, r \right) = \begin{cases}
+                            h-r, & \text{Subtraction (Sub)} \\
+                            \sum_{i=1}^{n}h_ir_i, & \text{Multiplication (Mult)} \\
+                            h \star r, & \text{Circular-correlation (Corr)}
+                            \end{cases}~~~~~~~~~~(3)\\
+
+图神经网络尾实体隐藏表示计算如下：
+
+.. math::
+
+    t = \sigma\left( \sum_{(h,r) \in N_t} W_{\lambda}\phi\left( h, r \right)\right)~~~~~~~~~~(4)\\
+
+其中 :math:`N_t` 表示尾实体 :math:`t` 的头实体关系集合。:math:`W_{\lambda}` 是一个特定于关系类型的参数（原始的关系，逆关系，自循环关系）。
+
+.. math::
+
+    W_{\lambda} = \begin{cases}
+                W_O, & r \in R \\
+                W_I, & r \in R_{inv} \\
+                W_S, & r = T
+                \end{cases}~~~~~~~~~~(5)\\
+
+在实体的嵌入向量更新完后，需要对关系嵌入向量进行更新：
+
+.. math::
+
+    r^{'} = W_{r}r~~~~~~~~~~(6)\\
+
+:math:`W_r` 是线性变换矩阵，:math:`r^{'}` 表示更新后的关系嵌入向量。
+
+受 ``R-GCN`` :cite:`R-GCN` 启发，作者对关系嵌入向量进行了正则化：
+
+.. math::
+
+    r = \sum_{b=1}^B a_{br}v_b~~~~~~~~~~(7)\\
+
+其中，基向量为 :math:`v_b`，:math:`B` 是基向量的个数，:math:`a_{br}` 是特定于关系和基向量的可学习的标量权重。仅仅第一层使用上述的正则化，其他层的关系向量来源于公式 6 更新后的关系向量。
+
+因此，图神经网络的每一层的更新公式如下：
+
+.. math::
+
+    t^{l+1} = \sigma\left( \sum_{(h,r) \in N_t} W^{l}_{\lambda}\phi\left( h^{l}, r^{l} \right)\right)~~~~~~~~~~(8)\\
+
+设 :math:`t^{l+1}` 表示在 :math:`l` 层之后获得的尾实体 :math:`t` 的表示。相似的，:math:`r^{l+1}` 表示 :math:`l` 层之后关系 :math:`r` 的表示：
+
+.. math::
+
+    r^{l+1} = W^{l}_{r}r^{l}~~~~~~~~~~(9)\\
+
+链接预测时，``CompGCN`` :cite:`CompGCN` 也是作为编码器输出实体和关系的表示，然后用传统的知识图谱嵌入模型进行解码，原论文使用如下 3 种知识图谱嵌入模型作为解码器：``TransE`` :cite:`TransE`，``DistMult`` :cite:`DistMult` 和 ``ConvE``。其中使用循环相关操作符（Circular-correlation (Corr)） 和 ``ConvE`` 作为解码器的组合在论文中取得了最好的效果。
+
+对于训练链接预测模型，使用带有标签平滑的标准二元交叉熵损失，损失函数为 :py:class:`torch.nn.BCELoss`。
+
+pybind11-OpenKE 的 CompGCN 实现传送门：:py:class:`pybind11_ke.module.model.CompGCN`

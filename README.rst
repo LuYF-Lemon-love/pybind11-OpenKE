@@ -91,4 +91,4 @@ pybind11-OpenKE — 知识图谱嵌入工具包
     * - 语义匹配模型
       - ``RESCAL`` :cite:`RESCAL`, ``DistMult`` :cite:`DistMult`, ``HolE`` :cite:`HolE`, ``ComplEx`` :cite:`ComplEx`, ``Analogy`` :cite:`ANALOGY`, ``SimplE`` :cite:`SimplE`
     * - 图神经网络模型
-      - ``R-GCN`` :cite:`R-GCN`
+      - ``R-GCN`` :cite:`R-GCN`, ``CompGCN`` :cite:`CompGCN`

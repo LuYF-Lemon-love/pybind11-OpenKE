@@ -24,7 +24,7 @@ dataloader = GraphDataLoader(
 	in_path = "../../benchmarks/FB15K237/",
 	batch_size = 60000,
 	neg_ent = 10,
-	test_batch_size = 300,
+	test_batch_size = 100,
 	num_workers = 16
 )
 
