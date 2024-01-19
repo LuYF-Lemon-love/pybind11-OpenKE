@@ -151,7 +151,7 @@ class KGReader:
         for r, t in self.rt2h_train:
             self.rt2h_train[(r, t)] = np.array(list(self.rt2h_train[(r, t)]))
             
-    def get_hr_trian(self):
+    def get_hr_train(self):
         
         self.t_triples = self.train_triples
         self.train_triples = [(hr, list(t)) for (hr,t) in self.hr2t_train.items()]

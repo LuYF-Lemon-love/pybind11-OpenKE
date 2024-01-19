@@ -31,7 +31,9 @@ class GraphDataLoader:
         batch_size: int | None = None,
         neg_ent: int = 1,
         test_batch_size: int | None = None,
-        num_workers: int | None = None):
+        num_workers: int | None = None,
+        train_sampler = GraphSampler,
+        test_sampler = GraphTestSampler):
 
         """创建 GraphDataLoader 对象。
 
@@ -79,7 +81,7 @@ class GraphDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: GraphSampler = GraphSampler(
+        self.train_sampler: GraphSampler = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
@@ -90,7 +92,7 @@ class GraphDataLoader:
             neg_ent=self.neg_ent
         )
         #: 测试数据采样器
-        self.test_sampler: GraphTestSampler = GraphTestSampler(
+        self.test_sampler: GraphTestSampler = test_sampler(
             sampler=self.train_sampler
         )
 

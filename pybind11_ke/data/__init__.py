@@ -19,7 +19,9 @@ from .TestDataLoader import TestDataSampler, TestDataLoader, get_test_data_loade
 from .KGReader import KGReader
 from .RevSampler import RevSampler
 from .GraphSampler import GraphSampler
+from .CompGCNSampler import CompGCNSampler
 from .GraphTestSampler import GraphTestSampler
+from .CompGCNTestSampler import CompGCNTestSampler
 from .GraphDataLoader import GraphDataLoader
 
 __all__ = [
@@ -32,6 +34,8 @@ __all__ = [
 	'KGReader',
 	'RevSampler',
 	'GraphSampler',
+	'CompGCNSampler',
 	'GraphTestSampler',
+	'CompGCNTestSampler',
 	'GraphDataLoader'
 ]

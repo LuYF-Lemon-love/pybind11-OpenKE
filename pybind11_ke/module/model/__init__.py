@@ -26,6 +26,7 @@ from .SimplE import SimplE
 from .RotatE import RotatE
 from .HolE import HolE
 from .RGCN import RGCN
+from .CompGCN import CompGCN
 
 __all__ = [
     'Model',
@@ -41,5 +42,6 @@ __all__ = [
     'SimplE',
     'RotatE',
     'HolE',
-    'RGCN'
+    'RGCN',
+    'CompGCN'
 ]

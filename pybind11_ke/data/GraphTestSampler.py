@@ -39,6 +39,8 @@ class GraphTestSampler(object):
         self.ent_tol: int = sampler.ent_tol
         #: 训练集三元组
         self.triples: list = sampler.train_triples
+        #: 幂
+        self.power = -1
 
         #: 知识图谱中所有 h-r 对对应的 t 集合
         self.hr2t_all: ddict[set] = ddict(set)
@@ -83,8 +85,7 @@ class GraphTestSampler(object):
         batch_data["head_label"] = head_label
         batch_data["tail_label"] = tail_label
         
-        head, rela, tail = np.array(self.triples).transpose()
-        graph, rela, norm = self.sampler.build_graph(self.ent_tol, (head, rela, tail), -1)
+        graph, rela, norm = self.sampler.build_graph(self.ent_tol, np.array(self.triples).transpose(), self.power)
         batch_data["graph"]  = graph
         batch_data["rela"]   = rela
         batch_data["norm"]   = norm

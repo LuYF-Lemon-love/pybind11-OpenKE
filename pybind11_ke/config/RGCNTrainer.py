@@ -127,14 +127,8 @@ class RGCNTrainer(Trainer):
 		"""
 
 		self.optimizer.zero_grad()
-		loss = self.model({
-			'graph': self.to_var(data['graph']),
-			'triples': self.to_var(data['triples']),
-			'label': self.to_var(data['label']),
-			'entity': self.to_var(data['entity']),
-			'relation': self.to_var(data['relation']),
-			'norm': self.to_var(data['norm'])
-		})
+		data = {key : self.to_var(value) for key, value in data.items()}
+		loss = self.model(data)
 		loss.backward()
 		self.optimizer.step()		 
 		return loss.item()

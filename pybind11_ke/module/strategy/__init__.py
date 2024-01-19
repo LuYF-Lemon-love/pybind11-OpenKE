@@ -16,10 +16,12 @@ from __future__ import print_function
 from .Strategy import Strategy
 from .NegativeSampling import NegativeSampling, get_negative_sampling_hpo_config
 from .RGCNSampling import RGCNSampling
+from .CompGCNSampling import CompGCNSampling
 
 __all__ = [
     'Strategy',
     'NegativeSampling',
     'get_negative_sampling_hpo_config',
-    'RGCNSampling'
+    'RGCNSampling',
+    'CompGCNSampling'
 ]

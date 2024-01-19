@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "CompGCN 介绍页"
+git commit -m "增加 CompGCN 实现和示例"
 git push

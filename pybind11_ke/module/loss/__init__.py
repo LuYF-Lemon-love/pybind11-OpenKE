@@ -18,6 +18,7 @@ from .MarginLoss import MarginLoss, get_margin_loss_hpo_config
 from .SoftplusLoss import SoftplusLoss
 from .SigmoidLoss import SigmoidLoss
 from .RGCNLoss import RGCNLoss
+from .Cross_Entropy_Loss import Cross_Entropy_Loss
 
 __all__ = [
     'Loss',
@@ -25,5 +26,6 @@ __all__ = [
     'get_margin_loss_hpo_config',
     'SoftplusLoss',
     'SigmoidLoss',
-    'RGCNLoss'
+    'RGCNLoss',
+    'Cross_Entropy_Loss'
 ]

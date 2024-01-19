@@ -32,6 +32,7 @@ class RGCNTester(Tester):
         model: RGCN | None = None,
         data_loader: GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
+        prediction = "all",
         use_gpu: bool = True,
         device: str = "cuda:0"):
 
@@ -56,6 +57,8 @@ class RGCNTester(Tester):
             use_gpu=use_gpu,
             device=device
         )
+
+        self.prediction = prediction
 
         #: 验证数据加载器。
         self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader()
@@ -104,15 +107,8 @@ class RGCNTester(Tester):
         )
         with torch.no_grad():
             for data in training_range:
-                ranks = link_predict({
-                    "positive_sample": self.to_var(data["positive_sample"]),
-                    "head_label": self.to_var(data["head_label"]),
-                    "tail_label": self.to_var(data["tail_label"]),
-                    "graph": self.to_var(data["graph"]),
-                    "rela": self.to_var(data["rela"]),
-                    "norm": self.to_var(data["norm"]),
-                    "entity": self.to_var(data["entity"])
-                }, self.model, prediction='all')
+                data = {key : self.to_var(value) for key, value in data.items()}
+                ranks = link_predict(data, self.model, prediction=self.prediction)
                 results["count"] += torch.numel(ranks)
                 results["mr"] += torch.sum(ranks).item()
                 results["mrr"] += torch.sum(1.0 / ranks).item()
