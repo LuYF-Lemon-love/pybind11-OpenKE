@@ -21,7 +21,7 @@ from .RGCNTester import RGCNTester
 import torch.optim as optim
 from ..utils.Timer import Timer
 from ..module.model import Model
-from ..data import TrainDataLoader
+from ..data import TrainDataLoader, TestDataLoader
 from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
 from ..module.strategy import NegativeSampling, RGCNSampling
@@ -294,7 +294,7 @@ class Trainer(object):
 		elif sampling_mode == "link_valid":
 			mode = "val"
 
-		if isinstance(self.tester, Tester) and self.tester.data_loader.type_constrain:
+		if isinstance(self.tester.data_loader, TestDataLoader) and self.tester.data_loader.type_constrain:
 			mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
 			if self.use_wandb:
 				if sampling_mode == "link_valid":
