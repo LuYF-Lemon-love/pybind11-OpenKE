@@ -1,6 +1,6 @@
 # coding:utf-8
 #
-# pybind11_ke/config/RGCNTester.py
+# pybind11_ke/config/GraphTester.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2023
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 18, 2023
@@ -8,7 +8,7 @@
 # 该脚本定义了 R-GCN 验证模型类.
 
 """
-RGCNTester - R-GCN 验证模型类，内部使用 ``tqmn`` 实现进度条。
+GraphTester - R-GCN 验证模型类，内部使用 ``tqmn`` 实现进度条。
 """
 
 import dgl
@@ -21,7 +21,7 @@ from .Tester import Tester
 from ..module.model.RGCN import RGCN
 from typing_extensions import override
 
-class RGCNTester(Tester):
+class GraphTester(Tester):
 
     """
     主要用于 ``R-GCN`` :cite:`R-GCN` 模型的评估。
@@ -32,7 +32,7 @@ class RGCNTester(Tester):
         model: RGCN | None = None,
         data_loader: GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
-        prediction = "all",
+        prediction: str = "all",
         use_gpu: bool = True,
         device: str = "cuda:0"):
 
@@ -44,13 +44,15 @@ class RGCNTester(Tester):
         :type data_loader: :py:class:`pybind11_ke.data.GraphDataLoader`
         :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
         :type sampling_mode: str
+        :param prediction: 链接预测模式: 'all'、'head'、'tail'
+        :type prediction: str
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
         :param device: 使用哪个 gpu
         :type device: str
         """
 
-        super(RGCNTester, self).__init__(
+        super(GraphTester, self).__init__(
             model=model,
             data_loader=data_loader,
             sampling_mode=sampling_mode,
@@ -58,7 +60,8 @@ class RGCNTester(Tester):
             device=device
         )
 
-        self.prediction = prediction
+        #: 链接预测模式: 'all'、'head'、'tail'
+        self.prediction: str = prediction
 
         #: 验证数据加载器。
         self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader()

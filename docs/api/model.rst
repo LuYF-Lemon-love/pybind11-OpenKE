@@ -8,6 +8,16 @@ pybind11_ke.module.model
     :local:
     :backlinks: top
 
+基础模块
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: classtemplate.rst
+    
+    CompGCNCov
+
 模型基类
 ----------------------------------
 
@@ -56,6 +66,7 @@ pybind11_ke.module.model
     :template: classtemplate.rst
     
     RGCN
+    CompGCN
 
 超参数优化默认搜索范围
 ----------------------------------

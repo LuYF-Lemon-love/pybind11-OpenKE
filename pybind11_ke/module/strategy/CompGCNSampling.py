@@ -1,52 +1,58 @@
 # coding:utf-8
 #
-# pybind11_ke/module/strategy/RGCNSampling.py
+# pybind11_ke/module/strategy/CompGCNSampling.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 18, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 20, 2023
 #
-# 该脚本定义了 R-GCN 模型的训练策略.
+# 该脚本定义了 CompGCN 模型的训练策略.
 
 """
-NegativeSampling - 训练策略类，包含损失函数。
+CompGCNSampling - 训练策略类，包含损失函数。
 """
 
 import dgl
 import torch
 import typing
 from ..loss import Loss
-from ..model import Model
+from ..model import CompGCN
 from .Strategy import Strategy
 
 class CompGCNSampling(Strategy):
 
 	"""
-	将模型和损失函数封装到一起，方便模型训练，用于 ``R-GCN`` :cite:`R-GCN`。
+	将模型和损失函数封装到一起，方便模型训练，用于 ``CompGCN`` :cite:`CompGCN`。
 	"""
 
 	def __init__(
 		self,
-		model: Model = None,
+		model: CompGCN = None,
 		loss: Loss = None,
-		smoothing = 0.1,
-		ent_tol = None):
+		smoothing: float = 0.1,
+		ent_tol: int = None):
 		
-		"""创建 RGCNSampling 对象。
+		"""创建 CompGCNSampling 对象。
 		
-		:param model: R-GCN 模型
-		:type model: :py:class:`pybind11_ke.module.model.RGCN`
+		:param model: CompGCN 模型
+		:type model: :py:class:`pybind11_ke.module.model.CompGCN`
 		:param loss: 损失函数。
 		:type loss: :py:class:`pybind11_ke.module.loss.Loss`
+		:param smoothing: smoothing
+		:type smoothing: float
+		:param ent_tol: 实体个数
+		:type ent_tol: int
 		"""
 
 		super(CompGCNSampling, self).__init__()
 
-		#: R-GCN 模型，即 :py:class:`pybind11_ke.module.model.RGCN`
-		self.model: Model = model
+		#: CompGCN 模型，即 :py:class:`pybind11_ke.module.model.CompGCN`
+		self.model: CompGCN = model
 		#: 损失函数，即 :py:class:`pybind11_ke.module.loss.Loss`
 		self.loss: Loss = loss
-		self.smoothing = smoothing
-		self.ent_tol = ent_tol
+		#: smoothing
+		self.smoothing: float = smoothing
+		#: 实体个数
+		self.ent_tol: int = ent_tol
 
 	def forward(
 		self,
@@ -62,10 +68,10 @@ class CompGCNSampling(Strategy):
 		"""
 		
 		graph    = data["graph"]
-		sample   = data["sample"]
-		label    = data["label"]
 		relation = data['relation']
 		norm     = data['norm']
+		sample   = data["sample"]
+		label    = data["label"]
 		score = self.model(graph, relation, norm, sample)
 		label = (1.0 - self.smoothing) * label + (1.0 / self.ent_tol)
 		loss  = self.loss(score,  label)

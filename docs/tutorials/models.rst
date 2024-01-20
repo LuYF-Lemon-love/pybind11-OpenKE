@@ -414,9 +414,6 @@ R-GCN 模型中第 :math:`(l+1)` 层的节点 :math:`i` 的隐藏表示计算如
 
 其中 :math:`N_i^r` 表示关系 :math:`r \in R` 下节点 :math:`i` 的邻居索引集合。:math:`c_{i,r}` 是归一化常数，R-GCN 论文使用 :math:`c_{i,r}=|N_i^r|`。为了确保第 :math:`l + 1`` 层节点的表示能够获悉第 :math:`l` 层的相应表示，作者为数据中的每个节点添加一个特殊关系类型（self-connection），:math:`W_0` 是自循环权重。
 
-.. figure:: /_static/images/tutorials/RGCN01.png
-    :align: center
-
 为了防止过拟合，作者提出了两种方法正则化 R-GCN 层的权重：
 
 1. 基础正则化（The basis regularization）分解 :math:`W_r` 为：
@@ -436,9 +433,6 @@ R-GCN 模型中第 :math:`(l+1)` 层的节点 :math:`i` 的隐藏表示计算如
 :math:`Q_{rb}^{(l)} \in \mathbb{R}^{(d^{(l+1)}/B) \times (d^{(l)}/B)}`，:math:`W_r^{(l)}` 是块对角矩阵：:math:`\operatorname{diag}(Q_{r1}^{(l)},...,Q_{rB}^{(l)})`。
 
 基础正则化（3）可以看作是不同关系类型之间有效权重共享的一种形式，而块对角线分解正则化（4）可以看作对每个关系类型的权重矩阵的稀疏性约束。
-
-.. figure:: /_static/images/tutorials/RGCN02.png
-    :align: center
 
 链接预测时，R-GCN 作为编码器输出实体的表示，关系的表示来自于 ``DistMult`` 模型。损失函数为 :py:class:`torch.nn.BCEWithLogitsLoss`。
 

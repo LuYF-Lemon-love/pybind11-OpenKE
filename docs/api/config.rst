@@ -17,7 +17,7 @@ pybind11_ke.config
     :template: classtemplate.rst
 
     Trainer
-    RGCNTrainer
+    GraphTrainer
 
 评估循环
 ----------------------------------
@@ -28,7 +28,7 @@ pybind11_ke.config
     :template: classtemplate.rst
 
     Tester
-    RGCNTester
+    GraphTester
 
 链接预测函数
 ----------------------------------

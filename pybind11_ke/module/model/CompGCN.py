@@ -7,22 +7,25 @@
 #
 # 该脚本定义了 CompGCN 类.
 
+"""
+CompGCN - 这是一种在图卷积网络中整合多关系信息的新框架，它利用知识图谱嵌入技术中的各种组合操作，将实体和关系共同嵌入到图中。
+"""
+
 import dgl
 import torch
+import typing
 from torch import nn
 import dgl.function as fn
+from .Model import Model
 import torch.nn.functional as F
+from typing_extensions import override
 
-class CompGCN(nn.Module):
+class CompGCN(Model):
 
-    """`Composition-based multi-relational graph convolutional networks`_ (CompGCN), 
-        which jointly embeds both nodes and relations in a relational graph.
+    """
+    ``CompGCN`` :cite:`CompGCN` 发表于 ``2020`` 年，这是一种在图卷积网络中整合多关系信息的新框架，它利用知识图谱嵌入技术中的各种组合操作，将实体和关系共同嵌入到图中。
 
-    Attributes:
-        args: Model configuration parameters.
-    
-    .. _Composition-based multi-relational graph convolutional networks: 
-        https://arxiv.org/pdf/1911.03082.pdf
+    正三元组的评分函数的值越大越好，如果想获得更详细的信息请访问 :ref:`CompGCN <compgcn>`。
     """
 
     def __init__(
@@ -30,174 +33,219 @@ class CompGCN(nn.Module):
         ent_tot: int,
         rel_tot: int,
         dim: int,
-        opn = 'mult',
-        inp_drop = 0.2,
-        hid_drop = 0.3,
-        fet_drop = 0.2,
-        out_dim = 200,
-        decoder_model = 'ConvE'):
-        super(CompGCN, self).__init__()
-        self.ent_tot: int = ent_tot
-        self.rel_tot: int = rel_tot
+        opn: str = 'mult',
+        fet_drop: float = 0.2,
+        hid_drop: float = 0.3,
+        out_dim: int = 200,
+        decoder_model: str = 'ConvE'):
+
+        """创建 RGCN 对象。
+
+		:param ent_tot: 实体的个数
+		:type ent_tot: int
+		:param rel_tot: 关系的个数
+		:type rel_tot: int
+		:param dim: 实体和关系嵌入向量的维度
+		:type dim: int
+		:param opn: 组成运算符：'mult'、'sub'、'corr'
+		:type opn: str
+        :param fet_drop: 用于 'ConvE' 解码器，用于卷积特征的 dropout
+        :type fet_drop: float
+        :param hid_drop: 用于 'ConvE' 解码器，用于隐藏层的 dropout
+        :type hid_drop: float
+        :param out_dim: 用于 'ConvE' 解码器，最后输出的嵌入向量维度
+        :type out_dim: int
+        :param decoder_model: 用什么得分函数作为解码器: 'ConvE'、'DistMult'
+        :type decoder_model: str
+		"""
+
+        super(CompGCN, self).__init__(ent_tot, rel_tot)
+
+        #: 实体和关系嵌入向量的维度
         self.dim: int = dim
-        self.opn = opn
-        self.inp_drop = inp_drop
-        self.hid_drop = hid_drop
-        self.fet_drop = fet_drop
-        self.out_dim = out_dim
+        #: 组成运算符：'mult'、'sub'、'corr'
+        self.opn: str = opn
+        #: 用于 'ConvE' 解码器，最后输出的嵌入向量维度
+        self.out_dim: int = out_dim
+        #: 用什么得分函数作为解码器: 'ConvE'、'DistMult'
         self.decoder_model = decoder_model
-        self.ent_emb   = None
-        self.rel_emb   = None 
-        self.GraphCov  = None  
-
-        self.init_model()
-
-    def init_model(self):
-
-        """Initialize the CompGCN model and embeddings 
-
-        Args:
-            ent_emb: Entity embedding, shape:[num_ent, emb_dim].
-            rel_emb: Relation_embedding, shape:[num_rel, emb_dim].
-            GraphCov: The comp graph convolution layers.
-            conv1: The convolution layer.
-            fc: The full connection layer.
-            bn0, bn1, bn2: The batch Normalization layer.
-            inp_drop, hid_drop, feg_drop: The dropout layer.
-        """
+        self.GraphCov  = None
 
         #------------------------------CompGCN--------------------------------------------------------------------
-        self.ent_emb = nn.Parameter(torch.Tensor(self.ent_tot, self.dim))
-        self.rel_emb = nn.Parameter(torch.Tensor(self.rel_tot, self.dim))
+        #: 根据实体个数，创建的实体嵌入
+        self.ent_emb: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor(self.ent_tot, self.dim))
+        #: 根据关系个数，创建的关系嵌入
+        self.rel_emb: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor(self.rel_tot, self.dim))
 
         nn.init.xavier_normal_(self.ent_emb, gain=nn.init.calculate_gain('relu'))
         nn.init.xavier_normal_(self.rel_emb, gain=nn.init.calculate_gain('relu'))
 
-        self.GraphCov = CompGCNCov(self.dim, self.dim * 2, torch.tanh, \
-                                    bias = 'False', drop_rate = 0.1, opn = self.opn)
-        
-        self.bias = nn.Parameter(torch.zeros(self.ent_tot))
-        self.drop = nn.Dropout(0.3)
+        #: CompGCNCov
+        self.GraphCov: CompGCNCov = CompGCNCov(self.dim, self.dim * 2, torch.tanh, bias = 'False', drop_rate = 0.1, opn = self.opn)
+        #: 用于 :py:attr:`GraphCov` 输出结果
+        self.drop: torch.nn.Dropout = nn.Dropout(0.3)
+        #: 最后计算得分时的偏置
+        self.bias: torch.nn.parameter.Parameter = nn.Parameter(torch.zeros(self.ent_tot))
         #-----------------------------ConvE-----------------------------------------------------------------------
-        self.emb_ent = torch.nn.Embedding(self.ent_tot, self.dim*2)
-        self.inp_drop = torch.nn.Dropout(self.inp_drop)
-        self.hid_drop = torch.nn.Dropout(self.hid_drop)
-        self.feg_drop = torch.nn.Dropout2d(self.fet_drop)
+        #: 用于 'ConvE' 解码器，头实体嵌入向量和关系嵌入向量的 BatchNorm
+        self.bn0: torch.nn.BatchNorm2d = torch.nn.BatchNorm2d(1)
+        #: 用于 'ConvE' 解码器，卷积层
+        self.conv1: torch.nn.Conv2d = torch.nn.Conv2d(1, 200, (7, 7), 1, 0, bias=False)
+        #: 用于 'ConvE' 解码器，卷积特征的 BatchNorm
+        self.bn1: torch.nn.Conv2d = torch.nn.BatchNorm2d(200)
+        #: 用于 'ConvE' 解码器，卷积特征的 Dropout
+        self.fet_drop: torch.nn.Dropout = torch.nn.Dropout2d(fet_drop)
+        #: 用于 'ConvE' 解码器，隐藏层层
+        self.fc: torch.nn.Linear = torch.nn.Linear(39200, self.out_dim)
+        #: 用于 'ConvE' 解码器，隐藏层的 Dropout
+        self.hid_drop: torch.nn.Dropout = torch.nn.Dropout(hid_drop)
+        #: 用于 'ConvE' 解码器，隐藏层的 BatchNorm
+        self.bn2: torch.nn.BatchNorm1d = torch.nn.BatchNorm1d(200)
+        #-----------------------------DistMult-----------------------------------------------------------------------
+        #: 用于 DistMult 得分函数
+        self.emb_ent: torch.nn.Embedding = torch.nn.Embedding(self.ent_tot, self.dim*2)
 
-        self.conv1 = torch.nn.Conv2d(1, 200, (7, 7), 1, 0, bias=False)
-        self.bn0 = torch.nn.BatchNorm2d(1)
-        self.bn1 = torch.nn.BatchNorm2d(200)
-        self.bn2 = torch.nn.BatchNorm1d(200)
-        self.register_parameter('b', torch.nn.Parameter(torch.zeros(self.ent_tot)))
-        self.fc = torch.nn.Linear(39200, self.out_dim)
+    @override
+    def forward(
+        self,
+        graph: dgl.DGLGraph,
+        relation: torch.Tensor,
+        norm: torch.Tensor,
+        triples: torch.Tensor) -> torch.Tensor:
 
-    def forward(self, graph, relation, norm, triples):
-
-        """The functions used in the training phase
-
-        Args:
-            graph: The knowledge graph recorded in dgl.graph()
-            relation: The relation id sampled in triples
-            norm: The edge norm in graph 
-            triples: The triples ids, as (h, r, t), shape:[batch_size, 3].
-
-        Returns:
-            score: The score of triples.
         """
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        
+        :param graph: 子图
+        :type graph: dgl.DGLGraph
+        :param relation: 子图的关系
+        :type relation: torch.Tensor
+        :param norm: 关系的归一化系数
+        :type norm: torch.Tensor
+        :param triples: 三元组
+        :type triples: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+		"""
 
         head, rela = triples[:,0], triples[:, 1]
-        x, r = self.ent_emb, self.rel_emb  # embedding of relations
+        x, r = self.ent_emb, self.rel_emb
         x, r = self.GraphCov(graph, x, r, relation, norm)
-        x = self.drop(x)  # embeddings of entities [num_ent, dim]
-        head_emb = torch.index_select(x, 0, head)  # filter out embeddings of subjects in this batch
-        #head_in_emb = head_emb.view(-1, 1, 10, 20)
-
-        rela_emb = torch.index_select(r, 0, rela)  # filter out embeddings of relations in this batch
-        #rela_in_emb = rela_emb.view(-1, 1, 10, 20)
+        x = self.drop(x)
+        head_emb = torch.index_select(x, 0, head)
+        rela_emb = torch.index_select(r, 0, rela)
 
         if self.decoder_model.lower() == 'conve':
-           # score = ConvE.score_func(self, head_in_emb, rela_in_emb, x)
            score = self.ConvE(head_emb, rela_emb, x)
-
         elif self.decoder_model.lower() == 'distmult':
             score = self.DistMult(head_emb, rela_emb)
-        
         else:
             raise ValueError("please choose decoder (DistMult/ConvE)")
 
         return score
 
-    def ConvE(self, sub_emb, rel_emb, all_ent):
-        
-        """Calculating the score of triples with ConvE model."""
+    def ConvE(
+        self,
+        sub_emb: torch.Tensor,
+        rel_emb: torch.Tensor,
+        all_ent: torch.Tensor) -> torch.Tensor:
 
-        stack_input = self.concat(sub_emb, rel_emb)  # [batch_size, 1, 2*k_h, k_w]
+        """计算 ConvE 作为解码器时三元组的得分。
+        
+        :param sub_emb: 头实体的嵌入向量
+        :type sub_emb: torch.Tensor
+        :param rel_emb: 关系的嵌入向量
+        :type rel_emb: torch.Tensor
+        :param all_ent: 全部实体的嵌入向量
+        :type all_ent: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor"""
+
+        stack_input = self.concat(sub_emb, rel_emb)
         x = self.bn0(stack_input)
-        x = self.conv1(x)  # [batch_size, num_filt, flat_sz_h, flat_sz_w]
+        x = self.conv1(x)
         x = self.bn1(x)
         x = F.relu(x)
-        x = self.feg_drop(x)
-        x = x.view(x.shape[0], -1)  # [batch_size, flat_sz]
-        x = self.fc(x)  # [batch_size, embed_dim]
+        x = self.fet_drop(x)
+        x = x.view(x.shape[0], -1)
+        x = self.fc(x)
         x = self.hid_drop(x)
         x = self.bn2(x)
         x = F.relu(x)
-        x = torch.mm(x, all_ent.transpose(1, 0))  # [batch_size, ent_num]
+        x = torch.mm(x, all_ent.transpose(1, 0))
         x += self.bias.expand_as(x)
         score = torch.sigmoid(x)
         return score
 
-    def concat(self, ent_embed, rel_embed):
+    def concat(
+        self,
+        ent_embed: torch.Tensor,
+        rel_embed: torch.Tensor) -> torch.Tensor:
+
+        """ConvE 作为解码器时，用于拼接头实体嵌入向量和关系嵌入向量。
+        
+        :param ent_embed: 头实体的嵌入向量
+        :type ent_embed: torch.Tensor
+        :param rel_embed: 关系的嵌入向量
+        :type rel_embed: torch.Tensor
+        :returns: ConvE 解码器的输入特征
+        :rtype: torch.Tensor"""
+
         ent_embed = ent_embed.view(-1, 1, 200)
         rel_embed = rel_embed.view(-1, 1, 200)
-        stack_input = torch.cat([ent_embed, rel_embed], 1)  # [batch_size, 2, embed_dim]
-        stack_input = stack_input.reshape(-1, 1, 2 * 10, 20)  # reshape to 2D [batch, 1, 2*k_h, k_w]
+        stack_input = torch.cat([ent_embed, rel_embed], 1)
+        stack_input = stack_input.reshape(-1, 1, 2 * 10, 20)
         return stack_input
 
     def DistMult(self, head_emb, rela_emb):
 
-        """Calculating the score of triples with DistMult model."""
+        """计算 DistMult 作为解码器时三元组的得分。
+        
+        :param sub_emb: 头实体的嵌入向量
+        :type sub_emb: torch.Tensor
+        :param rel_emb: 关系的嵌入向量
+        :type rel_emb: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor"""
 
-        obj_emb = head_emb * rela_emb  # [batch_size, emb_dim]
-        x = torch.mm(obj_emb, self.emb_ent.weight.transpose(1, 0))  # [batch_size, ent_num]
+        obj_emb = head_emb * rela_emb
+        x = torch.mm(obj_emb, self.emb_ent.weight.transpose(1, 0))
         x += self.bias.expand_as(x)
         score = torch.sigmoid(x)
         return score
-    
-    def predict(self, batch, mode):
-        
-        """The functions used in the testing phase
 
-        Args:
-            batch: A batch of data.
-            mode: Choose head-predict or tail-predict.
+    @override
+    def predict(
+        self,
+        data, mode):
 
-        Returns:
-            score: The score of triples.
-        """
+        """CompGCN 的推理方法。
         
-        triples    = batch['positive_sample']
-        graph      = batch['graph']
-        relation   = batch['rela']
-        norm       = batch['norm'] 
+        :param data: 数据。
+        :type data: dict[str, torch.Tensor]
+        :param mode: 在 CompGCN 时，无用，只为了保证推理函数形式一致
+        :type mode: str
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+		"""
+        
+        triples    = data['positive_sample']
+        graph      = data['graph']
+        relation   = data['rela']
+        norm       = data['norm'] 
 
         head, rela = triples[:,0], triples[:, 1]
-        x, r = self.ent_emb, self.rel_emb  # embedding of relations
+        x, r = self.ent_emb, self.rel_emb
         x, r = self.GraphCov(graph, x, r, relation, norm)
-        x = self.drop(x)  # embeddings of entities [num_ent, dim]
-        head_emb = torch.index_select(x, 0, head)  # filter out embeddings of subjects in this batch
-        #head_in_emb = head_emb.view(-1, 1, 10, 20)
-
-        rela_emb = torch.index_select(r, 0, rela)  # filter out embeddings of relations in this batch
-        #rela_in_emb = rela_emb.view(-1, 1, 10, 20)
+        x = self.drop(x)
+        head_emb = torch.index_select(x, 0, head)
+        rela_emb = torch.index_select(r, 0, rela)
 
         if self.decoder_model.lower() == 'conve':
-           # score = ConvE.score_func(self, head_in_emb, rela_in_emb, x)
            score = self.ConvE(head_emb, rela_emb, x)
-
         elif self.decoder_model.lower() == 'distmult':
-            score = self.DistMult(head_emb, rela_emb)
-        
+            score = self.DistMult(head_emb, rela_emb)       
         else:
             raise ValueError("please choose decoder (DistMult/ConvE)")
 
@@ -205,52 +253,154 @@ class CompGCN(nn.Module):
 
 class CompGCNCov(nn.Module):
 
-    """The comp graph convolution layers, similar to https://github.com/malllabiisc/CompGCN"""
+    """``CompGCN`` :cite:`CompGCN` 图神经网络模块。"""
 
-    def __init__(self, in_channels, out_channels, act=lambda x: x, bias=True, drop_rate=0., opn='corr'):
+    def __init__(
+        self,
+        in_channels: int,
+        out_channels: int,
+        act: typing.Callable[[torch.Tensor], torch.Tensor] = lambda x: x,
+        bias: bool = True,
+        drop_rate: float = 0.,
+        opn: str = 'corr'):
+
+        """创建 CompGCN 对象。
+        
+        :param in_channels: 输入的特征维度
+        :type in_channels: int
+        :param out_channels: 输出的特征维度
+        :type out_channels: int
+        :param act: 激活函数
+        :type act: typing.Callable[[torch.Tensor], torch.Tensor]
+        :param bias: 是否有偏置
+        :type bias: bool
+        :param drop_rate: Dropout rate
+        :type drop_rate: float
+        :param opn: 组成运算符：'mult'、'sub'、'corr'
+        :type opn: str
+		"""
+
         super(CompGCNCov, self).__init__()
-        self.in_channels = in_channels
-        self.out_channels = out_channels
-        self.act = act  # activation function
-        self.device = None
-        self.rel = None
-        self.opn = opn
-        # relation-type specific parameter
-        self.in_w = self.get_param([in_channels, out_channels])
-        self.out_w = self.get_param([in_channels, out_channels])
-        self.loop_w = self.get_param([in_channels, out_channels])
-        self.w_rel = self.get_param([in_channels, out_channels])  # transform embedding of relations to next layer
-        self.loop_rel = self.get_param([1, in_channels])  # self-loop embedding
 
-        self.drop = nn.Dropout(drop_rate)
-        self.bn = torch.nn.BatchNorm1d(out_channels)
-        self.bias = nn.Parameter(torch.zeros(out_channels)) if bias else None
+        #: 输入的特征维度
+        self.in_channels: int = in_channels
+        #: 输出的特征维度
+        self.out_channels: int = out_channels
         self.rel_wt = None
+        #: 关系嵌入向量
+        self.rel: torch.nn.parameter.Parameter = None
+        #: 组成运算符：'mult'、'sub'、'corr'
+        self.opn: str = opn
+        #：图神经网络的权重矩阵，用于原始关系
+        self.in_w: torch.nn.parameter.Parameter = self.get_param([in_channels, out_channels])
+        #：图神经网络的权重矩阵，用于相反关系
+        self.out_w: torch.nn.parameter.Parameter = self.get_param([in_channels, out_channels])
+        #: 用于原始关系和相反关系转换后输出结果的 Dropout
+        self.drop: torch.nn.Dropout = nn.Dropout(drop_rate)
+        #: 自循环关系嵌入向量的转换矩阵
+        self.loop_rel: torch.nn.parameter.Parameter = self.get_param([1, in_channels])
+        #：图神经网络的权重矩阵，用于自循环关系
+        self.loop_w: torch.nn.parameter.Parameter = self.get_param([in_channels, out_channels])
+        #: 偏置
+        self.bias: torch.nn.Parameter = nn.Parameter(torch.zeros(out_channels)) if bias else None
+        #: BatchNorm
+        self.bn: torch.nn.BatchNorm1d = torch.nn.BatchNorm1d(out_channels)
+        #: 激活函数
+        self.act: typing.Callable[[torch.Tensor], torch.Tensor] = act
+        #: 关系嵌入向量的转换矩阵
+        self.w_rel: torch.nn.parameter.Parameter = self.get_param([in_channels, out_channels])
 
-    def get_param(self, shape):
+    def get_param(
+        self,
+        shape: list[int]) -> torch.nn.parameter.Parameter:
+
+        """获得权重矩阵。
+        
+        :param shape: 权重矩阵的 shape
+        :type shape: list[int]
+        :returns: 权重矩阵
+        :rtype: torch.nn.parameter.Parameter
+        """
+
         param = nn.Parameter(torch.Tensor(*shape))
         nn.init.xavier_normal_(param, gain=nn.init.calculate_gain('relu'))
         return param
 
+    def forward(
+        self,
+        graph: dgl.DGLGraph,
+        ent_emb: torch.nn.parameter.Parameter,
+        rel_emb: torch.nn.parameter.Parameter,
+        edge_type: torch.Tensor,
+        edge_norm: torch.Tensor) -> tuple[torch.nn.parameter.Parameter, torch.nn.parameter.Parameter]:
+
+        """
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        
+        :param graph: 子图
+        :type graph: dgl.DGLGraph
+        :param ent_emb: 实体嵌入向量
+        :type ent_emb: torch.nn.parameter.Parameter
+        :param rel_emb: 关系嵌入向量
+        :type rel_emb: torch.nn.parameter.Parameter
+        :param edge_type: 关系 ID
+        :type edge_type: torch.Tensor
+        :param norm: 关系的归一化系数
+        :type norm: torch.Tensor
+        :returns: 更新后的实体嵌入和关系嵌入
+        :rtype: tuple[torch.nn.parameter.Parameter, torch.nn.parameter.Parameter]
+		"""
+
+        graph = graph.local_var()
+        graph.ndata['h'] = ent_emb
+        graph.edata['type'] = edge_type
+        graph.edata['norm'] = edge_norm
+        if self.rel_wt is None:
+            self.rel = rel_emb
+        else:
+            self.rel = torch.mm(self.rel_wt, rel_emb)
+        graph.update_all(self.message_func, fn.sum(msg='msg', out='h'), self.reduce_func)
+        ent_emb = graph.ndata.pop('h') + torch.mm(self.comp(ent_emb, self.loop_rel), self.loop_w) / 3
+        if self.bias is not None:
+            ent_emb = ent_emb + self.bias
+        ent_emb = self.bn(ent_emb)
+
+        return self.act(ent_emb), torch.matmul(self.rel, self.w_rel)
+
     def message_func(self, edges: dgl.udf.EdgeBatch):
-        edge_type = edges.data['type']  # [E, 1]
+
+        """
+        消息函数。
+        """
+
+        edge_type = edges.data['type']
         edge_num = edge_type.shape[0]
-        edge_data = self.comp(edges.src['h'], self.rel[edge_type])  # [E, in_channel]
-        # msg = torch.bmm(edge_data.unsqueeze(1),
-        #                 self.w[edge_dir.squeeze()]).squeeze()  # [E, 1, in_c] @ [E, in_c, out_c]
-        # msg = torch.bmm(edge_data.unsqueeze(1),
-        #                 self.w.index_select(0, edge_dir.squeeze())).squeeze()  # [E, 1, in_c] @ [E, in_c, out_c]
-        # first half edges are all in-directions, last half edges are out-directions.
+        edge_data = self.comp(edges.src['h'], self.rel[edge_type])
         msg = torch.cat([torch.matmul(edge_data[:edge_num // 2, :], self.in_w),
                          torch.matmul(edge_data[edge_num // 2:, :], self.out_w)])
-        msg = msg * edges.data['norm'].reshape(-1, 1)  # [E, D] * [E, 1]
+        msg = msg * edges.data['norm'].reshape(-1, 1)
         return {'msg': msg}
 
-    def reduce_func(self, nodes: dgl.udf.NodeBatch):
-        return {'h': self.drop(nodes.data['h']) / 3}
+    def comp(
+        self,
+        h: torch.Tensor,
+        r: torch.Tensor) -> torch.Tensor:
 
-    def comp(self, h, edge_data):
+        """组成运算：'mult'、'sub'、'corr'
+        
+        :param h: 头实体嵌入向量
+        :type h: torch.Tensor
+        :param r: 关系嵌入向量
+        :type r: torch.Tensor
+        :returns: 组合后的边数据
+        :rtype: torch.Tensor
+        """
+
         def com_mult(a, b):
+
+            """复数乘法"""
+
             r1, i1 = a.real, a.imag
             r2, i2 = b.real, b.imag
             real = r1 * r2 - i1 * i2
@@ -258,35 +408,29 @@ class CompGCNCov(nn.Module):
             return torch.complex(real, imag)
 
         def conj(a):
+
+            """共轭复数"""
+
             a.imag = -a.imag
             return a
 
         def ccorr(a, b):
+
+            """corr 运算"""
+
             return torch.fft.irfft(com_mult(conj(torch.fft.rfft(a)), torch.fft.rfft(b)), a.shape[-1])
 
         if self.opn == 'mult':
-            return h * edge_data
+            return h * r
         elif self.opn == 'sub':
-            return h - edge_data
+            return h - r
         elif self.opn == 'corr':
-            return ccorr(h, edge_data.expand_as(h))
+            return ccorr(h, r.expand_as(h))
         else:
             raise KeyError(f'composition operator {self.opn} not recognized.')
 
-    def forward(self, g: dgl.graph, x, rel_repr, edge_type, edge_norm):
-        self.device = x.device
-        g = g.local_var()
-        g.ndata['h'] = x
-        g.edata['type'] = edge_type
-        g.edata['norm'] = edge_norm
-        if self.rel_wt is None:
-            self.rel = rel_repr
-        else:
-            self.rel = torch.mm(self.rel_wt, rel_repr)  # [num_rel*2, num_base] @ [num_base, in_c]
-        g.update_all(self.message_func, fn.sum(msg='msg', out='h'), self.reduce_func)
-        x = g.ndata.pop('h') + torch.mm(self.comp(x, self.loop_rel), self.loop_w) / 3
-        if self.bias is not None:
-            x = x + self.bias
-        x = self.bn(x)
+    def reduce_func(self, nodes: dgl.udf.NodeBatch):
 
-        return self.act(x), torch.matmul(self.rel, self.w_rel)
+        """聚合函数"""
+        
+        return {'h': self.drop(nodes.data['h']) / 3}

@@ -8,7 +8,7 @@ pybind11_ke.data
     :local:
     :backlinks: top
 
-训练数据加载器
+平移模型和语义匹配模型数据加载器
 ----------------------------------
 
 .. autosummary::
@@ -18,19 +18,10 @@ pybind11_ke.data
 
     TrainDataSampler
     TrainDataLoader
-
-评估数据加载器
-----------------------------------
-
-.. autosummary::
-    :toctree: generated
-    :nosignatures:
-    :template: classtemplate.rst
-
     TestDataSampler
     TestDataLoader
 
-图数据加载器
+图神经网络模型数据加载器
 ----------------------------------
 
 .. autosummary::
@@ -41,7 +32,9 @@ pybind11_ke.data
     KGReader
     RevSampler
     GraphSampler
+    CompGCNSampler
     GraphTestSampler
+    CompGCNTestSampler
     GraphDataLoader
 
 超参数优化默认搜索范围

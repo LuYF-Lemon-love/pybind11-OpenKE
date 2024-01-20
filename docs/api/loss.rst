@@ -30,6 +30,7 @@ pybind11_ke.module.loss
     SoftplusLoss
     SigmoidLoss
     RGCNLoss
+    Cross_Entropy_Loss
 
 超参数优化默认搜索范围
 ----------------------------------

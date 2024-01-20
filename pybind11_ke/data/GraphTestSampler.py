@@ -16,6 +16,7 @@ import torch
 import typing
 import numpy as np
 from .GraphSampler import GraphSampler
+from .CompGCNSampler import CompGCNSampler
 from collections import defaultdict as ddict
 
 class GraphTestSampler(object):
@@ -25,22 +26,22 @@ class GraphTestSampler(object):
 
     def __init__(
         self,
-        sampler: GraphSampler):
+        sampler: typing.Union[GraphSampler, CompGCNSampler]):
 
-        """创建 GraphSampler 对象。
+        """创建 GraphTestSampler 对象。
 
         :param sampler: 训练数据采样器。
-        :type sampler: GraphSampler
+        :type sampler: typing.Union[GraphSampler, CompGCNSampler]
         """
 
         #: 训练数据采样器
-        self.sampler: GraphSampler = sampler
+        self.sampler: typing.Union[GraphSampler, CompGCNSampler] = sampler
         #: 实体的个数
         self.ent_tol: int = sampler.ent_tol
         #: 训练集三元组
-        self.triples: list = sampler.train_triples
+        self.triples: list[tuple[int, int, int]] = sampler.train_triples
         #: 幂
-        self.power = -1
+        self.power: float = -1
 
         #: 知识图谱中所有 h-r 对对应的 t 集合
         self.hr2t_all: ddict[set] = ddict(set)

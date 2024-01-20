@@ -28,6 +28,7 @@ pybind11_ke.module.strategy
     
     NegativeSampling
     RGCNSampling
+    CompGCNSampling
 
 超参数优化默认搜索范围
 ----------------------------------

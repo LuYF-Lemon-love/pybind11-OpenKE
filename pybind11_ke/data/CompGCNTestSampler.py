@@ -7,25 +7,33 @@
 #
 # 该脚本定义了 CompGCNTestSampler 类.
 
+"""
+CompGCNTestSampler - CompGCN 的测试数据采样器。
+"""
+
+from .CompGCNSampler import CompGCNSampler
 from .GraphTestSampler import GraphTestSampler
 
 class CompGCNTestSampler(GraphTestSampler):
 
-    """Sampling graph for testing.
-
-    Attributes:
-        sampler: The function of training sampler.
-        hr2t_all: Record the tail corresponding to the same head and relation.
-        rt2h_all: Record the head corresponding to the same tail and relation.
-        num_ent: The count of entities.
-        triples: The training triples.
+    """``CompGCN`` :cite:`CompGCN` 的测试数据采样器。
     """
 
-    def __init__(self, sampler):
+    def __init__(
+        self,
+        sampler: CompGCNSampler):
+
+        """创建 CompGCNTestSampler 对象。
+
+        :param sampler: 训练数据采样器。
+        :type sampler: CompGCNSampler
+        """
 
         super().__init__(
             sampler=sampler
         )
-        self.triples = sampler.t_triples
+
+        #: 训练集三元组
+        self.triples: list[tuple[int, int, int]] = sampler.t_triples
         #: 幂
-        self.power = -0.5
+        self.power: float = -0.5

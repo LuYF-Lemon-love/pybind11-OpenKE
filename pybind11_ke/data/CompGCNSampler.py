@@ -11,20 +11,16 @@
 CompGCNSampler - CompGCN 的数据采样器。
 """
 
+import dgl
 import torch
+import typing
 import numpy as np
 from .GraphSampler import GraphSampler
+from typing_extensions import override
 
 class CompGCNSampler(GraphSampler):
     
-    """Graph based sampling in neural network.
-
-    Attributes:
-        relation: The relation of sampled triples.
-        triples: The sampled triples.
-        graph: The graph structured sampled triples by dgl.graph in DGL.
-        norm: The edge norm in graph.
-        label: Mask the false tail as negative samples.
+    """``CompGCN`` :cite:`CompGCN` 的训练数据采样器。
     """
 
     def __init__(
@@ -68,30 +64,23 @@ class CompGCNSampler(GraphSampler):
             batch_size=batch_size,
             neg_ent=neg_ent
         )
-
-        #: batch size
-        self.batch_size: int = batch_size
-
-        self.relation = None
-        self.triples  = None
-        self.graph    = None
-        self.norm     = None
-        self.label    = None
         
         super().get_hr_train()
         
         self.graph, self.relation, self.norm = \
             self.build_graph(self.ent_tol, np.array(self.t_triples).transpose(), -0.5)
 
-    def sampling(self, pos_hr_t):
+    @override
+    def sampling(
+        self,
+        pos_hr_t: list[tuple[tuple[int, int], list[int]]]) -> dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]:
         
-        """Graph based n_hop neighbours in neural network.
+        """``CompGCN`` :cite:`CompGCN` 的采样函数。
 
-        Args:
-            pos_hr_t: The triples(hr, t) used to be sampled.
-
-        Returns:
-            batch_data: The training data.
+        :param pos_triples: 知识图谱中的正确三元组
+        :type pos_triples: list[tuple[tuple[int, int], list[int]]]
+        :returns: ``CompGCN`` :cite:`CompGCN` 的训练数据
+        :rtype: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
         """
 
         batch_data = {}
@@ -109,16 +98,20 @@ class CompGCNSampler(GraphSampler):
 
         return batch_data
 
-    def node_norm_to_edge_norm(self, graph, node_norm):
+    @override
+    def node_norm_to_edge_norm(
+        self,
+        graph: dgl.DGLGraph,
+        node_norm: torch.Tensor) -> torch.Tensor:
 
-        """Calculating the normalization edge weight.
+        """根据源节点和目标节点的度计算每条边的归一化系数。
 
-        Args:
-            graph: The graph structured sampled triples by dgl.graph in DGL.
-            node_norm: The node weight of normalization.
-
-        Returns:
-            norm: The edge weight of normalization.
+        :param graph: 子图的节点数
+        :type graph: dgl.DGLGraph
+        :param node_norm: 节点的归一化系数
+        :type node_norm: torch.Tensor
+        :returns: 边的归一化系数
+        :rtype: torch.Tensor
         """
         
         graph.ndata['norm'] = node_norm

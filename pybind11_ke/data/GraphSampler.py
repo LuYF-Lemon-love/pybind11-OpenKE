@@ -71,15 +71,15 @@ class GraphSampler(RevSampler):
         self.neg_ent: int = neg_ent
 
         self.entity   = None
-        self.relation = None
         self.triples  = None
-        self.graph    = None
-        self.norm     = None
         self.label    = None
+        self.graph    = None
+        self.relation = None
+        self.norm     = None
 
     def sampling(
         self,
-        pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]:
+        pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]:
 
         """``R-GCN`` :cite:`R-GCN` 的采样函数。
         
@@ -205,7 +205,7 @@ class GraphSampler(RevSampler):
 
         """根据目标节点度计算目标节点的归一化系数。
 
-        :param graph: 子图的节点数
+        :param graph: 子图
         :type graph: dgl.DGLGraph
         :param power: 幂
         :type power: int
@@ -226,7 +226,7 @@ class GraphSampler(RevSampler):
 
         """根据目标节点度计算每条边的归一化系数。
 
-        :param graph: 子图的节点数
+        :param graph: 子图
         :type graph: dgl.DGLGraph
         :param node_norm: 节点的归一化系数
         :type node_norm: torch.Tensor

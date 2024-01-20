@@ -17,7 +17,7 @@ import typing
 import torch
 import numpy as np
 from .Tester import Tester
-from .RGCNTester import RGCNTester
+from .GraphTester import GraphTester
 import torch.optim as optim
 from ..utils.Timer import Timer
 from ..module.model import Model
@@ -53,7 +53,7 @@ class Trainer(object):
 		opt_method: str = "Adam",
 		use_gpu: bool = True,
 		device: str = "cuda:0",
-		tester: Tester | RGCNTester | None = None,
+		tester: Tester | GraphTester | None = None,
 		test: bool = False,
 		valid_interval: int | None = None,
 		log_interval: int | None = None,
@@ -83,7 +83,7 @@ class Trainer(object):
 		:param device: 使用哪个 gpu
 		:type device: str
 		:param tester: 用于模型评估的验证模型类
-		:type tester: :py:class:`pybind11_ke.config.Tester` or :py:class:`pybind11_ke.config.RGCNTester`
+		:type tester: :py:class:`pybind11_ke.config.Tester` or :py:class:`pybind11_ke.config.GraphTester`
 		:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
 		:type test: bool
 		:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
@@ -135,7 +135,7 @@ class Trainer(object):
 		self.device: typing.Union[torch.device, str] = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
-		self.tester: Tester | RGCNTester | None = tester
+		self.tester: Tester | GraphTester | None = tester
 		#: 是否在测试集上评估模型, :py:attr:`tester` 不为空
 		self.test: bool = test
 		#: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
@@ -315,7 +315,7 @@ class Trainer(object):
 				})
 		else:
 			mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
-			if isinstance(self.tester, RGCNTester):
+			if isinstance(self.tester, GraphTester):
 				print(f"mr: {mr}, mrr: {mrr}, hits@1: {hit1}, hits@3: {hit3}, hits@10: {hit10}")
 			if self.use_wandb:
 				if sampling_mode == "link_valid":

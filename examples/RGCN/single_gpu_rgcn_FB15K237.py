@@ -14,7 +14,7 @@ from pybind11_ke.data import GraphDataLoader
 from pybind11_ke.module.model import RGCN
 from pybind11_ke.module.loss import RGCNLoss
 from pybind11_ke.module.strategy import RGCNSampling
-from pybind11_ke.config import RGCNTrainer, RGCNTester
+from pybind11_ke.config import GraphTrainer, GraphTester
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
@@ -71,17 +71,17 @@ model = RGCNSampling(
 ######################################################################
 # 训练模型
 # -------------
-# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.RGCNTrainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.RGCNTrainer.run` 函数进行模型学习；
-# 也可以通过传入 :py:class:`pybind11_ke.config.RGCNTester`，
-# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.RGCNTester` 使用
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.GraphTrainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.GraphTrainer.run` 函数进行模型学习；
+# 也可以通过传入 :py:class:`pybind11_ke.config.GraphTester`，
+# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.GraphTester` 使用
 # :py:class:`pybind11_ke.data.GraphDataLoader` 作为数据采样器。
 
 # test the model
-tester = RGCNTester(model = rgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
+tester = GraphTester(model = rgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
 
 # train the model
-trainer = RGCNTrainer(model = model, data_loader = dataloader.train_dataloader(),
+trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
 	epochs = 10000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
 	tester = tester, test = True, valid_interval = 500, log_interval = 500,
 	save_interval = 500, save_path = '../../checkpoint/rgcn.pth'

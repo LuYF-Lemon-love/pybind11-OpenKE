@@ -3,7 +3,7 @@
 # pybind11_ke/data/KGReader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2024
 #
 # 从文件中读取知识图谱.
 
@@ -152,6 +152,11 @@ class KGReader:
             self.rt2h_train[(r, t)] = np.array(list(self.rt2h_train[(r, t)]))
             
     def get_hr_train(self):
+
+        """用于 ``CompGCN`` :cite:`CompGCN` 训练，因为 ``CompGCN`` :cite:`CompGCN` 的组合运算仅需要头实体和关系。
+        
+        如果想获得更详细的信息请访问 :ref:`CompGCN <compgcn>`。
+        """
         
         self.t_triples = self.train_triples
         self.train_triples = [(hr, list(t)) for (hr,t) in self.hr2t_train.items()]

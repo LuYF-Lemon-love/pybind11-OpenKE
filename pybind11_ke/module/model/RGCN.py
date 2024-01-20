@@ -206,7 +206,7 @@ class RGCN(Model):
         :param mode: 模式
         :type mode: str
         :returns: 三元组的得分
-        :rtype: numpy.ndarray
+        :rtype: torch.Tensor
 		"""
 
         triples    = data['positive_sample']

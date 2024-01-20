@@ -1,6 +1,6 @@
 # coding:utf-8
 #
-# pybind11_ke/config/RGCNTrainer.py
+# pybind11_ke/config/GraphTrainer.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2023
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 18, 2023
@@ -8,19 +8,19 @@
 # 该脚本定义了 R-GCN 训练循环类.
 
 """
-RGCNTrainer - 训练循环类。
+GraphTrainer - 训练循环类。
 """
 
 import dgl
 import typing
 import torch
 from .Trainer import Trainer
-from .RGCNTester import RGCNTester
+from .GraphTester import GraphTester
 from ..module.strategy import RGCNSampling
 from torch.utils.data import DataLoader
 from typing_extensions import override
 
-class RGCNTrainer(Trainer):
+class GraphTrainer(Trainer):
 
 	"""
 	主要用于 R-GCN 模型的训练。
@@ -35,7 +35,7 @@ class RGCNTrainer(Trainer):
 		opt_method: str = "Adam",
 		use_gpu: bool = True,
 		device: str = "cuda:0",
-		tester: RGCNTester | None = None,
+		tester: GraphTester | None = None,
 		test: bool = False,
 		valid_interval: int | None = None,
 		log_interval: int | None = None,
@@ -48,7 +48,7 @@ class RGCNTrainer(Trainer):
 		use_wandb: bool = False,
 		gpu_id: int | None = None):
 
-		"""创建 RGCNTrainer 对象。
+		"""创建 GraphTrainer 对象。
 
 		:param model: 包装 KGE 模型的训练策略类
 		:type model: :py:class:`pybind11_ke.module.strategy.RGCNSampling`
@@ -90,7 +90,7 @@ class RGCNTrainer(Trainer):
 		:type gpu_id: int
 		"""
 
-		super(RGCNTrainer, self).__init__(
+		super(GraphTrainer, self).__init__(
 			model=model,
 			data_loader=data_loader,
 			epochs=epochs,

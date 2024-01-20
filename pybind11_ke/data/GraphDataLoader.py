@@ -3,7 +3,7 @@
 # pybind11_ke/data/GraphDataLoader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2024
 #
 # 为图神经网络读取数据.
 
@@ -11,8 +11,11 @@
 GraphDataLoader - 图神经网络读取数据集类。
 """
 
+import typing
 from .GraphSampler import GraphSampler
+from .CompGCNSampler import CompGCNSampler
 from .GraphTestSampler import GraphTestSampler
+from .CompGCNTestSampler import CompGCNTestSampler
 from torch.utils.data import DataLoader
 
 class GraphDataLoader:
@@ -32,8 +35,8 @@ class GraphDataLoader:
         neg_ent: int = 1,
         test_batch_size: int | None = None,
         num_workers: int | None = None,
-        train_sampler = GraphSampler,
-        test_sampler = GraphTestSampler):
+        train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = GraphSampler,
+        test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = GraphTestSampler):
 
         """创建 GraphDataLoader 对象。
 
@@ -57,6 +60,10 @@ class GraphDataLoader:
         :type test_batch_size: int | None
         :param num_workers: 加载数据的进程数
         :type num_workers: int
+        :param train_sampler: 训练数据采样器
+        :type train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]]
+        :param test_sampler: 测试数据采样器
+        :type test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]]
         """
 
         #: 数据集目录
@@ -81,7 +88,7 @@ class GraphDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: GraphSampler = train_sampler(
+        self.train_sampler: typing.Union[GraphSampler, CompGCNSampler] = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
@@ -92,7 +99,7 @@ class GraphDataLoader:
             neg_ent=self.neg_ent
         )
         #: 测试数据采样器
-        self.test_sampler: GraphTestSampler = test_sampler(
+        self.test_sampler: typing.Union[GraphTestSampler, CompGCNTestSampler] = test_sampler(
             sampler=self.train_sampler
         )
 

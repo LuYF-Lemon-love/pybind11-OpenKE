@@ -43,5 +43,6 @@ __all__ = [
     'RotatE',
     'HolE',
     'RGCN',
-    'CompGCN'
+    'CompGCN',
+    'CompGCNCov'
 ]
