@@ -40,15 +40,15 @@ class CompGCN(Model):
         decoder_model: str = 'ConvE'):
 
         """创建 RGCN 对象。
-
-		:param ent_tol: 实体的个数
-		:type ent_tol: int
-		:param rel_tol: 关系的个数
-		:type rel_tol: int
-		:param dim: 实体和关系嵌入向量的维度
-		:type dim: int
-		:param opn: 组成运算符：'mult'、'sub'、'corr'
-		:type opn: str
+        
+        :param ent_tol: 实体的个数
+        :type ent_tol: int
+        :param rel_tol: 关系的个数
+        :type rel_tol: int
+        :param dim: 实体和关系嵌入向量的维度
+        :type dim: int
+        :param opn: 组成运算符：'mult'、'sub'、'corr'
+        :type opn: str
         :param fet_drop: 用于 'ConvE' 解码器，用于卷积特征的 dropout
         :type fet_drop: float
         :param hid_drop: 用于 'ConvE' 解码器，用于隐藏层的 dropout

@@ -39,7 +39,7 @@ class EarlyStopping:
         :param delta: 监测数量的最小变化才符合改进条件。默认值：0
 		:type delta: float
 		"""
-
+        
         #: 模型保存目录
         self.save_path: str = save_path
         #: 上次验证得分改善后等待多长时间。默认值：7
@@ -48,7 +48,7 @@ class EarlyStopping:
         self.verbose: bool = verbose
         #: 监测数量的最小变化才符合改进条件。默认值：0
         self.delta = delta
-
+        
         #: 计数变量
         self.counter = 0
         #: 保存最好的得分
