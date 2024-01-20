@@ -68,8 +68,7 @@ class CompGCN(Model):
         #: 用于 'ConvE' 解码器，最后输出的嵌入向量维度
         self.out_dim: int = out_dim
         #: 用什么得分函数作为解码器: 'ConvE'、'DistMult'
-        self.decoder_model = decoder_model
-        self.GraphCov  = None
+        self.decoder_model: str = decoder_model
 
         #------------------------------CompGCN--------------------------------------------------------------------
         #: 根据实体个数，创建的实体嵌入
@@ -137,15 +136,15 @@ class CompGCN(Model):
         rela_emb = torch.index_select(r, 0, rela)
 
         if self.decoder_model.lower() == 'conve':
-           score = self.ConvE(head_emb, rela_emb, x)
+           score = self.conve(head_emb, rela_emb, x)
         elif self.decoder_model.lower() == 'distmult':
-            score = self.DistMult(head_emb, rela_emb)
+            score = self.distmult(head_emb, rela_emb)
         else:
             raise ValueError("please choose decoder (DistMult/ConvE)")
 
         return score
 
-    def ConvE(
+    def conve(
         self,
         sub_emb: torch.Tensor,
         rel_emb: torch.Tensor,
@@ -198,7 +197,10 @@ class CompGCN(Model):
         stack_input = stack_input.reshape(-1, 1, 2 * 10, 20)
         return stack_input
 
-    def DistMult(self, head_emb, rela_emb):
+    def distmult(
+        self,
+        head_emb: torch.Tensor,
+        rela_emb: torch.Tensor) -> torch.Tensor:
 
         """计算 DistMult 作为解码器时三元组的得分。
         
@@ -218,12 +220,13 @@ class CompGCN(Model):
     @override
     def predict(
         self,
-        data, mode):
+        data: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
+        mode: str) -> torch.Tensor:
 
         """CompGCN 的推理方法。
         
         :param data: 数据。
-        :type data: dict[str, torch.Tensor]
+        :type data: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
         :param mode: 在 CompGCN 时，无用，只为了保证推理函数形式一致
         :type mode: str
         :returns: 三元组的得分
@@ -243,9 +246,9 @@ class CompGCN(Model):
         rela_emb = torch.index_select(r, 0, rela)
 
         if self.decoder_model.lower() == 'conve':
-           score = self.ConvE(head_emb, rela_emb, x)
+           score = self.conve(head_emb, rela_emb, x)
         elif self.decoder_model.lower() == 'distmult':
-            score = self.DistMult(head_emb, rela_emb)       
+            score = self.distmult(head_emb, rela_emb)       
         else:
             raise ValueError("please choose decoder (DistMult/ConvE)")
 

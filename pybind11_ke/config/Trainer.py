@@ -24,7 +24,7 @@ from ..module.model import Model
 from ..data import TrainDataLoader, TestDataLoader
 from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
-from ..module.strategy import NegativeSampling, RGCNSampling
+from ..module.strategy import NegativeSampling, RGCNSampling, CompGCNSampling
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 class Trainer(object):
@@ -46,7 +46,7 @@ class Trainer(object):
 
 	def __init__(
 		self,
-		model: NegativeSampling | RGCNSampling | None = None,
+		model: NegativeSampling | RGCNSampling | CompGCNSampling | None = None,
 		data_loader: typing.Union[TrainDataLoader, DataLoader, None] = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
@@ -69,7 +69,7 @@ class Trainer(object):
 		"""创建 Trainer 对象。
 
 		:param model: 包装 KGE 模型的训练策略类
-		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling`
+		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
 		:param data_loader: TrainDataLoader or DataLoader
 		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
 		:param epochs: 训练轮次数
@@ -112,8 +112,8 @@ class Trainer(object):
 		#: 第几个 gpu
 		self.gpu_id: int | None = gpu_id
 		
-		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling`
-		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | RGCNSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
+		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
+		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | RGCNSampling | CompGCNSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
 		self.data_loader: typing.Union[TrainDataLoader, torch.utils.data.DataLoader, None] = data_loader

@@ -12,7 +12,6 @@ Cross_Entropy_Loss - 损失函数类，CompGCN 原论文中应用这种损失函
 """
 
 import torch
-import torch.nn as nn
 from .Loss import Loss
 from ..model import CompGCN
 
@@ -46,8 +45,7 @@ class Cross_Entropy_Loss(Loss):
         pred: torch.Tensor,
         label: torch.Tensor) -> torch.Tensor:
 
-        """计算 Cross_Entropy_Loss 损失函数。定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        """计算 Cross_Entropy_Loss 损失函数。定义每次调用时执行的计算。:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
         
         :param pred: 模型的得分。
         :type pred: torch.Tensor

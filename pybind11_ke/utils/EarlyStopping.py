@@ -65,7 +65,7 @@ class EarlyStopping:
 		进行早停记录。
 		"""
        
-        if score < self.best_score + self.delta:
+        if score <= self.best_score + self.delta:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} / {self.patience}')
             if self.counter >= self.patience:

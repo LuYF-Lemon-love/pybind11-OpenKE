@@ -17,7 +17,7 @@ import typing
 import numpy as np
 from tqdm import tqdm
 from ..data import TestDataLoader, GraphDataLoader
-from ..module.model import Model, RGCN
+from ..module.model import Model
 
 class Tester(object):
 
@@ -36,7 +36,7 @@ class Tester(object):
 
     def __init__(
         self,
-        model: typing.Union[Model, RGCN, None] = None,
+        model: typing.Union[Model, None] = None,
         data_loader: TestDataLoader | GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
         use_gpu: bool = True,
@@ -45,7 +45,7 @@ class Tester(object):
         """创建 Tester 对象。
         
         :param model: KGE 模型
-        :type model: :py:class:`pybind11_ke.module.model.Model` or :py:class:`pybind11_ke.module.model.RGCN`
+        :type model: :py:class:`pybind11_ke.module.model.Model`
         :param data_loader: TestDataLoader or GraphDataLoader
         :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
         :param sampling_mode: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
@@ -56,8 +56,8 @@ class Tester(object):
         :type device: str
         """
 
-        #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model` or :py:class:`pybind11_ke.module.model.RGCN`
-        self.model: typing.Union[Model, RGCN, None] = model
+        #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
+        self.model: typing.Union[Model, None] = model
         #: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
         self.data_loader: TestDataLoader | GraphDataLoader | None = data_loader
         #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``

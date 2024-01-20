@@ -16,7 +16,7 @@ import typing
 import torch
 from .Trainer import Trainer
 from .GraphTester import GraphTester
-from ..module.strategy import RGCNSampling
+from ..module.strategy import RGCNSampling, CompGCNSampling
 from torch.utils.data import DataLoader
 from typing_extensions import override
 
@@ -28,7 +28,7 @@ class GraphTrainer(Trainer):
 
 	def __init__(
 		self,
-		model: RGCNSampling | None = None,
+		model: RGCNSampling | CompGCNSampling | None = None,
 		data_loader: typing.Union[DataLoader, None] = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
@@ -51,7 +51,7 @@ class GraphTrainer(Trainer):
 		"""创建 GraphTrainer 对象。
 
 		:param model: 包装 KGE 模型的训练策略类
-		:type model: :py:class:`pybind11_ke.module.strategy.RGCNSampling`
+		:type model: :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
 		:param data_loader: DataLoader
 		:type data_loader: torch.utils.data.DataLoader
 		:param epochs: 训练轮次数

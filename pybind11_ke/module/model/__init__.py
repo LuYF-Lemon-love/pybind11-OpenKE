@@ -26,7 +26,7 @@ from .SimplE import SimplE
 from .RotatE import RotatE
 from .HolE import HolE
 from .RGCN import RGCN
-from .CompGCN import CompGCN
+from .CompGCN import CompGCN, CompGCNCov
 
 __all__ = [
     'Model',

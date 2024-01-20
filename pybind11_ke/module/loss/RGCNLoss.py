@@ -59,8 +59,7 @@ class RGCNLoss(Loss):
         score: torch.Tensor,
         labels: torch.Tensor) -> torch.Tensor:
 
-        """计算 RGCNLoss 损失函数。定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        """计算 RGCNLoss 损失函数。定义每次调用时执行的计算。:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
         
         :param score: 模型的得分。
         :type score: torch.Tensor

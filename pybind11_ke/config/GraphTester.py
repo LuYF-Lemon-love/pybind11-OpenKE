@@ -18,7 +18,7 @@ import numpy as np
 from tqdm import tqdm
 from ..data import GraphDataLoader
 from .Tester import Tester
-from ..module.model.RGCN import RGCN
+from ..module.model import RGCN, CompGCN
 from typing_extensions import override
 
 class GraphTester(Tester):
@@ -29,7 +29,7 @@ class GraphTester(Tester):
 
     def __init__(
         self,
-        model: RGCN | None = None,
+        model: RGCN | CompGCN | None = None,
         data_loader: GraphDataLoader | None = None,
         sampling_mode: str = 'link_test',
         prediction: str = "all",
@@ -38,8 +38,8 @@ class GraphTester(Tester):
 
         """创建 Tester 对象。
         
-        :param model: RGCN 模型
-        :type model: :py:class:`pybind11_ke.module.model.RGCN`
+        :param model: RGCN or CompGCN
+        :type model: :py:class:`pybind11_ke.module.model.RGCN` or :py:class:`pybind11_ke.module.model.CompGCN`
         :param data_loader: GraphDataLoader
         :type data_loader: :py:class:`pybind11_ke.data.GraphDataLoader`
         :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
