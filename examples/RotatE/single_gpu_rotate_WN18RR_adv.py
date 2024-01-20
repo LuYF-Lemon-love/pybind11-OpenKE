@@ -46,8 +46,8 @@ train_dataloader = TrainDataLoader(
 
 # define the model
 rotate = RotatE(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
+	ent_tol = train_dataloader.get_ent_tol(),
+	rel_tol = train_dataloader.get_rel_tol(),
 	dim = 1024,
 	margin = 6.0,
 	epsilon = 2.0,

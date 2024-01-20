@@ -83,8 +83,8 @@ train_dataloader = TrainDataLoader(
 
 # define the model
 transh = TransH(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
+	ent_tol = train_dataloader.get_ent_tol(),
+	rel_tol = train_dataloader.get_rel_tol(),
 	dim = config.dim, 
 	p_norm = config.p_norm,
 	norm_flag = config.norm_flag)

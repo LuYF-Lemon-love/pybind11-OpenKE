@@ -29,24 +29,24 @@ class RGCN(Model):
 
     def __init__(
         self,
-        ent_tot: int,
-        rel_tot: int,
+        ent_tol: int,
+        rel_tol: int,
         dim: int,
         num_layers: int):
 
         """创建 RGCN 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim: 实体和关系嵌入向量的维度
 		:type dim: int
 		:param num_layers: 图神经网络的层数
 		:type num_layers: int
 		"""
 
-        super(RGCN, self).__init__(ent_tot, rel_tot)
+        super(RGCN, self).__init__(ent_tol, rel_tol)
 
         #: 实体和关系嵌入向量的维度
         self.dim: int = dim
@@ -68,9 +68,9 @@ class RGCN(Model):
 
         """构建模型"""
 
-        self.ent_emb = nn.Embedding(self.ent_tot, self.dim)
+        self.ent_emb = nn.Embedding(self.ent_tol, self.dim)
 
-        self.rel_emb = nn.Parameter(torch.Tensor(self.rel_tot, self.dim))
+        self.rel_emb = nn.Parameter(torch.Tensor(self.rel_tol, self.dim))
 
         nn.init.xavier_uniform_(self.rel_emb, gain=nn.init.calculate_gain('relu'))
 
@@ -92,7 +92,7 @@ class RGCN(Model):
         """
 
         act = F.relu if idx < self.num_layers - 1 else None
-        return RelGraphConv(self.dim, self.dim, self.rel_tot, "bdd",
+        return RelGraphConv(self.dim, self.dim, self.rel_tol, "bdd",
                     num_bases=100, activation=act, self_loop=True, dropout=0.2)
 
     @override  

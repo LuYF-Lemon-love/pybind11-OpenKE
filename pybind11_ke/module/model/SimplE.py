@@ -43,8 +43,8 @@ class SimplE(Model):
 
         # define the model
         simple = SimplE(
-        	ent_tot = train_dataloader.get_ent_tol(),
-        	rel_tot = train_dataloader.get_rel_tol(),
+        	ent_tol = train_dataloader.get_ent_tol(),
+        	rel_tol = train_dataloader.get_rel_tol(),
         	dim = config.dim
         )
 
@@ -73,32 +73,32 @@ class SimplE(Model):
     
     def __init__(
         self,
-        ent_tot: int,
-        rel_tot: int,
+        ent_tol: int,
+        rel_tol: int,
         dim: int = 100):
 
         """创建 SimplE 对象。
         
-        :param ent_tot: 实体的个数
-        :type ent_tot: int
-        :param rel_tot: 关系的个数
-        :type rel_tot: int
+        :param ent_tol: 实体的个数
+        :type ent_tol: int
+        :param rel_tol: 关系的个数
+        :type rel_tol: int
         :param dim: 实体嵌入向量和关系嵌入向量的维度
         :type dim: int
         """
         
-        super(SimplE, self).__init__(ent_tot, rel_tot)
+        super(SimplE, self).__init__(ent_tol, rel_tol)
         
         #: 实体嵌入向量和关系嵌入向量的维度
         self.dim: int = dim
         #: 根据实体个数，创建的头实体嵌入
-        self.ent_h_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
+        self.ent_h_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
         #: 根据实体个数，创建的尾实体嵌入
-        self.ent_t_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
+        self.ent_t_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
         #: 根据关系个数，创建的关系嵌入
-        self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
+        self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
         #: 根据关系个数，创建的逆关系嵌入
-        self.rel_inv_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
+        self.rel_inv_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
 
         sqrt_size = 6.0 / math.sqrt(self.dim)
         nn.init.uniform_(self.ent_h_embeddings.weight.data, -sqrt_size, sqrt_size)

@@ -42,8 +42,8 @@ class TransE(Model):
 		
 		# define the model
 		transe = TransE(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim = 50, 
 			p_norm = 1, 
 			norm_flag = True)
@@ -68,8 +68,8 @@ class TransE(Model):
 
 	def __init__(
 		self,
-		ent_tot: int,
-		rel_tot: int,
+		ent_tol: int,
+		rel_tol: int,
 		dim: int = 100,
 		p_norm: int = 1,
 		norm_flag: bool = True,
@@ -77,10 +77,10 @@ class TransE(Model):
 		
 		"""创建 TransE 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim: 实体和关系嵌入向量的维度
 		:type dim: int
 		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
@@ -92,7 +92,7 @@ class TransE(Model):
 		:type margin: float
 		"""
 		
-		super(TransE, self).__init__(ent_tot, rel_tot)
+		super(TransE, self).__init__(ent_tol, rel_tol)
 		
 		#: 实体和关系嵌入向量的维度
 		self.dim: int = dim
@@ -103,9 +103,9 @@ class TransE(Model):
 		self.norm_flag: bool = norm_flag
 		
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
 
 		if margin != None:
 			#: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。

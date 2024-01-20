@@ -40,8 +40,8 @@ class RotatE(Model):
 
 		# define the model
 		rotate = RotatE(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim = 1024,
 			margin = 6.0,
 			epsilon = 2.0,
@@ -69,18 +69,18 @@ class RotatE(Model):
 
 	def __init__(
 		self,
-		ent_tot: int,
-		rel_tot: int,
+		ent_tol: int,
+		rel_tol: int,
 		dim: int = 100,
 		margin: float = 6.0,
 		epsilon: float = 2.0):
 
 		"""创建 RotatE 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim: 实体和关系嵌入向量的维度
 		:type dim: int
 		:param margin: 原论文中损失函数的 gamma。
@@ -89,7 +89,7 @@ class RotatE(Model):
 		:type epsilon: float
 		"""
 
-		super(RotatE, self).__init__(ent_tot, rel_tot)
+		super(RotatE, self).__init__(ent_tol, rel_tol)
 
 		#: RotatE 原论文对应的源代码固定为 2.0。
 		self.epsilon: int = epsilon
@@ -101,9 +101,9 @@ class RotatE(Model):
 		self.dim_r: int = dim
 
 		#: 根据实体个数，创建的实体嵌入。
-		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim_e)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim_e)
 		#: 根据关系个数，创建的关系嵌入。
-		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim_r)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim_r)
 
 		self.ent_embedding_range = nn.Parameter(
 			torch.Tensor([(margin + self.epsilon) / self.dim_e]), 

@@ -133,8 +133,8 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		# define the model
 		model_class = import_class(f"pybind11_ke.module.model.{config.model}")
 		kge_model = model_class(
-		    ent_tot = train_dataloader.get_ent_tol(),
-		    rel_tot = train_dataloader.get_rel_tol(),
+		    ent_tol = train_dataloader.get_ent_tol(),
+		    rel_tol = train_dataloader.get_rel_tol(),
 		    dim = config.dim,
 		    p_norm = config.p_norm,
 		    norm_flag = config.norm_flag)

@@ -40,8 +40,8 @@ dataloader = GraphDataLoader(
 
 # define the model
 rgcn = RGCN(
-	ent_tot = dataloader.train_sampler.ent_tol,
-	rel_tot = dataloader.train_sampler.rel_tol,
+	ent_tol = dataloader.train_sampler.ent_tol,
+	rel_tol = dataloader.train_sampler.rel_tol,
 	dim = 500,
 	num_layers = 2
 )

@@ -46,8 +46,8 @@ class Analogy(Model):
 
 		# define the model
 		analogy = Analogy(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim = 200
 		)
 
@@ -73,36 +73,36 @@ class Analogy(Model):
 
 	def __init__(
 		self,
-		ent_tot: int,
-		rel_tot: int,
+		ent_tol: int,
+		rel_tol: int,
 		dim: int = 100):
 
 		"""创建 Analogy 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim: 实体嵌入向量和关系嵌入向量的维度
 		:type dim: int
 		"""
 
-		super(Analogy, self).__init__(ent_tot, rel_tot)
+		super(Analogy, self).__init__(ent_tol, rel_tol)
 
 		#: 实体嵌入向量和关系嵌入向量的维度
 		self.dim: int = dim
 		#: 根据实体个数，创建的实体嵌入的实部
-		self.ent_re_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_re_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
 		#: 根据实体个数，创建的实体嵌入的虚部
-		self.ent_im_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_im_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
 		#: 根据关系个数，创建的关系嵌入的实部
-		self.rel_re_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_re_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
 		#: 根据关系个数，创建的关系嵌入的虚部
-		self.rel_im_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_im_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
 		#: 根据实体个数，创建的实体嵌入，维度为 2 * :py:attr:`dim`
-		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim * 2)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim * 2)
 		#: 根据关系个数，创建的关系嵌入, 维度为 2 * :py:attr:`dim`
-		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim * 2)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim * 2)
 		
 		nn.init.xavier_uniform_(self.ent_re_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.ent_im_embeddings.weight.data)

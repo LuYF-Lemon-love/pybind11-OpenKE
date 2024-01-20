@@ -46,8 +46,8 @@ train_dataloader = TrainDataLoader(
 
 # define the transe
 transe = TransE(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
+	ent_tol = train_dataloader.get_ent_tol(),
+	rel_tol = train_dataloader.get_rel_tol(),
 	dim = 100, 
 	p_norm = 1, 
 	norm_flag = True)
@@ -57,8 +57,8 @@ transe = TransE(
 # 是一个为实体和关系嵌入向量分别构建了独立的向量空间，将实体向量投影到特定的关系向量空间进行平移操作的模型。
 
 transr = TransR(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
+	ent_tol = train_dataloader.get_ent_tol(),
+	rel_tol = train_dataloader.get_rel_tol(),
 	dim_e = 100,
 	dim_r = 100,
 	p_norm = 1, 

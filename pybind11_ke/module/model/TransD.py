@@ -41,8 +41,8 @@ class TransD(Model):
 
 		# define the model
 		transd = TransD(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim_e = config.dim_e, 
 			dim_r = config.dim_r, 
 			p_norm = config.p_norm, 
@@ -72,8 +72,8 @@ class TransD(Model):
 
 	def __init__(
 		self,
-		ent_tot: int,
-		rel_tot: int,
+		ent_tol: int,
+		rel_tol: int,
 		dim_e: int = 100,
 		dim_r: int = 100,
 		p_norm: int = 1,
@@ -81,10 +81,10 @@ class TransD(Model):
 		
 		"""创建 TransD 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim_e: 实体嵌入和实体投影向量的维度
 		:type dim_e: int
 		:param dim_r: 关系嵌入和关系投影向量的维度
@@ -96,7 +96,7 @@ class TransD(Model):
 		:type norm_flag: bool
 		"""
 
-		super(TransD, self).__init__(ent_tot, rel_tot)
+		super(TransD, self).__init__(ent_tol, rel_tol)
 		
 		#: 实体嵌入和实体投影向量的维度
 		self.dim_e: int = dim_e
@@ -109,13 +109,13 @@ class TransD(Model):
 		self.norm_flag: bool = norm_flag
 
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim_e)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim_e)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim_r)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim_r)
 		#: 根据实体个数，创建的实体投影向量
-		self.ent_transfer: torch.nn.Embedding = nn.Embedding(self.ent_tot, self.dim_e)
+		self.ent_transfer: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim_e)
 		#: 根据关系个数，创建的关系投影向量
-		self.rel_transfer: torch.nn.Embedding = nn.Embedding(self.rel_tot, self.dim_r)
+		self.rel_transfer: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim_r)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)

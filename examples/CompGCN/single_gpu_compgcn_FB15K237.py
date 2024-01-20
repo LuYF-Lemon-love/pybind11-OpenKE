@@ -42,8 +42,8 @@ dataloader = GraphDataLoader(
 
 # define the model
 compgcn = CompGCN(
-	ent_tot = dataloader.train_sampler.ent_tol,
-	rel_tot = dataloader.train_sampler.rel_tol,
+	ent_tol = dataloader.train_sampler.ent_tol,
+	rel_tol = dataloader.train_sampler.rel_tol,
 	dim = 100
 )
 

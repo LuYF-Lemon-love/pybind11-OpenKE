@@ -16,28 +16,28 @@ from ..BaseModule import BaseModule
 class Model(BaseModule):
 
 	"""
-	继承自 :py:class:`pybind11_ke.module.BaseModule`，仅仅增加了两个属性：:py:attr:`ent_tot` 和 :py:attr:`rel_tot`。
+	继承自 :py:class:`pybind11_ke.module.BaseModule`，仅仅增加了两个属性：:py:attr:`ent_tol` 和 :py:attr:`rel_tol`。
 	"""
 
 	def __init__(
 		self,
-		ent_tot: int,
-		rel_tot: int):
+		ent_tol: int,
+		rel_tol: int):
 
 		"""创建 Model 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		"""
 
 		super(Model, self).__init__()
 
 		#: 实体的种类
-		self.ent_tot: int = ent_tot
+		self.ent_tol: int = ent_tol
 		#: 关系的种类
-		self.rel_tot: int = rel_tot
+		self.rel_tol: int = rel_tol
 
 	def forward(self) -> torch.Tensor:
 

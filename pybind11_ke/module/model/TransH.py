@@ -38,8 +38,8 @@ class TransH(Model):
 		
 		# define the model
 		transh = TransH(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim = 200, 
 			p_norm = 1, 
 			norm_flag = True)
@@ -62,15 +62,15 @@ class TransH(Model):
 		trainer.run()
 	"""
 
-	def __init__(self, ent_tot, rel_tot, dim = 100, p_norm = 1,
+	def __init__(self, ent_tol, rel_tol, dim = 100, p_norm = 1,
 	      norm_flag = True):
 		
 		"""创建 TransH 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim: 实体、关系嵌入向量和和法向量的维度
 		:type dim: int
 		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
@@ -80,7 +80,7 @@ class TransH(Model):
 		:type norm_flag: bool
 		"""
 
-		super(TransH, self).__init__(ent_tot, rel_tot)
+		super(TransH, self).__init__(ent_tol, rel_tol)
 		
 		#: 实体、关系嵌入向量和和法向量的维度
 		self.dim = dim
@@ -91,11 +91,11 @@ class TransH(Model):
 		self.norm_flag = norm_flag
 		
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim)
+		self.ent_embeddings = nn.Embedding(self.ent_tol, self.dim)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim)
+		self.rel_embeddings = nn.Embedding(self.rel_tol, self.dim)
 		#: 根据关系个数，创建的法向量
-		self.norm_vector = nn.Embedding(self.rel_tot, self.dim)
+		self.norm_vector = nn.Embedding(self.rel_tol, self.dim)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)

@@ -79,8 +79,8 @@ train_dataloader = TrainDataLoader(
 
 # define the model
 transd = TransD(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
+	ent_tol = train_dataloader.get_ent_tol(),
+	rel_tol = train_dataloader.get_rel_tol(),
 	dim_e = config.dim_e, 
 	dim_r = config.dim_r, 
 	p_norm = config.p_norm, 

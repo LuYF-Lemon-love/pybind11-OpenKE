@@ -30,8 +30,8 @@ class CompGCN(Model):
 
     def __init__(
         self,
-        ent_tot: int,
-        rel_tot: int,
+        ent_tol: int,
+        rel_tol: int,
         dim: int,
         opn: str = 'mult',
         fet_drop: float = 0.2,
@@ -41,10 +41,10 @@ class CompGCN(Model):
 
         """创建 RGCN 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim: 实体和关系嵌入向量的维度
 		:type dim: int
 		:param opn: 组成运算符：'mult'、'sub'、'corr'
@@ -59,7 +59,7 @@ class CompGCN(Model):
         :type decoder_model: str
 		"""
 
-        super(CompGCN, self).__init__(ent_tot, rel_tot)
+        super(CompGCN, self).__init__(ent_tol, rel_tol)
 
         #: 实体和关系嵌入向量的维度
         self.dim: int = dim
@@ -72,9 +72,9 @@ class CompGCN(Model):
 
         #------------------------------CompGCN--------------------------------------------------------------------
         #: 根据实体个数，创建的实体嵌入
-        self.ent_emb: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor(self.ent_tot, self.dim))
+        self.ent_emb: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor(self.ent_tol, self.dim))
         #: 根据关系个数，创建的关系嵌入
-        self.rel_emb: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor(self.rel_tot, self.dim))
+        self.rel_emb: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor(self.rel_tol, self.dim))
 
         nn.init.xavier_normal_(self.ent_emb, gain=nn.init.calculate_gain('relu'))
         nn.init.xavier_normal_(self.rel_emb, gain=nn.init.calculate_gain('relu'))
@@ -84,7 +84,7 @@ class CompGCN(Model):
         #: 用于 :py:attr:`GraphCov` 输出结果
         self.drop: torch.nn.Dropout = nn.Dropout(0.3)
         #: 最后计算得分时的偏置
-        self.bias: torch.nn.parameter.Parameter = nn.Parameter(torch.zeros(self.ent_tot))
+        self.bias: torch.nn.parameter.Parameter = nn.Parameter(torch.zeros(self.ent_tol))
         #-----------------------------ConvE-----------------------------------------------------------------------
         #: 用于 'ConvE' 解码器，头实体嵌入向量和关系嵌入向量的 BatchNorm
         self.bn0: torch.nn.BatchNorm2d = torch.nn.BatchNorm2d(1)
@@ -102,7 +102,7 @@ class CompGCN(Model):
         self.bn2: torch.nn.BatchNorm1d = torch.nn.BatchNorm1d(200)
         #-----------------------------DistMult-----------------------------------------------------------------------
         #: 用于 DistMult 得分函数
-        self.emb_ent: torch.nn.Embedding = torch.nn.Embedding(self.ent_tot, self.dim*2)
+        self.emb_ent: torch.nn.Embedding = torch.nn.Embedding(self.ent_tol, self.dim*2)
 
     @override
     def forward(

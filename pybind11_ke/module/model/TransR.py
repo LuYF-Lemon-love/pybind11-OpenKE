@@ -49,15 +49,15 @@ class TransR(Model):
 
 		# define the transe
 		transe = TransE(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim = 100, 
 			p_norm = 1, 
 			norm_flag = True)
 
 		transr = TransR(
-			ent_tot = train_dataloader.get_ent_tol(),
-			rel_tot = train_dataloader.get_rel_tol(),
+			ent_tol = train_dataloader.get_ent_tol(),
+			rel_tol = train_dataloader.get_rel_tol(),
 			dim_e = 100,
 			dim_r = 100,
 			p_norm = 1, 
@@ -98,15 +98,15 @@ class TransR(Model):
 		trainer.run()
 	"""
 
-	def __init__(self, ent_tot, rel_tot, dim_e = 100, dim_r = 100, p_norm = 1,
+	def __init__(self, ent_tol, rel_tol, dim_e = 100, dim_r = 100, p_norm = 1,
 		norm_flag = True, rand_init = False):
 
 		"""创建 TransR 对象。
 
-		:param ent_tot: 实体的个数
-		:type ent_tot: int
-		:param rel_tot: 关系的个数
-		:type rel_tot: int
+		:param ent_tol: 实体的个数
+		:type ent_tol: int
+		:param rel_tol: 关系的个数
+		:type rel_tol: int
 		:param dim_e: 实体嵌入向量的维度
 		:type dim_e: int
 		:param dim_r: 关系嵌入向量的维度
@@ -120,7 +120,7 @@ class TransR(Model):
 		:type rand_init: bool
 		"""
 
-		super(TransR, self).__init__(ent_tot, rel_tot)
+		super(TransR, self).__init__(ent_tol, rel_tol)
 		
 		#: 实体嵌入向量的维度
 		self.dim_e = dim_e
@@ -135,21 +135,21 @@ class TransR(Model):
 		self.rand_init = rand_init
 
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tot, self.dim_e)
+		self.ent_embeddings = nn.Embedding(self.ent_tol, self.dim_e)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings = nn.Embedding(self.rel_tot, self.dim_r)
+		self.rel_embeddings = nn.Embedding(self.rel_tol, self.dim_r)
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
-		self.transfer_matrix = nn.Embedding(self.rel_tot, self.dim_e * self.dim_r)
+		self.transfer_matrix = nn.Embedding(self.rel_tol, self.dim_e * self.dim_r)
 
 		if not self.rand_init:
 			identity = torch.zeros(self.dim_e, self.dim_r)
 			for i in range(min(self.dim_e, self.dim_r)):
 				identity[i][i] = 1
 			identity = identity.view(self.dim_e * self.dim_r)
-			for i in range(self.rel_tot):
+			for i in range(self.rel_tol):
 				self.transfer_matrix.weight.data[i] = identity
 		else:
 			nn.init.xavier_uniform_(self.transfer_matrix.weight.data)

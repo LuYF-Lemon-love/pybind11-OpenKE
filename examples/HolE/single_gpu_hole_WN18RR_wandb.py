@@ -78,8 +78,8 @@ train_dataloader = TrainDataLoader(
 
 # define the model
 hole = HolE(
-	ent_tot = train_dataloader.get_ent_tol(),
-	rel_tot = train_dataloader.get_rel_tol(),
+	ent_tol = train_dataloader.get_ent_tol(),
+	rel_tol = train_dataloader.get_rel_tol(),
 	dim = config.dim
 )
 
