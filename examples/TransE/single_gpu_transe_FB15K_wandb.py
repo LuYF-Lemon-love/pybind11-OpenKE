@@ -137,3 +137,35 @@ trainer.run()
 
 # close your wandb run
 wandb_logger.finish()
+
+######################################################################
+# .. figure:: /_static/images/examples/TransE/TransE-FB15K-Loss.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中损失值的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/TransE/TransE-FB15K-MR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/TransE/TransE-FB15K-MRR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MRR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/TransE/TransE-FB15K-Hit.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+
+######################################################################
+# --------------
+#

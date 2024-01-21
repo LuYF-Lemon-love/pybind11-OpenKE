@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransR.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 31, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 21, 2024
 # 
 # 该头文件定义了 TransR.
 
@@ -12,9 +12,12 @@ TransR - 是一个为实体和关系嵌入向量分别构建了独立的向量�
 """
 
 import torch
+import typing
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from .Model import Model
+from typing_extensions import override
 
 class TransR(Model):
 
@@ -98,8 +101,16 @@ class TransR(Model):
 		trainer.run()
 	"""
 
-	def __init__(self, ent_tol, rel_tol, dim_e = 100, dim_r = 100, p_norm = 1,
-		norm_flag = True, rand_init = False):
+	def __init__(
+		self,
+		ent_tol: int,
+		rel_tol: int,
+		dim_e: int = 100,
+		dim_r: int = 100,
+		p_norm: int = 1,
+		norm_flag: bool = True,
+		rand_init: bool = False,
+		margin: float | None = None):
 
 		"""创建 TransR 对象。
 
@@ -118,31 +129,42 @@ class TransR(Model):
 		:type norm_flag: bool
 		:param rand_init: 关系矩阵是否采用随机初始化。
 		:type rand_init: bool
+		:param margin: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+		:type margin: float
 		"""
 
 		super(TransR, self).__init__(ent_tol, rel_tol)
 		
 		#: 实体嵌入向量的维度
-		self.dim_e = dim_e
+		self.dim_e: int = dim_e
 		#: 关系嵌入向量的维度
-		self.dim_r = dim_r
+		self.dim_r: int = dim_r
 		#: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
-		self.p_norm = p_norm
+		self.p_norm: int = p_norm
 		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
 		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
-		self.norm_flag = norm_flag
+		self.norm_flag: bool = norm_flag
 		#: 关系矩阵是否采用随机初始化
-		self.rand_init = rand_init
+		self.rand_init: bool = rand_init
 
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tol, self.dim_e)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim_e)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings = nn.Embedding(self.rel_tol, self.dim_r)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim_r)
+
+		if margin != None:
+			#: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+			self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
+			self.margin.requires_grad = False
+			self.margin_flag: bool = True
+		else:
+			self.margin_flag: bool = False
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
-		self.transfer_matrix = nn.Embedding(self.rel_tol, self.dim_e * self.dim_r)
+		#: 关系矩阵
+		self.transfer_matrix: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim_e * self.dim_r)
 
 		if not self.rand_init:
 			identity = torch.zeros(self.dim_e, self.dim_r)
@@ -154,7 +176,12 @@ class TransR(Model):
 		else:
 			nn.init.xavier_uniform_(self.transfer_matrix.weight.data)
 
-	def _calc(self, h, t, r, mode):
+	def _calc(
+		self,
+		h: torch.Tensor,
+		t: torch.Tensor,
+		r: torch.Tensor,
+		mode: str) -> torch.Tensor:
 
 		"""计算 TransR 的评分函数。
 		
@@ -194,7 +221,10 @@ class TransR(Model):
 		score = torch.norm(score, self.p_norm, -1).flatten()
 		return score
 	
-	def _transfer(self, e, r_transfer):
+	def _transfer(
+		self,
+		e: torch.Tensor,
+		r_transfer: torch.Tensor) -> torch.Tensor:
 
 		"""
 		将头实体或尾实体的向量投影到特定的关系向量空间。
@@ -216,14 +246,17 @@ class TransR(Model):
 			e = torch.matmul(e, r_transfer)
 		return e.view(-1, self.dim_r)
 
-	def forward(self, data):
+	@override
+	def forward(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -239,14 +272,19 @@ class TransR(Model):
 		h = self._transfer(h, r_transfer)
 		t = self._transfer(t, r_transfer)
 		score = self._calc(h ,t, r, mode)
-		return score
+		if self.margin_flag:
+			return self.margin - score
+		else:
+			return score
 
-	def regularization(self, data):
+	def regularization(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -264,15 +302,22 @@ class TransR(Model):
 				 torch.mean(r_transfer ** 2)) / 4
 		return regul
 
-	def predict(self, data):
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
 
 		"""TransR 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
 
 		score = self.forward(data)
-		return score.cpu().data.numpy()
+		if self.margin_flag:
+			score = self.margin - score
+			return score.cpu().data.numpy()
+		else:
+			return score.cpu().data.numpy()
