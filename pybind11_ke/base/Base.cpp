@@ -65,7 +65,7 @@ void get_bacth(
 			std::cout << i << std::endl;
 			std::cout << "rand_max" << std::endl;
 		}
-		std:: cout << i << " ";
+		// std:: cout << i << " ";
 		// batch + batch_size: 第一个负三元组生成的位置
 		INT last = batch_size;
 		// 负采样 entity
