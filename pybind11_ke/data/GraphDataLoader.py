@@ -21,6 +21,19 @@ from torch.utils.data import DataLoader
 class GraphDataLoader:
 
     """基本图神经网络采样器。
+
+    例子::
+
+        from pybind11_ke.data import CompGCNSampler, CompGCNTestSampler, GraphDataLoader
+        
+        dataloader = GraphDataLoader(
+        	in_path = "../../benchmarks/FB15K237/",
+        	batch_size = 2048,
+        	test_batch_size = 256,
+        	num_workers = 16,
+        	train_sampler = CompGCNSampler,
+        	test_sampler = CompGCNTestSampler
+        )
     """
     
     def __init__(
@@ -88,7 +101,7 @@ class GraphDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: typing.Union[GraphSampler, CompGCNSampler] = train_sampler(
+        self.train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
@@ -99,7 +112,7 @@ class GraphDataLoader:
             neg_ent=self.neg_ent
         )
         #: 测试数据采样器
-        self.test_sampler: typing.Union[GraphTestSampler, CompGCNTestSampler] = test_sampler(
+        self.test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
             sampler=self.train_sampler
         )
 

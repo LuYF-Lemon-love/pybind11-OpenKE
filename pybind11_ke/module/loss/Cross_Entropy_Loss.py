@@ -21,6 +21,18 @@ class Cross_Entropy_Loss(Loss):
 	``CompGCN`` :cite:`CompGCN` 原论文中应用这种损失函数完成模型训练。
 	
 	.. Note:: :py:meth:`forward` 中的正样本评分函数的得分应大于负样本评分函数的得分。
+
+	例子::
+
+        from pybind11_ke.module.loss import Cross_Entropy_Loss
+        from pybind11_ke.module.strategy import CompGCNSampling
+        
+        # define the loss function
+        model = CompGCNSampling(
+        	model = compgcn,
+        	loss = Cross_Entropy_Loss(model = compgcn),
+        	ent_tol = dataloader.train_sampler.ent_tol
+        )
 	"""
 
     def __init__(

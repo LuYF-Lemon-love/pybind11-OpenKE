@@ -17,6 +17,34 @@ from .GraphTestSampler import GraphTestSampler
 class CompGCNTestSampler(GraphTestSampler):
 
     """``CompGCN`` :cite:`CompGCN` 的测试数据采样器。
+
+    例子::
+
+        from pybind11_ke.data import CompGCNTestSampler
+        from torch.utils.data import DataLoader
+
+        #: 测试数据采样器
+        test_sampler: typing.Type[CompGCNTestSampler] = CompGCNTestSampler(
+            sampler=train_sampler
+        )
+
+        val_dataloader = DataLoader(
+            data_val,
+            shuffle=False,
+            batch_size=test_batch_size,
+            num_workers=num_workers,
+            pin_memory=True,
+            collate_fn=test_sampler.sampling,
+        )
+
+        test_dataloader = DataLoader(
+            data_test,
+            shuffle=False,
+            batch_size=test_batch_size,
+            num_workers=num_workers,
+            pin_memory=True,
+            collate_fn=test_sampler.sampling,
+        )
     """
 
     def __init__(

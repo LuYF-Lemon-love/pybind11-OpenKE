@@ -29,12 +29,6 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 💡 `benchmarks <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
     常用的知识图谱保存在 ``benchmarks/``。
 
-🍋 `result <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/result>`_
-    OpenKE-PyTorch 和 pybind11-OpenKE 在我们机器上运行的结果保存在 ``result/``。
-
-📍 `environment/requirements.txt <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/environment/requirements.txt>`_ 
-    在我们机器上的 Python 的依赖，可以作为你的参考，保存在 ``requirements.txt``。
-
 📜 `README.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/README.rst>`_
     项目主页。
     
@@ -57,6 +51,8 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 **正确的**
 
 - 增加了 ``R-GCN`` :cite:`R-GCN` 模型。
+
+- 增加了 ``CompGCN`` :cite:`CompGCN` 模型。
 
 - 修复了 `SimplE模型实现的问题 <https://github.com/thunlp/OpenKE/issues/151>`__ 。
 

@@ -23,7 +23,49 @@ from typing_extensions import override
 class GraphTrainer(Trainer):
 
 	"""
-	主要用于 R-GCN 模型的训练。
+	主要用于 ``R-GCN`` :cite:`R-GCN` 和 ``CompGCN`` :cite:`CompGCN` 的训练。
+
+	例子::
+
+		from pybind11_ke.data import CompGCNSampler, CompGCNTestSampler, GraphDataLoader
+		from pybind11_ke.module.model import CompGCN
+		from pybind11_ke.module.loss import Cross_Entropy_Loss
+		from pybind11_ke.module.strategy import CompGCNSampling
+		from pybind11_ke.config import GraphTrainer, GraphTester
+		
+		dataloader = GraphDataLoader(
+			in_path = "../../benchmarks/FB15K237/",
+			batch_size = 2048,
+			test_batch_size = 256,
+			num_workers = 16,
+			train_sampler = CompGCNSampler,
+			test_sampler = CompGCNTestSampler
+		)
+		
+		# define the model
+		compgcn = CompGCN(
+			ent_tol = dataloader.train_sampler.ent_tol,
+			rel_tol = dataloader.train_sampler.rel_tol,
+			dim = 100
+		)
+		
+		# define the loss function
+		model = CompGCNSampling(
+			model = compgcn,
+			loss = Cross_Entropy_Loss(model = compgcn),
+			ent_tol = dataloader.train_sampler.ent_tol
+		)
+		
+		# test the model
+		tester = GraphTester(model = compgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0', prediction = "tail")
+		
+		# train the model
+		trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+			epochs = 2000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
+			tester = tester, test = True, valid_interval = 50, log_interval = 50,
+			save_interval = 50, save_path = '../../checkpoint/compgcn.pth'
+		)
+		trainer.run()
 	"""
 
 	def __init__(

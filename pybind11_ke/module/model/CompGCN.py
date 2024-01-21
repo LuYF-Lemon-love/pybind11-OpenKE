@@ -26,6 +26,38 @@ class CompGCN(Model):
     ``CompGCN`` :cite:`CompGCN` 发表于 ``2020`` 年，这是一种在图卷积网络中整合多关系信息的新框架，它利用知识图谱嵌入技术中的各种组合操作，将实体和关系共同嵌入到图中。
 
     正三元组的评分函数的值越大越好，如果想获得更详细的信息请访问 :ref:`CompGCN <compgcn>`。
+
+    例子::
+
+        from pybind11_ke.module.model import CompGCN
+        from pybind11_ke.module.loss import Cross_Entropy_Loss
+        from pybind11_ke.module.strategy import CompGCNSampling
+        from pybind11_ke.config import GraphTrainer, GraphTester
+        
+        # define the model
+        compgcn = CompGCN(
+        	ent_tol = dataloader.train_sampler.ent_tol,
+        	rel_tol = dataloader.train_sampler.rel_tol,
+        	dim = 100
+        )
+        
+        # define the loss function
+        model = CompGCNSampling(
+        	model = compgcn,
+        	loss = Cross_Entropy_Loss(model = compgcn),
+        	ent_tol = dataloader.train_sampler.ent_tol
+        )
+        
+        # test the model
+        tester = GraphTester(model = compgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0', prediction = "tail")
+        
+        # train the model
+        trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+        	epochs = 2000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
+        	tester = tester, test = True, valid_interval = 50, log_interval = 50,
+        	save_interval = 50, save_path = '../../checkpoint/compgcn.pth'
+        )
+        trainer.run()
     """
 
     def __init__(

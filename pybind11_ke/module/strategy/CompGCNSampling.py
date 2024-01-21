@@ -22,6 +22,38 @@ class CompGCNSampling(Strategy):
 
 	"""
 	将模型和损失函数封装到一起，方便模型训练，用于 ``CompGCN`` :cite:`CompGCN`。
+
+	例子::
+
+		from pybind11_ke.module.model import CompGCN
+		from pybind11_ke.module.loss import Cross_Entropy_Loss
+		from pybind11_ke.module.strategy import CompGCNSampling
+		from pybind11_ke.config import GraphTrainer, GraphTester
+		
+		# define the model
+		compgcn = CompGCN(
+			ent_tol = dataloader.train_sampler.ent_tol,
+			rel_tol = dataloader.train_sampler.rel_tol,
+			dim = 100
+		)
+		
+		# define the loss function
+		model = CompGCNSampling(
+			model = compgcn,
+			loss = Cross_Entropy_Loss(model = compgcn),
+			ent_tol = dataloader.train_sampler.ent_tol
+		)
+		
+		# test the model
+		tester = GraphTester(model = compgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0', prediction = "tail")
+		
+		# train the model
+		trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+			epochs = 2000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
+			tester = tester, test = True, valid_interval = 50, log_interval = 50,
+			save_interval = 50, save_path = '../../checkpoint/compgcn.pth'
+		)
+		trainer.run()
 	"""
 
 	def __init__(
