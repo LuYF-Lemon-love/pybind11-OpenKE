@@ -111,9 +111,9 @@ class TransE(Model):
 			#: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
 			self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
 			self.margin.requires_grad = False
-			self.margin_flag = True
+			self.margin_flag: bool = True
 		else:
-			self.margin_flag = False
+			self.margin_flag: bool = False
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)

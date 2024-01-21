@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransH.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Dec 30, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 21, 2023
 # 
 # 该头文件定义了 TransH.
 
@@ -12,9 +12,12 @@ TransH - 是第二个平移模型，将关系建模为超平面上的平移操�
 """
 
 import torch
+import typing
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from .Model import Model
+from typing_extensions import override
 
 class TransH(Model):
 
@@ -62,8 +65,14 @@ class TransH(Model):
 		trainer.run()
 	"""
 
-	def __init__(self, ent_tol, rel_tol, dim = 100, p_norm = 1,
-	      norm_flag = True):
+	def __init__(
+		self,
+		ent_tol: int,
+		rel_tol: int,
+		dim: int = 100,
+		p_norm: int = 1,
+		norm_flag: bool = True,
+		margin: float | None = None):
 		
 		"""创建 TransH 对象。
 
@@ -78,30 +87,45 @@ class TransH(Model):
 		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
 						  对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
+		:param margin: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+		:type margin: float
 		"""
 
 		super(TransH, self).__init__(ent_tol, rel_tol)
 		
 		#: 实体、关系嵌入向量和和法向量的维度
-		self.dim = dim
+		self.dim: int = dim
 		#: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
-		self.p_norm = p_norm
+		self.p_norm: int = p_norm
 		#: 是否利用 :py:func:`torch.nn.functional.normalize` 
 		#: 对实体和关系嵌入向量的最后一维执行 L2-norm。
-		self.norm_flag = norm_flag
+		self.norm_flag: bool = norm_flag
 		
 		#: 根据实体个数，创建的实体嵌入
-		self.ent_embeddings = nn.Embedding(self.ent_tol, self.dim)
+		self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
 		#: 根据关系个数，创建的关系嵌入
-		self.rel_embeddings = nn.Embedding(self.rel_tol, self.dim)
+		self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
 		#: 根据关系个数，创建的法向量
-		self.norm_vector = nn.Embedding(self.rel_tol, self.dim)
+		self.norm_vector: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
+
+		if margin != None:
+			#: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+			self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
+			self.margin.requires_grad = False
+			self.margin_flag = True
+		else:
+			self.margin_flag = False
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.norm_vector.weight.data)
 
-	def _calc(self, h, t, r, mode):
+	def _calc(
+		self,
+		h: torch.Tensor,
+		t: torch.Tensor,
+		r: torch.Tensor,
+		mode: str) -> torch.Tensor:
 
 		"""计算 TransH 的评分函数。
 		
@@ -141,7 +165,10 @@ class TransH(Model):
 		score = torch.norm(score, self.p_norm, -1).flatten()
 		return score
 
-	def _transfer(self, e, norm):
+	def _transfer(
+		self,
+		e: torch.Tensor,
+		norm: torch.Tensor) -> torch.Tensor:
 
 		"""
 		将头实体或尾实体的向量投影到超平面上。
@@ -163,14 +190,17 @@ class TransH(Model):
 		else:
 			return e - torch.sum(e * norm, -1, True) * norm
 
-	def forward(self, data):
+	@override
+	def forward(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -186,14 +216,19 @@ class TransH(Model):
 		h = self._transfer(h, r_norm)
 		t = self._transfer(t, r_norm)
 		score = self._calc(h ,t, r, mode)
-		return score
+		if self.margin_flag:
+			return self.margin - score
+		else:
+			return score
 
-	def regularization(self, data):
+	def regularization(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 
 		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
@@ -211,15 +246,22 @@ class TransH(Model):
 				 torch.mean(r_norm ** 2)) / 4
 		return regul
 	
-	def predict(self, data):
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
 
 		"""TransE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
 		
 		score = self.forward(data)
-		return score.cpu().data.numpy()
+		if self.margin_flag:
+			score = self.margin - score
+			return score.cpu().data.numpy()
+		else:
+			return score.cpu().data.numpy()

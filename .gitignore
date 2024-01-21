@@ -145,3 +145,4 @@ docs copy
 docs/api/generated
 wandb
 test
+benchmarks/FB15K/type_constrain.txt
