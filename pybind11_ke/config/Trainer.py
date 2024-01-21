@@ -297,11 +297,7 @@ class Trainer(object):
 		if isinstance(self.tester.data_loader, TestDataLoader) and self.tester.data_loader.type_constrain:
 			mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
 			if self.use_wandb:
-				if sampling_mode == "link_valid":
-					wandb.log({
-						"val/epoch": epoch
-					})
-				wandb.log({
+				log_dict = {
 					f"{mode}/mr" : mr,
 					f"{mode}/mrr" : mrr,
 					f"{mode}/hit1" : hit1,
@@ -312,23 +308,29 @@ class Trainer(object):
 					f"{mode}/hit1TC" : hit1TC,
 					f"{mode}/hit3TC" : hit3TC,
 					f"{mode}/hit10TC" : hit10TC,
-				})
+				}
+				if sampling_mode == "link_valid":
+					log_dict.update({
+						"val/epoch": epoch
+					})
+				wandb.log(log_dict)
 		else:
 			mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
 			if isinstance(self.tester, GraphTester):
 				print(f"mr: {mr}, mrr: {mrr}, hits@1: {hit1}, hits@3: {hit3}, hits@10: {hit10}")
 			if self.use_wandb:
-				if sampling_mode == "link_valid":
-					wandb.log({
-						"val/epoch": epoch,
-					})
-				wandb.log({
+				log_dict = {
 					f"{mode}/mr" : mr,
 					f"{mode}/mrr" : mrr,
 					f"{mode}/hit1" : hit1,
 					f"{mode}/hit3" : hit3,
 					f"{mode}/hit10" : hit10,
-				})
+				}
+				if sampling_mode == "link_valid":
+					log_dict.update({
+						"val/epoch": epoch
+					})
+				wandb.log(log_dict)
 				
 		if self.early_stopping is not None:
 			if self.metric == 'mr':

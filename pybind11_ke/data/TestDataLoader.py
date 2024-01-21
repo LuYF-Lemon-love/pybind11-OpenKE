@@ -14,6 +14,7 @@ TrainDataLoader - 数据集类，类似 :py:class:`torch.utils.data.DataLoader`�
 import base
 import typing
 import numpy as np
+from ..utils import construct_type_constrain
 from collections.abc import Callable
 
 class TestDataSampler(object):
@@ -163,6 +164,11 @@ class TestDataLoader(object):
 		base.read_test_files()
 
 		if self.type_constrain:
+			construct_type_constrain(
+				in_path=self.in_path,
+				train_file=self.train_file,
+				valid_file=self.valid_file,
+				test_file=self.test_file)
 			base.read_type_files()
 
 		print("Validation and testing data read completed.\n")

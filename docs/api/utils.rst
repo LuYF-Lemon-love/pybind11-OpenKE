@@ -47,3 +47,4 @@ pybind11_ke.utils
     :template: functiontemplate.rst
 
     import_class
+    construct_type_constrain

@@ -61,9 +61,5 @@
 
   - test2id.txt：测试集文件，第一行是测试集中三元组的个数。后面所有行都是 **(e1, e2, rel)** 格式的三元组。
 
-  - type_constrain.txt: 类型约束文件，第一行是关系的个数。后面所有行是每个关系的类型约束。如 benchmarks/FB15K 的 id 为 1200 的关系，它有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
-
 .. Note:: train2id.txt、valid2id.txt 和 test2id.txt 包含的是来自 entitiy2id.txt 和 relation2id.txt 的 id，
     而不是实体和关系的名字。
-
-.. Note:: type_constrain.txt 可以通过 benchmarks/FB15K/n-n.py 脚本获得。
