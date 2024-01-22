@@ -390,7 +390,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	
 		parameters_dict = {
 			'epochs': {
-				'values': [50, 100]
+				'value': 10000
 			},
 			'lr': {
 				'distribution': 'uniform',
@@ -401,10 +401,10 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'values': ['adam', 'adagrad', 'sgd']
 			},
 			'valid_interval': {
-				'value': 10
+				'value': 50
 			},
 			'log_interval': {
-				'value': 10
+				'value': 50
 			},
 			'save_path': {
 				'value': './'
@@ -429,7 +429,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	parameters_dict = {
 		'epochs': {
-			'values': [50, 100]
+			'value': 10000
 		},
 		'lr': {
 			'distribution': 'uniform',
@@ -440,10 +440,10 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'values': ['adam', 'adagrad', 'sgd']
 		},
 		'valid_interval': {
-			'value': 10
+			'value': 50
 		},
 		'log_interval': {
-			'value': 10
+			'value': 50
 		},
 		'save_path': {
 			'value': './'

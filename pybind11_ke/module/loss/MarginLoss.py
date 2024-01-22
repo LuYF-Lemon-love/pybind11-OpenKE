@@ -133,7 +133,7 @@ def get_margin_loss_hpo_config() -> dict[str, dict[str, Any]]:
 				'value': None
 			},
 			'margin': {
-				'values': [1.0, 3.0]
+				'values': [1.0, 3.0, 6.0]
 			}
 		}
 	
@@ -149,7 +149,7 @@ def get_margin_loss_hpo_config() -> dict[str, dict[str, Any]]:
 			'value': None
 		},
 		'margin': {
-			'values': [1.0, 3.0]
+			'values': [1.0, 3.0, 6.0]
 		}
 	}
 		

@@ -310,12 +310,6 @@ def get_test_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			},
 			'type_constrain': {
 				'value': True
-			},
-			'neg_ent': {
-				'values': [1, 4, 16, 64]
-			},
-			'neg_rel': {
-				'value': 0
 			}
 		}
 
@@ -332,12 +326,6 @@ def get_test_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 		},
 		'type_constrain': {
 			'value': True
-		},
-		'neg_ent': {
-			'values': [1, 4, 16, 64]
-		},
-		'neg_rel': {
-			'value': 0
 		}
 	}
 		
