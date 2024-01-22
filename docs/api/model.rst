@@ -78,3 +78,4 @@ pybind11_ke.module.model
 
     get_transe_hpo_config
     get_transh_hpo_config
+    get_transr_hpo_config

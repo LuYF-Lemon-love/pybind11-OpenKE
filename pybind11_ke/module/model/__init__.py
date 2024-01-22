@@ -16,8 +16,8 @@ from __future__ import print_function
 from .Model import Model
 from .TransE import TransE, get_transe_hpo_config
 from .TransH import TransH, get_transh_hpo_config
+from .TransR import TransR, get_transr_hpo_config
 from .TransD import TransD
-from .TransR import TransR
 from .DistMult import DistMult
 from .ComplEx import ComplEx
 from .RESCAL import RESCAL
@@ -34,8 +34,9 @@ __all__ = [
     'get_transe_hpo_config',
     'TransH',
     'get_transh_hpo_config',
-    'TransD',
     'TransR',
+    'get_transr_hpo_config',
+    'TransD',
     'DistMult',
     'ComplEx',
     'RESCAL',

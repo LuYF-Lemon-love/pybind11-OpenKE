@@ -132,13 +132,22 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 
 		# define the model
 		model_class = import_class(f"pybind11_ke.module.model.{config.model}")
-		if config.model == "TransE":
+		if config.model in ["TransE", "TransH"]:
 			kge_model = model_class(
 			    ent_tol = train_dataloader.get_ent_tol(),
 			    rel_tol = train_dataloader.get_rel_tol(),
 			    dim = config.dim,
 			    p_norm = config.p_norm,
 			    norm_flag = config.norm_flag)
+		elif config.model == "TransR":
+			kge_model = model_class(
+			    ent_tol = train_dataloader.get_ent_tol(),
+			    rel_tol = train_dataloader.get_rel_tol(),
+			    dim_e = config.dim_e,
+				dim_r = config.dim_r,
+			    p_norm = config.p_norm,
+			    norm_flag = config.norm_flag,
+				rand_init = config.rand_init)
 
 		# define the loss function
 		loss_class = import_class(f"pybind11_ke.module.loss.{config.loss}")
