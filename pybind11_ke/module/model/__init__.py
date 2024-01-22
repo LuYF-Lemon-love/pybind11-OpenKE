@@ -18,12 +18,12 @@ from .TransE import TransE, get_transe_hpo_config
 from .TransH import TransH, get_transh_hpo_config
 from .TransR import TransR, get_transr_hpo_config
 from .TransD import TransD, get_transd_hpo_config
+from .RotatE import RotatE, get_rotate_hpo_config
 from .DistMult import DistMult
 from .ComplEx import ComplEx
 from .RESCAL import RESCAL
 from .Analogy import Analogy
 from .SimplE import SimplE
-from .RotatE import RotatE
 from .HolE import HolE
 from .RGCN import RGCN
 from .CompGCN import CompGCN, CompGCNCov
@@ -38,12 +38,13 @@ __all__ = [
     'get_transr_hpo_config',
     'TransD',
     'get_transd_hpo_config',
+    'RotatE',
+    'get_rotate_hpo_config',
     'DistMult',
     'ComplEx',
     'RESCAL',
     'Analogy',
     'SimplE',
-    'RotatE',
     'HolE',
     'RGCN',
     'CompGCN',

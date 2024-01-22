@@ -15,8 +15,8 @@ from __future__ import print_function
 
 from .Loss import Loss
 from .MarginLoss import MarginLoss, get_margin_loss_hpo_config
+from .SigmoidLoss import SigmoidLoss, get_sigmoid_loss_hpo_config
 from .SoftplusLoss import SoftplusLoss
-from .SigmoidLoss import SigmoidLoss
 from .RGCNLoss import RGCNLoss
 from .Cross_Entropy_Loss import Cross_Entropy_Loss
 
@@ -24,8 +24,9 @@ __all__ = [
     'Loss',
     'MarginLoss',
     'get_margin_loss_hpo_config',
-    'SoftplusLoss',
     'SigmoidLoss',
+    'get_sigmoid_loss_hpo_config',
+    'SoftplusLoss',
     'RGCNLoss',
     'Cross_Entropy_Loss'
 ]

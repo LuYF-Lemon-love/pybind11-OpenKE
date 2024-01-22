@@ -14,6 +14,7 @@ SigmoidLoss - 损失函数类，RotatE 原论文应用这种损失函数完成�
 import torch
 import numpy as np
 import torch.nn as nn
+from typing import Any
 import torch.nn.functional as F
 from .Loss import Loss
 
@@ -112,3 +113,33 @@ class SigmoidLoss(Loss):
 
 		score = self.forward(p_score, n_score)
 		return score.cpu().data.numpy()
+
+def get_sigmoid_loss_hpo_config() -> dict[str, dict[str, Any]]:
+
+	"""返回 :py:class:`SigmoidLoss` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'loss': {
+				'value': 'SigmoidLoss'
+			},
+			'adv_temperature': {
+				'values': [1.0, 3.0, 6.0]
+			}
+		}
+	
+	:returns: :py:class:`SigmoidLoss` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'loss': {
+			'value': 'SigmoidLoss'
+		},
+		'adv_temperature': {
+			'values': [1.0, 3.0, 6.0]
+		}
+	}
+		
+	return parameters_dict

@@ -156,15 +156,28 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				dim_r = config.dim_r,
 			    p_norm = config.p_norm,
 			    norm_flag = config.norm_flag)
+		elif config.model == "RotatE":
+			kge_model = model_class(
+			    ent_tol = train_dataloader.get_ent_tol(),
+			    rel_tol = train_dataloader.get_rel_tol(),
+			    dim = config.dim,
+				margin = config.margin,
+			    epsilon = config.epsilon)
 
 		# define the loss function
 		loss_class = import_class(f"pybind11_ke.module.loss.{config.loss}")
+		if config.loss == 'MarginLoss':
+			loss = loss_class(
+				adv_temperature = config.adv_temperature,
+				margin = config.margin)
+		elif config.loss == 'SigmoidLoss':
+			loss = loss_class(
+				adv_temperature = config.adv_temperature)
+		
+		# define the strategt
 		model = NegativeSampling(
 		    model = kge_model,
-		    loss = loss_class(
-				adv_temperature = config.adv_temperature,
-				margin = config.margin
-				),
+		    loss = loss,
 		    batch_size = train_dataloader.get_batch_size(),
 			regul_rate = config.regul_rate,
 			l3_regul_rate = config.l3_regul_rate

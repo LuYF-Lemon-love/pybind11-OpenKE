@@ -253,3 +253,45 @@ class RotatE(Model):
 
 		score = -self.forward(data)
 		return score.cpu().data.numpy()
+
+def get_rotate_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`RotatE` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'model': {
+				'value': 'RotatE'
+			},
+			'dim': {
+				'values': [256, 512, 1024]
+			},
+			'margin': {
+				'values': [1.0, 3.0, 6.0]
+			},
+			'epsilon': {
+				'value': 2.0
+			}
+		}
+
+	:returns: :py:class:`RotatE` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'RotatE'
+		},
+		'dim': {
+			'values': [256, 512, 1024]
+		},
+		'margin': {
+			'values': [1.0, 3.0, 6.0]
+		},
+		'epsilon': {
+			'value': 2.0
+		}
+	}
+		
+	return parameters_dict
