@@ -27,8 +27,8 @@ pybind11_ke.module.loss
     :template: classtemplate.rst
     
     MarginLoss
-    SoftplusLoss
     SigmoidLoss
+    SoftplusLoss
     RGCNLoss
     Cross_Entropy_Loss
 
@@ -42,3 +42,4 @@ pybind11_ke.module.loss
 
     get_margin_loss_hpo_config
     get_sigmoid_loss_hpo_config
+    get_softplus_loss_hpo_config

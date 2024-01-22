@@ -163,6 +163,11 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    dim = config.dim,
 				margin = config.margin,
 			    epsilon = config.epsilon)
+		elif config.model == "DistMult":
+			kge_model = model_class(
+			    ent_tol = train_dataloader.get_ent_tol(),
+			    rel_tol = train_dataloader.get_rel_tol(),
+			    dim = config.dim)
 
 		# define the loss function
 		loss_class = import_class(f"pybind11_ke.module.loss.{config.loss}")
@@ -170,7 +175,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			loss = loss_class(
 				adv_temperature = config.adv_temperature,
 				margin = config.margin)
-		elif config.loss == 'SigmoidLoss':
+		elif config.loss in ['SigmoidLoss', 'SoftplusLoss']:
 			loss = loss_class(
 				adv_temperature = config.adv_temperature)
 		

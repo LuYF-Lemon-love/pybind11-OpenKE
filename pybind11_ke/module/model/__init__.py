@@ -19,7 +19,7 @@ from .TransH import TransH, get_transh_hpo_config
 from .TransR import TransR, get_transr_hpo_config
 from .TransD import TransD, get_transd_hpo_config
 from .RotatE import RotatE, get_rotate_hpo_config
-from .DistMult import DistMult
+from .DistMult import DistMult, get_distmult_hpo_config
 from .ComplEx import ComplEx
 from .RESCAL import RESCAL
 from .Analogy import Analogy
@@ -41,6 +41,7 @@ __all__ = [
     'RotatE',
     'get_rotate_hpo_config',
     'DistMult',
+    'get_distmult_hpo_config',
     'ComplEx',
     'RESCAL',
     'Analogy',
