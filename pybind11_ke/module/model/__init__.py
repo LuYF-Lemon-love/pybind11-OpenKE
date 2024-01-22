@@ -23,7 +23,7 @@ from .RESCAL import RESCAL, get_rescal_hpo_config
 from .DistMult import DistMult, get_distmult_hpo_config
 from .HolE import HolE, get_hole_hpo_config
 from .ComplEx import ComplEx, get_complex_hpo_config
-from .Analogy import Analogy
+from .Analogy import Analogy, get_analogy_hpo_config
 from .SimplE import SimplE
 from .RGCN import RGCN
 from .CompGCN import CompGCN, CompGCNCov
@@ -49,6 +49,7 @@ __all__ = [
     'ComplEx',
     'get_complex_hpo_config',
     'Analogy',
+    'get_analogy_hpo_config',
     'SimplE',
     'RGCN',
     'CompGCN',

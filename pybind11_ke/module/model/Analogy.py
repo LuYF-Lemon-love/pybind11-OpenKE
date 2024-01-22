@@ -233,3 +233,33 @@ class Analogy(Model):
 
 		score = -self.forward(data)
 		return score.cpu().data.numpy()
+
+def get_analogy_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`Analogy` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'model': {
+				'value': 'Analogy'
+			},
+			'dim': {
+				'values': [50, 100, 200]
+			}
+		}
+
+	:returns: :py:class:`Analogy` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'Analogy'
+		},
+		'dim': {
+			'values': [50, 100, 200]
+		}
+	}
+		
+	return parameters_dict

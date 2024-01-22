@@ -85,3 +85,4 @@ pybind11_ke.module.model
     get_distmult_hpo_config
     get_hole_hpo_config
     get_complex_hpo_config
+    get_analogy_hpo_config
