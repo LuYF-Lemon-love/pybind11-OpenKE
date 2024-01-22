@@ -395,7 +395,7 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'value': True
 			},
 			'neg_ent': {
-				'values': [1, 4, 16, 64]
+				'values': [1, 4, 16, 32]
 			},
 			'neg_rel': {
 				'value': 0
@@ -432,7 +432,7 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'value': True
 		},
 		'neg_ent': {
-			'values': [1, 4, 16, 64]
+			'values': [1, 4, 16, 32]
 		},
 		'neg_rel': {
 			'value': 0
