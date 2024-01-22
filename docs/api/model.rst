@@ -83,3 +83,4 @@ pybind11_ke.module.model
     get_rotate_hpo_config
     get_rescal_hpo_config
     get_distmult_hpo_config
+    get_hole_hpo_config

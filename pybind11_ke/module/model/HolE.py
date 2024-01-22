@@ -229,3 +229,33 @@ class HolE(Model):
 
 		score = -self.forward(data)
 		return score.cpu().data.numpy()
+
+def get_hole_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`HolE` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'model': {
+				'value': 'HolE'
+			},
+			'dim': {
+				'values': [50, 100, 200]
+			}
+		}
+
+	:returns: :py:class:`HolE` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'HolE'
+		},
+		'dim': {
+			'values': [50, 100, 200]
+		}
+	}
+		
+	return parameters_dict

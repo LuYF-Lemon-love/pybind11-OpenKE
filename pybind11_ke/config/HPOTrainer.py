@@ -163,7 +163,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    dim = config.dim,
 				margin = config.margin,
 			    epsilon = config.epsilon)
-		elif config.model in ["RESCAL", "DistMult"]:
+		elif config.model in ["RESCAL", "DistMult", "HolE"]:
 			kge_model = model_class(
 			    ent_tol = train_dataloader.get_ent_tol(),
 			    rel_tol = train_dataloader.get_rel_tol(),

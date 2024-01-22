@@ -21,10 +21,10 @@ from .TransD import TransD, get_transd_hpo_config
 from .RotatE import RotatE, get_rotate_hpo_config
 from .RESCAL import RESCAL, get_rescal_hpo_config
 from .DistMult import DistMult, get_distmult_hpo_config
+from .HolE import HolE, get_hole_hpo_config
 from .ComplEx import ComplEx
 from .Analogy import Analogy
 from .SimplE import SimplE
-from .HolE import HolE
 from .RGCN import RGCN
 from .CompGCN import CompGCN, CompGCNCov
 
@@ -44,10 +44,11 @@ __all__ = [
     'get_rescal_hpo_config',
     'DistMult',
     'get_distmult_hpo_config',
+    'HolE',
+    'get_hole_hpo_config',
     'ComplEx',
     'Analogy',
     'SimplE',
-    'HolE',
     'RGCN',
     'CompGCN',
     'CompGCNCov'
