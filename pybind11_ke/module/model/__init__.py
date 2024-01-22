@@ -22,7 +22,7 @@ from .RotatE import RotatE, get_rotate_hpo_config
 from .RESCAL import RESCAL, get_rescal_hpo_config
 from .DistMult import DistMult, get_distmult_hpo_config
 from .HolE import HolE, get_hole_hpo_config
-from .ComplEx import ComplEx
+from .ComplEx import ComplEx, get_complex_hpo_config
 from .Analogy import Analogy
 from .SimplE import SimplE
 from .RGCN import RGCN
@@ -47,6 +47,7 @@ __all__ = [
     'HolE',
     'get_hole_hpo_config',
     'ComplEx',
+    'get_complex_hpo_config',
     'Analogy',
     'SimplE',
     'RGCN',
