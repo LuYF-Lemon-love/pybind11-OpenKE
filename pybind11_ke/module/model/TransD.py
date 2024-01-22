@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransD.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 8, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 22, 2023
 # 
 # 该头文件定义了 TransD.
 
@@ -77,7 +77,8 @@ class TransD(Model):
 		dim_e: int = 100,
 		dim_r: int = 100,
 		p_norm: int = 1,
-		norm_flag: bool = True):
+		norm_flag: bool = True,
+		margin: float | None = None):
 		
 		"""创建 TransD 对象。
 
@@ -94,6 +95,8 @@ class TransD(Model):
 		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
 						  对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
+		:param margin: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+		:type margin: float
 		"""
 
 		super(TransD, self).__init__(ent_tol, rel_tol)
@@ -116,6 +119,14 @@ class TransD(Model):
 		self.ent_transfer: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim_e)
 		#: 根据关系个数，创建的关系投影向量
 		self.rel_transfer: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim_r)
+
+		if margin != None:
+			#: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
+			self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
+			self.margin.requires_grad = False
+			self.margin_flag: bool = True
+		else:
+			self.margin_flag: bool = False
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
@@ -150,7 +161,10 @@ class TransD(Model):
 		h = self._transfer(h, h_transfer, r_transfer)
 		t = self._transfer(t, t_transfer, r_transfer)
 		score = self._calc(h ,t, r, mode)
-		return score
+		if self.margin_flag:
+			return self.margin - score
+		else:
+			return score
 
 	def _transfer(
 		self,
@@ -312,4 +326,8 @@ class TransD(Model):
 		"""
 
 		score = self.forward(data)
-		return score.cpu().data.numpy()
+		if self.margin_flag:
+			score = self.margin - score
+			return score.cpu().data.numpy()
+		else:
+			return score.cpu().data.numpy()
