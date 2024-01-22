@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransH.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 21, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 22, 2023
 # 
 # 该头文件定义了 TransH.
 
@@ -265,3 +265,45 @@ class TransH(Model):
 			return score.cpu().data.numpy()
 		else:
 			return score.cpu().data.numpy()
+
+def get_transh_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`TransH` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'model': {
+				'value': 'TransH'
+			},
+			'dim': {
+				'values': [50, 100, 200]
+			},
+			'p_norm': {
+				'values': [1, 2]
+			},
+			'norm_flag': {
+				'value': True
+			}
+		}
+
+	:returns: :py:class:`TransH` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'TransH'
+		},
+		'dim': {
+			'values': [50, 100, 200]
+		},
+		'p_norm': {
+			'values': [1, 2]
+		},
+		'norm_flag': {
+			'value': True
+		}
+	}
+		
+	return parameters_dict

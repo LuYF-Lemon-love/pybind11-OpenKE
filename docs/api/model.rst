@@ -77,3 +77,4 @@ pybind11_ke.module.model
     :template: functiontemplate.rst
 
     get_transe_hpo_config
+    get_transh_hpo_config
