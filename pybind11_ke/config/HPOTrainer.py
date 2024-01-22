@@ -148,6 +148,14 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    p_norm = config.p_norm,
 			    norm_flag = config.norm_flag,
 				rand_init = config.rand_init)
+		elif config.model == "TransD":
+			kge_model = model_class(
+			    ent_tol = train_dataloader.get_ent_tol(),
+			    rel_tol = train_dataloader.get_rel_tol(),
+			    dim_e = config.dim_e,
+				dim_r = config.dim_r,
+			    p_norm = config.p_norm,
+			    norm_flag = config.norm_flag)
 
 		# define the loss function
 		loss_class = import_class(f"pybind11_ke.module.loss.{config.loss}")

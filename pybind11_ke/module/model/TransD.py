@@ -331,3 +331,51 @@ class TransD(Model):
 			return score.cpu().data.numpy()
 		else:
 			return score.cpu().data.numpy()
+
+def get_transd_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`TransD` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'model': {
+				'value': 'TransD'
+			},
+			'dim_e': {
+				'values': [50, 100, 200]
+			},
+			'dim_r': {
+				'values': [50, 100, 200]
+			},
+			'p_norm': {
+				'values': [1, 2]
+			},
+			'norm_flag': {
+				'value': True
+			}
+		}
+
+	:returns: :py:class:`TransD` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'TransD'
+		},
+		'dim_e': {
+			'values': [50, 100, 200]
+		},
+		'dim_r': {
+			'values': [50, 100, 200]
+		},
+		'p_norm': {
+			'values': [1, 2]
+		},
+		'norm_flag': {
+			'value': True
+		}
+	}
+		
+	return parameters_dict
