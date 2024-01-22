@@ -19,9 +19,9 @@ from .TransH import TransH, get_transh_hpo_config
 from .TransR import TransR, get_transr_hpo_config
 from .TransD import TransD, get_transd_hpo_config
 from .RotatE import RotatE, get_rotate_hpo_config
+from .RESCAL import RESCAL, get_rescal_hpo_config
 from .DistMult import DistMult, get_distmult_hpo_config
 from .ComplEx import ComplEx
-from .RESCAL import RESCAL
 from .Analogy import Analogy
 from .SimplE import SimplE
 from .HolE import HolE
@@ -40,10 +40,11 @@ __all__ = [
     'get_transd_hpo_config',
     'RotatE',
     'get_rotate_hpo_config',
+    'RESCAL',
+    'get_rescal_hpo_config',
     'DistMult',
     'get_distmult_hpo_config',
     'ComplEx',
-    'RESCAL',
     'Analogy',
     'SimplE',
     'HolE',

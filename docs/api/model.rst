@@ -81,4 +81,5 @@ pybind11_ke.module.model
     get_transr_hpo_config
     get_transd_hpo_config
     get_rotate_hpo_config
+    get_rescal_hpo_config
     get_distmult_hpo_config
