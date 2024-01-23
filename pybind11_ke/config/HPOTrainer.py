@@ -21,13 +21,14 @@ def set_hpo_config(
 	sweep_name: str = 'pybind11_ke_hpo',
 	metric_name: str = 'val/hit10',
 	metric_goal: str = 'maximize',
-	train_data_loader_config: dict[str, dict[str, typing.Any]] | None = None,
-	kge_config: dict[str, dict[str, typing.Any]] | None = None,
-	loss_config: dict[str, dict[str, typing.Any]] | None = None,
-	strategy_config: dict[str, dict[str, typing.Any]] | None = None,
-	test_data_loader_config: dict[str, dict[str, typing.Any]] | None = None,
-	tester_config: dict[str, dict[str, typing.Any]] | None = None,
-	trainer_config: dict[str, dict[str, typing.Any]] | None = None) -> dict[str, dict[str, typing.Any]]:
+	graph_data_loader_config: dict[str, dict[str, typing.Any]] = {},
+	train_data_loader_config: dict[str, dict[str, typing.Any]] = {},
+	kge_config: dict[str, dict[str, typing.Any]] = {},
+	loss_config: dict[str, dict[str, typing.Any]] = {},
+	strategy_config: dict[str, dict[str, typing.Any]] = {},
+	test_data_loader_config: dict[str, dict[str, typing.Any]] = {},
+	tester_config: dict[str, dict[str, typing.Any]] = {},
+	trainer_config: dict[str, dict[str, typing.Any]] = {}) -> dict[str, dict[str, typing.Any]]:
 
 	"""设置超参数优化范围。
 	
@@ -39,6 +40,8 @@ def set_hpo_config(
 	:type metric_name: str
 	:param metric_goal: 超参数优化的指标目标，``maximize`` 或 ``minimize``
 	:type metric_goal: str
+	:param graph_data_loader_config: :py:class:`pybind11_ke.data.GraphDataLoader` 的超参数优化配置
+	:type graph_data_loader_config: dict
 	:param train_data_loader_config: :py:class:`pybind11_ke.data.TrainDataLoader` 的超参数优化配置
 	:type train_data_loader_config: dict
 	:param kge_config: :py:class:`pybind11_ke.module.model.Model` 的超参数优化配置
@@ -68,6 +71,7 @@ def set_hpo_config(
 	}
 
 	parameters_dict: dict[str, dict[str, typing.Any]] | None = {}
+	parameters_dict.update(graph_data_loader_config)
 	parameters_dict.update(train_data_loader_config)
 	parameters_dict.update(kge_config)
 	parameters_dict.update(loss_config)
