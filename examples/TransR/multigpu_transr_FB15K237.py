@@ -1,5 +1,6 @@
 """
 `TransR-FB15K237-single-gpu <single_gpu_transr_FB15K237.html>`_ ||
+`TransR-FB15K237-single-gpu-wandb <single_gpu_transr_FB15K237_wandb.html>`_ ||
 **TransR-FB15K237-multigpu**
 
 TransR-FB15K237-multigpu
