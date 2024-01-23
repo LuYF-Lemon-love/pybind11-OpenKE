@@ -56,8 +56,6 @@ class CompGCNSampler(GraphSampler):
         ent_file: str = "entity2id.txt",
         rel_file: str = "relation2id.txt",
         train_file: str = "train2id.txt",
-        valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt",
         batch_size: int | None = None,
         neg_ent: int = 1):
 
@@ -71,10 +69,6 @@ class CompGCNSampler(GraphSampler):
         :type rel_file: str
         :param train_file: train2id.txt
         :type train_file: str
-        :param valid_file: valid2id.txt
-        :type valid_file: str
-        :param test_file: test2id.txt
-        :type test_file: str
         :param batch_size: batch size
         :type batch_size: int | None
         :param neg_ent: 对于 CompGCN 不起作用。
@@ -86,8 +80,6 @@ class CompGCNSampler(GraphSampler):
             ent_file=ent_file,
             rel_file=rel_file,
             train_file=train_file,
-            valid_file=valid_file,
-            test_file=test_file,
             batch_size=batch_size,
             neg_ent=neg_ent
         )

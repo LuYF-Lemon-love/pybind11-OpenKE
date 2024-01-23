@@ -28,7 +28,7 @@ wandb_logger = WandbLogger(
 	config=dict(
 		in_path = '../../benchmarks/WN18RR/',
 		nbatches = 100,
-		threads = 8,
+		threads = 4,
 		sampling_mode = 'normal',
 		bern = True,
 		neg_ent = 25,
@@ -132,6 +132,34 @@ trainer.run()
 
 # close your wandb run
 wandb_logger.finish()
+
+######################################################################
+# .. figure:: /_static/images/examples/SimplE/SimplE-WN18RR-Loss.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中损失值的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/SimplE/SimplE-WN18RR-MR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/SimplE/SimplE-WN18RR-MRR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MRR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/SimplE/SimplE-WN18RR-Hit.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
 
 ######################################################################
 # --------------

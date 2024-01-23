@@ -46,6 +46,7 @@ class GraphDataLoader:
         test_file: str = "test2id.txt",
         batch_size: int | None = None,
         neg_ent: int = 1,
+        test: bool = False,
         test_batch_size: int | None = None,
         num_workers: int | None = None,
         train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = GraphSampler,
@@ -69,6 +70,8 @@ class GraphDataLoader:
         :type batch_size: int | None
         :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
         :type neg_ent: int
+        :param test: 是否读取验证集和测试集
+        :type test: bool
         :param test_batch_size: test batch size
         :type test_batch_size: int | None
         :param num_workers: 加载数据的进程数
@@ -95,6 +98,8 @@ class GraphDataLoader:
         self.batch_size: int = batch_size
         #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
         self.neg_ent: int = neg_ent
+        #: 是否读取验证集和测试集
+        self.test: bool = test
         #: test batch size
         self.test_batch_size: int = test_batch_size
         #: 加载数据的进程数
@@ -106,22 +111,25 @@ class GraphDataLoader:
             ent_file=self.ent_file,
             rel_file=self.rel_file,
             train_file=self.train_file,
-            valid_file=self.valid_file,
-            test_file=self.test_file,
             batch_size=self.batch_size,
             neg_ent=self.neg_ent
-        )
-        #: 测试数据采样器
-        self.test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
-            sampler=self.train_sampler
         )
 
         #: 训练集三元组
         self.data_train: list[tuple[int, int, int]] = self.train_sampler.get_train()
-        #: 验证集三元组
-        self.data_val: list[tuple[int, int, int]] = self.train_sampler.get_valid()
-        #: 测试集三元组
-        self.data_test: list[tuple[int, int, int]] = self.train_sampler.get_test()
+
+        if self.test:
+            #: 测试数据采样器
+            self.test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
+                sampler=self.train_sampler,
+                valid_file=self.valid_file,
+                test_file=self.test_file,
+            )
+        
+            #: 验证集三元组
+            self.data_val: list[tuple[int, int, int]] = self.test_sampler.get_valid()
+            #: 测试集三元组
+            self.data_test: list[tuple[int, int, int]] = self.test_sampler.get_test()
 
     def train_dataloader(self) -> DataLoader:
 

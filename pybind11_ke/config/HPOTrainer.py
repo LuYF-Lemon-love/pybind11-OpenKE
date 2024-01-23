@@ -132,7 +132,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				neg_rel = config.neg_rel
 			)
 		elif config.dataloader == 'GraphDataLoader':
-			train_dataloader = dataloader_class(
+			dataloader = dataloader_class(
 			    in_path = config.in_path,
 				ent_file = config.ent_file,
 				rel_file = config.rel_file,
@@ -141,6 +141,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				test_file = config.test_file,
 				batch_size = config.batch_size,
 				neg_ent = config.neg_ent,
+				test = True,
 				test_batch_size = config.test_batch_size,
 				num_workers = config.num_workers,
 				train_sampler = import_class(f"pybind11_ke.data.{config.train_sampler}"),
@@ -187,8 +188,8 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    dim = config.dim)
 		elif config.model == "RGCN":
 			kge_model = model_class(
-			    ent_tol = train_dataloader.get_ent_tol(),
-			    rel_tol = train_dataloader.get_rel_tol(),
+			    ent_tol = dataloader.get_ent_tol(),
+			    rel_tol = dataloader.get_rel_tol(),
 			    dim = config.dim,
 				num_layers = config.num_layers)
 
@@ -246,7 +247,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		elif config.tester == 'GraphTester':
 			tester = tester_class(
 				model = kge_model,
-				data_loader = train_dataloader,
+				data_loader = dataloader,
 				prediction = config.prediction,
 				use_gpu = config.use_gpu,
 				device = config.device
@@ -254,42 +255,22 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 
 		# # train the model
 		trainer_class = import_class(f"pybind11_ke.config.{config.trainer}")
-		if config.trainer == 'Trainer':
-			trainer = Trainer(
-				model = model,
-				data_loader = train_dataloader,
-			    epochs = config.epochs,
-				lr = config.lr,
-				opt_method = config.opt_method,
-				use_gpu = config.use_gpu,
-				device = config.device,
-			    tester = tester,
-				test = True,
-				valid_interval = config.valid_interval,
-			    log_interval = config.log_interval,
-				save_path = config.save_path,
-				use_early_stopping = config.use_early_stopping,
-				metric = config.metric,
-				patience = config.patience,
-				delta = config.delta,
-				use_wandb = True)
-		elif config.trainer == 'GraphTrainer':
-			trainer = Trainer(
-				model = model,
-				data_loader = train_dataloader.train_dataloader(),
-			    epochs = config.epochs,
-				lr = config.lr,
-				opt_method = config.opt_method,
-				use_gpu = config.use_gpu,
-				device = config.device,
-			    tester = tester,
-				test = True,
-				valid_interval = config.valid_interval,
-			    log_interval = config.log_interval,
-				save_path = config.save_path,
-				use_early_stopping = config.use_early_stopping,
-				metric = config.metric,
-				patience = config.patience,
-				delta = config.delta,
-				use_wandb = True)
+		trainer = trainer_class(
+			model = model,
+			data_loader = train_dataloader if config.trainer == 'Trainer' else dataloader.train_dataloader(),
+		    epochs = config.epochs,
+			lr = config.lr,
+			opt_method = config.opt_method,
+			use_gpu = config.use_gpu,
+			device = config.device,
+		    tester = tester,
+			test = True,
+			valid_interval = config.valid_interval,
+		    log_interval = config.log_interval,
+			save_path = config.save_path,
+			use_early_stopping = config.use_early_stopping,
+			metric = config.metric,
+			patience = config.patience,
+			delta = config.delta,
+			use_wandb = True)
 		trainer.run()

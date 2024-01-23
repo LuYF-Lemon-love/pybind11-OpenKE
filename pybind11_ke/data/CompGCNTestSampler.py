@@ -49,7 +49,9 @@ class CompGCNTestSampler(GraphTestSampler):
 
     def __init__(
         self,
-        sampler: CompGCNSampler):
+        sampler: CompGCNSampler,
+        valid_file: str = "valid2id.txt",
+        test_file: str = "test2id.txt"):
 
         """创建 CompGCNTestSampler 对象。
 
@@ -58,7 +60,9 @@ class CompGCNTestSampler(GraphTestSampler):
         """
 
         super().__init__(
-            sampler=sampler
+            sampler=sampler,
+            valid_file = valid_file,
+            test_file = test_file
         )
 
         #: 训练集三元组

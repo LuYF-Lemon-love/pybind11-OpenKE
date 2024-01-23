@@ -25,9 +25,7 @@ class KGReader:
         in_path: str = "./",
         ent_file: str = "entity2id.txt",
         rel_file: str = "relation2id.txt",
-        train_file: str = "train2id.txt",
-        valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt"):
+        train_file: str = "train2id.txt"):
 
         """创建 KGReader 对象。
 
@@ -39,10 +37,6 @@ class KGReader:
         :type rel_file: str
         :param train_file: train2id.txt
         :type train_file: str
-        :param valid_file: valid2id.txt
-        :type valid_file: str
-        :param test_file: test2id.txt
-        :type test_file: str
         """
 
         #: 数据集目录
@@ -53,10 +47,6 @@ class KGReader:
         self.rel_file: str = rel_file
         #: train2id.txt
         self.train_file: str = train_file
-        #: valid2id.txt
-        self.valid_file: str = valid_file
-        #: test2id.txt
-        self.test_file: str = test_file
 
         #: 实体的个数
         self.ent_tol: int = 0
@@ -64,10 +54,6 @@ class KGReader:
         self.rel_tol: int = 0
         #: 训练集三元组的个数
         self.train_tol: int = 0
-        #: 验证集三元组的个数
-        self.valid_tol: int = 0
-        #: 测试集三元组的个数
-        self.test_tol: int = 0
 
         #: 实体->ID
         self.ent2id: dict = {}
@@ -80,12 +66,6 @@ class KGReader:
 
         #: 训练集三元组
         self.train_triples: list[tuple[int, int, int]] = []
-        #: 验证集三元组
-        self.valid_triples: list[tuple[int, int, int]] = []
-        #: 测试集三元组
-        self.test_triples: list[tuple[int, int, int]] = []
-        #: 知识图谱所有三元组
-        self.all_true_triples: set[tuple[int, int, int]] = set()
 
         #: 训练集中所有 h-r 对对应的 t 集合
         self.hr2t_train: ddict[set] = ddict(set)
@@ -93,7 +73,7 @@ class KGReader:
         self.rt2h_train: ddict[set] = ddict(set)
 
         self.get_id()
-        self.get_triples_id()
+        self.get_train_triples_id()
     
     def get_id(self):
 
@@ -113,7 +93,7 @@ class KGReader:
                 self.rel2id[relation] = int(rid)
                 self.id2rel[int(rid)] = relation
     
-    def get_triples_id(self):
+    def get_train_triples_id(self):
 
         """读取 :py:attr:`train_file` 文件、 :py:attr:`valid_file` 文件和 :py:attr:`test_file` 文件。"""
         
@@ -122,22 +102,6 @@ class KGReader:
             for line in f:
                 h, t, r = line.strip().split()
                 self.train_triples.append((int(h), int(r), int(t)))
-                
-        with open(os.path.join(self.in_path, self.valid_file)) as f:
-            self.valid_tol = (int)(f.readline())
-            for line in f:
-                h, t, r = line.strip().split()
-                self.valid_triples.append((int(h), int(r), int(t)))
-                
-        with open(os.path.join(self.in_path, self.test_file)) as f:
-            self.test_tol = (int)(f.readline())
-            for line in f:
-                h, t, r = line.strip().split()
-                self.test_triples.append((int(h), int(r), int(t)))
-                
-        self.all_true_triples = set(
-            self.train_triples + self.valid_triples + self.test_triples
-        )
         
     def get_hr2t_rt2h_from_train(self):
 
@@ -171,36 +135,3 @@ class KGReader:
         """
 
         return self.train_triples
-
-    def get_valid(self) -> list[tuple[int, int, int]]:
-
-        """
-        返回验证集三元组。
-
-        :returns: :py:attr:`valid_triples`
-        :rtype: list[tuple[int, int, int]]
-        """
-
-        return self.valid_triples
-
-    def get_test(self) -> list[tuple[int, int, int]]:
-
-        """
-        返回测试集三元组。
-
-        :returns: :py:attr:`test_triples`
-        :rtype: list[tuple[int, int, int]]
-        """
-
-        return self.test_triples
-    
-    def get_all_true_triples(self) -> set[tuple[int, int, int]]:
-
-        """
-        返回知识图谱所有三元组。
-
-        :returns: :py:attr:`all_true_triples`
-        :rtype: set[tuple[int, int, int]]
-        """
-
-        return self.all_true_triples 

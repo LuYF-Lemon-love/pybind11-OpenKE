@@ -16,7 +16,7 @@ from .KGReader import KGReader
 
 class RevSampler(KGReader):
     
-    """增加相反关系.
+    """在训练集中增加相反关系.
 
     对于每一个三元组 (h, r, t)，生成相反关系三元组 (t, r`, h): r` = r + rel_tol。
     """
@@ -26,9 +26,7 @@ class RevSampler(KGReader):
         in_path: str = "./",
         ent_file: str = "entity2id.txt",
         rel_file: str = "relation2id.txt",
-        train_file: str = "train2id.txt",
-        valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt"):
+        train_file: str = "train2id.txt"):
 
         """创建 RevSampler 对象。
 
@@ -40,23 +38,17 @@ class RevSampler(KGReader):
         :type rel_file: str
         :param train_file: train2id.txt
         :type train_file: str
-        :param valid_file: valid2id.txt
-        :type valid_file: str
-        :param test_file: test2id.txt
-        :type test_file: str
         """
         
         super().__init__(
             in_path=in_path,
             ent_file=ent_file,
             rel_file=rel_file,
-            train_file=train_file,
-            valid_file=valid_file,
-            test_file=test_file
+            train_file=train_file
         )
 
         self.add_reverse_relation()
-        self.add_reverse_triples()
+        self.add_train_reverse_triples()
         self.get_hr2t_rt2h_from_train()
         
     def add_reverse_relation(self):
@@ -71,7 +63,7 @@ class RevSampler(KGReader):
                 self.id2rel[int(rid) + self.rel_tol] = relation + "_reverse"
         self.rel_tol = len(self.rel2id)
         
-    def add_reverse_triples(self):
+    def add_train_reverse_triples(self):
 
         """对于每一个三元组 (h, r, t)，生成相反关系三元组 (t, r`, h): r` = r + rel_tol。"""
 
@@ -84,23 +76,3 @@ class RevSampler(KGReader):
                 self.train_triples.append(
                     (int(t), int(r) + tol, int(h))
                 )
-                
-        with open(os.path.join(self.in_path, self.valid_file)) as f:
-            f.readline()
-            for line in f:
-                h, t, r = line.strip().split()
-                self.valid_triples.append(
-                    (int(t), int(r) + tol, int(h))
-                )
-                
-        with open(os.path.join(self.in_path, self.test_file)) as f:
-            f.readline()
-            for line in f:
-                h, t, r = line.strip().split()
-                self.test_triples.append(
-                    (int(t), int(r) + tol, int(h))
-                )
-                
-        self.all_true_triples = set(
-            self.train_triples + self.valid_triples + self.test_triples
-        )
