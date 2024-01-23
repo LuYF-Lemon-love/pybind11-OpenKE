@@ -24,20 +24,21 @@ class CompGCNSampler(GraphSampler):
 
     例子::
 
-        from pybind11_ke.data import CompGCNSampler
+        from pybind11_ke.data import GraphSampler, CompGCNSampler
         from torch.utils.data import DataLoader
 
         #: 训练数据采样器
-        train_sampler: typing.Type[CompGCNSampler] = CompGCNSampler(
+        train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = train_sampler(
             in_path=in_path,
             ent_file=ent_file,
             rel_file=rel_file,
             train_file=train_file,
-            valid_file=valid_file,
-            test_file=test_file,
             batch_size=batch_size,
             neg_ent=neg_ent
         )
+
+        #: 训练集三元组
+        data_train: list[tuple[int, int, int]] = train_sampler.get_train()
 
         train_dataloader = DataLoader(
             data_train,

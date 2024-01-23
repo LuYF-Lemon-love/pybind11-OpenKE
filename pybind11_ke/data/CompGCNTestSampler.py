@@ -20,13 +20,20 @@ class CompGCNTestSampler(GraphTestSampler):
 
     例子::
 
-        from pybind11_ke.data import CompGCNTestSampler
+        from pybind11_ke.data import GraphTestSampler, CompGCNTestSampler
         from torch.utils.data import DataLoader
 
         #: 测试数据采样器
-        test_sampler: typing.Type[CompGCNTestSampler] = CompGCNTestSampler(
-            sampler=train_sampler
+        test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
+            sampler=train_sampler,
+            valid_file=valid_file,
+            test_file=test_file,
         )
+    
+        #: 验证集三元组
+        data_val: list[tuple[int, int, int]] = test_sampler.get_valid()
+        #: 测试集三元组
+        data_test: list[tuple[int, int, int]] = test_sampler.get_test()
 
         val_dataloader = DataLoader(
             data_val,

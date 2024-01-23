@@ -27,12 +27,12 @@ class GraphDataLoader:
         from pybind11_ke.data import CompGCNSampler, CompGCNTestSampler, GraphDataLoader
         
         dataloader = GraphDataLoader(
-        	in_path = "../../benchmarks/FB15K237/",
-        	batch_size = 2048,
-        	test_batch_size = 256,
-        	num_workers = 16,
-        	train_sampler = CompGCNSampler,
-        	test_sampler = CompGCNTestSampler
+            in_path = "../../benchmarks/FB15K237/",
+            batch_size = 60000,
+            neg_ent = 10,
+            test = True,
+            test_batch_size = 100,
+            num_workers = 16
         )
     """
     

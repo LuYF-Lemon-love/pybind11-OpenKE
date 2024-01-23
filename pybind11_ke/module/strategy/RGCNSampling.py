@@ -22,6 +22,48 @@ class RGCNSampling(Strategy):
 
 	"""
 	将模型和损失函数封装到一起，方便模型训练，用于 ``R-GCN`` :cite:`R-GCN`。
+
+    例子::
+
+        from pybind11_ke.data import GraphDataLoader
+        from pybind11_ke.module.model import RGCN
+        from pybind11_ke.module.loss import RGCNLoss
+        from pybind11_ke.module.strategy import RGCNSampling
+        from pybind11_ke.config import GraphTrainer, GraphTester
+        
+        dataloader = GraphDataLoader(
+        	in_path = "../../benchmarks/FB15K237/",
+        	batch_size = 60000,
+        	neg_ent = 10,
+        	test = True,
+        	test_batch_size = 100,
+        	num_workers = 16
+        )
+        
+        # define the model
+        rgcn = RGCN(
+        	ent_tol = dataloader.train_sampler.ent_tol,
+        	rel_tol = dataloader.train_sampler.rel_tol,
+        	dim = 500,
+        	num_layers = 2
+        )
+        
+        # define the loss function
+        model = RGCNSampling(
+        	model = rgcn,
+        	loss = RGCNLoss(model = rgcn, regularization = 1e-5)
+        )
+        
+        # test the model
+        tester = GraphTester(model = rgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
+        
+        # train the model
+        trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+        	epochs = 10000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
+        	tester = tester, test = True, valid_interval = 500, log_interval = 500,
+        	save_interval = 500, save_path = '../../checkpoint/rgcn.pth'
+        )
+        trainer.run()
 	"""
 
 	def __init__(
