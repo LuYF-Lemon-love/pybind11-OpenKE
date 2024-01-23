@@ -1,5 +1,6 @@
 """
-**RGCN-FB15K237-single-gpu**
+**RGCN-FB15K237-single-gpu** ||
+`RGCN-FB15K237-single-gpu-wandb <single_gpu_rgcn_FB15K237_wandb.html>`_
 
 RGCN-FB15K237-single-gpu
 =====================================================

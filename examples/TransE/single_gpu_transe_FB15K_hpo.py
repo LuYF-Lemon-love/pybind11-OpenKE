@@ -149,6 +149,7 @@ print()
 
 # set the hpo config
 sweep_config = set_hpo_config(
+    sweep_name = "TransE_FB15K",
     train_data_loader_config = train_data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,
@@ -170,7 +171,7 @@ print()
 # :py:func:`pybind11_ke.config.start_hpo_train` 可以开始超参数优化。
 
 # start hpo
-start_hpo_train(config=sweep_config)
+start_hpo_train(config=sweep_config, count=3)
 
 ######################################################################
 # --------------

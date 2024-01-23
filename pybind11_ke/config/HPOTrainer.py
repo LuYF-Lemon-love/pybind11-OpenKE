@@ -13,10 +13,8 @@ hpo_train - 超参数优化训练循环函数。
 
 import wandb
 import typing
-from ..data import TrainDataLoader, TestDataLoader
+from ..data import TestDataLoader
 from ..utils import import_class
-from ..module.strategy import NegativeSampling
-from ..config import Trainer, Tester
 
 def set_hpo_config(
 	method: str = 'bayes',
@@ -117,7 +115,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		config = wandb.config
 
 		# dataloader for training
-		dataloader_class = import_class(f"pybind11_ke.module.model.{config.dataloader}")
+		dataloader_class = import_class(f"pybind11_ke.data.{config.dataloader}")
 		if config.dataloader == 'TrainDataLoader':
 			train_dataloader = dataloader_class(
 			    in_path = config.in_path,

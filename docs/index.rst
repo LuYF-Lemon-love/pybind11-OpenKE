@@ -78,6 +78,7 @@
    :caption: 图神经网络模型
 
    examples/RGCN/single_gpu_rgcn_FB15K237
+   examples/RGCN/single_gpu_rgcn_FB15K237_wandb
    examples/CompGCN/single_gpu_compgcn_FB15K237
 
 .. toctree::

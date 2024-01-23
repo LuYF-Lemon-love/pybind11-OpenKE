@@ -371,8 +371,8 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	
 		parameters_dict = {
 			'dataloader': {
-	    		'value': 'TrainDataLoader'
-	    	},
+				'value': 'TrainDataLoader'
+			},
 			'in_path': {
 				'value': './'
 			},
@@ -389,7 +389,7 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'values': [512, 1024, 2048, 4096]
 			},
 			'threads': {
-				'value': 8
+				'value': 4
 			},
 			'sampling_mode': {
 				'value': 'normal'
@@ -429,7 +429,7 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'values': [512, 1024, 2048, 4096]
 		},
 		'threads': {
-			'value': 8
+			'value': 4
 		},
 		'sampling_mode': {
 			'value': 'normal'
