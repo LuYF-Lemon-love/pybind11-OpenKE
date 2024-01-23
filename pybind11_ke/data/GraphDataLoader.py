@@ -190,45 +190,45 @@ def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	
 	    parameters_dict = {
             'dataloader': {
-	    		'value': 'GraphDataLoader'
-	    	},
-	    	'in_path': {
-	    		'value': './'
-	    	},
-	    	'ent_file': {
-	    		'value': 'entity2id.txt'
-	    	},
-	    	'rel_file': {
-	    		'value': 'relation2id.txt'
-	    	},
-	    	'train_file': {
-	    		'value': 'train2id.txt'
-	    	},
+                'value': 'GraphDataLoader'
+            },
+            'in_path': {
+                'value': './'
+            },
+            'ent_file': {
+                'value': 'entity2id.txt'
+            },
+            'rel_file': {
+                'value': 'relation2id.txt'
+            },
+            'train_file': {
+                'value': 'train2id.txt'
+            },
             'valid_file': {
-	    		'value': 'valid2id.txt'
-	    	},
+                'value': 'valid2id.txt'
+            },
             'test_file': {
-	    		'value': 'test2id.txt'
-	    	},
-	    	'batch_size': {
-	    		'values': [512, 1024, 2048, 4096]
-	    	},
+                'value': 'test2id.txt'
+            },
+            'batch_size': {
+                'values': [512, 1024, 2048, 4096]
+            },
             'neg_ent': {
-	    		'values': [1, 4, 16, 32]
-	    	},
-	    	'test_batch_size': {
-	    		'value': 100
-	    	},
-	    	'num_workers': {
-	    		'value': 16
-	    	},
-	    	'train_sampler': {
-	    		'value': 'GraphSampler'
-	    	},
-	    	'test_sampler': {
-	    		'value': 'GraphTestSampler'
-	    	}
-	    }
+                'values': [1, 4, 16, 32]
+            },
+            'test_batch_size': {
+                'value': 100
+            },
+            'num_workers': {
+                'value': 16
+            },
+            'train_sampler': {
+                'value': 'GraphSampler'
+            },
+            'test_sampler': {
+                'value': 'GraphTestSampler'
+            }
+        }
 
 	:returns: :py:class:`GraphDataLoader` 的默认超参数优化配置
 	:rtype: dict[str, dict[str, typing.Any]]
@@ -236,44 +236,44 @@ def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	parameters_dict = {
         'dataloader': {
-			'value': 'GraphDataLoader'
-		},
-		'in_path': {
-			'value': './'
-		},
-		'ent_file': {
-			'value': 'entity2id.txt'
-		},
-		'rel_file': {
-			'value': 'relation2id.txt'
-		},
-		'train_file': {
-			'value': 'train2id.txt'
-		},
+            'value': 'GraphDataLoader'
+        },
+        'in_path': {
+            'value': './'
+        },
+        'ent_file': {
+            'value': 'entity2id.txt'
+        },
+        'rel_file': {
+            'value': 'relation2id.txt'
+        },
+        'train_file': {
+            'value': 'train2id.txt'
+        },
         'valid_file': {
-			'value': 'valid2id.txt'
-		},
+            'value': 'valid2id.txt'
+        },
         'test_file': {
-			'value': 'test2id.txt'
-		},
-		'batch_size': {
-			'values': [512, 1024, 2048, 4096]
-		},
+            'value': 'test2id.txt'
+        },
+        'batch_size': {
+            'values': [512, 1024, 2048, 4096]
+        },
         'neg_ent': {
-			'values': [1, 4, 16, 32]
-		},
-		'test_batch_size': {
-			'value': 100
-		},
-		'num_workers': {
-			'value': 16
-		},
-		'train_sampler': {
-			'value': 'GraphSampler'
-		},
-		'test_sampler': {
-			'value': 'GraphTestSampler'
-		}
-	}
+            'values': [1, 4, 16, 32]
+        },
+        'test_batch_size': {
+            'value': 100
+        },
+        'num_workers': {
+            'value': 16
+        },
+        'train_sampler': {
+            'value': 'GraphSampler'
+        },
+        'test_sampler': {
+            'value': 'GraphTestSampler'
+        }
+    }
 		
 	return parameters_dict

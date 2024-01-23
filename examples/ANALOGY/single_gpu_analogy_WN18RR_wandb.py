@@ -133,5 +133,33 @@ trainer = Trainer(model = model, data_loader = train_dataloader,
 trainer.run()
 
 ######################################################################
+# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-Loss.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中损失值的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-MR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-MRR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MRR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-Hit.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+
+######################################################################
 # --------------
 #
