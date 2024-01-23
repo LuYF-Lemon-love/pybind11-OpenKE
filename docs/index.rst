@@ -62,6 +62,7 @@
    :caption: 语义匹配模型
 
    examples/RESCAL/single_gpu_rescal_FB15K237
+   examples/RESCAL/single_gpu_rescal_FB15K237_wandb
    examples/DistMult/single_gpu_distmult_WN18RR_wandb
    examples/DistMult/single_gpu_distmult_WN18RR_adv_sigmoidloss_wandb
    examples/HolE/single_gpu_hole_WN18RR_wandb
