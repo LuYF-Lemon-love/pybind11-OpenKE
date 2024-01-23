@@ -389,6 +389,9 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	默认配置为::
 	
 		parameters_dict = {
+			'trainer': {
+				'value': 'Trainer'
+			},
 			'epochs': {
 				'value': 10000
 			},
@@ -428,6 +431,9 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	"""
 
 	parameters_dict = {
+		'trainer': {
+			'value': 'Trainer'
+		},
 		'epochs': {
 			'value': 10000
 		},

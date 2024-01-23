@@ -194,3 +194,91 @@ class GraphTrainer(Trainer):
 			return x.to(self.device)
 		else:
 			return x
+
+def get_graph_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`GraphTrainer` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'trainer': {
+				'value': 'GraphTrainer'
+			},
+			'epochs': {
+				'value': 10000
+			},
+			'lr': {
+				'distribution': 'uniform',
+				'min': 0,
+				'max': 1.0
+			},
+			'opt_method': {
+				'values': ['adam', 'adagrad', 'sgd']
+			},
+			'valid_interval': {
+				'value': 50
+			},
+			'log_interval': {
+				'value': 50
+			},
+			'save_path': {
+				'value': './'
+			},
+			'use_early_stopping': {
+				'value': True
+			},
+			'metric': {
+				'value': 'hit10'
+			},
+			'patience': {
+				'value': 2
+			},
+			'delta': {
+				'value': 0
+			},
+		}
+
+	:returns: :py:class:`GraphTrainer` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]	
+	"""
+
+	parameters_dict = {
+		'trainer': {
+			'value': 'GraphTrainer'
+		},
+		'epochs': {
+			'value': 10000
+		},
+		'lr': {
+			'distribution': 'uniform',
+			'min': 0,
+			'max': 1.0
+		},
+		'opt_method': {
+			'values': ['adam', 'adagrad', 'sgd']
+		},
+		'valid_interval': {
+			'value': 50
+		},
+		'log_interval': {
+			'value': 50
+		},
+		'save_path': {
+			'value': './'
+		},
+		'use_early_stopping': {
+			'value': True
+		},
+		'metric': {
+			'value': 'hit10'
+		},
+		'patience': {
+			'value': 2
+		},
+		'delta': {
+			'value': 0
+		},
+	}
+		
+	return parameters_dict

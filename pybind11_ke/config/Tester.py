@@ -163,6 +163,9 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     默认配置为::
     
 	    parameters_dict = {
+            'tester': {
+	    		'value': 'Tester'
+	    	},
             'use_gpu': {
                 'value': True
             },
@@ -176,6 +179,9 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     """
 
 	parameters_dict = {
+        'tester': {
+			'value': 'Tester'
+		},
         'use_gpu': {
             'value': True
         },

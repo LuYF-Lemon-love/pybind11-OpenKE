@@ -146,6 +146,9 @@ def get_negative_sampling_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	默认配置为::
 	
 		parameters_dict = {
+			'strategy': {
+				'value': 'NegativeSampling'
+			},
 			'regul_rate': {
 				'value': 0.0
 			},
@@ -159,6 +162,9 @@ def get_negative_sampling_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	"""
 
 	parameters_dict = {
+		'strategy': {
+			'value': 'NegativeSampling'
+		},
 		'regul_rate': {
 			'value': 0.0
 		},

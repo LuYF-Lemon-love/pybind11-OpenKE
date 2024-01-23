@@ -47,3 +47,4 @@ pybind11_ke.data
 
     get_train_data_loader_hpo_config
     get_test_data_loader_hpo_config
+    get_graph_data_loader_hpo_config

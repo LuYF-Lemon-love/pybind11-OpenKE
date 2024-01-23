@@ -370,6 +370,9 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	默认配置为::
 	
 		parameters_dict = {
+			'dataloader': {
+	    		'value': 'TrainDataLoader'
+	    	},
 			'in_path': {
 				'value': './'
 			},
@@ -407,6 +410,9 @@ def get_train_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	"""
 
 	parameters_dict = {
+		'dataloader': {
+			'value': 'TrainDataLoader'
+		},
 		'in_path': {
 			'value': './'
 		},

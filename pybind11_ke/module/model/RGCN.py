@@ -13,6 +13,7 @@ R-GCN - 第一个图神经网络模型。
 
 import dgl
 import torch
+import typing
 import torch.nn as nn
 import torch.nn.functional as F
 from .Model import Model
@@ -223,3 +224,39 @@ class RGCN(Model):
         score = self.distmult_score_func(head_emb, rela_emb, tail_emb, mode)
 
         return score
+
+def get_rgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`RGCN` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+	    parameters_dict = {
+	    	'model': {
+	    		'value': 'RGCN'
+	    	},
+	    	'dim': {
+	    		'values': [200, 400, 600]
+	    	},
+	    	'num_layers': {
+	    		'value': 2
+	    	}
+	    }
+
+	:returns: :py:class:`RGCN` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'RGCN'
+		},
+		'dim': {
+			'values': [200, 400, 600]
+		},
+		'num_layers': {
+			'value': 2
+		}
+	}
+		
+	return parameters_dict

@@ -43,3 +43,4 @@ pybind11_ke.module.loss
     get_margin_loss_hpo_config
     get_sigmoid_loss_hpo_config
     get_softplus_loss_hpo_config
+    get_rgcn_loss_hpo_config

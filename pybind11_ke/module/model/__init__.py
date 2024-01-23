@@ -25,7 +25,7 @@ from .HolE import HolE, get_hole_hpo_config
 from .ComplEx import ComplEx, get_complex_hpo_config
 from .Analogy import Analogy, get_analogy_hpo_config
 from .SimplE import SimplE, get_simple_hpo_config
-from .RGCN import RGCN
+from .RGCN import RGCN, get_rgcn_hpo_config
 from .CompGCN import CompGCN, CompGCNCov
 
 __all__ = [
@@ -53,6 +53,7 @@ __all__ = [
     'SimplE',
     'get_simple_hpo_config',
     'RGCN',
+    'get_rgcn_hpo_config',
     'CompGCN',
     'CompGCNCov'
 ]

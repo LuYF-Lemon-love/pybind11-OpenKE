@@ -22,7 +22,7 @@ from .GraphSampler import GraphSampler
 from .CompGCNSampler import CompGCNSampler
 from .GraphTestSampler import GraphTestSampler
 from .CompGCNTestSampler import CompGCNTestSampler
-from .GraphDataLoader import GraphDataLoader
+from .GraphDataLoader import GraphDataLoader, get_graph_data_loader_hpo_config
 
 __all__ = [
 	'TrainDataSampler',
@@ -37,5 +37,6 @@ __all__ = [
 	'CompGCNSampler',
 	'GraphTestSampler',
 	'CompGCNTestSampler',
-	'GraphDataLoader'
+	'GraphDataLoader',
+	'get_graph_data_loader_hpo_config'
 ]

@@ -117,18 +117,35 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		config = wandb.config
 
 		# dataloader for training
-		train_dataloader = TrainDataLoader(
-		    in_path = config.in_path,
-			ent_file = config.ent_file,
-			rel_file = config.rel_file,
-			train_file = config.train_file,
-			batch_size = config.batch_size,
-			threads = config.threads,
-			sampling_mode = config.sampling_mode,
-			bern = config.bern,
-			neg_ent = config.neg_ent,
-			neg_rel = config.neg_rel
-		)
+		dataloader_class = import_class(f"pybind11_ke.module.model.{config.dataloader}")
+		if config.dataloader == 'TrainDataLoader':
+			train_dataloader = dataloader_class(
+			    in_path = config.in_path,
+				ent_file = config.ent_file,
+				rel_file = config.rel_file,
+				train_file = config.train_file,
+				batch_size = config.batch_size,
+				threads = config.threads,
+				sampling_mode = config.sampling_mode,
+				bern = config.bern,
+				neg_ent = config.neg_ent,
+				neg_rel = config.neg_rel
+			)
+		elif config.dataloader == 'GraphDataLoader':
+			train_dataloader = dataloader_class(
+			    in_path = config.in_path,
+				ent_file = config.ent_file,
+				rel_file = config.rel_file,
+				train_file = config.train_file,
+				valid_file = config.valid_file,
+				test_file = config.test_file,
+				batch_size = config.batch_size,
+				neg_ent = config.neg_ent,
+				test_batch_size = config.test_batch_size,
+				num_workers = config.num_workers,
+				train_sampler = import_class(f"pybind11_ke.data.{config.train_sampler}"),
+				test_sampler = import_class(f"pybind11_ke.data.{config.test_sampler}")
+			)
 
 		# define the model
 		model_class = import_class(f"pybind11_ke.module.model.{config.model}")
@@ -168,6 +185,12 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    ent_tol = train_dataloader.get_ent_tol(),
 			    rel_tol = train_dataloader.get_rel_tol(),
 			    dim = config.dim)
+		elif config.model == "RGCN":
+			kge_model = model_class(
+			    ent_tol = train_dataloader.get_ent_tol(),
+			    rel_tol = train_dataloader.get_rel_tol(),
+			    dim = config.dim,
+				num_layers = config.num_layers)
 
 		# define the loss function
 		loss_class = import_class(f"pybind11_ke.module.loss.{config.loss}")
@@ -176,54 +199,97 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				adv_temperature = config.adv_temperature,
 				margin = config.margin)
 		elif config.loss in ['SigmoidLoss', 'SoftplusLoss']:
+			loss = loss_class(adv_temperature = config.adv_temperature)
+		elif config.loss == 'RGCNLoss':
 			loss = loss_class(
-				adv_temperature = config.adv_temperature)
+				model = kge_model,
+				regularization = config.regularization
+			)
 		
-		# define the strategt
-		model = NegativeSampling(
-		    model = kge_model,
-		    loss = loss,
-		    batch_size = train_dataloader.get_batch_size(),
-			regul_rate = config.regul_rate,
-			l3_regul_rate = config.l3_regul_rate
-		)
+		# define the strategy
+		strategy_class = import_class(f"pybind11_ke.module.strategy.{config.strategy}")
+		if config.strategy == 'NegativeSampling':
+			model = strategy_class(
+			    model = kge_model,
+			    loss = loss,
+			    batch_size = train_dataloader.get_batch_size(),
+				regul_rate = config.regul_rate,
+				l3_regul_rate = config.l3_regul_rate
+			)
+		elif config.strategy == 'RGCNSampling':
+			model = strategy_class(
+				model = kge_model,
+				loss = loss
+			)
 
 		# dataloader for test
-		test_dataloader = TestDataLoader(
-			in_path = train_dataloader.in_path,
-			ent_file = train_dataloader.ent_file,
-			rel_file = train_dataloader.rel_file,
-			train_file = train_dataloader.train_file,
-			valid_file = config.valid_file,
-			test_file = config.test_file,
-			type_constrain = config.type_constrain
-		)
+		if config.dataloader != 'GraphDataLoader':
+			test_dataloader = TestDataLoader(
+				in_path = train_dataloader.in_path,
+				ent_file = train_dataloader.ent_file,
+				rel_file = train_dataloader.rel_file,
+				train_file = train_dataloader.train_file,
+				valid_file = config.valid_file,
+				test_file = config.test_file,
+				type_constrain = config.type_constrain
+			)
 
 		# test the model
-		tester = Tester(
-			model = kge_model,
-			data_loader = test_dataloader,
-			use_gpu = config.use_gpu,
-			device = config.device
-		)
+		tester_class = import_class(f"pybind11_ke.config.{config.tester}")
+		if config.tester == 'Tester':
+			tester = tester_class(
+				model = kge_model,
+				data_loader = test_dataloader,
+				use_gpu = config.use_gpu,
+				device = config.device
+			)
+		elif config.tester == 'GraphTester':
+			tester = tester_class(
+				model = kge_model,
+				data_loader = train_dataloader,
+				prediction = config.prediction,
+				use_gpu = config.use_gpu,
+				device = config.device
+			)
 
 		# # train the model
-		trainer = Trainer(
-			model = model,
-			data_loader = train_dataloader,
-		    epochs = config.epochs,
-			lr = config.lr,
-			opt_method = config.opt_method,
-			use_gpu = config.use_gpu,
-			device = config.device,
-		    tester = tester,
-			test = True,
-			valid_interval = config.valid_interval,
-		    log_interval = config.log_interval,
-			save_path = config.save_path,
-			use_early_stopping = config.use_early_stopping,
-			metric = config.metric,
-			patience = config.patience,
-			delta = config.delta,
-			use_wandb = True)
+		trainer_class = import_class(f"pybind11_ke.config.{config.trainer}")
+		if config.trainer == 'Trainer':
+			trainer = Trainer(
+				model = model,
+				data_loader = train_dataloader,
+			    epochs = config.epochs,
+				lr = config.lr,
+				opt_method = config.opt_method,
+				use_gpu = config.use_gpu,
+				device = config.device,
+			    tester = tester,
+				test = True,
+				valid_interval = config.valid_interval,
+			    log_interval = config.log_interval,
+				save_path = config.save_path,
+				use_early_stopping = config.use_early_stopping,
+				metric = config.metric,
+				patience = config.patience,
+				delta = config.delta,
+				use_wandb = True)
+		elif config.trainer == 'GraphTrainer':
+			trainer = Trainer(
+				model = model,
+				data_loader = train_dataloader.train_dataloader(),
+			    epochs = config.epochs,
+				lr = config.lr,
+				opt_method = config.opt_method,
+				use_gpu = config.use_gpu,
+				device = config.device,
+			    tester = tester,
+				test = True,
+				valid_interval = config.valid_interval,
+			    log_interval = config.log_interval,
+				save_path = config.save_path,
+				use_early_stopping = config.use_early_stopping,
+				metric = config.metric,
+				patience = config.patience,
+				delta = config.delta,
+				use_wandb = True)
 		trainer.run()

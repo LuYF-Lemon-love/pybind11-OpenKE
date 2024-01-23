@@ -66,3 +66,27 @@ class RGCNSampling(Strategy):
 		score = self.model(graph, entity, relation, norm, triples)
 		loss  = self.loss(score,  label)
 		return loss
+
+def get_rgcn_sampling_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`RGCNSampling` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+		parameters_dict = {
+			'strategy': {
+				'value': 'RGCNSampling'
+			}
+		}
+	
+	:returns: :py:class:`RGCNSampling` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'strategy': {
+			'value': 'RGCNSampling'
+		}
+	}
+		
+	return parameters_dict

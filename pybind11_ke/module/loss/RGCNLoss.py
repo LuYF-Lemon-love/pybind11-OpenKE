@@ -12,6 +12,7 @@ RGCNLoss - 损失函数类，R-GCN 原论文中应用这种损失函数完成模
 """
 
 import torch
+from typing import Any
 from ..model import RGCN
 import torch.nn.functional as F
 from .Loss import Loss
@@ -84,3 +85,33 @@ class RGCNLoss(Loss):
         regu = self.regularization * self.reg_loss()
         loss += regu
         return loss
+
+def get_rgcn_loss_hpo_config() -> dict[str, dict[str, Any]]:
+
+	"""返回 :py:class:`RGCNLoss` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+	    parameters_dict = {
+	    	'loss': {
+	    		'value': 'RGCNLoss'
+	    	},
+	    	'regularization': {
+	    		'value': 1e-5
+	    	}
+	    }
+	
+	:returns: :py:class:`RGCNLoss` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'loss': {
+			'value': 'RGCNLoss'
+		},
+		'regularization': {
+			'value': 1e-5
+		}
+	}
+		
+	return parameters_dict

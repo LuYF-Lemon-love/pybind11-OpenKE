@@ -96,3 +96,13 @@ pybind11_ke.module.model
     get_complex_hpo_config
     get_analogy_hpo_config
     get_simple_hpo_config
+
+图神经网络模型超参数优化默认搜索范围
+----------------------------------
+
+.. autosummary::
+    :toctree: generated
+    :nosignatures:
+    :template: functiontemplate.rst
+
+    get_rgcn_hpo_config
