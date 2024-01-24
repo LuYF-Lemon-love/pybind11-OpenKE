@@ -78,6 +78,7 @@
    examples/ANALOGY/single_gpu_analogy_WN18RR_wandb
    examples/ANALOGY/single_gpu_analogy_WN18RR_hpo
    examples/SimplE/single_gpu_simple_WN18RR_wandb
+   examples/SimplE/single_gpu_simple_WN18RR_hpo
 
 .. toctree::
    :maxdepth: 2

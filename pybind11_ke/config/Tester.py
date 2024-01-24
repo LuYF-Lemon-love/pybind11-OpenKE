@@ -157,12 +157,12 @@ class Tester(object):
         self.sampling_mode = sampling_mode
 
 def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
-
-	"""返回 :py:class:`Tester` 的默认超参数优化配置。
+    
+    """返回 :py:class:`Tester` 的默认超参数优化配置。
     
     默认配置为::
     
-	    parameters_dict = {
+        parameters_dict = {
             'tester': {
                 'value': 'Tester'
             },
@@ -177,8 +177,8 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     :returns: :py:class:`Tester` 的默认超参数优化配置
 	:rtype: dict[str, dict[str, typing.Any]]  
     """
-
-	parameters_dict = {
+    
+    parameters_dict = {
         'tester': {
             'value': 'Tester'
         },
@@ -189,5 +189,5 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'value': 'cuda:0'
         },
     }
-		
-	return parameters_dict
+    
+    return parameters_dict
