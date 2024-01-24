@@ -145,7 +145,7 @@ print()
 
 # set the hpo config
 sweep_config = set_hpo_config(
-    sweep_name = "ComplEx_WN18RR",
+    sweep_name = "ANALOGY_WN18RR",
     train_data_loader_config = train_data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,

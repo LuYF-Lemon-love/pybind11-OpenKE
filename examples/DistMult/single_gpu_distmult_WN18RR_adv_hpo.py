@@ -170,5 +170,12 @@ print()
 start_hpo_train(config=sweep_config, count=3)
 
 ######################################################################
+# .. figure:: /_static/images/examples/DistMult/DistMult-WN18RR-HPO.png
+#      :align: center
+#      :height: 300
+#
+#      超参数优化结果
+
+######################################################################
 # --------------
 #
