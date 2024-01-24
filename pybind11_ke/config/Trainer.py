@@ -422,7 +422,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'value': 2
 			},
 			'delta': {
-				'value': 0
+				'value': 0.0001
 			},
 		}
 
@@ -464,7 +464,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'value': 2
 		},
 		'delta': {
-			'value': 0
+			'value': 0.0001
 		},
 	}
 		

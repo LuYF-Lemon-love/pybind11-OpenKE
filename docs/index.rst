@@ -71,6 +71,7 @@
    examples/DistMult/single_gpu_distmult_WN18RR_adv_sigmoidloss_wandb
    examples/DistMult/single_gpu_distmult_WN18RR_adv_hpo.py
    examples/HolE/single_gpu_hole_WN18RR_wandb
+   examples/HolE/single_gpu_hole_WN18RR_hpo
    examples/ComplEx/single_gpu_complex_WN18RR_wandb
    examples/ANALOGY/single_gpu_analogy_WN18RR
    examples/ANALOGY/single_gpu_analogy_WN18RR_wandb

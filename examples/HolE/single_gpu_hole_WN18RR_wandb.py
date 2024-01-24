@@ -1,5 +1,6 @@
 """
-**HolE-WN18RR-single-gpu-wandb**
+**HolE-WN18RR-single-gpu-wandb** ||
+`HolE-WN18RR-single-gpu-hpo <single_gpu_hole_WN18RR_hpo.html>`_
 
 HolE-WN18RR-single-gpu-wandb
 ====================================================================
