@@ -190,10 +190,20 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    dim = config.dim)
 		elif config.model == "RGCN":
 			kge_model = model_class(
-				ent_tol = dataloader.get_ent_tol(),
-				rel_tol = dataloader.get_rel_tol(),
+				ent_tol = dataloader.train_sampler.ent_tol,
+				rel_tol = dataloader.train_sampler.rel_tol,
 				dim = config.dim,
 				num_layers = config.num_layers)
+		elif config.model == "CompGCN":
+			kge_model = model_class(
+				ent_tol = dataloader.train_sampler.ent_tol,
+				rel_tol = dataloader.train_sampler.rel_tol,
+				dim = config.dim,
+				opn = config.opn,
+				fet_drop = config.fet_drop,
+				hid_drop = config.hid_drop,
+				out_dim = config.out_dim,
+				decoder_model = config.decoder_model)
 
 		# define the loss function
 		loss_class = import_class(f"pybind11_ke.module.loss.{config.loss}")
@@ -208,6 +218,8 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				model = kge_model,
 				regularization = config.regularization
 			)
+		elif config.loss == 'Cross_Entropy_Loss':
+			loss = loss_class(model = kge_model)
 		
 		# define the strategy
 		strategy_class = import_class(f"pybind11_ke.module.strategy.{config.strategy}")
@@ -223,6 +235,13 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			model = strategy_class(
 				model = kge_model,
 				loss = loss
+			)
+		elif config.strategy == 'CompGCNSampling':
+			model = strategy_class(
+				model = kge_model,
+				loss = loss,
+				smoothing = config.smoothing,
+				ent_tol = dataloader.train_sampler.ent_tol
 			)
 
 		# dataloader for test

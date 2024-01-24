@@ -106,3 +106,4 @@ pybind11_ke.module.model
     :template: functiontemplate.rst
 
     get_rgcn_hpo_config
+    get_compgcn_hpo_config

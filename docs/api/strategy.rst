@@ -40,3 +40,4 @@ pybind11_ke.module.strategy
 
     get_negative_sampling_hpo_config
     get_rgcn_sampling_hpo_config
+    get_compgcn_sampling_hpo_config

@@ -16,7 +16,7 @@ from __future__ import print_function
 from .Strategy import Strategy
 from .NegativeSampling import NegativeSampling, get_negative_sampling_hpo_config
 from .RGCNSampling import RGCNSampling, get_rgcn_sampling_hpo_config
-from .CompGCNSampling import CompGCNSampling
+from .CompGCNSampling import CompGCNSampling, get_compgcn_sampling_hpo_config
 
 __all__ = [
     'Strategy',
@@ -24,5 +24,6 @@ __all__ = [
     'get_negative_sampling_hpo_config',
     'RGCNSampling',
     'get_rgcn_sampling_hpo_config',
-    'CompGCNSampling'
+    'CompGCNSampling',
+    'get_compgcn_sampling_hpo_config'
 ]

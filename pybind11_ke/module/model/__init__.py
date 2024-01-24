@@ -26,7 +26,7 @@ from .ComplEx import ComplEx, get_complex_hpo_config
 from .Analogy import Analogy, get_analogy_hpo_config
 from .SimplE import SimplE, get_simple_hpo_config
 from .RGCN import RGCN, get_rgcn_hpo_config
-from .CompGCN import CompGCN, CompGCNCov
+from .CompGCN import CompGCN, CompGCNCov, get_compgcn_hpo_config
 
 __all__ = [
     'Model',
@@ -55,5 +55,6 @@ __all__ = [
     'RGCN',
     'get_rgcn_hpo_config',
     'CompGCN',
-    'CompGCNCov'
+    'CompGCNCov',
+    'get_compgcn_hpo_config'
 ]

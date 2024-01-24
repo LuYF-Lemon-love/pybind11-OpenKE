@@ -13,6 +13,7 @@ Cross_Entropy_Loss - 损失函数类，CompGCN 原论文中应用这种损失函
 
 import torch
 from .Loss import Loss
+from typing import Any
 from ..model import CompGCN
 
 class Cross_Entropy_Loss(Loss):
@@ -69,3 +70,27 @@ class Cross_Entropy_Loss(Loss):
         
         loss = self.loss(pred, label)
         return loss
+
+def get_cross_entropy_loss_hpo_config() -> dict[str, dict[str, Any]]:
+
+	"""返回 :py:class:`Cross_Entropy_Loss` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+	    parameters_dict = {
+	    	'loss': {
+	    		'value': 'Cross_Entropy_Loss'
+	    	}
+	    }
+	
+	:returns: :py:class:`Cross_Entropy_Loss` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'loss': {
+			'value': 'Cross_Entropy_Loss'
+		}
+	}
+		
+	return parameters_dict

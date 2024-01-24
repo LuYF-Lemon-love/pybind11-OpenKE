@@ -469,3 +469,63 @@ class CompGCNCov(nn.Module):
         """聚合函数"""
         
         return {'h': self.drop(nodes.data['h']) / 3}
+
+def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
+
+	"""返回 :py:class:`CompGCN` 的默认超参数优化配置。
+	
+	默认配置为::
+	
+	    parameters_dict = {
+	    	'model': {
+	    		'value': 'CompGCN'
+	    	},
+	    	'dim': {
+	    		'values': [100, 200, 400]
+	    	},
+	    	'opn': {
+	    		'value': 'corr'
+	    	},
+            'fet_drop': {
+                'value': 0.2
+            },
+            'hid_drop': {
+                'value': 0.3
+            },
+            'out_dim': {
+                'value': 200
+            },
+	    	'decoder_model': {
+	    		'value': 'ConvE'
+	    	}
+	    }
+
+	:returns: :py:class:`CompGCN` 的默认超参数优化配置
+	:rtype: dict[str, dict[str, typing.Any]]
+	"""
+
+	parameters_dict = {
+		'model': {
+			'value': 'CompGCN'
+		},
+		'dim': {
+			'values': [100, 200, 400]
+		},
+		'opn': {
+			'value': 'corr'
+		},
+        'fet_drop': {
+            'value': 0.2
+        },
+        'hid_drop': {
+            'value': 0.3
+        },
+        'out_dim': {
+            'value': 200
+        },
+		'decoder_model': {
+			'value': 'ConvE'
+		}
+	}
+		
+	return parameters_dict
