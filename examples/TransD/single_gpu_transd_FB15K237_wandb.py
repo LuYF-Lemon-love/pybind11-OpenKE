@@ -1,5 +1,6 @@
 """
-**TransD-FB15K237-single-gpu-wandb**
+**TransD-FB15K237-single-gpu-wandb** ||
+`TransD-FB15K237-single-gpu-hpo <single_gpu_transd_FB15K237_hpo.html>`_
 
 TransD-FB15K237-single-gpu-wandb
 ====================================================================

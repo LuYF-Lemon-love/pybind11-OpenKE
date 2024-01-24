@@ -39,3 +39,4 @@ pybind11_ke.module.strategy
     :template: functiontemplate.rst
 
     get_negative_sampling_hpo_config
+    get_rgcn_sampling_hpo_config

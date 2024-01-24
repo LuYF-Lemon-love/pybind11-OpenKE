@@ -149,3 +149,4 @@ benchmarks/FB15K/type_constrain.txt
 benchmarks/FB15K237/type_constrain.txt
 benchmarks/WN18RR/type_constrain.txt
 best_network.pth
+model.pth

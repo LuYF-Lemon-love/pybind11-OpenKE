@@ -53,6 +53,7 @@
    examples/TransR/single_gpu_transr_FB15K237_wandb
    examples/TransR/multigpu_transr_FB15K237
    examples/TransD/single_gpu_transd_FB15K237_wandb
+   examples/TransD/single_gpu_transd_FB15K237_hpo
    examples/RotatE/single_gpu_rotate_WN18RR_adv
    examples/RotatE/single_gpu_rotate_WN18RR_adv_wandb
 

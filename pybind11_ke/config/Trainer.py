@@ -404,13 +404,13 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'values': ['adam', 'adagrad', 'sgd']
 			},
 			'valid_interval': {
-				'value': 50
+				'value': 100
 			},
 			'log_interval': {
-				'value': 50
+				'value': 100
 			},
 			'save_path': {
-				'value': './'
+				'value': './model.pth'
 			},
 			'use_early_stopping': {
 				'value': True

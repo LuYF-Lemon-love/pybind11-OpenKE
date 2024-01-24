@@ -279,8 +279,8 @@ def get_graph_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
 	    parameters_dict = {
             'tester': {
-	    		'value': 'GraphTester'
-	    	},
+                'value': 'GraphTester'
+            },
             'prediction': {
                 'value': 'all'
             },
@@ -298,8 +298,8 @@ def get_graph_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	parameters_dict = {
         'tester': {
-			'value': 'GraphTester'
-		},
+            'value': 'GraphTester'
+        },
         'prediction': {
             'value': 'all'
         },
