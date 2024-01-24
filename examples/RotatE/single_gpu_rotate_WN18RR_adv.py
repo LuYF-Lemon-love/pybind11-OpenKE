@@ -1,6 +1,7 @@
 """
 **RotatE-WN18RR-single-gpu-adv** ||
-`RotatE-WN18RR-single-gpu-adv-wandb <single_gpu_rotate_WN18RR_adv_wandb.html>`_
+`RotatE-WN18RR-single-gpu-adv-wandb <single_gpu_rotate_WN18RR_adv_wandb.html>`_ ||
+`RotatE-WN18RR-single-gpu-adv-hpo <single_gpu_rotate_WN18RR_adv_hpo.html>`_
 
 RotatE-WN18RR-single-gpu-adv
 ====================================================================
