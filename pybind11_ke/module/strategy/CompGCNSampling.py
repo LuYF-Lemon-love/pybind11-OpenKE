@@ -110,7 +110,7 @@ class CompGCNSampling(Strategy):
 		return loss
 
 def get_compgcn_sampling_hpo_config() -> dict[str, dict[str, typing.Any]]:
-
+	
 	"""返回 :py:class:`CompGCNSampling` 的默认超参数优化配置。
 	
 	默认配置为::
@@ -120,21 +120,21 @@ def get_compgcn_sampling_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'value': 'CompGCNSampling'
 			},
 			'smoothing': {
-    	        'value': 0.1
-    	    }
+				'value': 0.1
+			}
 		}
 	
 	:returns: :py:class:`CompGCNSampling` 的默认超参数优化配置
 	:rtype: dict[str, dict[str, typing.Any]]
 	"""
-
+	
 	parameters_dict = {
 		'strategy': {
 			'value': 'CompGCNSampling'
 		},
 		'smoothing': {
-            'value': 0.1
-        }
+			'value': 0.1
+		}
 	}
-		
+	
 	return parameters_dict

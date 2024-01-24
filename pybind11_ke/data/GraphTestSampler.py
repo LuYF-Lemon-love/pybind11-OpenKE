@@ -81,7 +81,7 @@ class GraphTestSampler(object):
         #: 实体的个数
         self.ent_tol: int = sampler.ent_tol
         #: 训练集三元组
-        self.triples: list[tuple[int, int, int]] = sampler.train_triples
+        self.triples: list[tuple[int, int, int]] = self.sampler.t_triples if isinstance(self.sampler, CompGCNSampler) else self.sampler.train_triples
         #: 幂
         self.power: float = -1
         #: valid2id.txt

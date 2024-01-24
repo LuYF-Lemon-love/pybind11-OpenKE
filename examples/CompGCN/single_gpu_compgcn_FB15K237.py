@@ -1,5 +1,6 @@
 """
-**CompGCN-FB15K237-single-gpu**
+**CompGCN-FB15K237-single-gpu** ||
+`CompGCN-FB15K237-single-gpu-hpo <single_gpu_compgcn_FB15K237_hpo.html>`_
 
 CompGCN-FB15K237-single-gpu
 =====================================================
@@ -25,6 +26,7 @@ dataloader = GraphDataLoader(
 	batch_size = 2048,
 	test_batch_size = 256,
 	num_workers = 16,
+	test = True,
 	train_sampler = CompGCNSampler,
 	test_sampler = CompGCNTestSampler
 )

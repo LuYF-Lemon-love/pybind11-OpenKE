@@ -71,8 +71,6 @@ class CompGCNTestSampler(GraphTestSampler):
             valid_file = valid_file,
             test_file = test_file
         )
-
-        #: 训练集三元组
-        self.triples: list[tuple[int, int, int]] = sampler.t_triples
+        
         #: 幂
         self.power: float = -0.5
