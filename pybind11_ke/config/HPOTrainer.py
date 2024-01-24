@@ -161,28 +161,28 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    norm_flag = config.norm_flag)
 		elif config.model == "TransR":
 			kge_model = model_class(
-			    ent_tol = train_dataloader.get_ent_tol(),
-			    rel_tol = train_dataloader.get_rel_tol(),
-			    dim_e = config.dim_e,
+				ent_tol = train_dataloader.get_ent_tol(),
+				rel_tol = train_dataloader.get_rel_tol(),
+				dim_e = config.dim_e,
 				dim_r = config.dim_r,
-			    p_norm = config.p_norm,
-			    norm_flag = config.norm_flag,
+				p_norm = config.p_norm,
+				norm_flag = config.norm_flag,
 				rand_init = config.rand_init)
 		elif config.model == "TransD":
 			kge_model = model_class(
-			    ent_tol = train_dataloader.get_ent_tol(),
-			    rel_tol = train_dataloader.get_rel_tol(),
-			    dim_e = config.dim_e,
+				ent_tol = train_dataloader.get_ent_tol(),
+				rel_tol = train_dataloader.get_rel_tol(),
+				dim_e = config.dim_e,
 				dim_r = config.dim_r,
-			    p_norm = config.p_norm,
-			    norm_flag = config.norm_flag)
+				p_norm = config.p_norm,
+				norm_flag = config.norm_flag)
 		elif config.model == "RotatE":
 			kge_model = model_class(
-			    ent_tol = train_dataloader.get_ent_tol(),
-			    rel_tol = train_dataloader.get_rel_tol(),
-			    dim = config.dim,
+				ent_tol = train_dataloader.get_ent_tol(),
+				rel_tol = train_dataloader.get_rel_tol(),
+				dim = config.dim,
 				margin = config.margin,
-			    epsilon = config.epsilon)
+				epsilon = config.epsilon)
 		elif config.model in ["RESCAL", "DistMult", "HolE", "ComplEx", "Analogy", "SimplE"]:
 			kge_model = model_class(
 			    ent_tol = train_dataloader.get_ent_tol(),
@@ -190,9 +190,9 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    dim = config.dim)
 		elif config.model == "RGCN":
 			kge_model = model_class(
-			    ent_tol = dataloader.get_ent_tol(),
-			    rel_tol = dataloader.get_rel_tol(),
-			    dim = config.dim,
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
+				dim = config.dim,
 				num_layers = config.num_layers)
 
 		# define the loss function
@@ -213,9 +213,9 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		strategy_class = import_class(f"pybind11_ke.module.strategy.{config.strategy}")
 		if config.strategy == 'NegativeSampling':
 			model = strategy_class(
-			    model = kge_model,
-			    loss = loss,
-			    batch_size = train_dataloader.get_batch_size(),
+				model = kge_model,
+				loss = loss,
+				batch_size = train_dataloader.get_batch_size(),
 				regul_rate = config.regul_rate,
 				l3_regul_rate = config.l3_regul_rate
 			)
@@ -260,15 +260,15 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		trainer = trainer_class(
 			model = model,
 			data_loader = train_dataloader if config.trainer == 'Trainer' else dataloader.train_dataloader(),
-		    epochs = config.epochs,
+			epochs = config.epochs,
 			lr = config.lr,
 			opt_method = config.opt_method,
 			use_gpu = config.use_gpu,
 			device = config.device,
-		    tester = tester,
+			tester = tester,
 			test = True,
 			valid_interval = config.valid_interval,
-		    log_interval = config.log_interval,
+			log_interval = config.log_interval,
 			save_path = config.save_path,
 			use_early_stopping = config.use_early_stopping,
 			metric = config.metric,

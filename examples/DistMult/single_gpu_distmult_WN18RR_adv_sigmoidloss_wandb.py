@@ -1,6 +1,7 @@
 """
 `DistMult-WN18RR-single-gpu-wandb <single_gpu_distmult_WN18RR_wandb.html>`_ ||
-**DistMult-WN18RR-single-gpu-wandb**
+**DistMult-WN18RR-single-gpu-adv-wandb** ||
+`DistMult-WN18RR-single-gpu-adv-hpo <single_gpu_distmult_WN18RR_adv_hpo.html>`_
 
 DistMult-WN18RR-single-gpu-adv-wandb
 ====================================================================
