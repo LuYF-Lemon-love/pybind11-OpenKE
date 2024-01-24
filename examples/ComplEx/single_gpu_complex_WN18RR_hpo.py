@@ -34,7 +34,10 @@ print()
 train_data_loader_config.update({
     'in_path': {
         'value': '../../benchmarks/WN18RR/'
-    }
+    },
+    'threads': {
+        'value': 2
+    },
 })
 
 ######################################################################
