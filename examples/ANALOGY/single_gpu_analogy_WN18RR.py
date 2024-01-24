@@ -1,6 +1,7 @@
 """
 **ANALOGY-WN18RR-single-gpu** ||
-`ANALOGY-WN18RR-single-gpu-wandb <single_gpu_analogy_WN18RR_wandb.html>`_
+`ANALOGY-WN18RR-single-gpu-wandb <single_gpu_analogy_WN18RR_wandb.html>`_ ||
+`ANALOGY-WN18RR-single-gpu-hpo <single_gpu_analogy_WN18RR_hpo.html>`_
 
 ANALOGY-WN18RR-single-gpu
 ====================================================================
