@@ -88,6 +88,7 @@
 
    examples/RGCN/single_gpu_rgcn_FB15K237
    examples/RGCN/single_gpu_rgcn_FB15K237_wandb
+   examples/RGCN/single_gpu_transh_FB15K237_hpo
    examples/CompGCN/single_gpu_compgcn_FB15K237
 
 .. toctree::

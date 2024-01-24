@@ -68,7 +68,7 @@ class GraphDataLoader:
         :type test_file: str
         :param batch_size: batch size
         :type batch_size: int | None
-        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)；对于 CompGCN 不起作用。
         :type neg_ent: int
         :param test: 是否读取验证集和测试集
         :type test: bool
@@ -96,7 +96,7 @@ class GraphDataLoader:
         self.test_file: str = test_file
         #: batch size
         self.batch_size: int = batch_size
-        #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)；对于 CompGCN 不起作用。
         self.neg_ent: int = neg_ent
         #: 是否读取验证集和测试集
         self.test: bool = test
@@ -214,7 +214,7 @@ def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'values': [512, 1024, 2048, 4096]
             },
             'neg_ent': {
-                'values': [1, 4, 16, 32]
+                'values': [1, 4, 8, 16]
             },
             'test_batch_size': {
                 'value': 100
@@ -260,7 +260,7 @@ def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'values': [512, 1024, 2048, 4096]
         },
         'neg_ent': {
-            'values': [1, 4, 16, 32]
+            'values': [1, 4, 8, 16]
         },
         'test_batch_size': {
             'value': 100
