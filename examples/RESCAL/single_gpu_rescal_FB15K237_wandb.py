@@ -1,6 +1,7 @@
 """
 `RESCAL-FB15K237-single-gpu <single_gpu_rescal_FB15K237.html>`_ ||
-**RESCAL-FB15K237-single-gpu-wandb**
+**RESCAL-FB15K237-single-gpu-wandb** ||
+`RESCAL-FB15K237-single-gpu-hpo <single_gpu_rescal_FB15K237_hpo.html>`_
 
 RESCAL-FB15K237-single-gpu-wandb
 ====================================================================
