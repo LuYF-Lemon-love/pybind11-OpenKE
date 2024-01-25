@@ -16,9 +16,9 @@
 
 std::vector<INT> begin_head, end_head, begin_tail, end_tail, begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
-std::vector<Triple> train_tail, train_rel;
+std::vector<Triple> train_rel;
 
-Triple *train_list, *train_head;
+Triple *train_list, *train_head, *train_tail;
 
 // 读取训练集
 void read_train_files() {
@@ -47,7 +47,7 @@ void read_train_files() {
     // train_list: 保存训练集中的三元组集合.
     train_list = (Triple *)calloc(train_total, sizeof(Triple));
     train_head = (Triple *)calloc(train_total, sizeof(Triple));
-    train_tail.resize(train_total);
+    train_tail = (Triple *)calloc(train_total, sizeof(Triple));
     train_rel.resize(train_total);
     // freq_rel 元素值被初始化为 0.
     std::vector<INT> freq_rel(relation_total, 0);
@@ -60,7 +60,7 @@ void read_train_files() {
     std::sort(train_list, train_list + train_total, Triple::cmp_head);
     // tmp: 保存训练集三元组的个数
     tmp = train_total; train_total = 1;
-    train_head[0] = train_tail.at(0) = train_rel.at(0) = train_list[0];
+    train_head[0] = train_tail[0] = train_rel.at(0) = train_list[0];
     // freq_rel: 保存每个关系训练集中三元组的个数
     freq_rel.at(train_list[0].r) += 1;
     // 对训练集中的三元组去重
@@ -68,7 +68,7 @@ void read_train_files() {
         if (train_list[i].h != train_list[i - 1].h
             || train_list[i].r != train_list[i - 1].r
             || train_list[i].t != train_list[i - 1].t) {
-            train_head[train_total] = train_tail.at(train_total)
+            train_head[train_total] = train_tail[train_total]
                 = train_rel.at(train_total) = train_list[train_total]
                 = train_list[i];
             train_total++;
@@ -79,7 +79,7 @@ void read_train_files() {
     // train_tail: 以 t, r, h 排序
     // train_rel: 以 h, t, r 排序
     std::sort(train_head, train_head + train_total, Triple::cmp_head);
-    std::sort(train_tail.begin(), train_tail.end(), Triple::cmp_tail);
+    std::sort(train_tail, train_tail + train_total, Triple::cmp_tail);
     std::sort(train_rel.begin(), train_rel.end(), Triple::cmp_rel);
     std::cout << "The total of train triples is " << train_total
         << "." << std::endl;
@@ -99,9 +99,9 @@ void read_train_files() {
         }
         // begin_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
         // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
-        if (train_tail.at(i).t != train_tail.at(i - 1).t) {
-            end_tail.at(train_tail.at(i - 1).t) = i - 1;
-            begin_tail.at(train_tail.at(i).t) = i;
+        if (train_tail[i].t != train_tail[i - 1].t) {
+            end_tail.at(train_tail[i - 1].t) = i - 1;
+            begin_tail.at(train_tail[i].t) = i;
         }
         // begin_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
         // end_rel (entity_total): 存储每种实体 (head) 在 train_rel 中最后一次出现的位置
@@ -112,8 +112,8 @@ void read_train_files() {
     }
     begin_head.at(train_head[0].h) = 0;
     end_head.at(train_head[train_total - 1].h) = train_total - 1;
-    begin_tail.at(train_tail.at(0).t) = 0;
-    end_tail.at(train_tail.at(train_total - 1).t) = train_total - 1;
+    begin_tail.at(train_tail[0].t) = 0;
+    end_tail.at(train_tail[train_total - 1].t) = train_total - 1;
     begin_rel.at(train_rel.at(0).h) = 0;
     end_rel.at(train_rel.at(train_total - 1).h) = train_total - 1;
     
@@ -128,10 +128,10 @@ void read_train_files() {
         if (begin_head.at(i) <= end_head.at(i))
             heads_rel.at(train_head[begin_head.at(i)].r) += 1.0;
         for (INT j = begin_tail.at(i) + 1; j <= end_tail.at(i); j++)
-            if (train_tail.at(j).r != train_tail.at(j - 1).r)
-                tails_rel.at(train_tail.at(j).r) += 1.0;
+            if (train_tail[j].r != train_tail[j - 1].r)
+                tails_rel.at(train_tail[j].r) += 1.0;
         if (begin_tail.at(i) <= end_tail.at(i))
-            tails_rel.at(train_tail.at(begin_tail.at(i)).r) += 1.0;
+            tails_rel.at(train_tail[begin_tail.at(i)].r) += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
         tph.at(i) = freq_rel.at(i) / heads_rel.at(i);
