@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改 train_rel 实现"
+git commit -m "修改 CompGCN 实现"
 git push

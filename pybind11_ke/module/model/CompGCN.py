@@ -68,6 +68,7 @@ class CompGCN(Model):
         opn: str = 'mult',
         fet_drop: float = 0.2,
         hid_drop: float = 0.3,
+        margin: float = 40.0,
         decoder_model: str = 'ConvE'):
 
         """创建 RGCN 对象。
@@ -84,7 +85,9 @@ class CompGCN(Model):
         :type fet_drop: float
         :param hid_drop: 用于 'ConvE' 解码器，用于隐藏层的 dropout
         :type hid_drop: float
-        :param decoder_model: 用什么得分函数作为解码器: 'ConvE'、'DistMult'
+        :param margin: 用于 'TransE' 解码器，gamma。
+        :type margin: float
+        :param decoder_model: 用什么得分函数作为解码器: 'ConvE'、'DistMult'、'TransE'
         :type decoder_model: str
 		"""
 
@@ -130,9 +133,10 @@ class CompGCN(Model):
         self.hid_drop: torch.nn.Dropout = torch.nn.Dropout(hid_drop)
         #: 用于 'ConvE' 解码器，隐藏层的 BatchNorm
         self.bn2: torch.nn.BatchNorm1d = torch.nn.BatchNorm1d(self.dim*2)
-        #-----------------------------DistMult-----------------------------------------------------------------------
-        #: 用于 DistMult 得分函数
-        self.emb_ent: torch.nn.Embedding = torch.nn.Embedding(self.ent_tol, self.dim*2)
+        #-----------------------------TransE-----------------------------------------------------------------------
+        #: 用于 TransE 得分函数
+        self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
+        self.margin.requires_grad = False
 
     @override
     def forward(
@@ -168,9 +172,11 @@ class CompGCN(Model):
         if self.decoder_model.lower() == 'conve':
            score = self.conve(head_emb, rela_emb, x)
         elif self.decoder_model.lower() == 'distmult':
-            score = self.distmult(head_emb, rela_emb)
+            score = self.distmult(head_emb, rela_emb, x)
+        elif self.decoder_model.lower() == 'transe':
+            score = self.transe(head_emb, rela_emb, x)
         else:
-            raise ValueError("please choose decoder (DistMult/ConvE)")
+            raise ValueError("please choose decoder (TransE/DistMult/ConvE)")
 
         return score
 
@@ -230,7 +236,8 @@ class CompGCN(Model):
     def distmult(
         self,
         head_emb: torch.Tensor,
-        rela_emb: torch.Tensor) -> torch.Tensor:
+        rela_emb: torch.Tensor,
+        all_ent: torch.Tensor) -> torch.Tensor:
 
         """计算 DistMult 作为解码器时三元组的得分。
         
@@ -238,12 +245,36 @@ class CompGCN(Model):
         :type sub_emb: torch.Tensor
         :param rel_emb: 关系的嵌入向量
         :type rel_emb: torch.Tensor
+        :param all_ent: 全部实体的嵌入向量
+        :type all_ent: torch.Tensor
         :returns: 三元组的得分
         :rtype: torch.Tensor"""
 
         obj_emb = head_emb * rela_emb
-        x = torch.mm(obj_emb, self.emb_ent.weight.transpose(1, 0))
+        x = torch.mm(obj_emb, all_ent.transpose(1, 0))
         x += self.bias.expand_as(x)
+        score = torch.sigmoid(x)
+        return score
+
+    def transe(
+        self,
+        head_emb: torch.Tensor,
+        rela_emb: torch.Tensor,
+        all_ent: torch.Tensor) -> torch.Tensor:
+
+        """计算 TransE 作为解码器时三元组的得分。
+        
+        :param sub_emb: 头实体的嵌入向量
+        :type sub_emb: torch.Tensor
+        :param rel_emb: 关系的嵌入向量
+        :type rel_emb: torch.Tensor
+        :param all_ent: 全部实体的嵌入向量
+        :type all_ent: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor"""
+
+        obj_emb = head_emb + rela_emb
+        x = self.margin - torch.norm(obj_emb.unsqueeze(1) - all_ent, p=1, dim=2)
         score = torch.sigmoid(x)
         return score
 
@@ -278,9 +309,11 @@ class CompGCN(Model):
         if self.decoder_model.lower() == 'conve':
            score = self.conve(head_emb, rela_emb, x)
         elif self.decoder_model.lower() == 'distmult':
-            score = self.distmult(head_emb, rela_emb)       
+            score = self.distmult(head_emb, rela_emb, x)
+        elif self.decoder_model.lower() == 'transe':
+            score = self.transe(head_emb, rela_emb, x)
         else:
-            raise ValueError("please choose decoder (DistMult/ConvE)")
+            raise ValueError("please choose decoder (TransE/DistMult/ConvE)")
 
         return score
 
@@ -482,13 +515,16 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'values': [100, 150, 200]
             },
             'opn': {
-                'value': 'corr'
+                'value': 'mult'
             },
             'fet_drop': {
                 'value': 0.2
             },
             'hid_drop': {
                 'value': 0.3
+            },
+            'margin': {
+                'value': 40.0
             },
             'decoder_model': {
                 'value': 'ConvE'
@@ -507,13 +543,16 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'values': [100, 150, 200]
         },
         'opn': {
-            'value': 'corr'
+            'value': 'mult'
         },
         'fet_drop': {
             'value': 0.2
         },
         'hid_drop': {
             'value': 0.3
+        },
+        'margin': {
+            'value': 40.0
         },
         'decoder_model': {
             'value': 'ConvE'
