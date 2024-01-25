@@ -14,9 +14,10 @@
 #include <iostream>
 #include <algorithm>
 
-std::vector<INT> begin_head, end_head, begin_tail, end_tail, begin_rel, end_rel;
+std::vector<INT> end_head, begin_tail, end_tail, begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
 
+INT *begin_head;
 Triple *train_list, *train_head, *train_tail, *train_rel;
 
 // 读取训练集
@@ -83,7 +84,7 @@ void read_train_files() {
     std::cout << "The total of train triples is " << train_total
         << "." << std::endl;
     
-    begin_head.resize(entity_total);
+    begin_head = (INT *)calloc(entity_total, sizeof(INT));
     end_head.resize(entity_total);
     begin_tail.resize(entity_total);
     end_tail.resize(entity_total);
@@ -94,7 +95,7 @@ void read_train_files() {
         // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
         if (train_head[i].h != train_head[i - 1].h) {
             end_head.at(train_head[i - 1].h) = i - 1;
-            begin_head.at(train_head[i].h) = i;
+            begin_head[train_head[i].h] = i;
         }
         // begin_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
         // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
@@ -109,7 +110,7 @@ void read_train_files() {
             begin_rel.at(train_rel[i].h) = i;
         }
     }
-    begin_head.at(train_head[0].h) = 0;
+    begin_head[train_head[0].h] = 0;
     end_head.at(train_head[train_total - 1].h) = train_total - 1;
     begin_tail.at(train_tail[0].t) = 0;
     end_tail.at(train_tail[train_total - 1].t) = train_total - 1;
@@ -121,11 +122,11 @@ void read_train_files() {
     hpt.resize(relation_total, 0.0);
     tph.resize(relation_total, 0.0);
     for (INT i = 0; i < entity_total; i++) {
-        for (INT j = begin_head.at(i) + 1; j <= end_head.at(i); j++)
+        for (INT j = begin_head[i] + 1; j <= end_head.at(i); j++)
             if (train_head[j].r != train_head[j - 1].r)
                 heads_rel.at(train_head[j].r) += 1.0;
-        if (begin_head.at(i) <= end_head.at(i))
-            heads_rel.at(train_head[begin_head.at(i)].r) += 1.0;
+        if (begin_head[i] <= end_head.at(i))
+            heads_rel.at(train_head[begin_head[i]].r) += 1.0;
         for (INT j = begin_tail.at(i) + 1; j <= end_tail.at(i); j++)
             if (train_tail[j].r != train_tail[j - 1].r)
                 tails_rel.at(train_tail[j].r) += 1.0;

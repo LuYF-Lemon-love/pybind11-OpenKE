@@ -17,7 +17,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 
 	// lef: head(h) 在 train_head 中第一次出现的前一个位置
 	// rig: head(h) 在 train_head 中最后一次出现的位置
-	lef = begin_head.at(h) - 1;
+	lef = begin_head[h] - 1;
 	rig = end_head.at(h);
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -28,7 +28,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 	}
 	ll = rig;
 
-	lef = begin_head.at(h);
+	lef = begin_head[h];
 	rig = end_head.at(h) + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
