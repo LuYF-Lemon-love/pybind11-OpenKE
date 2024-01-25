@@ -23,7 +23,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
 		// 由于 >= -> rig，所以 rig 最终在第一个 r 的位置
-		if (train_head.at(mid).r >= r) rig = mid; else
+		if (train_head[mid].r >= r) rig = mid; else
 		lef = mid;
 	}
 	ll = rig;
@@ -34,7 +34,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 		mid = (lef + rig) >> 1;
 		// 二分查找算法变体
 		// 由于 <= -> lef，所以 lef 最终在最后一个 r 的位置
-		if (train_head.at(mid).r <= r) lef = mid; else
+		if (train_head[mid].r <= r) lef = mid; else
 		rig = mid;
 	}
 	rr = lef;
@@ -43,10 +43,10 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 	INT tmp = rand_max(id, entity_total - (rr - ll + 1));
 
 	// 第一种：tmp 小于第一个 r 对应的 tail
-	if (tmp < train_head.at(ll).t) return tmp;
+	if (tmp < train_head[ll].t) return tmp;
 
 	// 第二种：tmp 大于最后一个 r 对应的 tail
-	if (tmp > train_head.at(rr).t - rr + ll - 1) return tmp + rr - ll + 1;
+	if (tmp > train_head[rr].t - rr + ll - 1) return tmp + rr - ll + 1;
 
 	// 第三种：由于 (>= -> rig), (lef + 1 < rig), (tmp + lef - ll + 1)
 	// 因此最终返回取值为 (train_head[lef].t, train_head[rig].t) 的 tail
@@ -54,7 +54,7 @@ INT corrupt_with_head(INT id, INT h, INT r) {
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
 		// 类似 tmp > train_head[rr].t - rr + ll - 1
-		if (train_head.at(mid).t - mid + ll - 1 < tmp)
+		if (train_head[mid].t - mid + ll - 1 < tmp)
 			lef = mid;
 		else 
 			rig = mid;

@@ -16,9 +16,9 @@
 
 std::vector<INT> begin_head, end_head, begin_tail, end_tail, begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
-std::vector<Triple> train_head, train_tail, train_rel;
+std::vector<Triple> train_tail, train_rel;
 
-Triple *train_list;
+Triple *train_list, *train_head;
 
 // 读取训练集
 void read_train_files() {
@@ -46,7 +46,7 @@ void read_train_files() {
     istrm >> train_total;
     // train_list: 保存训练集中的三元组集合.
     train_list = (Triple *)calloc(train_total, sizeof(Triple));
-    train_head.resize(train_total);
+    train_head = (Triple *)calloc(train_total, sizeof(Triple));
     train_tail.resize(train_total);
     train_rel.resize(train_total);
     // freq_rel 元素值被初始化为 0.
@@ -60,7 +60,7 @@ void read_train_files() {
     std::sort(train_list, train_list + train_total, Triple::cmp_head);
     // tmp: 保存训练集三元组的个数
     tmp = train_total; train_total = 1;
-    train_head.at(0) = train_tail.at(0) = train_rel.at(0) = train_list[0];
+    train_head[0] = train_tail.at(0) = train_rel.at(0) = train_list[0];
     // freq_rel: 保存每个关系训练集中三元组的个数
     freq_rel.at(train_list[0].r) += 1;
     // 对训练集中的三元组去重
@@ -68,7 +68,7 @@ void read_train_files() {
         if (train_list[i].h != train_list[i - 1].h
             || train_list[i].r != train_list[i - 1].r
             || train_list[i].t != train_list[i - 1].t) {
-            train_head.at(train_total) = train_tail.at(train_total)
+            train_head[train_total] = train_tail.at(train_total)
                 = train_rel.at(train_total) = train_list[train_total]
                 = train_list[i];
             train_total++;
@@ -78,7 +78,7 @@ void read_train_files() {
     // train_head: 以 h, r, t 排序
     // train_tail: 以 t, r, h 排序
     // train_rel: 以 h, t, r 排序
-    std::sort(train_head.begin(), train_head.end(), Triple::cmp_head);
+    std::sort(train_head, train_head + train_total, Triple::cmp_head);
     std::sort(train_tail.begin(), train_tail.end(), Triple::cmp_tail);
     std::sort(train_rel.begin(), train_rel.end(), Triple::cmp_rel);
     std::cout << "The total of train triples is " << train_total
@@ -93,9 +93,9 @@ void read_train_files() {
     for (INT i = 1; i < train_total; i++) {
         // begin_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
         // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
-        if (train_head.at(i).h != train_head.at(i - 1).h) {
-            end_head.at(train_head.at(i - 1).h) = i - 1;
-            begin_head.at(train_head.at(i).h) = i;
+        if (train_head[i].h != train_head[i - 1].h) {
+            end_head.at(train_head[i - 1].h) = i - 1;
+            begin_head.at(train_head[i].h) = i;
         }
         // begin_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
         // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
@@ -110,8 +110,8 @@ void read_train_files() {
             begin_rel.at(train_rel.at(i).h) = i;
         }
     }
-    begin_head.at(train_head.at(0).h) = 0;
-    end_head.at(train_head.at(train_total - 1).h) = train_total - 1;
+    begin_head.at(train_head[0].h) = 0;
+    end_head.at(train_head[train_total - 1].h) = train_total - 1;
     begin_tail.at(train_tail.at(0).t) = 0;
     end_tail.at(train_tail.at(train_total - 1).t) = train_total - 1;
     begin_rel.at(train_rel.at(0).h) = 0;
@@ -123,10 +123,10 @@ void read_train_files() {
     tph.resize(relation_total, 0.0);
     for (INT i = 0; i < entity_total; i++) {
         for (INT j = begin_head.at(i) + 1; j <= end_head.at(i); j++)
-            if (train_head.at(j).r != train_head.at(j - 1).r)
-                heads_rel.at(train_head.at(j).r) += 1.0;
+            if (train_head[j].r != train_head[j - 1].r)
+                heads_rel.at(train_head[j].r) += 1.0;
         if (begin_head.at(i) <= end_head.at(i))
-            heads_rel.at(train_head.at(begin_head.at(i)).r) += 1.0;
+            heads_rel.at(train_head[begin_head.at(i)].r) += 1.0;
         for (INT j = begin_tail.at(i) + 1; j <= end_tail.at(i); j++)
             if (train_tail.at(j).r != train_tail.at(j - 1).r)
                 tails_rel.at(train_tail.at(j).r) += 1.0;
