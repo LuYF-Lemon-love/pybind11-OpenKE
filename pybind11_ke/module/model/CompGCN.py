@@ -68,7 +68,6 @@ class CompGCN(Model):
         opn: str = 'mult',
         fet_drop: float = 0.2,
         hid_drop: float = 0.3,
-        out_dim: int = 200,
         decoder_model: str = 'ConvE'):
 
         """创建 RGCN 对象。
@@ -85,8 +84,6 @@ class CompGCN(Model):
         :type fet_drop: float
         :param hid_drop: 用于 'ConvE' 解码器，用于隐藏层的 dropout
         :type hid_drop: float
-        :param out_dim: 用于 'ConvE' 解码器，最后输出的嵌入向量维度
-        :type out_dim: int
         :param decoder_model: 用什么得分函数作为解码器: 'ConvE'、'DistMult'
         :type decoder_model: str
 		"""
@@ -97,8 +94,6 @@ class CompGCN(Model):
         self.dim: int = dim
         #: 组成运算符：'mult'、'sub'、'corr'
         self.opn: str = opn
-        #: 用于 'ConvE' 解码器，最后输出的嵌入向量维度
-        self.out_dim: int = out_dim
         #: 用什么得分函数作为解码器: 'ConvE'、'DistMult'
         self.decoder_model: str = decoder_model
 
@@ -126,12 +121,15 @@ class CompGCN(Model):
         self.bn1: torch.nn.Conv2d = torch.nn.BatchNorm2d(200)
         #: 用于 'ConvE' 解码器，卷积特征的 Dropout
         self.fet_drop: torch.nn.Dropout = torch.nn.Dropout2d(fet_drop)
+        flat_sz_h = 4 * self.dim // 20 - 7 + 1
+        flat_sz_w = 20 - 7 + 1
+        flat_sz = flat_sz_h * flat_sz_w * 200
         #: 用于 'ConvE' 解码器，隐藏层层
-        self.fc: torch.nn.Linear = torch.nn.Linear(39200, self.out_dim)
+        self.fc: torch.nn.Linear = torch.nn.Linear(flat_sz, self.dim*2)
         #: 用于 'ConvE' 解码器，隐藏层的 Dropout
         self.hid_drop: torch.nn.Dropout = torch.nn.Dropout(hid_drop)
         #: 用于 'ConvE' 解码器，隐藏层的 BatchNorm
-        self.bn2: torch.nn.BatchNorm1d = torch.nn.BatchNorm1d(200)
+        self.bn2: torch.nn.BatchNorm1d = torch.nn.BatchNorm1d(self.dim*2)
         #-----------------------------DistMult-----------------------------------------------------------------------
         #: 用于 DistMult 得分函数
         self.emb_ent: torch.nn.Embedding = torch.nn.Embedding(self.ent_tol, self.dim*2)
@@ -223,10 +221,10 @@ class CompGCN(Model):
         :returns: ConvE 解码器的输入特征
         :rtype: torch.Tensor"""
 
-        ent_embed = ent_embed.view(-1, 1, 200)
-        rel_embed = rel_embed.view(-1, 1, 200)
+        ent_embed = ent_embed.view(-1, 1, self.dim*2)
+        rel_embed = rel_embed.view(-1, 1, self.dim*2)
         stack_input = torch.cat([ent_embed, rel_embed], 1)
-        stack_input = stack_input.reshape(-1, 1, 2 * 10, 20)
+        stack_input = stack_input.reshape(-1, 1, 4*self.dim//20, 20)
         return stack_input
 
     def distmult(
@@ -481,7 +479,7 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'value': 'CompGCN'
             },
             'dim': {
-                'values': [100, 200, 400]
+                'values': [100, 150, 200]
             },
             'opn': {
                 'value': 'corr'
@@ -491,9 +489,6 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
             },
             'hid_drop': {
                 'value': 0.3
-            },
-            'out_dim': {
-                'value': 200
             },
             'decoder_model': {
                 'value': 'ConvE'
@@ -509,7 +504,7 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'value': 'CompGCN'
         },
         'dim': {
-            'values': [100, 200, 400]
+            'values': [100, 150, 200]
         },
         'opn': {
             'value': 'corr'
@@ -519,9 +514,6 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
         },
         'hid_drop': {
             'value': 0.3
-        },
-        'out_dim': {
-            'value': 200
         },
         'decoder_model': {
             'value': 'ConvE'

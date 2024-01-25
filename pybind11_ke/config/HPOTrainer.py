@@ -202,7 +202,6 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				opn = config.opn,
 				fet_drop = config.fet_drop,
 				hid_drop = config.hid_drop,
-				out_dim = config.out_dim,
 				decoder_model = config.decoder_model)
 
 		# define the loss function

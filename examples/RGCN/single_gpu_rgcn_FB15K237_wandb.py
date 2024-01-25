@@ -121,3 +121,35 @@ trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(
 	save_interval = config.save_interval, save_path = config.save_path, use_wandb = True
 )
 trainer.run()
+
+######################################################################
+# .. figure:: /_static/images/examples/RGCN/RGCN-FB15K237-Loss.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中损失值的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/RGCN/RGCN-FB15K237-MR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/RGCN/RGCN-FB15K237-MRR.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 MRR 的变化
+
+######################################################################
+# .. figure:: /_static/images/examples/RGCN/RGCN-FB15K237-Hit.png
+#      :align: center
+#      :height: 300
+#
+#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+
+######################################################################
+# --------------
+#

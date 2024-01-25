@@ -80,7 +80,9 @@ void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
 // 替换 head, 评估 head 的 rank.
 void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::string sampling_mode = "link_test") {
 
-    INT h, t, r;
+    INT h = 0;
+    INT t = 0;
+    INT r = 0;
 
     if (sampling_mode == "link_test") {
         h = test_list.at(last_head - 1).h;
@@ -165,7 +167,9 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
 // 替换 tail, 评估 tail 的 rank.
 void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::string sampling_mode = "link_test") {
 
-    INT h, t, r;
+    INT h = 0;
+    INT t = 0;
+    INT r = 0;
 
     if (sampling_mode == "link_test") {
         h = test_list.at(last_tail - 1).h;
@@ -249,7 +253,7 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
 
 // 链接预测入口函数
 void test_link_prediction(bool type_constrain = false, std::string sampling_mode = "link_test") {
-    INT total;
+    INT total = 0;
 
     if (sampling_mode == "link_test") {
         total = test_total;
