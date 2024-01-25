@@ -26,7 +26,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 🌰 `examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/examples/>`_
     pybind11-OpenKE 的例子保存在 ``examples/``，修改自 ``OpenKE-PyTorch``。
 
-💡 `benchmarks <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
+💡 `benchmarks/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
     常用的知识图谱保存在 ``benchmarks/``。
 
 📜 `README.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/README.rst>`_
