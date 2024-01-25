@@ -9,13 +9,16 @@
 #define READER_H
 #include "Setting.h"
 #include "Triple.h"
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
 
 std::vector<INT> begin_head, end_head, begin_tail, end_tail, begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
-std::vector<Triple> train_list, train_head, train_tail, train_rel;
+std::vector<Triple> train_head, train_tail, train_rel;
+
+Triple *train_list;
 
 // 读取训练集
 void read_train_files() {
@@ -42,7 +45,7 @@ void read_train_files() {
     istrm.open(train_file, std::ifstream::in);
     istrm >> train_total;
     // train_list: 保存训练集中的三元组集合.
-    train_list.resize(train_total);
+    train_list = (Triple *)calloc(train_total, sizeof(Triple));
     train_head.resize(train_total);
     train_tail.resize(train_total);
     train_rel.resize(train_total);
@@ -50,26 +53,26 @@ void read_train_files() {
     std::vector<INT> freq_rel(relation_total, 0);
     // 读取训练集三元组集合, 保存在 train_list.
     for (INT i = 0; i < train_total; i++) {
-        istrm >> train_list.at(i).h >> train_list.at(i).t >> train_list.at(i).r;
+        istrm >> train_list[i].h >> train_list[i].t >> train_list[i].r;
     }
     istrm.close();
     // 对 train_list 中的三元组排序 (比较顺序: h, r, t).
-    std::sort(train_list.begin(), train_list.end(), Triple::cmp_head);
+    std::sort(train_list, train_list + train_total, Triple::cmp_head);
     // tmp: 保存训练集三元组的个数
     tmp = train_total; train_total = 1;
-    train_head.at(0) = train_tail.at(0) = train_rel.at(0) = train_list.at(0);
+    train_head.at(0) = train_tail.at(0) = train_rel.at(0) = train_list[0];
     // freq_rel: 保存每个关系训练集中三元组的个数
-    freq_rel.at(train_list.at(0).r) += 1;
+    freq_rel.at(train_list[0].r) += 1;
     // 对训练集中的三元组去重
     for (INT i = 1; i < tmp; i++)
-        if (train_list.at(i).h != train_list.at(i - 1).h
-            || train_list.at(i).r != train_list.at(i - 1).r
-            || train_list.at(i).t != train_list.at(i - 1).t) {
+        if (train_list[i].h != train_list[i - 1].h
+            || train_list[i].r != train_list[i - 1].r
+            || train_list[i].t != train_list[i - 1].t) {
             train_head.at(train_total) = train_tail.at(train_total)
-                = train_rel.at(train_total) = train_list.at(train_total)
-                = train_list.at(i);
+                = train_rel.at(train_total) = train_list[train_total]
+                = train_list[i];
             train_total++;
-            freq_rel.at(train_list.at(i).r)++;
+            freq_rel.at(train_list[i].r)++;
         }
 
     // train_head: 以 h, r, t 排序
