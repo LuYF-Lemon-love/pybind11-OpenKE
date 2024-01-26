@@ -124,8 +124,8 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     l_filter_s += 1;
             }
             if (type_constrain) {
-                while (begin < end && head_type_rel.at(begin) < j) begin++;
-                if (begin < end && j == head_type_rel.at(begin)) {
+                while (begin < end && head_type_rel[begin] < j) begin++;
+                if (begin < end && j == head_type_rel[begin]) {
                     if (value < minimal) {
                         l_s_constrain += 1;
                         if (not _find(j, t, r)) {
