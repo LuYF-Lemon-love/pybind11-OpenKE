@@ -137,8 +137,7 @@ void read_train_files() {
     }
 }
 
-Triple *test_list, *valid_list;
-std::vector<Triple> triple_list;
+Triple *test_list, *valid_list, *triple_list;
 
 // 读取测试集
 void read_test_files() {
@@ -174,23 +173,23 @@ void read_test_files() {
     triple_total = test_total + train_total + valid_total;
     test_list = (Triple *)calloc(test_total, sizeof(Triple));
     valid_list = (Triple *)calloc(valid_total, sizeof(Triple));
-    triple_list.resize(triple_total);
+    triple_list = (Triple *)calloc(triple_total, sizeof(Triple));
     // 读取测试集三元组
     for (INT i = 0; i < test_total; i++) {
         istrm_test >> test_list[i].h >> test_list[i].t >> test_list[i].r;
-        triple_list.at(i) = test_list[i];
+        triple_list[i] = test_list[i];
     }
     // 读取训练集三元组
     for (INT i = 0; i < train_total; i++) {
-        istrm_train >> triple_list.at(i + test_total).h >> triple_list.at(i + test_total).t
-                    >> triple_list.at(i + test_total).r;
+        istrm_train >> triple_list[i + test_total].h >> triple_list[i + test_total].t
+                    >> triple_list[i + test_total].r;
     }
     // 读取验证集三元组
     for (INT i = 0; i < valid_total; i++) {
-        istrm_valid >> triple_list.at(i + test_total + train_total).h 
-                    >> triple_list.at(i + test_total + train_total).t
-                    >> triple_list.at(i + test_total + train_total).r;
-        valid_list[i] = triple_list.at(i + test_total + train_total);
+        istrm_valid >> triple_list[i + test_total + train_total].h 
+                    >> triple_list[i + test_total + train_total].t
+                    >> triple_list[i + test_total + train_total].r;
+        valid_list[i] = triple_list[i + test_total + train_total];
     }
     istrm_test.close();
     istrm_train.close();
@@ -199,7 +198,7 @@ void read_test_files() {
     // triple_list: 以 h, r, t 排序
     // test_list: 以 r, h, t 排序
     // valid_list: 以 r, h, t 排序
-    std::sort(triple_list.begin(), triple_list.end(), Triple::cmp_head);
+    std::sort(triple_list, triple_list + triple_total, Triple::cmp_head);
     std::sort(test_list, test_list + test_total, Triple::cmp_rel2);
     std::sort(valid_list, valid_list + valid_total, Triple::cmp_rel2);
 }
