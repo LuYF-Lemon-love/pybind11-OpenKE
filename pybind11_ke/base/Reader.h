@@ -14,8 +14,7 @@
 #include <iostream>
 #include <algorithm>
 
-REAL *hpt;
-std::vector<REAL> tph;
+REAL *hpt, *tph;
 
 INT *begin_head, *end_head, *begin_tail, *end_tail, *begin_rel, *end_rel;
 Triple *train_list, *train_head, *train_tail, *train_rel;
@@ -120,7 +119,7 @@ void read_train_files() {
     // 为 bern 负采样做准备
     std::vector<REAL> heads_rel(relation_total, 0.0), tails_rel(relation_total, 0.0);
     hpt = (REAL *)calloc(relation_total, sizeof(REAL));
-    tph.resize(relation_total, 0.0);
+    tph = (REAL *)calloc(relation_total, sizeof(REAL));
     for (INT i = 0; i < entity_total; i++) {
         for (INT j = begin_head[i] + 1; j <= end_head[i]; j++)
             if (train_head[j].r != train_head[j - 1].r)
@@ -134,7 +133,7 @@ void read_train_files() {
             tails_rel.at(train_tail[begin_tail[i]].r) += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
-        tph.at(i) = freq_rel.at(i) / heads_rel.at(i);
+        tph[i] = freq_rel.at(i) / heads_rel.at(i);
         hpt[i] = freq_rel.at(i) / tails_rel.at(i);
     }
 }

@@ -66,7 +66,7 @@ void get_bacth(
 			if (mode == 0){
 				// TransH 负采样策略
 				if (bern)
-					prob = 1000 * hpt[train_list[i].r] / (hpt[train_list[i].r] + tph.at(train_list[i].r));
+					prob = 1000 * hpt[train_list[i].r] / (hpt[train_list[i].r] + tph[train_list[i].r]);
 				if (rand_max(id, 1000) < prob) {
 					batch_h(batch + last) = train_list[i].h;
 					batch_t(batch + last) = corrupt_with_head(id, train_list[i].h, train_list[i].r);
