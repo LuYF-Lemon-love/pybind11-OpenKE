@@ -99,7 +99,7 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
     INT begin, end;
     if (type_constrain) {
         begin = begin_head_type[r];
-        end = end_head_type.at(r);
+        end = end_head_type[r];
     }
     // minimal: 正确三元组的 score
     auto con = con_py.mutable_unchecked<1>();
