@@ -326,16 +326,18 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
 	"""返回 :py:class:`TransR` 的默认超参数优化配置。
 	
+	``TransR`` :cite:`TransR` 进行超参数优化的时候，需要先训练一个 ``TransE`` :cite:`TransE` 模型（训练 1 epoch）。
+	然后 ``TransR`` :cite:`TransR` 的实体和关系的嵌入向量初始化为 TransE 的结果。
+	``margin_e``、``lr_e`` 和 ``opt_method_e`` 是 ``TransE`` :cite:`TransE` 的训练超参数。
+	如果想获得更详细的信息请访问 :ref:`TransR <transr>`。
+	
 	默认配置为::
 	
 		parameters_dict = {
 			'model': {
 				'value': 'TransR'
 			},
-			'dim_e': {
-				'values': [50, 100, 200]
-			},
-			'dim_r': {
+			'dim': {
 				'values': [50, 100, 200]
 			},
 			'p_norm': {
@@ -346,7 +348,18 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			},
 			'rand_init': {
 				'value': False
-			}
+			},
+			'margin_e': {
+				'values': [1.0, 3.0, 6.0]
+			},
+			'lr_e': {
+				'distribution': 'uniform',
+				'min': 0,
+				'max': 1.0
+			},
+			'opt_method_e': {
+				'values': ['adam', 'adagrad', 'sgd']
+			},
 		}
 
 	:returns: :py:class:`TransR` 的默认超参数优化配置
@@ -357,10 +370,7 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 		'model': {
 			'value': 'TransR'
 		},
-		'dim_e': {
-			'values': [50, 100, 200]
-		},
-		'dim_r': {
+		'dim': {
 			'values': [50, 100, 200]
 		},
 		'p_norm': {
@@ -371,7 +381,18 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 		},
 		'rand_init': {
 			'value': False
-		}
+		},
+		'margin_e': {
+			'values': [1.0, 3.0, 6.0]
+		},
+		'lr_e': {
+			'distribution': 'uniform',
+			'min': 0,
+			'max': 1.0
+		},
+		'opt_method_e': {
+			'values': ['adam', 'adagrad', 'sgd']
+		},
 	}
 		
 	return parameters_dict

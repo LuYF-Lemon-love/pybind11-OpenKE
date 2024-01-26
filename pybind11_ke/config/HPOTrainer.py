@@ -15,6 +15,10 @@ import wandb
 import typing
 from ..data import TestDataLoader
 from ..utils import import_class
+from ..module.model import TransE
+from ..module.loss import MarginLoss
+from ..module.strategy import NegativeSampling
+from ..config import Trainer
 
 def set_hpo_config(
 	method: str = 'bayes',
@@ -160,14 +164,39 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    p_norm = config.p_norm,
 			    norm_flag = config.norm_flag)
 		elif config.model == "TransR":
+			transe = TransE(
+				ent_tol = train_dataloader.get_ent_tol(),
+				rel_tol = train_dataloader.get_rel_tol(),
+				dim = config.dim,
+				p_norm = config.p_norm,
+				norm_flag = config.norm_flag
+			)
 			kge_model = model_class(
 				ent_tol = train_dataloader.get_ent_tol(),
 				rel_tol = train_dataloader.get_rel_tol(),
-				dim_e = config.dim_e,
-				dim_r = config.dim_r,
+				dim_e = config.dim,
+				dim_r = config.dim,
 				p_norm = config.p_norm,
 				norm_flag = config.norm_flag,
 				rand_init = config.rand_init)
+			model_e = NegativeSampling(
+				model = transe,
+				loss = MarginLoss(margin = config.margin_e),
+				batch_size = train_dataloader.get_batch_size()
+			)
+			trainer_e = Trainer(
+				model = model_e,
+				data_loader = train_dataloader,
+				epochs = 1,
+				lr = config.lr_e,
+				opt_method = config.opt_method_e,
+				use_gpu = config.use_gpu,
+				device = config.device
+			)
+			trainer_e.run()
+			parameters = transe.get_parameters()
+			transe.save_parameters("./transr_transe.json")
+			kge_model.set_parameters(parameters)
 		elif config.model == "TransD":
 			kge_model = model_class(
 				ent_tol = train_dataloader.get_ent_tol(),
