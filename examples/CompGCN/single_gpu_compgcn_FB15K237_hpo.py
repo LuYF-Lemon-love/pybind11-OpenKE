@@ -128,6 +128,14 @@ print("trainer_config:")
 pprint.pprint(trainer_config)
 print()
 
+trainer_config.update({
+    'lr': {
+        'distribution': 'uniform',
+        'min': 0,
+        'max': 0.01
+    }
+})
+
 ######################################################################
 # --------------
 #

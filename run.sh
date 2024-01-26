@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改 begin_head_type 实现"
+git commit -m "修改 CompGCN HPO 示例"
 git push
