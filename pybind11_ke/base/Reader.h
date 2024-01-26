@@ -14,10 +14,10 @@
 #include <iostream>
 #include <algorithm>
 
-std::vector<INT> end_tail, begin_rel, end_rel;
+std::vector<INT> begin_rel, end_rel;
 std::vector<REAL> hpt, tph;
 
-INT *begin_head, *end_head, *begin_tail;
+INT *begin_head, *end_head, *begin_tail, *end_tail;
 Triple *train_list, *train_head, *train_tail, *train_rel;
 
 // 读取训练集
@@ -87,7 +87,7 @@ void read_train_files() {
     begin_head = (INT *)calloc(entity_total, sizeof(INT));
     end_head = (INT *)calloc(entity_total, sizeof(INT));
     begin_tail = (INT *)calloc(entity_total, sizeof(INT));
-    end_tail.resize(entity_total);
+    end_tail = (INT *)calloc(entity_total, sizeof(INT));
     begin_rel.resize(entity_total);
     end_rel.resize(entity_total);
     for (INT i = 1; i < train_total; i++) {
@@ -100,7 +100,7 @@ void read_train_files() {
         // begin_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中第一次出现的位置
         // end_tail (entity_total): 存储每种实体 (tail) 在 train_tail 中最后一次出现的位置
         if (train_tail[i].t != train_tail[i - 1].t) {
-            end_tail.at(train_tail[i - 1].t) = i - 1;
+            end_tail[train_tail[i - 1].t] = i - 1;
             begin_tail[train_tail[i].t] = i;
         }
         // begin_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
@@ -113,7 +113,7 @@ void read_train_files() {
     begin_head[train_head[0].h] = 0;
     end_head[train_head[train_total - 1].h] = train_total - 1;
     begin_tail[train_tail[0].t] = 0;
-    end_tail.at(train_tail[train_total - 1].t) = train_total - 1;
+    end_tail[train_tail[train_total - 1].t] = train_total - 1;
     begin_rel.at(train_rel[0].h) = 0;
     end_rel.at(train_rel[train_total - 1].h) = train_total - 1;
     
@@ -127,10 +127,10 @@ void read_train_files() {
                 heads_rel.at(train_head[j].r) += 1.0;
         if (begin_head[i] <= end_head[i])
             heads_rel.at(train_head[begin_head[i]].r) += 1.0;
-        for (INT j = begin_tail[i] + 1; j <= end_tail.at(i); j++)
+        for (INT j = begin_tail[i] + 1; j <= end_tail[i]; j++)
             if (train_tail[j].r != train_tail[j - 1].r)
                 tails_rel.at(train_tail[j].r) += 1.0;
-        if (begin_tail[i] <= end_tail.at(i))
+        if (begin_tail[i] <= end_tail[i])
             tails_rel.at(train_tail[begin_tail[i]].r) += 1.0;
     }
     for (INT i = 0; i < relation_total; i++) {
