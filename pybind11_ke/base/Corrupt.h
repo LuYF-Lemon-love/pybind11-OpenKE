@@ -70,7 +70,7 @@ INT corrupt_with_tail(INT id, INT t, INT r) {
 
 	// lef: tail(t) 在 train_tail 中第一次出现的前一个位置
 	// rig: tail(t) 在 train_tail 中最后一次出现的位置
-	lef = begin_tail.at(t) - 1;
+	lef = begin_tail[t] - 1;
 	rig = end_tail.at(t);
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
@@ -81,7 +81,7 @@ INT corrupt_with_tail(INT id, INT t, INT r) {
 	}
 	ll = rig;
 
-	lef = begin_tail.at(t);
+	lef = begin_tail[t];
 	rig = end_tail.at(t) + 1;
 	while (lef + 1 < rig) {
 		mid = (lef + rig) >> 1;
