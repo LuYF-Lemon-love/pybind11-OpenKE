@@ -98,7 +98,7 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
 	// end: 记录关系 r 的 head 类型在 head_type_rel 中最后一次出现的后一个位置
     INT begin, end;
     if (type_constrain) {
-        begin = begin_head_type.at(r);
+        begin = begin_head_type[r];
         end = end_head_type.at(r);
     }
     // minimal: 正确三元组的 score
