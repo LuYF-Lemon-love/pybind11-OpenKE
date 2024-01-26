@@ -210,8 +210,8 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
                     r_filter_s += 1;
             }
             if (type_constrain) {
-                while (begin < end && tail_type_rel.at(begin) < j) begin++;
-                if (begin < end && j == tail_type_rel.at(begin)) {
+                while (begin < end && tail_type_rel[begin] < j) begin++;
+                if (begin < end && j == tail_type_rel[begin]) {
                         if (value < minimal) {
                             r_s_constrain += 1;
                             if (not _find(h, j ,r)) {

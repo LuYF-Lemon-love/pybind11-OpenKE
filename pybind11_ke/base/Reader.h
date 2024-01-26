@@ -205,8 +205,7 @@ void read_test_files() {
 
 // head_type_rel: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
 // tail_type_rel: 存储各个关系的 tail 类型, 各个关系的 tail 类型独立地以升序排列
-std::vector<INT> tail_type_rel;
-INT *head_type_rel;
+INT *head_type_rel, *tail_type_rel;
 // begin_head_type: 记录各个关系的 head 类型在 head_type_rel 中第一次出现的位置
 // end_head_type: 记录各个关系的 head 类型在 head_type_rel 中最后一次出现的后一个位置
 // begin_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中第一次出现的位置
@@ -249,7 +248,7 @@ void read_type_files() {
     istrm.close();
 
     head_type_rel = (INT *)calloc(total_head, sizeof(INT)); 
-    tail_type_rel.resize(total_tail);
+    tail_type_rel = (INT *)calloc(total_tail, sizeof(INT));
     begin_head_type = (INT *)calloc(relation_total, sizeof(INT));
     end_head_type = (INT *)calloc(relation_total, sizeof(INT));
     begin_tail_type = (INT *)calloc(relation_total, sizeof(INT));
@@ -273,11 +272,11 @@ void read_type_files() {
         istrm >> rel >> tot;
         begin_tail_type[rel] = total_tail;
         for (INT j = 0; j < tot; j++) {
-            istrm >> tail_type_rel.at(total_tail);
+            istrm >> tail_type_rel[total_tail];
             total_tail++;
         }
         end_tail_type[rel] = total_tail;
-        std::sort(tail_type_rel.begin() + begin_tail_type[rel], tail_type_rel.begin() + end_tail_type[rel]);
+        std::sort(tail_type_rel + begin_tail_type[rel], tail_type_rel + end_tail_type[rel]);
     }
     istrm.close();
 }
