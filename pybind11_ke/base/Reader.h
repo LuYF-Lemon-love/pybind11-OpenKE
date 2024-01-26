@@ -210,8 +210,7 @@ std::vector<INT> head_type_rel, tail_type_rel;
 // end_head_type: 记录各个关系的 head 类型在 head_type_rel 中最后一次出现的后一个位置
 // begin_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中第一次出现的位置
 // end_tail_type: 记录各个关系的 tail 类型在 tail_type_rel 中最后一次出现的后一个位置
-INT *begin_head_type, *end_head_type, *begin_tail_type;
-std::vector<INT> end_tail_type;
+INT *begin_head_type, *end_head_type, *begin_tail_type, *end_tail_type;
 
 // 读取 type_constrain.txt
 // type_constrain.txt: 类型约束文件, 第一行是关系的个数
@@ -253,7 +252,7 @@ void read_type_files() {
     begin_head_type = (INT *)calloc(relation_total, sizeof(INT));
     end_head_type = (INT *)calloc(relation_total, sizeof(INT));
     begin_tail_type = (INT *)calloc(relation_total, sizeof(INT));
-    end_tail_type.resize(relation_total);
+    end_tail_type = (INT *)calloc(relation_total, sizeof(INT));
 
     // 读取 type_constrain.txt
     total_head = 0;
@@ -276,8 +275,8 @@ void read_type_files() {
             istrm >> tail_type_rel.at(total_tail);
             total_tail++;
         }
-        end_tail_type.at(rel) = total_tail;
-        std::sort(tail_type_rel.begin() + begin_tail_type[rel], tail_type_rel.begin() + end_tail_type.at(rel));
+        end_tail_type[rel] = total_tail;
+        std::sort(tail_type_rel.begin() + begin_tail_type[rel], tail_type_rel.begin() + end_tail_type[rel]);
     }
     istrm.close();
 }
