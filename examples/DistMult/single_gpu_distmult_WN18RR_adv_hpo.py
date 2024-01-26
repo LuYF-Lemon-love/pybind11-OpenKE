@@ -167,7 +167,7 @@ print()
 # :py:func:`pybind11_ke.config.start_hpo_train` 可以开始超参数优化。
 
 # start hpo
-start_hpo_train(config=sweep_config, count=3)
+start_hpo_train(config=sweep_config, count=10)
 
 ######################################################################
 # .. figure:: /_static/images/examples/DistMult/DistMult-WN18RR-HPO.png
