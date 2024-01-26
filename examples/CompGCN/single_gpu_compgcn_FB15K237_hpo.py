@@ -1,5 +1,6 @@
 """
 `CompGCN-FB15K237-single-gpu <single_gpu_compgcn_FB15K237.html>`_ ||
+`CompGCN-FB15K237-single-gpu-wandb <CompGCN/single_gpu_compgcn_FB15K237_wandb.html>`_ ||
 **CompGCN-FB15K237-single-gpu-hpo**
 
 CompGCN-FB15K237-single-gpu-hpo
@@ -112,6 +113,12 @@ print("tester_config:")
 pprint.pprint(tester_config)
 print()
 
+tester_config.update({
+    'prediction': {
+        'value': 'tail'
+    }
+})
+
 ######################################################################
 # --------------
 #
@@ -128,13 +135,13 @@ print("trainer_config:")
 pprint.pprint(trainer_config)
 print()
 
-trainer_config.update({
-    'lr': {
-        'distribution': 'uniform',
-        'min': 0,
-        'max': 0.01
-    }
-})
+# trainer_config.update({
+#     'lr': {
+#         'distribution': 'uniform',
+#         'min': 0,
+#         'max': 0.01
+#     }
+# })
 
 ######################################################################
 # --------------
