@@ -51,6 +51,7 @@
    examples/TransH/multigpu_transh_FB15K237_wandb
    examples/TransR/single_gpu_transr_FB15K237
    examples/TransR/single_gpu_transr_FB15K237_wandb
+   examples/TransR/single_gpu_transd_FB15K237_hpo
    examples/TransR/multigpu_transr_FB15K237
    examples/TransD/single_gpu_transd_FB15K237_wandb
    examples/TransD/single_gpu_transd_FB15K237_hpo

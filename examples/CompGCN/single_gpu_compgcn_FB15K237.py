@@ -1,6 +1,6 @@
 """
 **CompGCN-FB15K237-single-gpu** ||
-`CompGCN-FB15K237-single-gpu-wandb <CompGCN/single_gpu_compgcn_FB15K237_wandb.html>`_ ||
+`CompGCN-FB15K237-single-gpu-wandb <single_gpu_compgcn_FB15K237_wandb.html>`_ ||
 `CompGCN-FB15K237-single-gpu-hpo <single_gpu_compgcn_FB15K237_hpo.html>`_
 
 CompGCN-FB15K237-single-gpu
