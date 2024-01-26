@@ -14,10 +14,9 @@
 #include <iostream>
 #include <algorithm>
 
-std::vector<INT> end_rel;
 std::vector<REAL> hpt, tph;
 
-INT *begin_head, *end_head, *begin_tail, *end_tail, *begin_rel;
+INT *begin_head, *end_head, *begin_tail, *end_tail, *begin_rel, *end_rel;
 Triple *train_list, *train_head, *train_tail, *train_rel;
 
 // 读取训练集
@@ -89,7 +88,7 @@ void read_train_files() {
     begin_tail = (INT *)calloc(entity_total, sizeof(INT));
     end_tail = (INT *)calloc(entity_total, sizeof(INT));
     begin_rel = (INT *)calloc(entity_total, sizeof(INT));
-    end_rel.resize(entity_total);
+    end_rel = (INT *)calloc(entity_total, sizeof(INT));
     for (INT i = 1; i < train_total; i++) {
         // begin_head (entity_total): 存储每种实体 (head) 在 train_head 中第一次出现的位置
         // end_head (entity_total): 存储每种实体 (head) 在 train_head 中最后一次出现的位置
@@ -106,7 +105,7 @@ void read_train_files() {
         // begin_rel (entity_total): 存储每种实体 (head) 在 train_rel 中第一次出现的位置
         // end_rel (entity_total): 存储每种实体 (head) 在 train_rel 中最后一次出现的位置
         if (train_rel[i].h != train_rel[i - 1].h) {
-            end_rel.at(train_rel[i - 1].h) = i - 1;
+            end_rel[train_rel[i - 1].h] = i - 1;
             begin_rel[train_rel[i].h] = i;
         }
     }
@@ -115,7 +114,7 @@ void read_train_files() {
     begin_tail[train_tail[0].t] = 0;
     end_tail[train_tail[train_total - 1].t] = train_total - 1;
     begin_rel[train_rel[0].h] = 0;
-    end_rel.at(train_rel[train_total - 1].h) = train_total - 1;
+    end_rel[train_rel[train_total - 1].h] = train_total - 1;
     
     // 为 bern 负采样做准备
     std::vector<REAL> heads_rel(relation_total, 0.0), tails_rel(relation_total, 0.0);
