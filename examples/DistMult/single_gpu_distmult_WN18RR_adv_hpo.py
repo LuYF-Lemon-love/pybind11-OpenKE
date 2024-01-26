@@ -174,7 +174,14 @@ start_hpo_train(config=sweep_config, count=10)
 #      :align: center
 #      :height: 300
 #
-#      超参数优化结果
+#      超参数优化结果（3次）
+
+######################################################################
+# .. figure:: /_static/images/examples/DistMult/DistMult-WN18RR-HPO-10.png
+#      :align: center
+#      :height: 300
+#
+#      超参数优化结果（10次）
 
 ######################################################################
 # --------------

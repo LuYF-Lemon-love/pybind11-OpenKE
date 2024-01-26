@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "增加 TransR HPO 示例"
+git commit -m "增加 TransR DistMult HPO 结果"
 git push
