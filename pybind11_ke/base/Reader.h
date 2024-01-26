@@ -14,10 +14,9 @@
 #include <iostream>
 #include <algorithm>
 
-REAL *hpt, *tph;
-
-INT *begin_head, *end_head, *begin_tail, *end_tail, *begin_rel, *end_rel;
 Triple *train_list, *train_head, *train_tail, *train_rel;
+INT *begin_head, *end_head, *begin_tail, *end_tail, *begin_rel, *end_rel;
+REAL *hpt, *tph;
 
 // 读取训练集
 void read_train_files() {
@@ -138,7 +137,8 @@ void read_train_files() {
     }
 }
 
-std::vector<Triple> test_list, valid_list, triple_list;
+Triple *test_list;
+std::vector<Triple> valid_list, triple_list;
 
 // 读取测试集
 void read_test_files() {
@@ -172,13 +172,13 @@ void read_test_files() {
     
     // triple_total: 数据集三元组个数
     triple_total = test_total + train_total + valid_total;
-    test_list.resize(test_total);
+    test_list = (Triple *)calloc(test_total, sizeof(Triple));
     valid_list.resize(valid_total);
     triple_list.resize(triple_total);
     // 读取测试集三元组
     for (INT i = 0; i < test_total; i++) {
-        istrm_test >> test_list.at(i).h >> test_list.at(i).t >> test_list.at(i).r;
-        triple_list.at(i) = test_list.at(i);
+        istrm_test >> test_list[i].h >> test_list[i].t >> test_list[i].r;
+        triple_list.at(i) = test_list[i];
     }
     // 读取训练集三元组
     for (INT i = 0; i < train_total; i++) {
@@ -200,7 +200,7 @@ void read_test_files() {
     // test_list: 以 r, h, t 排序
     // valid_list: 以 r, h, t 排序
     std::sort(triple_list.begin(), triple_list.end(), Triple::cmp_head);
-    std::sort(test_list.begin(), test_list.end(), Triple::cmp_rel2);
+    std::sort(test_list, test_list + test_total, Triple::cmp_rel2);
     std::sort(valid_list.begin(), valid_list.end(), Triple::cmp_rel2);
 }
 

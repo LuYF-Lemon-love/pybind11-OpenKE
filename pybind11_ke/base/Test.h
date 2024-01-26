@@ -42,8 +42,8 @@ void get_head_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
     if (sampling_mode == "link_test") {
         for (INT i = 0; i < entity_total; i++) {
             ph(i) = i;
-            pt(i) = test_list.at(last_head).t;
-            pr(i) = test_list.at(last_head).r;
+            pt(i) = test_list[last_head].t;
+            pr(i) = test_list[last_head].r;
         }
     } else if (sampling_mode == "link_valid") {
         for (INT i = 0; i < entity_total; i++) {
@@ -63,9 +63,9 @@ void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
 
     if (sampling_mode == "link_test") {
         for (INT i = 0; i < entity_total; i++) {
-            ph(i) = test_list.at(last_tail).h;
+            ph(i) = test_list[last_tail].h;
             pt(i) = i;
-            pr(i) = test_list.at(last_tail).r;
+            pr(i) = test_list[last_tail].r;
         }
     } else if (sampling_mode == "link_valid") {
         for (INT i = 0; i < entity_total; i++) {
@@ -85,9 +85,9 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
     INT r = 0;
 
     if (sampling_mode == "link_test") {
-        h = test_list.at(last_head - 1).h;
-        t = test_list.at(last_head - 1).t;
-        r = test_list.at(last_head - 1).r;
+        h = test_list[last_head - 1].h;
+        t = test_list[last_head - 1].t;
+        r = test_list[last_head - 1].r;
     } else if (sampling_mode == "link_valid") {
         h = valid_list.at(last_head - 1).h;
         t = valid_list.at(last_head - 1).t;
@@ -172,9 +172,9 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
     INT r = 0;
 
     if (sampling_mode == "link_test") {
-        h = test_list.at(last_tail - 1).h;
-        t = test_list.at(last_tail - 1).t;
-        r = test_list.at(last_tail - 1).r;
+        h = test_list[last_tail - 1].h;
+        t = test_list[last_tail - 1].t;
+        r = test_list[last_tail - 1].r;
     } else if (sampling_mode == "link_valid") {
         h = valid_list.at(last_tail - 1).h;
         t = valid_list.at(last_tail - 1).t;
