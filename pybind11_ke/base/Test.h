@@ -48,8 +48,8 @@ void get_head_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
     } else if (sampling_mode == "link_valid") {
         for (INT i = 0; i < entity_total; i++) {
             ph(i) = i;
-            pt(i) = valid_list.at(last_head).t;
-            pr(i) = valid_list.at(last_head).r;
+            pt(i) = valid_list[last_head].t;
+            pr(i) = valid_list[last_head].r;
         }
     }
     last_head++;
@@ -69,9 +69,9 @@ void get_tail_batch(py::array_t<INT> ph_py, py::array_t<INT> pt_py, py::array_t<
         }
     } else if (sampling_mode == "link_valid") {
         for (INT i = 0; i < entity_total; i++) {
-            ph(i) = valid_list.at(last_tail).h;
+            ph(i) = valid_list[last_tail].h;
             pt(i) = i;
-            pr(i) = valid_list.at(last_tail).r;
+            pr(i) = valid_list[last_tail].r;
         }
     }
     last_tail++;
@@ -89,9 +89,9 @@ void test_head(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
         t = test_list[last_head - 1].t;
         r = test_list[last_head - 1].r;
     } else if (sampling_mode == "link_valid") {
-        h = valid_list.at(last_head - 1).h;
-        t = valid_list.at(last_head - 1).t;
-        r = valid_list.at(last_head - 1).r;
+        h = valid_list[last_head - 1].h;
+        t = valid_list[last_head - 1].t;
+        r = valid_list[last_head - 1].r;
     }
 
     // begin: 记录关系 r 的 head 类型在 head_type_rel 中第一次出现的位置
@@ -176,9 +176,9 @@ void test_tail(py::array_t<REAL> con_py, bool type_constrain = false, std::strin
         t = test_list[last_tail - 1].t;
         r = test_list[last_tail - 1].r;
     } else if (sampling_mode == "link_valid") {
-        h = valid_list.at(last_tail - 1).h;
-        t = valid_list.at(last_tail - 1).t;
-        r = valid_list.at(last_tail - 1).r;
+        h = valid_list[last_tail - 1].h;
+        t = valid_list[last_tail - 1].t;
+        r = valid_list[last_tail - 1].r;
     }
 
     // begin: 记录关系 r 的 tail 类型在 tail_type_rel 中第一次出现的位置

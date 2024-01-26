@@ -137,8 +137,8 @@ void read_train_files() {
     }
 }
 
-Triple *test_list;
-std::vector<Triple> valid_list, triple_list;
+Triple *test_list, *valid_list;
+std::vector<Triple> triple_list;
 
 // 读取测试集
 void read_test_files() {
@@ -173,7 +173,7 @@ void read_test_files() {
     // triple_total: 数据集三元组个数
     triple_total = test_total + train_total + valid_total;
     test_list = (Triple *)calloc(test_total, sizeof(Triple));
-    valid_list.resize(valid_total);
+    valid_list = (Triple *)calloc(valid_total, sizeof(Triple));
     triple_list.resize(triple_total);
     // 读取测试集三元组
     for (INT i = 0; i < test_total; i++) {
@@ -190,7 +190,7 @@ void read_test_files() {
         istrm_valid >> triple_list.at(i + test_total + train_total).h 
                     >> triple_list.at(i + test_total + train_total).t
                     >> triple_list.at(i + test_total + train_total).r;
-        valid_list.at(i) = triple_list.at(i + test_total + train_total);
+        valid_list[i] = triple_list.at(i + test_total + train_total);
     }
     istrm_test.close();
     istrm_train.close();
@@ -201,7 +201,7 @@ void read_test_files() {
     // valid_list: 以 r, h, t 排序
     std::sort(triple_list.begin(), triple_list.end(), Triple::cmp_head);
     std::sort(test_list, test_list + test_total, Triple::cmp_rel2);
-    std::sort(valid_list.begin(), valid_list.end(), Triple::cmp_rel2);
+    std::sort(valid_list, valid_list + valid_total, Triple::cmp_rel2);
 }
 
 // head_type_rel: 存储各个关系的 head 类型, 各个关系的 head 类型独立地以升序排列
