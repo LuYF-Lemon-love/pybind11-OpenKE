@@ -3,7 +3,7 @@
 # pybind11_ke/data/KGReader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 28, 2024
 #
 # 从文件中读取知识图谱.
 

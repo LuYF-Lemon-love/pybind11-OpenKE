@@ -122,8 +122,7 @@ class TransE(Model):
 		self,
 		h: torch.Tensor,
 		t: torch.Tensor,
-		r: torch.Tensor,
-		mode: str) -> torch.Tensor:
+		r: torch.Tensor) -> torch.Tensor:
 
 		"""计算 TransE 的评分函数。
 		
@@ -146,27 +145,15 @@ class TransE(Model):
 			h = F.normalize(h, 2, -1)
 			r = F.normalize(r, 2, -1)
 			t = F.normalize(t, 2, -1)
-
-		# 保证 h, r, t 都是三维的
-		if mode != 'normal':
-			h = h.view(-1, r.shape[0], h.shape[-1])
-			t = t.view(-1, r.shape[0], t.shape[-1])
-			r = r.view(-1, r.shape[0], r.shape[-1])
 		
-		# 两者结果一样，括号只是逻辑上的，'head_batch' 是替换 head，否则替换 tail
-		if mode == 'head_batch':
-			score = h + (r - t)
-		else:
-			score = (h + r) - t
+		score = (h + r) - t
 		
 		# 利用距离函数计算得分
-		score = torch.norm(score, self.p_norm, -1).flatten()
+		score = torch.norm(score, self.p_norm, -1)
 		return score
 	
 	@override
-	def forward(
-		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+	def forward(self, triples, negs=None, mode='single') -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
@@ -178,14 +165,8 @@ class TransE(Model):
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		mode = data['mode']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		score = self._calc(h ,t, r, mode)
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+		score = self._calc(head_emb, tail_emb, relation_emb)
 		if self.margin_flag:
 			return self.margin - score
 		else:
@@ -217,7 +198,8 @@ class TransE(Model):
 	@override
 	def predict(
 		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
+		data: dict[str, typing.Union[torch.Tensor,str]],
+		mode) -> np.ndarray:
 		
 		"""TransE 的推理方法。
 		
@@ -226,13 +208,43 @@ class TransE(Model):
 		:returns: 三元组的得分
 		:rtype: numpy.ndarray
 		"""
+
+		triples = data["positive_sample"]
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
+		score = self._calc(head_emb, tail_emb, relation_emb)
 		
-		score = self.forward(data)
 		if self.margin_flag:
 			score = self.margin - score
-			return score.cpu().data.numpy()
+			return score
 		else:
-			return score.cpu().data.numpy()
+			return -score
+			
+	def tri2emb(self, triples, negs=None, mode="single"):
+		
+		if mode == "single":
+			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)  # [bs, 1, dim]
+			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)  # [bs, 1, dim]
+			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)  # [bs, 1, dim]
+			
+		elif mode == "head-batch" or mode == "head_predict":
+			if negs is None:  # 说明这个时候是在evluation，所以需要直接用所有的entity embedding
+				head_emb = self.ent_embeddings.weight.data.unsqueeze(0)  # [1, num_ent, dim]
+			else:
+				head_emb = self.ent_embeddings(negs)  # [bs, num_neg, dim]
+				
+			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)  # [bs, 1, dim]
+			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)  # [bs, 1, dim]
+			
+		elif mode == "tail-batch" or mode == "tail_predict": 
+			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)  # [bs, 1, dim]
+			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)  # [bs, 1, dim]
+			
+			if negs is None:
+				tail_emb = self.ent_embeddings.weight.data.unsqueeze(0)  # [1, num_ent, dim]
+			else:
+				tail_emb = self.ent_embeddings(negs)  # [bs, num_neg, dim]
+		
+		return head_emb, relation_emb, tail_emb
 
 def get_transe_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

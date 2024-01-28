@@ -19,6 +19,7 @@ from .GraphTester import GraphTester, link_predict, head_predict, tail_predict, 
 from .GraphTrainer import GraphTrainer, get_graph_trainer_hpo_config
 from .TrainerDataParallel import trainer_distributed_data_parallel
 from .HPOTrainer import set_hpo_config, start_hpo_train, hpo_train
+from .UniTrainer import UniTrainer
 
 __all__ = [
 	'Tester',
@@ -36,5 +37,6 @@ __all__ = [
 	'trainer_distributed_data_parallel',
 	'set_hpo_config',
 	'start_hpo_train',
-	'hpo_train'
+	'hpo_train',
+	'UniTrainer'
 ]

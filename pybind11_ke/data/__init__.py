@@ -18,6 +18,10 @@ from .TestDataLoader import TestDataSampler, TestDataLoader, get_test_data_loade
 
 from .KGReader import KGReader
 from .RevSampler import RevSampler
+from .BaseSampler import BaseSampler
+from .UniSampler import UniSampler
+from .TestSampler import TestSampler
+from .UniDataLoader import UniDataLoader
 from .GraphSampler import GraphSampler
 from .CompGCNSampler import CompGCNSampler
 from .GraphTestSampler import GraphTestSampler
@@ -25,14 +29,18 @@ from .CompGCNTestSampler import CompGCNTestSampler
 from .GraphDataLoader import GraphDataLoader, get_graph_data_loader_hpo_config
 
 __all__ = [
-	'TrainDataSampler',
-	'TrainDataLoader',
-	'get_train_data_loader_hpo_config',
-	'TestDataSampler',
-	'TestDataLoader',
-	'get_test_data_loader_hpo_config',
+	# 'TrainDataSampler',
+	# 'TrainDataLoader',
+	# 'get_train_data_loader_hpo_config',
+	# 'TestDataSampler',
+	# 'TestDataLoader',
+	# 'get_test_data_loader_hpo_config',
 	'KGReader',
+	'BaseSampler',
 	'RevSampler',
+	'UniSampler',
+	'TestSampler',
+	'UniDataLoader',
 	'GraphSampler',
 	'CompGCNSampler',
 	'GraphTestSampler',
