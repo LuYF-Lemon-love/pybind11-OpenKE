@@ -3,7 +3,7 @@
 # pybind11_ke/data/GraphTestSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
 #
 # R-GCN 的测试数据采样器.
 
@@ -16,11 +16,12 @@ import dgl
 import torch
 import typing
 import numpy as np
+from .TestSampler import TestSampler
 from .GraphSampler import GraphSampler
 from .CompGCNSampler import CompGCNSampler
-from collections import defaultdict as ddict
+from typing_extensions import override
 
-class GraphTestSampler(object):
+class GraphTestSampler(TestSampler):
 
     """``R-GCN`` :cite:`R-GCN` 的测试数据采样器。
 
@@ -76,41 +77,21 @@ class GraphTestSampler(object):
         :type test_file: str
         """
 
-        #: 训练数据采样器
-        self.sampler: typing.Union[GraphSampler, CompGCNSampler] = sampler
-        #: 实体的个数
-        self.ent_tol: int = sampler.ent_tol
+        super().__init__(
+            sampler=sampler,
+            valid_file=valid_file,
+            test_file=test_file
+        )
+
         #: 训练集三元组
         self.triples: list[tuple[int, int, int]] = self.sampler.t_triples if isinstance(self.sampler, CompGCNSampler) else self.sampler.train_triples
         #: 幂
         self.power: float = -1
-        #: valid2id.txt
-        self.valid_file: str = valid_file
-        #: test2id.txt
-        self.test_file: str = test_file
 
-        #: 验证集三元组的个数
-        self.valid_tol: int = 0
-        #: 测试集三元组的个数
-        self.test_tol: int = 0
-
-        #: 验证集三元组
-        self.valid_triples: list[tuple[int, int, int]] = []
-        #: 测试集三元组
-        self.test_triples: list[tuple[int, int, int]] = []
-        #: 知识图谱所有三元组
-        self.all_true_triples: set[tuple[int, int, int]] = set()
-
-        self.get_valid_test_triples_id()
         self.add_valid_test_reverse_triples()
-
-        #: 知识图谱中所有 h-r 对对应的 t 集合
-        self.hr2t_all: ddict[set] = ddict(set)
-        #: 知识图谱中所有 r-t 对对应的 h 集合
-        self.rt2h_all: ddict[set] = ddict(set)
-
         self.get_hr2t_rt2h_from_all()
 
+    @override
     def get_valid_test_triples_id(self):
 
         """读取 :py:attr:`valid_file` 文件和 :py:attr:`test_file` 文件。"""
@@ -153,51 +134,7 @@ class GraphTestSampler(object):
             self.triples + self.valid_triples + self.test_triples
         )
 
-    def get_valid(self) -> list[tuple[int, int, int]]:
-
-        """
-        返回验证集三元组。
-
-        :returns: :py:attr:`valid_triples`
-        :rtype: list[tuple[int, int, int]]
-        """
-
-        return self.valid_triples
-
-    def get_test(self) -> list[tuple[int, int, int]]:
-
-        """
-        返回测试集三元组。
-
-        :returns: :py:attr:`test_triples`
-        :rtype: list[tuple[int, int, int]]
-        """
-
-        return self.test_triples
-
-    def get_all_true_triples(self) -> set[tuple[int, int, int]]:
-
-        """
-        返回知识图谱所有三元组。
-
-        :returns: :py:attr:`all_true_triples`
-        :rtype: set[tuple[int, int, int]]
-        """
-
-        return self.all_true_triples 
-
-    def get_hr2t_rt2h_from_all(self):
-
-        """获得 :py:attr:`hr2t_all` 和 :py:attr:`rt2h_all` 。"""
-
-        for h, r, t in self.all_true_triples:
-            self.hr2t_all[(h, r)].add(t)
-            self.rt2h_all[(r, t)].add(h)
-        for h, r in self.hr2t_all:
-            self.hr2t_all[(h, r)] = torch.tensor(list(self.hr2t_all[(h, r)]))
-        for r, t in self.rt2h_all:
-            self.rt2h_all[(r, t)] = torch.tensor(list(self.rt2h_all[(r, t)]))
-
+    @override
     def sampling(
         self,
         data: list[tuple[int, int, int]]) -> dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]:

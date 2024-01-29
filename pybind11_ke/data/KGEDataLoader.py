@@ -1,39 +1,25 @@
 # coding:utf-8
 #
-# pybind11_ke/data/GraphDataLoader.py
+# pybind11_ke/data/KGEDataLoader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
 #
-# 为图神经网络读取数据.
+# 为 KGE 模型读取数据.
 
 """
-GraphDataLoader - 图神经网络读取数据集类。
+KGEDataLoader - KGE 模型读取数据集类。
 """
 
 import typing
+from .TradSampler import TradSampler
 from .GraphSampler import GraphSampler
-from .CompGCNSampler import CompGCNSampler
-from .GraphTestSampler import GraphTestSampler
-from .CompGCNTestSampler import CompGCNTestSampler
+from .TestSampler import TestSampler
 from torch.utils.data import DataLoader
 
-class GraphDataLoader:
+class KGEDataLoader:
 
-    """基本图神经网络采样器。
-
-    例子::
-
-        from pybind11_ke.data import CompGCNSampler, CompGCNTestSampler, GraphDataLoader
-        
-        dataloader = GraphDataLoader(
-            in_path = "../../benchmarks/FB15K237/",
-            batch_size = 60000,
-            neg_ent = 10,
-            test = True,
-            test_batch_size = 100,
-            num_workers = 16
-        )
+    """KGE 模型数据加载器。
     """
     
     def __init__(
@@ -49,8 +35,8 @@ class GraphDataLoader:
         test: bool = False,
         test_batch_size: int | None = None,
         num_workers: int | None = None,
-        train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = GraphSampler,
-        test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = GraphTestSampler):
+        train_sampler: typing.Union[typing.Type[TradSampler], typing.Type[TradSampler]] = TradSampler,
+        test_sampler: typing.Type[TestSampler] = TestSampler):
 
         """创建 GraphDataLoader 对象。
 
@@ -77,9 +63,9 @@ class GraphDataLoader:
         :param num_workers: 加载数据的进程数
         :type num_workers: int
         :param train_sampler: 训练数据采样器
-        :type train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]]
+        :type train_sampler: typing.Union[typing.Type[TradSampler], typing.Type[TradSampler]]
         :param test_sampler: 测试数据采样器
-        :type test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]]
+        :type test_sampler: typing.Type[TestSampler]
         """
 
         #: 数据集目录
@@ -106,7 +92,7 @@ class GraphDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = train_sampler(
+        self.train_sampler: typing.Union[typing.Type[TradSampler], typing.Type[TradSampler]] = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
@@ -120,7 +106,7 @@ class GraphDataLoader:
 
         if self.test:
             #: 测试数据采样器
-            self.test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
+            self.test_sampler: typing.Type[TestSampler] = test_sampler(
                 sampler=self.train_sampler,
                 valid_file=self.valid_file,
                 test_file=self.test_file,
@@ -182,15 +168,15 @@ class GraphDataLoader:
             collate_fn=self.test_sampler.sampling,
         )
 
-def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
+def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
-    """返回 :py:class:`GraphDataLoader` 的默认超参数优化配置。
+    """返回 :py:class:`KGEDataLoader` 的默认超参数优化配置。
 	
 	默认配置为::
 	
         parameters_dict = {
             'dataloader': {
-                'value': 'GraphDataLoader'
+                'value': 'KGEDataLoader'
             },
             'in_path': {
                 'value': './'
@@ -223,20 +209,20 @@ def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'value': 16
             },
             'train_sampler': {
-                'value': 'GraphSampler'
+                'value': 'UniSampler'
             },
             'test_sampler': {
-                'value': 'GraphTestSampler'
+                'value': 'TradTestSampler'
             }
         }
 
-	:returns: :py:class:`GraphDataLoader` 的默认超参数优化配置
+	:returns: :py:class:`KGEDataLoader` 的默认超参数优化配置
 	:rtype: dict[str, dict[str, typing.Any]]
 	"""
     
     parameters_dict = {
         'dataloader': {
-            'value': 'GraphDataLoader'
+            'value': 'KGEDataLoader'
         },
         'in_path': {
             'value': './'
@@ -269,10 +255,10 @@ def get_graph_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'value': 16
         },
         'train_sampler': {
-            'value': 'GraphSampler'
+            'value': 'UniSampler'
         },
         'test_sampler': {
-            'value': 'GraphTestSampler'
+            'value': 'TradTestSampler'
         }
     }
     

@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
 # 
 # 该头文件定义了 TransE.
 
@@ -117,25 +117,93 @@ class TransE(Model):
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
+	
+	@override
+	def forward(
+		self,
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> torch.Tensor:
+
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+		score = self._calc(head_emb, relation_emb, tail_emb)
+		if self.margin_flag:
+			return self.margin - score
+		else:
+			return score
+
+	def tri2emb(
+		self,
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+
+		"""
+		返回三元组对应的嵌入向量。
+		
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
+		:returns: 头实体、关系和尾实体的嵌入向量
+		:rtype: tuple[torch.Tensor, torch.Tensor, torch.Tensor]
+		"""
+		
+		if mode == "single":
+			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)
+			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)
+			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)
+			
+		elif mode == "head-batch" or mode == "head_predict":
+			if negs is None:
+				head_emb = self.ent_embeddings.weight.data.unsqueeze(0)
+			else:
+				head_emb = self.ent_embeddings(negs)
+				
+			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)
+			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)
+			
+		elif mode == "tail-batch" or mode == "tail_predict": 
+			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)
+			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)
+			
+			if negs is None:
+				tail_emb = self.ent_embeddings.weight.data.unsqueeze(0)
+			else:
+				tail_emb = self.ent_embeddings(negs)
+		
+		return head_emb, relation_emb, tail_emb
 
 	def _calc(
 		self,
 		h: torch.Tensor,
-		t: torch.Tensor,
-		r: torch.Tensor) -> torch.Tensor:
+		r: torch.Tensor,
+		t: torch.Tensor) -> torch.Tensor:
 
 		"""计算 TransE 的评分函数。
 		
 		:param h: 头实体的向量。
 		:type h: torch.Tensor
-		:param t: 尾实体的向量。
-		:type t: torch.Tensor
 		:param r: 关系的向量。
 		:type r: torch.Tensor
-		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
-		:type mode: str
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -151,49 +219,6 @@ class TransE(Model):
 		# 利用距离函数计算得分
 		score = torch.norm(score, self.p_norm, -1)
 		return score
-	
-	@override
-	def forward(self, triples, negs=None, mode='single') -> torch.Tensor:
-
-		"""
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
-		"""
-
-		head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
-		score = self._calc(head_emb, tail_emb, relation_emb)
-		if self.margin_flag:
-			return self.margin - score
-		else:
-			return score
-
-	def regularization(
-		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
-
-		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 模型参数的正则损失
-		:rtype: torch.Tensor
-		"""
-		
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		regul = (torch.mean(h ** 2) + 
-				 torch.mean(t ** 2) + 
-				 torch.mean(r ** 2)) / 3
-		return regul
 
 	@override
 	def predict(
@@ -211,40 +236,43 @@ class TransE(Model):
 
 		triples = data["positive_sample"]
 		head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
-		score = self._calc(head_emb, tail_emb, relation_emb)
+		score = self._calc(head_emb, relation_emb, tail_emb)
 		
 		if self.margin_flag:
 			score = self.margin - score
 			return score
 		else:
 			return -score
-			
-	def tri2emb(self, triples, negs=None, mode="single"):
+
+	def regularization(
+		self,
+		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+
+		"""L2 正则化函数（又称权重衰减），在损失函数中用到。
 		
-		if mode == "single":
-			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)  # [bs, 1, dim]
-			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)  # [bs, 1, dim]
-			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)  # [bs, 1, dim]
-			
-		elif mode == "head-batch" or mode == "head_predict":
-			if negs is None:  # 说明这个时候是在evluation，所以需要直接用所有的entity embedding
-				head_emb = self.ent_embeddings.weight.data.unsqueeze(0)  # [1, num_ent, dim]
-			else:
-				head_emb = self.ent_embeddings(negs)  # [bs, num_neg, dim]
-				
-			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)  # [bs, 1, dim]
-			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)  # [bs, 1, dim]
-			
-		elif mode == "tail-batch" or mode == "tail_predict": 
-			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)  # [bs, 1, dim]
-			relation_emb = self.rel_embeddings(triples[:, 1]).unsqueeze(1)  # [bs, 1, dim]
-			
-			if negs is None:
-				tail_emb = self.ent_embeddings.weight.data.unsqueeze(0)  # [1, num_ent, dim]
-			else:
-				tail_emb = self.ent_embeddings(negs)  # [bs, num_neg, dim]
+		:param data: 数据。
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:returns: 模型参数的正则损失
+		:rtype: torch.Tensor
+		"""
+
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
+		neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+
+		pos_regul = (torch.mean(pos_head_emb ** 2) + 
+					 torch.mean(pos_relation_emb ** 2) + 
+					 torch.mean(pos_tail_emb ** 2)) / 3
+
+		neg_regul = (torch.mean(neg_head_emb ** 2) + 
+					 torch.mean(neg_relation_emb ** 2) + 
+					 torch.mean(neg_tail_emb ** 2)) / 3
+
+		regul = (pos_regul + neg_regul) / 2
 		
-		return head_emb, relation_emb, tail_emb
+		return regul
 
 def get_transe_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

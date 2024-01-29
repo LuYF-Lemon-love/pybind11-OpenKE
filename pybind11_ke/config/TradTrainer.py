@@ -1,34 +1,33 @@
 # coding:utf-8
 #
-# pybind11_ke/config/GraphTrainer.py
+# pybind11_ke/config/TradTrainer.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 18, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2023
 #
-# 该脚本定义了图神经网络的训练循环类.
+# 该脚本定义了平移模型和语义匹配模型训练循环类.
 
 """
-GraphTrainer - 图神经网络的训练循环类。
+TradTrainer - 平移模型和语义匹配模型训练循环类。
 """
 
-import dgl
 import typing
 import torch
 from .Trainer import Trainer
 from .Tester import Tester
-from ..module.strategy import RGCNSampling, CompGCNSampling
+from ..module.strategy import NegativeSampling
 from torch.utils.data import DataLoader
 from typing_extensions import override
 
-class GraphTrainer(Trainer):
+class TradTrainer(Trainer):
 
 	"""
-	主要用于 ``R-GCN`` :cite:`R-GCN` 和 ``CompGCN`` :cite:`CompGCN` 的训练。
+	主要用于平移模型和语义匹配模型的训练。
 	"""
 
 	def __init__(
 		self,
-		model: RGCNSampling | CompGCNSampling | None = None,
+		model: NegativeSampling | None = None,
 		data_loader: typing.Union[DataLoader, None] = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
@@ -48,10 +47,10 @@ class GraphTrainer(Trainer):
 		use_wandb: bool = False,
 		gpu_id: int | None = None):
 
-		"""创建 GraphTrainer 对象。
+		"""创建 TradTrainer 对象。
 
 		:param model: 包装 KGE 模型的训练策略类
-		:type model: :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
+		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
 		:param data_loader: DataLoader
 		:type data_loader: torch.utils.data.DataLoader
 		:param epochs: 训练轮次数
@@ -90,7 +89,7 @@ class GraphTrainer(Trainer):
 		:type gpu_id: int
 		"""
 
-		super(GraphTrainer, self).__init__(
+		super(TradTrainer, self).__init__(
 			model=model,
 			data_loader=data_loader,
 			epochs=epochs,
@@ -115,20 +114,23 @@ class GraphTrainer(Trainer):
 	@override
 	def train_one_step(
 		self,
-		data: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]) -> float:
+		data: dict[str, typing.Union[str, torch.Tensor]]) -> float:
 
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.GraphSampler.sampling` 函数生成的数据
-		:type data: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
+		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.UniSampler.sampling` 函数生成的数据
+		:type data: dict[str, typing.Union[str, torch.Tensor]]
 		:returns: 损失值
 		:rtype: float
 		"""
 
 		self.optimizer.zero_grad()
-		data = {key : self.to_var(value) for key, value in data.items()}
-		loss = self.model(data)
+		loss = self.model({
+			'positive_sample': self.to_var(data['positive_sample']),
+			'negative_sample': self.to_var(data['negative_sample']),
+			'mode': data['mode']
+		})
 		loss.backward()
 		self.optimizer.step()		 
 		return loss.item()

@@ -18,25 +18,26 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 :py:class:`pybind11_ke.data.TestDataLoader`。
 """
 
-from pybind11_ke.config import UniTrainer, GraphTester
+from pybind11_ke.config import TradTrainer, Tester
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
-from pybind11_ke.module.strategy import Sampling
-from pybind11_ke.data import UniDataLoader, UniSampler, TestSampler
+from pybind11_ke.module.strategy import NegativeSampling
+from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
-dataloader = UniDataLoader(
-    in_path = "../../benchmarks/FB15K237/",
+dataloader = KGEDataLoader(
+    in_path = "../../benchmarks/FB15K/",
     batch_size = 4096,
     test_batch_size = 256,
     num_workers = 16,
     test = True,
+    neg_ent = 25,
     train_sampler = UniSampler,
-    test_sampler = TestSampler
+    test_sampler = TradTestSampler
 )
 
 ######################################################################
@@ -70,10 +71,9 @@ transe = TransE(
 # :py:class:`pybind11_ke.module.loss.MarginLoss` 进行了封装，加入权重衰减等额外项。
 
 # define the loss function
-model = Sampling(
+model = NegativeSampling(
 	model = transe, 
-	loss = MarginLoss(margin = 1.0),
-	batch_size = 4096
+	loss = MarginLoss(margin = 1.0)
 )
 
 ######################################################################
@@ -90,10 +90,10 @@ model = Sampling(
 # :py:class:`pybind11_ke.data.TestDataLoader` 作为数据采样器。
 
 # test the model
-tester = GraphTester(model = transe, data_loader = dataloader, use_gpu = True, device = 'cuda:0', prediction = "tail")
+tester = Tester(model = transe, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
 
 # train the model
-trainer = UniTrainer(model = model, data_loader = dataloader.train_dataloader(),
+trainer = TradTrainer(model = model, data_loader = dataloader.train_dataloader(),
     epochs = 2000, lr = 0.01, use_gpu = True, device = 'cuda:0',
     tester = tester, test = True, valid_interval = 50, log_interval = 50,
     save_interval = 50, save_path = '../../checkpoint/compgcn.pth'

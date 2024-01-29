@@ -3,25 +3,23 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2023
 #
-# 该脚本定义了训练循环类.
+# 该脚本定义了训练循环基类类.
 
 """
 Trainer - 训练循环类。
 """
 
 import os
+import dgl
 import wandb
 import typing
 import torch
-import numpy as np
 from .Tester import Tester
-from .GraphTester import GraphTester
 import torch.optim as optim
 from ..utils.Timer import Timer
 from ..module.model import Model
-from ..data import TrainDataLoader, TestDataLoader
 from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
 from ..module.strategy import NegativeSampling, RGCNSampling, CompGCNSampling
@@ -31,29 +29,18 @@ class Trainer(object):
 
 	"""
 	主要用于 KGE 模型的训练。
-
-	例子::
-
-		from pybind11_ke.config import Trainer
-
-		# train the model
-		trainer = Trainer(model = model, data_loader = train_dataloader,
-			epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
-			tester = tester, test = True, valid_interval = 100,
-			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
-		trainer.run()
 	"""
 
 	def __init__(
 		self,
 		model: NegativeSampling | RGCNSampling | CompGCNSampling | None = None,
-		data_loader: typing.Union[TrainDataLoader, DataLoader, None] = None,
+		data_loader: typing.Union[DataLoader, None] = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
 		opt_method: str = "Adam",
 		use_gpu: bool = True,
 		device: str = "cuda:0",
-		tester: Tester | GraphTester | None = None,
+		tester: Tester | None = None,
 		test: bool = False,
 		valid_interval: int | None = None,
 		log_interval: int | None = None,
@@ -70,8 +57,8 @@ class Trainer(object):
 
 		:param model: 包装 KGE 模型的训练策略类
 		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
-		:param data_loader: TrainDataLoader or DataLoader
-		:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
+		:param data_loader: DataLoader
+		:type data_loader: torch.utils.data.DataLoader
 		:param epochs: 训练轮次数
 		:type epochs: int
 		:param lr: 学习率
@@ -83,7 +70,7 @@ class Trainer(object):
 		:param device: 使用哪个 gpu
 		:type device: str
 		:param tester: 用于模型评估的验证模型类
-		:type tester: :py:class:`pybind11_ke.config.Tester` or :py:class:`pybind11_ke.config.GraphTester`
+		:type tester: :py:class:`pybind11_ke.config.Tester`
 		:param test: 是否在测试集上评估模型, :py:attr:`tester` 不为空
 		:type test: bool
 		:param valid_interval: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
@@ -96,8 +83,7 @@ class Trainer(object):
 		:type save_path: str
 		:param use_early_stopping: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 		:type use_early_stopping: bool
-		:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
-			'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。默认值：'hit10'
+		:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hit1', 'hit3', 'hit10'。默认值：'hit10'
 		:type metric: str
 		:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 		:type patience: int
@@ -115,8 +101,8 @@ class Trainer(object):
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
 		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | RGCNSampling | CompGCNSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
 
-		#: :py:meth:`__init__` 传入的 :py:class:`pybind11_ke.data.TrainDataLoader` or :py:class:`torch.utils.data.DataLoader`
-		self.data_loader: typing.Union[TrainDataLoader, torch.utils.data.DataLoader, None] = data_loader
+		#: :py:meth:`__init__` 传入的 :py:class:`torch.utils.data.DataLoader`
+		self.data_loader: torch.utils.data.DataLoader = data_loader
 		#: epochs
 		self.epochs: int = epochs
 
@@ -135,7 +121,7 @@ class Trainer(object):
 		self.device: typing.Union[torch.device, str] = torch.device(device) if self.use_gpu else "cpu"
 
 		#: 用于模型评估的验证模型类
-		self.tester: Tester | GraphTester | None = tester
+		self.tester: Tester | None = tester
 		#: 是否在测试集上评估模型, :py:attr:`tester` 不为空
 		self.test: bool = test
 		#: 训练几轮在验证集上评估一次模型, :py:attr:`tester` 不为空
@@ -150,8 +136,7 @@ class Trainer(object):
 
 		#: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 		self.use_early_stopping: bool = use_early_stopping
-		#: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
-		#: 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。默认值：'hit10'
+		#: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10'。默认值：'hit10'
 		self.metric: str = metric
 		#: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 		self.patience: int = patience
@@ -189,27 +174,20 @@ class Trainer(object):
 		milestones = int(self.epochs / 3)
 		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
 
-	def train_one_step(self, data: dict[str, typing.Union[np.ndarray, str]]) -> float:
+	def train_one_step(
+		self,
+		data: dict[str, typing.Union[str, torch.Tensor, dgl.DGLGraph]]) -> float:
 
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.TrainDataLoader.sampling` 函数生成的数据
-		:type data: dict[str, typing.Union[np.ndarray, str]]
+		:param data: 训练数据
+		:type data: dict[str, typing.Union[str, torch.Tensor, dgl.DGLGraph]]
 		:returns: 损失值
 		:rtype: float
 		"""
-		self.optimizer.zero_grad()
-		loss = self.model({
-			'batch_h': self.to_var(data['batch_h']),
-			'batch_t': self.to_var(data['batch_t']),
-			'batch_r': self.to_var(data['batch_r']),
-			'batch_y': self.to_var(data['batch_y']),
-			'mode': data['mode']
-		})
-		loss.backward()
-		self.optimizer.step()		 
-		return loss.item()
+		
+		raise NotImplementedError
 
 	def run(self):
 
@@ -242,7 +220,9 @@ class Trainer(object):
 				wandb.watch(self.model.module.model, log_freq=100)
 		
 		timer = Timer()
+
 		for epoch in range(self.epochs):
+
 			res = 0.0
 			if self.gpu_id is not None:
 				self.model.module.model.train()
@@ -253,28 +233,34 @@ class Trainer(object):
 				res += loss
 			timer.stop()
 			self.scheduler.step()
+
 			if (self.gpu_id is None or self.gpu_id == 0) and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
 				print(f"[{self.print_device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.print_test("link_valid", epoch)
+			
 			if self.early_stopping is not None and self.early_stopping.early_stop:
 				print(f"[{self.print_device}] Early stopping")
 				break
+			
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
 				print(f"[{self.print_device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
+			
 			if (self.gpu_id is None or self.gpu_id == 0) and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.get_model().save_checkpoint(path)
 				print(f"[{self.print_device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+		
 		print(f"[{self.print_device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+		
 		if (self.gpu_id is None or self.gpu_id == 0) and self.save_path:
 			self.get_model().save_checkpoint(self.save_path)
 			print(f"[{self.print_device}] Model saved at {self.save_path}.")
+		
 		if (self.gpu_id is None or self.gpu_id == 0) and self.test and self.tester:
 			print(f"[{self.print_device}] The model starts evaluating in the test set.")
 			self.print_test("link_test")
-
 
 	def print_test(
 		self,
@@ -294,43 +280,21 @@ class Trainer(object):
 		elif sampling_mode == "link_valid":
 			mode = "val"
 
-		if isinstance(self.tester.data_loader, TestDataLoader) and self.tester.data_loader.type_constrain:
-			mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC = self.tester.run_link_prediction()
-			if self.use_wandb:
-				log_dict = {
-					f"{mode}/mr" : mr,
-					f"{mode}/mrr" : mrr,
-					f"{mode}/hit1" : hit1,
-					f"{mode}/hit3" : hit3,
-					f"{mode}/hit10" : hit10,
-					f"{mode}/mrTC" : mrTC,
-					f"{mode}/mrrTC" : mrrTC,
-					f"{mode}/hit1TC" : hit1TC,
-					f"{mode}/hit3TC" : hit3TC,
-					f"{mode}/hit10TC" : hit10TC,
-				}
-				if sampling_mode == "link_valid":
-					log_dict.update({
-						"val/epoch": epoch
-					})
-				wandb.log(log_dict)
-		else:
-			mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
-			if isinstance(self.tester, GraphTester):
-				print(f"mr: {mr}, mrr: {mrr}, hits@1: {hit1}, hits@3: {hit3}, hits@10: {hit10}")
-			if self.use_wandb:
-				log_dict = {
-					f"{mode}/mr" : mr,
-					f"{mode}/mrr" : mrr,
-					f"{mode}/hit1" : hit1,
-					f"{mode}/hit3" : hit3,
-					f"{mode}/hit10" : hit10,
-				}
-				if sampling_mode == "link_valid":
-					log_dict.update({
-						"val/epoch": epoch
-					})
-				wandb.log(log_dict)
+		mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
+		print(f"mr: {mr}, mrr: {mrr}, hits@1: {hit1}, hits@3: {hit3}, hits@10: {hit10}")
+		if self.use_wandb:
+			log_dict = {
+				f"{mode}/mr" : mr,
+				f"{mode}/mrr" : mrr,
+				f"{mode}/hit1" : hit1,
+				f"{mode}/hit3" : hit3,
+				f"{mode}/hit10" : hit10,
+			}
+			if sampling_mode == "link_valid":
+				log_dict.update({
+					"val/epoch": epoch
+				})
+			wandb.log(log_dict)
 				
 		if self.early_stopping is not None and sampling_mode == "link_valid":
 			if self.metric == 'mr':
@@ -343,35 +307,27 @@ class Trainer(object):
 				self.early_stopping(hit3, self.get_model())
 			elif self.metric == 'hit10':
 				self.early_stopping(hit10, self.get_model())
-			elif self.metric == 'mrTC':
-				self.early_stopping(-mrTC, self.get_model())
-			elif self.metric == 'mrrTC':
-				self.early_stopping(mrrTC, self.get_model())
-			elif self.metric == 'hit1TC':
-				self.early_stopping(hit1TC, self.get_model())
-			elif self.metric == 'hit3TC':
-				self.early_stopping(hit3TC, self.get_model())
-			elif self.metric == 'hit10TC':
-				self.early_stopping(hit10TC, self.get_model())
 			else:
 				raise ValueError("Early stopping metric is not valid.")
 
-	def to_var(self, x: np.ndarray) -> torch.Tensor:
+	def to_var(
+		self,
+		x: torch.Tensor) -> torch.Tensor:
 
 		"""将 ``x`` 转移到对应的设备上。
 
 		:param x: 数据
-		:type x: numpy.ndarray
+		:type x: torch.Tensor
 		:returns: 张量
 		:rtype: torch.Tensor
 		"""
 
 		if self.gpu_id is not None:
-			return torch.from_numpy(x).to(self.gpu_id)
+			return x.to(self.gpu_id)
 		elif self.use_gpu:
-			return torch.from_numpy(x).to(self.device)
+			return x.to(self.device)
 		else:
-			return torch.from_numpy(x)
+			return x
 
 	def get_model(self) -> Model:
 

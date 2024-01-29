@@ -3,7 +3,7 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2023
 #
 # 该脚本定义了验证模型类.
 
@@ -11,45 +11,40 @@
 Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
 """
 
-import base
+import dgl
 import torch
 import typing
 import numpy as np
 from tqdm import tqdm
-from ..data import TestDataLoader, GraphDataLoader
 from ..module.model import Model
+from ..data import KGEDataLoader
+from typing_extensions import override
 
 class Tester(object):
 
     """
     主要用于 KGE 模型的评估。
-
-    例子::
-
-        from pybind11_ke.config import Trainer, Tester
-
-        # test the model
-        transe.load_checkpoint('../checkpoint/transe.ckpt')
-        tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True)
-        tester.run_link_prediction()
     """
 
     def __init__(
         self,
         model: typing.Union[Model, None] = None,
-        data_loader: TestDataLoader | GraphDataLoader | None = None,
+        data_loader: KGEDataLoader | None = None,
         sampling_mode: str = 'link_test',
+        prediction: str = "all",
         use_gpu: bool = True,
         device: str = "cuda:0"):
 
         """创建 Tester 对象。
         
         :param model: KGE 模型
-        :type model: :py:class:`pybind11_ke.module.model.Model`
-        :param data_loader: TestDataLoader or GraphDataLoader
-        :type data_loader: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
-        :param sampling_mode: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
+        :type model: pybind11_ke.module.model.Model
+        :param data_loader: KGEDataLoader
+        :type data_loader: pybind11_ke.data.KGEDataLoader
+        :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
         :type sampling_mode: str
+        :param prediction: 链接预测模式: 'all'、'head'、'tail'
+        :type prediction: str
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
         :param device: 使用哪个 gpu
@@ -59,56 +54,39 @@ class Tester(object):
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
         self.model: typing.Union[Model, None] = model
         #: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
-        self.data_loader: TestDataLoader | GraphDataLoader | None = data_loader
+        self.data_loader: KGEDataLoader | None = data_loader
         #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
         self.sampling_mode: str = sampling_mode
+        #: 链接预测模式: 'all'、'head'、'tail'
+        self.prediction: str = prediction
         #: 是否使用 gpu
         self.use_gpu: bool = use_gpu
         #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
         self.device: torch.device = torch.device(device)
+        #: 验证数据加载器。
+        self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader()
+        #: 测试数据加载器。
+        self.test_dataloader: torch.utils.data.DataLoader = self.data_loader.test_dataloader()
         
         if self.use_gpu:
             self.model.cuda(device = self.device)
 
     def to_var(
         self,
-        x: np.ndarray,
-        use_gpu: bool) -> torch.Tensor:
+        x: torch.Tensor) -> torch.Tensor:
 
-        """根据 ``use_gpu`` 返回 ``x`` 的张量
+        """根据 :py:attr:`use_gpu` 返回 ``x`` 的张量
         
         :param x: 数据
-        :type x: numpy.ndarray
-        :param use_gpu: 是否使用 gpu
-        :type use_gpu: bool
+        :type x: torch.Tensor
         :returns: 张量
         :rtype: torch.Tensor
         """
 
-        if use_gpu:
-            return torch.from_numpy(x).to(self.device)
+        if self.use_gpu:
+            return x.to(self.device)
         else:
-            return torch.from_numpy(x)
-
-    def test_one_step(
-        self,
-        data: dict[str, typing.Union[np.ndarray, str]]) -> np.ndarray:
-
-        """根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将模型验证 1 步。
-        
-        :param data: :py:attr:`data_loader` 利用
-                        :py:meth:`pybind11_ke.data.TestDataLoader.sampling` 函数生成的数据
-        :type data: dict[str, typing.Union[np.ndarray, str]]
-        :returns: 三元组的得分
-        :rtype: numpy.ndarray
-        """
-                
-        return self.model.predict({
-            'batch_h': self.to_var(data['batch_h'], self.use_gpu),
-            'batch_t': self.to_var(data['batch_t'], self.use_gpu),
-            'batch_r': self.to_var(data['batch_r'], self.use_gpu),
-            'mode': data['mode']
-        })
+            return x
 
     def run_link_prediction(self) -> tuple[float, ...]:
         
@@ -118,31 +96,35 @@ class Tester(object):
         :rtype: tuple[float, ...]
         """
 
-        self.data_loader.set_sampling_mode(self.sampling_mode)
-        training_range = tqdm(self.data_loader)
+        if self.sampling_mode == "link_valid":
+            training_range = tqdm(self.val_dataloader)
+        elif self.sampling_mode == "link_test":
+            training_range = tqdm(self.test_dataloader)
         self.model.eval()
+        results = dict(
+            count = 0,
+            mr = 0.0,
+            mrr = 0.0,
+            hit1 = 0.0,
+            hit3 = 0.0,
+            hit10 = 0.0
+        )
         with torch.no_grad():
-            for [data_head, data_tail] in training_range:
-                score = self.test_one_step(data_head)
-                base.test_head(score, self.data_loader.type_constrain, self.sampling_mode)
-                score = self.test_one_step(data_tail)
-                base.test_tail(score, self.data_loader.type_constrain, self.sampling_mode)
-        base.test_link_prediction(self.data_loader.type_constrain, self.sampling_mode)
+            for data in training_range:
+                data = {key : self.to_var(value) for key, value in data.items()}
+                ranks = link_predict(data, self.model, prediction=self.prediction)
+                results["count"] += torch.numel(ranks)
+                results["mr"] += torch.sum(ranks).item()
+                results["mrr"] += torch.sum(1.0 / ranks).item()
+                for k in [1, 3, 10]:
+                    results['hit{}'.format(k)] += torch.numel(ranks[ranks <= k])
 
-        mr = base.get_test_link_MR()
-        mrr = base.get_test_link_MRR()
-        hit1 = base.get_test_link_Hit1()
-        hit3 = base.get_test_link_Hit3()
-        hit10 = base.get_test_link_Hit10()
-
-        if self.data_loader.type_constrain:
-            mrTC = base.get_test_link_MR(True)
-            mrrTC = base.get_test_link_MRR(True)
-            hit1TC = base.get_test_link_Hit1(True)
-            hit3TC = base.get_test_link_Hit3(True)
-            hit10TC = base.get_test_link_Hit10(True)
-
-            return mr, mrr, hit1, hit3, hit10, mrTC, mrrTC, hit1TC, hit3TC, hit10TC, 
+        count = results["count"]
+        mr = np.around(results["mr"] / count, decimals=3).item()
+        mrr = np.around(results["mrr"] / count, decimals=3).item()
+        hit1 = np.around(results["hit1"] / count, decimals=3).item()
+        hit3 = np.around(results["hit3"] / count, decimals=3).item()
+        hit10 = np.around(results["hit10"] / count, decimals=3).item()
         
         return mr, mrr, hit1, hit3, hit10
     
@@ -156,6 +138,108 @@ class Tester(object):
         
         self.sampling_mode = sampling_mode
 
+def link_predict(
+    batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
+    model: Model,
+    prediction: str = "all") -> torch.Tensor:
+
+    """
+    进行链接预测。
+    
+    :param batch: 测试数据
+    :type batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
+    :param model: KGE 模型
+    :type model: pybind11_ke.module.model.Model
+    :param prediction: "all", "head", "tail"
+    :type prediction: str
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+    
+    if prediction == "all":
+        tail_ranks = tail_predict(batch, model)
+        head_ranks = head_predict(batch, model)
+        ranks = torch.cat([tail_ranks, head_ranks])
+    elif prediction == "head":
+        ranks = head_predict(batch, model)
+    elif prediction == "tail":
+        ranks = tail_predict(batch, model)
+
+    return ranks.float()
+
+def head_predict(
+    batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
+    model: Model) -> torch.Tensor:
+
+    """
+    进行头实体的链接预测。
+    
+    :param batch: 测试数据
+    :type batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
+    :param model: KGE 模型
+    :type model: pybind11_ke.module.model.Model
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+    
+    pos_triple = batch["positive_sample"]
+    idx = pos_triple[:, 0]
+    label = batch["head_label"]
+    pred_score = model.predict(batch, "head_predict")
+    return calc_ranks(idx, label, pred_score)
+
+def tail_predict(
+    batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
+    model: Model) -> torch.Tensor:
+
+    """
+    进行尾实体的链接预测。
+    
+    :param batch: 测试数据
+    :type batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
+    :param model: KGE 模型
+    :type model: pybind11_ke.module.model.Model
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+
+    pos_triple = batch["positive_sample"]
+    idx = pos_triple[:, 2]
+    label = batch["tail_label"]
+    pred_score = model.predict(batch, "tail_predict")
+    return calc_ranks(idx, label, pred_score)
+
+def calc_ranks(
+    idx: torch.Tensor,
+    label: torch.Tensor,
+    pred_score: torch.Tensor) -> torch.Tensor:
+
+    """
+    计算三元组的排名。
+    
+    :param idx: 需要链接预测的实体 ID
+    :type idx: torch.Tensor
+    :param label: 标签
+    :type label: torch.Tensor
+    :param pred_score: 三元组的评分
+    :type pred_score: torch.Tensor
+    :returns: 正确三元组的排名
+    :rtype: torch.Tensor
+    """
+
+    b_range = torch.arange(pred_score.size()[0])
+    target_pred = pred_score[b_range, idx]
+    pred_score = torch.where(label.bool(), -torch.ones_like(pred_score) * 10000000, pred_score)
+    pred_score[b_range, idx] = target_pred
+
+    ranks = (
+        1
+        + torch.argsort(
+            torch.argsort(pred_score, dim=1, descending=True), dim=1, descending=False
+        )[b_range, idx]
+    )
+    return ranks
+
 def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
     """返回 :py:class:`Tester` 的默认超参数优化配置。
@@ -164,7 +248,10 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
         parameters_dict = {
             'tester': {
-                'value': 'Tester'
+                'value': 'GraphTester'
+            },
+            'prediction': {
+                'value': 'all'
             },
             'use_gpu': {
                 'value': True
@@ -181,6 +268,9 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     parameters_dict = {
         'tester': {
             'value': 'Tester'
+        },
+        'prediction': {
+            'value': 'all'
         },
         'use_gpu': {
             'value': True

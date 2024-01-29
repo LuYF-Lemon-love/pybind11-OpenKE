@@ -2,10 +2,10 @@
 #
 # pybind11_ke/module/strategy/NegativeSampling.py
 #
-# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
+# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
 #
-# 该脚本定义了 KGE 模型的训练策略.
+# 该脚本定义了平移模型和语义匹配模型的训练策略.
 
 """
 NegativeSampling - 训练策略类，包含损失函数。
@@ -21,42 +21,12 @@ class NegativeSampling(Strategy):
 
 	"""
 	将模型和损失函数封装到一起，方便模型训练。
-	
-	例子::
-
-		from pybind11_ke.config import Trainer
-		from pybind11_ke.module.model import TransE
-		from pybind11_ke.module.loss import MarginLoss
-		from pybind11_ke.module.strategy import NegativeSampling
-		
-		# define the model
-		transe = TransE(
-			ent_tol = train_dataloader.get_ent_tol(),
-			rel_tol = train_dataloader.get_rel_tol(),
-			dim = 50, 
-			p_norm = 1, 
-			norm_flag = True)
-		
-		# define the loss function
-		model = NegativeSampling(
-			model = transe, 
-			loss = MarginLoss(margin = 1.0),
-			batch_size = train_dataloader.get_batch_size()
-		)
-		
-		# train the model
-		trainer = Trainer(model = model, data_loader = train_dataloader,
-			train_times = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
-			tester = tester, test = True, valid_interval = 100,
-			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
-		trainer.run()
 	"""
 
 	def __init__(
 		self,
 		model: Model = None,
 		loss: Loss = None,
-		batch_size: int = 256,
 		regul_rate: float = 0.0,
 		l3_regul_rate: float = 0.0):
 		
@@ -66,8 +36,6 @@ class NegativeSampling(Strategy):
 		:type model: :py:class:`pybind11_ke.module.model.Model`
 		:param loss: 损失函数。
 		:type loss: :py:class:`pybind11_ke.module.loss.Loss`
-		:param batch_size: batch size
-		:type batch_size: int
 		:param regul_rate: 权重衰减系数
 		:type regul_rate: float
 		:param l3_regul_rate: l3 正则化系数
@@ -79,60 +47,28 @@ class NegativeSampling(Strategy):
 		self.model: Model = model
 		#: 损失函数，即 :py:class:`pybind11_ke.module.loss.Loss`
 		self.loss: Loss = loss
-		#: batch size
-		self.batch_size: int = batch_size
 		#: 权重衰减系数
 		self.regul_rate: float = regul_rate
 		#: l3 正则化系数
 		self.l3_regul_rate: float = l3_regul_rate
 
-	def _get_positive_score(self, score: torch.Tensor) -> torch.Tensor:
-
-		"""
-		获得正样本的得分，由于底层 C++ 处理模块的原因，
-		所以正样本的得分处于前 batch size 位置。
-
-		:param score: 所有样本的得分。
-		:type n_score: torch.Tensor
-		:returns: 正样本的得分
-		:rtype: torch.Tensor
-		"""
-
-		positive_score = score[:self.batch_size]
-		positive_score = positive_score.view(-1, self.batch_size).permute(1, 0)
-		return positive_score
-
-	def _get_negative_score(self, score: torch.Tensor) -> torch.Tensor:
-
-		"""
-		获得负样本的得分，由于底层 C++ 处理模块的原因，
-		所以正样本的得分处于前 batch size 位置，负样本处于正样本后面。
-
-		:param score: 所有样本的得分。
-		:type n_score: torch.Tensor
-		:returns: 负样本的得分
-		:rtype: torch.Tensor
-		"""
-				
-		negative_score = score[self.batch_size:]
-		negative_score = negative_score.view(-1, self.batch_size).permute(1, 0)
-		return negative_score
-
-	def forward(self, data: dict[str, typing.Union[torch.Tensor,str]]) -> torch.Tensor:
+	def forward(self, data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
 		
 		"""计算最后的损失值。定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
 		:param data: 数据
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:type data: dict[str, typing.Union[torch.Tensor, str]]
 		:returns: 损失值
 		:rtype: torch.Tensor
 		"""
-
-		score = self.model(data)
-		p_score = self._get_positive_score(score)
-		n_score = self._get_negative_score(score)
-		loss_res = self.loss(p_score, n_score)
+		
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_score = self.model(pos_sample)
+		neg_score = self.model(pos_sample, neg_sample, mode)
+		loss_res = self.loss(pos_score, neg_score)
 		if self.regul_rate != 0:
 			loss_res += self.regul_rate * self.model.regularization(data)
 		if self.l3_regul_rate != 0:

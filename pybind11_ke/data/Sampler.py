@@ -2,7 +2,7 @@ import torch
 import numpy as np
 from collections import defaultdict as ddict
 import random
-from BaseSampler import BaseSampler
+from pybind11_ke.data.TradSampler import BaseSampler
         
 class BernSampler(BaseSampler):
     """Using bernoulli distribution to select whether to replace the head entity or tail entity.

@@ -1,75 +1,39 @@
 # coding:utf-8
 #
-# pybind11_ke/data/GraphTestSampler.py
+# pybind11_ke/data/TestSampler.py
 #
-# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
+# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
 #
-# R-GCN 的测试数据采样器.
+# 测试数据采样器基类.
 
 """
-GraphTestSampler - R-GCN 的测试数据采样器。
+TestSampler - 测试数据采样器基类。
 """
 
 import os
-import dgl
 import torch
 import typing
-import numpy as np
+from .TradSampler import TradSampler
 from .GraphSampler import GraphSampler
 from .CompGCNSampler import CompGCNSampler
 from collections import defaultdict as ddict
 
 class TestSampler(object):
 
-    """``R-GCN`` :cite:`R-GCN` 的测试数据采样器。
-
-    例子::
-
-        from pybind11_ke.data import GraphTestSampler, CompGCNTestSampler
-        from torch.utils.data import DataLoader
-
-        #: 测试数据采样器
-        test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
-            sampler=train_sampler,
-            valid_file=valid_file,
-            test_file=test_file,
-        )
-    
-        #: 验证集三元组
-        data_val: list[tuple[int, int, int]] = test_sampler.get_valid()
-        #: 测试集三元组
-        data_test: list[tuple[int, int, int]] = test_sampler.get_test()
-
-        val_dataloader = DataLoader(
-            data_val,
-            shuffle=False,
-            batch_size=test_batch_size,
-            num_workers=num_workers,
-            pin_memory=True,
-            collate_fn=test_sampler.sampling,
-        )
-
-        test_dataloader = DataLoader(
-            data_test,
-            shuffle=False,
-            batch_size=test_batch_size,
-            num_workers=num_workers,
-            pin_memory=True,
-            collate_fn=test_sampler.sampling,
-        )
+    """测试数据采样器基类。
     """
 
     def __init__(
         self,
-        sampler: typing.Union[GraphSampler, CompGCNSampler],
+        sampler: typing.Union[TradSampler, GraphSampler, CompGCNSampler],
         valid_file: str = "valid2id.txt",
         test_file: str = "test2id.txt"):
 
         """创建 GraphTestSampler 对象。
 
         :param sampler: 训练数据采样器。
-        :type sampler: typing.Union[GraphSampler, CompGCNSampler]
+        :type sampler: typing.Union[TradSampler, GraphSampler, CompGCNSampler]
         :param valid_file: valid2id.txt
         :type valid_file: str
         :param test_file: test2id.txt
@@ -77,7 +41,7 @@ class TestSampler(object):
         """
 
         #: 训练数据采样器
-        self.sampler: typing.Union[GraphSampler, CompGCNSampler] = sampler
+        self.sampler: typing.Union[TradSampler, GraphSampler, CompGCNSampler] = sampler
         #: 实体的个数
         self.ent_tol: int = sampler.ent_tol
         #: valid2id.txt
@@ -103,8 +67,6 @@ class TestSampler(object):
         self.hr2t_all: ddict[set] = ddict(set)
         #: 知识图谱中所有 r-t 对对应的 h 集合
         self.rt2h_all: ddict[set] = ddict(set)
-
-        self.get_hr2t_rt2h_from_all()
 
     def get_valid_test_triples_id(self):
 
@@ -138,28 +100,19 @@ class TestSampler(object):
         for r, t in self.rt2h_all:
             self.rt2h_all[(r, t)] = torch.tensor(list(self.rt2h_all[(r, t)]))
 
-    def sampling(self, data):
+    def sampling(
+        self,
+        data: list[tuple[int, int, int]]) -> dict[str, torch.Tensor]:
 
-        """Sampling triples and recording positive triples for testing.
-
-        Args:
-            data: The triples used to be sampled.
-
-        Returns:
-            batch_data: The data used to be evaluated.
+        """采样函数。
+        
+        :param data: 测试的正确三元组
+        :type data: list[tuple[int, int, int]]
+        :returns: 测试数据
+        :rtype: dict[str, torch.Tensor]
         """
         
-        batch_data = {}
-        head_label = torch.zeros(len(data), self.ent_tol)
-        tail_label = torch.zeros(len(data), self.ent_tol)
-        for idx, triple in enumerate(data):
-            head, rel, tail = triple
-            head_label[idx][self.rt2h_all[(rel, tail)]] = 1.0
-            tail_label[idx][self.hr2t_all[(head, rel)]] = 1.0
-        batch_data["positive_sample"] = torch.tensor(data)
-        batch_data["head_label"] = head_label
-        batch_data["tail_label"] = tail_label
-        return batch_data
+        raise NotImplementedError
 
     def get_valid(self) -> list[tuple[int, int, int]]:
 
