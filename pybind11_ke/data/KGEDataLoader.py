@@ -13,7 +13,7 @@ KGEDataLoader - KGE 模型读取数据集类。
 
 import typing
 from .UniSampler import UniSampler
-from .GraphSampler import GraphSampler
+from .RGCNSampler import RGCNSampler
 from .TestSampler import TestSampler
 from .TradTestSampler import TradTestSampler
 from torch.utils.data import DataLoader
@@ -36,7 +36,7 @@ class KGEDataLoader:
         test: bool = False,
         test_batch_size: int | None = None,
         num_workers: int | None = None,
-        train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[GraphSampler]] = UniSampler,
+        train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[RGCNSampler]] = UniSampler,
         test_sampler: typing.Type[TestSampler] = TradTestSampler):
 
         """创建 GraphDataLoader 对象。
@@ -64,7 +64,7 @@ class KGEDataLoader:
         :param num_workers: 加载数据的进程数
         :type num_workers: int
         :param train_sampler: 训练数据采样器
-        :type train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[GraphSampler]]
+        :type train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[RGCNSampler]]
         :param test_sampler: 测试数据采样器
         :type test_sampler: typing.Type[TestSampler]
         """
@@ -93,7 +93,7 @@ class KGEDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[GraphSampler]] = train_sampler(
+        self.train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[RGCNSampler]] = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,

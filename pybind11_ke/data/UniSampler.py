@@ -33,7 +33,7 @@ class UniSampler(TradSampler):
         batch_size: int | None = None,
         neg_ent: int = 1):
 
-        """创建 GraphSampler 对象。
+        """创建 UniSampler 对象。
 
         :param in_path: 数据集目录
         :type in_path: str

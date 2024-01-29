@@ -19,12 +19,12 @@ from .TradSampler import TradSampler
 from .UniSampler import UniSampler
 
 from .RevSampler import RevSampler
-from .GraphSampler import GraphSampler
+from .RGCNSampler import RGCNSampler
 from .CompGCNSampler import CompGCNSampler
 
 from .TestSampler import TestSampler
 from .TradTestSampler import TradTestSampler
-from .GraphTestSampler import GraphTestSampler
+from .RGCNTestSampler import RGCNTestSampler
 from .CompGCNTestSampler import CompGCNTestSampler
 
 from .KGEDataLoader import KGEDataLoader, get_kge_data_loader_hpo_config
@@ -34,11 +34,11 @@ __all__ = [
 	'TradSampler',
 	'UniSampler',
 	'RevSampler',
-	'GraphSampler',
+	'RGCNSampler',
 	'CompGCNSampler',
 	'TestSampler',
 	'TradTestSampler',
-	'GraphTestSampler',
+	'RGCNTestSampler',
 	'CompGCNTestSampler',
 	'KGEDataLoader',
 	'get_kge_data_loader_hpo_config'

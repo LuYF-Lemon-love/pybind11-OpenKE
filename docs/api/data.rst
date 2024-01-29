@@ -38,7 +38,7 @@ pybind11_ke.data
     :template: classtemplate.rst
 
     RevSampler
-    GraphSampler
+    RGCNSampler
     CompGCNSampler
 
 测试集数据采样器
@@ -51,7 +51,7 @@ pybind11_ke.data
 
     TestSampler
     TradTestSampler
-    GraphTestSampler
+    RGCNTestSampler
     CompGCNTestSampler
 
 数据加载器

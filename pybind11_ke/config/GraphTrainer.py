@@ -120,7 +120,7 @@ class GraphTrainer(Trainer):
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
-		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.GraphSampler.sampling` 函数生成的数据
+		:param data: :py:attr:`data_loader` 利用 :py:meth:`pybind11_ke.data.RGCNSampler.sampling` 函数生成的数据
 		:type data: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
 		:returns: 损失值
 		:rtype: float

@@ -1,6 +1,6 @@
 # coding:utf-8
 #
-# pybind11_ke/data/GraphTestSampler.py
+# pybind11_ke/data/RGCNTestSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
@@ -8,7 +8,7 @@
 # R-GCN 的测试数据采样器.
 
 """
-GraphTestSampler - R-GCN 的测试数据采样器。
+RGCNTestSampler - R-GCN 的测试数据采样器。
 """
 
 import os
@@ -17,21 +17,21 @@ import torch
 import typing
 import numpy as np
 from .TestSampler import TestSampler
-from .GraphSampler import GraphSampler
+from .RGCNSampler import RGCNSampler
 from .CompGCNSampler import CompGCNSampler
 from typing_extensions import override
 
-class GraphTestSampler(TestSampler):
+class RGCNTestSampler(TestSampler):
 
     """``R-GCN`` :cite:`R-GCN` 的测试数据采样器。
 
     例子::
 
-        from pybind11_ke.data import GraphTestSampler, CompGCNTestSampler
+        from pybind11_ke.data import RGCNTestSampler, CompGCNTestSampler
         from torch.utils.data import DataLoader
 
         #: 测试数据采样器
-        test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
+        test_sampler: typing.Union[typing.Type[RGCNTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
             sampler=train_sampler,
             valid_file=valid_file,
             test_file=test_file,
@@ -63,14 +63,14 @@ class GraphTestSampler(TestSampler):
 
     def __init__(
         self,
-        sampler: typing.Union[GraphSampler, CompGCNSampler],
+        sampler: typing.Union[RGCNSampler, CompGCNSampler],
         valid_file: str = "valid2id.txt",
         test_file: str = "test2id.txt"):
 
-        """创建 GraphTestSampler 对象。
+        """创建 RGCNTestSampler 对象。
 
         :param sampler: 训练数据采样器。
-        :type sampler: typing.Union[GraphSampler, CompGCNSampler]
+        :type sampler: typing.Union[RGCNSampler, CompGCNSampler]
         :param valid_file: valid2id.txt
         :type valid_file: str
         :param test_file: test2id.txt

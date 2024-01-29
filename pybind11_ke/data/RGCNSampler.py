@@ -1,6 +1,6 @@
 # coding:utf-8
 #
-# pybind11_ke/data/GraphSampler.py
+# pybind11_ke/data/RGCNSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
 # updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 21, 2024
@@ -8,7 +8,7 @@
 # R-GCN 的数据采样器.
 
 """
-GraphSampler - R-GCN 的数据采样器。
+RGCNSampler - R-GCN 的数据采样器。
 """
 
 import dgl
@@ -20,17 +20,17 @@ from .RevSampler import RevSampler
 
 warnings.filterwarnings("ignore")
 
-class GraphSampler(RevSampler):
+class RGCNSampler(RevSampler):
 
     """``R-GCN`` :cite:`R-GCN` 的训练数据采样器。
 
     例子::
 
-        from pybind11_ke.data import GraphSampler, CompGCNSampler
+        from pybind11_ke.data import RGCNSampler, CompGCNSampler
         from torch.utils.data import DataLoader
 
         #: 训练数据采样器
-        train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = train_sampler(
+        train_sampler: typing.Union[typing.Type[RGCNSampler], typing.Type[CompGCNSampler]] = train_sampler(
             in_path=in_path,
             ent_file=ent_file,
             rel_file=rel_file,
@@ -62,7 +62,7 @@ class GraphSampler(RevSampler):
         batch_size: int | None = None,
         neg_ent: int = 1):
 
-        """创建 GraphSampler 对象。
+        """创建 RGCNSampler 对象。
 
         :param in_path: 数据集目录
         :type in_path: str

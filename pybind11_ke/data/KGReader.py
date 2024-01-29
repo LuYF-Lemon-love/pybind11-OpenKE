@@ -13,7 +13,7 @@ KGReader - 从文件中读取知识图谱。
 
 import os
 import numpy as np
-from collections import defaultdict as ddict
+from collections import defaultdict
 
 class KGReader:
 
@@ -68,9 +68,9 @@ class KGReader:
         self.train_triples: list[tuple[int, int, int]] = []
 
         #: 训练集中所有 h-r 对对应的 t 集合
-        self.hr2t_train: ddict[set] = ddict(set)
+        self.hr2t_train: defaultdict[set] = defaultdict(set)
         #: 训练集中所有 r-t 对对应的 h 集合
-        self.rt2h_train: ddict[set] = ddict(set)
+        self.rt2h_train: defaultdict[set] = defaultdict(set)
 
         self.get_id()
         self.get_train_triples_id()

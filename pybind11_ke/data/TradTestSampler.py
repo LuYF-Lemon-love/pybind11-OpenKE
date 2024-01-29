@@ -27,7 +27,7 @@ class TradTestSampler(TestSampler):
         valid_file: str = "valid2id.txt",
         test_file: str = "test2id.txt"):
 
-        """创建 GraphTestSampler 对象。
+        """创建 TradTestSampler 对象。
 
         :param sampler: 训练数据采样器。
         :type sampler: TradSampler

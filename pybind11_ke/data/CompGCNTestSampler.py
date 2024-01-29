@@ -12,19 +12,19 @@ CompGCNTestSampler - CompGCN 的测试数据采样器。
 """
 
 from .CompGCNSampler import CompGCNSampler
-from .GraphTestSampler import GraphTestSampler
+from .RGCNTestSampler import RGCNTestSampler
 
-class CompGCNTestSampler(GraphTestSampler):
+class CompGCNTestSampler(RGCNTestSampler):
 
     """``CompGCN`` :cite:`CompGCN` 的测试数据采样器。
 
     例子::
 
-        from pybind11_ke.data import GraphTestSampler, CompGCNTestSampler
+        from pybind11_ke.data import RGCNTestSampler, CompGCNTestSampler
         from torch.utils.data import DataLoader
 
         #: 测试数据采样器
-        test_sampler: typing.Union[typing.Type[GraphTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
+        test_sampler: typing.Union[typing.Type[RGCNTestSampler], typing.Type[CompGCNTestSampler]] = test_sampler(
             sampler=train_sampler,
             valid_file=valid_file,
             test_file=test_file,

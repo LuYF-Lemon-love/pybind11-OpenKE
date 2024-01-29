@@ -42,10 +42,10 @@ data_loader_config.update({
         'values': [1, 4, 8, 16]
     },
     'train_sampler': {
-        'value': 'GraphSampler'
+        'value': 'RGCNSampler'
     },
     'test_sampler': {
-        'value': 'GraphTestSampler'
+        'value': 'RGCNTestSampler'
     }
 })
 

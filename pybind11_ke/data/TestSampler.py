@@ -15,7 +15,7 @@ import os
 import torch
 import typing
 from .TradSampler import TradSampler
-from .GraphSampler import GraphSampler
+from .RGCNSampler import RGCNSampler
 from .CompGCNSampler import CompGCNSampler
 from collections import defaultdict as ddict
 
@@ -26,14 +26,14 @@ class TestSampler(object):
 
     def __init__(
         self,
-        sampler: typing.Union[TradSampler, GraphSampler, CompGCNSampler],
+        sampler: typing.Union[TradSampler, RGCNSampler, CompGCNSampler],
         valid_file: str = "valid2id.txt",
         test_file: str = "test2id.txt"):
 
-        """创建 GraphTestSampler 对象。
+        """创建 TestSampler 对象。
 
         :param sampler: 训练数据采样器。
-        :type sampler: typing.Union[TradSampler, GraphSampler, CompGCNSampler]
+        :type sampler: typing.Union[TradSampler, RGCNSampler, CompGCNSampler]
         :param valid_file: valid2id.txt
         :type valid_file: str
         :param test_file: test2id.txt
@@ -41,7 +41,7 @@ class TestSampler(object):
         """
 
         #: 训练数据采样器
-        self.sampler: typing.Union[TradSampler, GraphSampler, CompGCNSampler] = sampler
+        self.sampler: typing.Union[TradSampler, RGCNSampler, CompGCNSampler] = sampler
         #: 实体的个数
         self.ent_tol: int = sampler.ent_tol
         #: valid2id.txt

@@ -15,20 +15,20 @@ import dgl
 import torch
 import typing
 import numpy as np
-from .GraphSampler import GraphSampler
+from .RGCNSampler import RGCNSampler
 from typing_extensions import override
 
-class CompGCNSampler(GraphSampler):
+class CompGCNSampler(RGCNSampler):
     
     """``CompGCN`` :cite:`CompGCN` 的训练数据采样器。
 
     例子::
 
-        from pybind11_ke.data import GraphSampler, CompGCNSampler
+        from pybind11_ke.data import RGCNSampler, CompGCNSampler
         from torch.utils.data import DataLoader
 
         #: 训练数据采样器
-        train_sampler: typing.Union[typing.Type[GraphSampler], typing.Type[CompGCNSampler]] = train_sampler(
+        train_sampler: typing.Union[typing.Type[RGCNSampler], typing.Type[CompGCNSampler]] = train_sampler(
             in_path=in_path,
             ent_file=ent_file,
             rel_file=rel_file,
