@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransH.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 22, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 30, 2024
 # 
 # 该头文件定义了 TransH.
 
@@ -120,50 +120,37 @@ class TransH(Model):
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.norm_vector.weight.data)
 
-	def _calc(
+	@override
+	def forward(
 		self,
-		h: torch.Tensor,
-		t: torch.Tensor,
-		r: torch.Tensor,
-		mode: str) -> torch.Tensor:
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> torch.Tensor:
 
-		"""计算 TransH 的评分函数。
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
-		:param h: 头实体的向量。
-		:type h: torch.Tensor
-		:param t: 尾实体的向量。
-		:type t: torch.Tensor
-		:param r: 关系实体的向量。
-		:type r: torch.Tensor
-		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
-		:type mode: str
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
 
-		# 对嵌入的最后一维进行归一化
-		if self.norm_flag:
-			h = F.normalize(h, 2, -1)
-			r = F.normalize(r, 2, -1)
-			t = F.normalize(t, 2, -1)
-		
-		# 保证 h, r, t 都是三维的
-		if mode != 'normal':
-			h = h.view(-1, r.shape[0], h.shape[-1])
-			t = t.view(-1, r.shape[0], t.shape[-1])
-			r = r.view(-1, r.shape[0], r.shape[-1])
-		
-		# 两者结果一样，括号只是逻辑上的，'head_batch' 是替换 head，否则替换 tail
-		if mode == 'head_batch':
-			score = h + (r - t)
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+		norm_vector = self.norm_vector(triples[:, 1]).unsqueeze(dim=1)
+		head_emb = self._transfer(head_emb, norm_vector)
+		tail_emb = self._transfer(tail_emb, norm_vector)
+		score = self._calc(head_emb, relation_emb, tail_emb)
+
+		if self.margin_flag:
+			return self.margin - score
 		else:
-			score = (h + r) - t
-		
-		# 利用距离函数计算得分
-		score = torch.norm(score, self.p_norm, -1).flatten()
-		return score
+			return score
 
 	def _transfer(
 		self,
@@ -182,44 +169,64 @@ class TransH(Model):
 		"""
 
 		norm = F.normalize(norm, p = 2, dim = -1)
-		if e.shape[0] != norm.shape[0]:
-			e = e.view(-1, norm.shape[0], e.shape[-1])
-			norm = norm.view(-1, norm.shape[0], norm.shape[-1])
-			e = e - torch.sum(e * norm, -1, True) * norm
-			return e.view(-1, e.shape[-1])
-		else:
-			return e - torch.sum(e * norm, -1, True) * norm
+		return e - torch.sum(e * norm, -1, True) * norm
 
-	@override
-	def forward(
+	def _calc(
 		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+		h: torch.Tensor,
+		r: torch.Tensor,
+		t: torch.Tensor) -> torch.Tensor:
 
-		"""
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		"""计算 TransH 的评分函数。
 		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor, str]]
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param r: 关系实体的向量。
+		:type r: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		mode = data['mode']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		r_norm = self.norm_vector(batch_r)
-		h = self._transfer(h, r_norm)
-		t = self._transfer(t, r_norm)
-		score = self._calc(h ,t, r, mode)
+		# 对嵌入的最后一维进行归一化
+		if self.norm_flag:
+			h = F.normalize(h, 2, -1)
+			r = F.normalize(r, 2, -1)
+			t = F.normalize(t, 2, -1)
+		
+		score = (h + r) - t
+		
+		# 利用距离函数计算得分
+		score = torch.norm(score, self.p_norm, -1)
+		return score
+
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]],
+		mode) -> np.ndarray:
+		
+		"""TransH 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:returns: 三元组的得分
+		:rtype: numpy.ndarray
+		"""
+
+		triples = data["positive_sample"]
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
+		norm_vector = self.norm_vector(triples[:, 1]).unsqueeze(dim=1)
+		head_emb = self._transfer(head_emb, norm_vector)
+		tail_emb = self._transfer(tail_emb, norm_vector)
+		score = self._calc(head_emb, relation_emb, tail_emb)
+		
 		if self.margin_flag:
-			return self.margin - score
-		else:
+			score = self.margin - score
 			return score
+		else:
+			return -score
 
 	def regularization(
 		self,
@@ -233,38 +240,27 @@ class TransH(Model):
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		r_norm = self.norm_vector(batch_r)
-		regul = (torch.mean(h ** 2) + 
-				 torch.mean(t ** 2) + 
-				 torch.mean(r ** 2) +
-				 torch.mean(r_norm ** 2)) / 4
-		return regul
-	
-	@override
-	def predict(
-		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
+		pos_norm_vector = self.norm_vector(pos_sample[:, 1]).unsqueeze(dim=1)
+		neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+		neg_norm_vector = self.norm_vector(pos_sample[:, 1]).unsqueeze(dim=1)
 
-		"""TransE 的推理方法。
+		pos_regul = (torch.mean(pos_head_emb ** 2) + 
+					 torch.mean(pos_relation_emb ** 2) + 
+					 torch.mean(pos_tail_emb ** 2) +
+					 torch.mean(pos_norm_vector ** 2)) / 4
+
+		neg_regul = (torch.mean(neg_head_emb ** 2) + 
+					 torch.mean(neg_relation_emb ** 2) + 
+					 torch.mean(neg_tail_emb ** 2) +
+					 torch.mean(neg_norm_vector ** 2)) / 4
+
+		regul = (pos_regul + neg_regul) / 2
 		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
-		
-		score = self.forward(data)
-		if self.margin_flag:
-			score = self.margin - score
-			return score.cpu().data.numpy()
-		else:
-			return score.cpu().data.numpy()
+		return regul
 
 def get_transh_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

@@ -32,7 +32,7 @@ wandb_logger = WandbLogger(
 	name="TransE-FB15K237",
 	config=dict(
 		in_path = "../../benchmarks/FB15K237/",
-		batch_size = 8192,
+		batch_size = 2721,
 		neg_ent = 25,
 		test = True,
 		test_batch_size = 256,
@@ -48,8 +48,7 @@ wandb_logger = WandbLogger(
 		valid_interval = 100,
 		log_interval = 100,
 		save_interval = 100,
-		save_path = '../../checkpoint/transe.pth',
-		delta = 0.01
+		save_path = '../../checkpoint/transe.pth'
 	)
 )
 
@@ -127,7 +126,7 @@ trainer = TradTrainer(model = model, data_loader = dataloader.train_dataloader()
 	epochs = config.epochs, lr = config.lr, use_gpu = config.use_gpu, device = config.device,
 	tester = tester, test = config.test, valid_interval = config.valid_interval,
 	log_interval = config.log_interval, save_interval = config.save_interval,
-	save_path = config.save_path, delta = config.delta, use_wandb = True)
+	save_path = config.save_path, use_wandb = True)
 trainer.run()
 
 # close your wandb run
