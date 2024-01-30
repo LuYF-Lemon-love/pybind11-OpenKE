@@ -253,6 +253,8 @@ class Trainer(object):
 				print(f"[{self.print_device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		
 		print(f"[{self.print_device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+		if self.gpu_id is None or self.gpu_id == 0:
+			wandb.log({"duration" : timer.sum()})
 		
 		if (self.gpu_id is None or self.gpu_id == 0) and self.save_path:
 			self.get_model().save_checkpoint(self.save_path)

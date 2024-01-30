@@ -93,7 +93,7 @@ class KGEDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[RGCNSampler]] = train_sampler(
+        self.train_sampler: typing.Union[UniSampler, RGCNSampler] = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
@@ -107,7 +107,7 @@ class KGEDataLoader:
 
         if self.test:
             #: 测试数据采样器
-            self.test_sampler: typing.Type[TestSampler] = test_sampler(
+            self.test_sampler: TestSampler = test_sampler(
                 sampler=self.train_sampler,
                 valid_file=self.valid_file,
                 test_file=self.test_file,
@@ -117,6 +117,26 @@ class KGEDataLoader:
             self.data_val: list[tuple[int, int, int]] = self.test_sampler.get_valid()
             #: 测试集三元组
             self.data_test: list[tuple[int, int, int]] = self.test_sampler.get_test()
+    
+    def get_ent_tol(self) -> int:
+
+        """返回实体个数。
+        
+        :returns: 实体个数
+        :rtype: int
+        """
+
+        return self.train_sampler.ent_tol
+
+    def get_rel_tol(self) -> int:
+
+        """返回关系个数。
+        
+        :returns: 关系个数
+        :rtype: int
+        """
+
+        return self.train_sampler.rel_tol
 
     def train_dataloader(self) -> DataLoader:
 
