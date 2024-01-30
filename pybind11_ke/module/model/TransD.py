@@ -312,8 +312,8 @@ class TransD(Model):
 		"""
 
 		triples = data["positive_sample"]
-		h, r, t = self.tri2emb(triples, mode)
-		h_transfer, r_transfer, t_transfer = self.tri2transfer(triples, mode)
+		h, r, t = self.tri2emb(triples, mode=mode)
+		h_transfer, r_transfer, t_transfer = self.tri2transfer(triples, mode=mode)
 		h = self._transfer(h, h_transfer, r_transfer)
 		t = self._transfer(t, t_transfer, r_transfer)
 		score = self._calc(h, r, t)
