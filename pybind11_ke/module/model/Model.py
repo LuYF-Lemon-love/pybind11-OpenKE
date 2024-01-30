@@ -10,7 +10,6 @@
 """Model 类 - 所有 KGE 模型的基类"""
 
 import torch
-import numpy as np
 from ..BaseModule import BaseModule
 
 class Model(BaseModule):
@@ -52,13 +51,13 @@ class Model(BaseModule):
 
 		raise NotImplementedError
 	
-	def predict(self) -> np.ndarray:
+	def predict(self) -> torch.Tensor:
 
 		"""
 		KGE 模型的推理方法。
 		
 		:returns: 三元组的得分
-		:rtype: numpy.ndarray
+		:rtype: torch.Tensor
 		"""
 
 		raise NotImplementedError

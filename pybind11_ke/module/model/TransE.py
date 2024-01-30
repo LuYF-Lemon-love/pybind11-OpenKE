@@ -13,7 +13,6 @@ TransE - 第一个平移模型，简单而且高效。
 
 import torch
 import typing
-import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from .Model import Model
@@ -180,14 +179,14 @@ class TransE(Model):
 	def predict(
 		self,
 		data: dict[str, typing.Union[torch.Tensor,str]],
-		mode) -> np.ndarray:
+		mode) -> torch.Tensor:
 		
 		"""TransE 的推理方法。
 		
 		:param data: 数据。
 		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
-		:rtype: numpy.ndarray
+		:rtype: torch.Tensor
 		"""
 
 		triples = data["positive_sample"]

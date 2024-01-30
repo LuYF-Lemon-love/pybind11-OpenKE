@@ -71,7 +71,7 @@ transh = TransH(
 model = NegativeSampling(
 	model = transh, 
 	loss = MarginLoss(margin = 4.0),
-	regul_rate = 0.01
+	# regul_rate = 0.01
 )
 
 ######################################################################

@@ -10,29 +10,30 @@ TransR-FB15K237-single-gpu
 
 导入数据
 -----------------
-pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
-:py:class:`pybind11_ke.data.TestDataLoader`。
+pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.KGEDataLoader`。
 """
 
-from pybind11_ke.config import Trainer, Tester
+from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
 from pybind11_ke.module.model import TransE, TransR
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
-from pybind11_ke.data import TrainDataLoader, TestDataLoader
+from pybind11_ke.config import TradTrainer, Tester
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。 
-# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
+# :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
-train_dataloader = TrainDataLoader(
+dataloader = KGEDataLoader(
 	in_path = "../../benchmarks/FB15K237/", 
-	nbatches = 100,
-	threads = 8, 
-	sampling_mode = "normal", 
-	bern = True, 
-	neg_ent = 25,
-	neg_rel = 0)
+	batch_size = 2048,
+	neg_ent = 25, 
+	test = True,
+	test_batch_size = 256,
+	num_workers = 16,
+	train_sampler = UniSampler,
+	test_sampler = TradTestSampler
+)
 
 ######################################################################
 # --------------
@@ -48,8 +49,8 @@ train_dataloader = TrainDataLoader(
 
 # define the transe
 transe = TransE(
-	ent_tol = train_dataloader.get_ent_tol(),
-	rel_tol = train_dataloader.get_rel_tol(),
+	ent_tol = dataloader.get_ent_tol(),
+	rel_tol = dataloader.get_rel_tol(),
 	dim = 100, 
 	p_norm = 1, 
 	norm_flag = True)
@@ -59,8 +60,8 @@ transe = TransE(
 # 是一个为实体和关系嵌入向量分别构建了独立的向量空间，将实体向量投影到特定的关系向量空间进行平移操作的模型。
 
 transr = TransR(
-	ent_tol = train_dataloader.get_ent_tol(),
-	rel_tol = train_dataloader.get_rel_tol(),
+	ent_tol = dataloader.get_ent_tol(),
+	rel_tol = dataloader.get_rel_tol(),
 	dim_e = 100,
 	dim_r = 100,
 	p_norm = 1, 
@@ -81,14 +82,12 @@ transr = TransR(
 
 model_e = NegativeSampling(
 	model = transe, 
-	loss = MarginLoss(margin = 5.0),
-	batch_size = train_dataloader.get_batch_size()
+	loss = MarginLoss(margin = 5.0)
 )
 
 model_r = NegativeSampling(
 	model = transr,
-	loss = MarginLoss(margin = 4.0),
-	batch_size = train_dataloader.get_batch_size()
+	loss = MarginLoss(margin = 4.0)
 )
 
 ######################################################################
@@ -98,31 +97,27 @@ model_r = NegativeSampling(
 ######################################################################
 # 训练模型
 # -------------
-# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.TradTrainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.TradTrainer.run` 函数进行模型学习；
 # 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
-# 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.Tester` 使用
-# :py:class:`pybind11_ke.data.TestDataLoader` 作为数据采样器。
+# 使得训练器能够在训练过程中评估模型。
 
 # pretrain transe
-trainer = Trainer(model = model_e, data_loader = train_dataloader,
-	epochs = 1, lr = 0.5, opt_method = "sgd", use_gpu = True, device = 'cuda:1')
+trainer = TradTrainer(model = model_e, data_loader = dataloader.train_dataloader(),
+	epochs = 1, lr = 0.5, opt_method = "sgd", use_gpu = True, device = 'cuda:0')
 trainer.run()
 parameters = transe.get_parameters()
 transe.save_parameters("../../checkpoint/transr_transe.json")
 
-# dataloader for test
-test_dataloader = TestDataLoader("../../benchmarks/FB15K237/")
-
 # test the transr
-tester = Tester(model = transr, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+tester = Tester(model = transr, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
 
 # train transr
 transr.set_parameters(parameters)
-trainer = Trainer(model = model_r, data_loader = train_dataloader,
-	epochs = 1000, lr = 1.0, opt_method = "sgd", use_gpu = True, device = 'cuda:1',
-	tester = tester, test = True, valid_interval = 10,
-	log_interval = 10, save_interval = 10, save_path = '../../checkpoint/transr.pth')
+trainer = TradTrainer(model = model_r, data_loader = dataloader.train_dataloader(),
+	epochs = 1000, lr = 1.0, opt_method = "sgd", use_gpu = True, device = 'cuda:0',
+	tester = tester, test = True, valid_interval = 100,
+	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transr.pth')
 trainer.run()
 
 # test the model
