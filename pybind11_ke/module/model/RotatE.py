@@ -13,7 +13,6 @@ RotatE - 将实体表示成复数向量，关系建模为复数向量空间的�
 
 import torch
 import typing
-import numpy as np
 import torch.nn as nn
 from .Model import Model
 from typing_extensions import override
@@ -131,12 +130,36 @@ class RotatE(Model):
 		self.margin: torch.nn.parameter.Parameter = nn.Parameter(torch.Tensor([margin]))
 		self.margin.requires_grad = False
 
+	@override
+	def forward(
+		self,
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> torch.Tensor:
+
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+		score = self.margin - self._calc(head_emb, relation_emb, tail_emb)
+		return score
+
 	def _calc(
 		self,
 		h: torch.Tensor,
-		t: torch.Tensor,
 		r: torch.Tensor,
-		mode: str) -> torch.Tensor:
+		t: torch.Tensor) -> torch.Tensor:
 
 		"""计算 RotatE 的评分函数。
 
@@ -145,14 +168,10 @@ class RotatE(Model):
 		
 		:param h: 头实体的向量。
 		:type h: torch.Tensor
-		:param t: 尾实体的向量。
-		:type t: torch.Tensor
 		:param r: 关系的向量。
 		:type r: torch.Tensor
-		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
-		:type mode: str
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -167,52 +186,33 @@ class RotatE(Model):
 
 		re_relation = torch.cos(phase_relation)
 		im_relation = torch.sin(phase_relation)
-
-		re_head = re_head.view(-1, re_relation.shape[0], re_head.shape[-1]).permute(1, 0, 2)
-		re_tail = re_tail.view(-1, re_relation.shape[0], re_tail.shape[-1]).permute(1, 0, 2)
-		im_head = im_head.view(-1, re_relation.shape[0], im_head.shape[-1]).permute(1, 0, 2)
-		im_tail = im_tail.view(-1, re_relation.shape[0], im_tail.shape[-1]).permute(1, 0, 2)
-		im_relation = im_relation.view(-1, re_relation.shape[0], im_relation.shape[-1]).permute(1, 0, 2)
-		re_relation = re_relation.view(-1, re_relation.shape[0], re_relation.shape[-1]).permute(1, 0, 2)
-
-		if mode == "head_batch":
-			re_score = re_relation * re_tail + im_relation * im_tail
-			im_score = re_relation * im_tail - im_relation * re_tail
-			re_score = re_score - re_head
-			im_score = im_score - im_head
-		else:
-			re_score = re_head * re_relation - im_head * im_relation
-			im_score = re_head * im_relation + im_head * re_relation
-			re_score = re_score - re_tail
-			im_score = im_score - im_tail
+	
+		re_score = re_head * re_relation - im_head * im_relation
+		im_score = re_head * im_relation + im_head * re_relation
+		re_score = re_score - re_tail
+		im_score = im_score - im_tail
 
 		score = torch.stack([re_score, im_score], dim = 0)
 		score = score.norm(dim = 0).sum(dim = -1)
-		return score.permute(1, 0).flatten()
+		return score
 
 	@override
-	def forward(
+	def predict(
 		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+		data: dict[str, typing.Union[torch.Tensor,str]],
+		mode) -> torch.Tensor:
 		
-		"""
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		"""RotatE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor, str]]
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
-		
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		mode = data['mode']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		score = self.margin - self._calc(h ,t, r, mode)
+
+		triples = data["positive_sample"]
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
+		score = self.margin - self._calc(head_emb, relation_emb, tail_emb)
 		return score
 
 	def regularization(
@@ -227,32 +227,23 @@ class RotatE(Model):
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		regul = (torch.mean(h ** 2) + 
-				 torch.mean(t ** 2) + 
-				 torch.mean(r ** 2)) / 3
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
+		neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+
+		pos_regul = (torch.mean(pos_head_emb ** 2) + 
+					 torch.mean(pos_relation_emb ** 2) + 
+					 torch.mean(pos_tail_emb ** 2)) / 3
+
+		neg_regul = (torch.mean(neg_head_emb ** 2) + 
+					 torch.mean(neg_relation_emb ** 2) + 
+					 torch.mean(neg_tail_emb ** 2)) / 3
+
+		regul = (pos_regul + neg_regul) / 2
+
 		return regul
-
-	@override
-	def predict(
-		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
-
-		"""RotatE 的推理方法。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
-
-		score = -self.forward(data)
-		return score.cpu().data.numpy()
 
 def get_rotate_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
