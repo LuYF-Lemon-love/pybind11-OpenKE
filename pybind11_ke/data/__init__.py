@@ -17,6 +17,7 @@ from .KGReader import KGReader
 
 from .TradSampler import TradSampler
 from .UniSampler import UniSampler
+from .BernSampler import BernSampler
 
 from .RevSampler import RevSampler
 from .RGCNSampler import RGCNSampler
@@ -33,6 +34,7 @@ __all__ = [
 	'KGReader',
 	'TradSampler',
 	'UniSampler',
+	'BernSampler',
 	'RevSampler',
 	'RGCNSampler',
 	'CompGCNSampler',

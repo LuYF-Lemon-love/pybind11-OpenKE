@@ -28,6 +28,7 @@ pybind11_ke.data
 
     TradSampler
     UniSampler
+    BernSampler
 
 图神经网络模型数据采样器
 --------------------------------------------------------------------

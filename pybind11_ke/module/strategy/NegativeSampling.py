@@ -67,7 +67,11 @@ class NegativeSampling(Strategy):
 		neg_sample = data["negative_sample"]
 		mode = data["mode"]
 		pos_score = self.model(pos_sample)
-		neg_score = self.model(pos_sample, neg_sample, mode)
+		if mode == "bern":
+			neg_score = self.model(neg_sample)
+			neg_score = neg_score.view(pos_score.shape[0], -1)
+		else:
+			neg_score = self.model(pos_sample, neg_sample, mode)
 		loss_res = self.loss(pos_score, neg_score)
 		if self.regul_rate != 0:
 			loss_res += self.regul_rate * self.model.regularization(data)

@@ -13,7 +13,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.K
 """
 
 from pybind11_ke.utils import WandbLogger
-from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransD
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
@@ -63,7 +63,7 @@ dataloader = KGEDataLoader(
 	test = config.test,
 	test_batch_size = config.test_batch_size,
 	num_workers = config.num_workers,
-	train_sampler = UniSampler,
+	train_sampler = BernSampler,
 	test_sampler = TradTestSampler
 )
 

@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修改 RotatE 示例"
+git commit -m "增加 Bern 负采样"
 git push
