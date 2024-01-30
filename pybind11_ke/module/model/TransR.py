@@ -278,7 +278,7 @@ class TransR(Model):
 		rel_transfer = self.transfer_matrix(triples[:, 1])
 		head_emb = self._transfer(head_emb, rel_transfer)
 		tail_emb = self._transfer(tail_emb, rel_transfer)
-		score = self._calc(head_emb, relation_emb, tail_emb, mode)
+		score = self._calc(head_emb, relation_emb, tail_emb)
 
 		if self.margin_flag:
 			score = self.margin - score

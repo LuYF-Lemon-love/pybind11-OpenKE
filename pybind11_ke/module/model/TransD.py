@@ -13,7 +13,6 @@ TransD - 自动生成映射矩阵，简单而且高效，是对 TransR 的改进
 
 import torch
 import typing
-import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from .Model import Model
@@ -136,35 +135,77 @@ class TransD(Model):
 	@override
 	def forward(
 		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		mode = data['mode']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		h_transfer = self.ent_transfer(batch_h)
-		t_transfer = self.ent_transfer(batch_t)
-		r_transfer = self.rel_transfer(batch_r)
+		h, r, t = self.tri2emb(triples, negs, mode)
+		h_transfer, r_transfer, t_transfer = self.tri2transfer(triples, negs, mode)
 		h = self._transfer(h, h_transfer, r_transfer)
 		t = self._transfer(t, t_transfer, r_transfer)
-		score = self._calc(h ,t, r, mode)
+		score = self._calc(h, r, t)
 		if self.margin_flag:
 			return self.margin - score
 		else:
 			return score
+
+	def tri2transfer(
+		self,
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+
+		"""
+		返回三元组对应的嵌入向量。
+		
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
+		:returns: 头实体、关系和尾实体的嵌入向量
+		:rtype: tuple[torch.Tensor, torch.Tensor, torch.Tensor]
+		"""
+		
+		if mode == "single":
+			head_emb = self.ent_transfer(triples[:, 0]).unsqueeze(1)
+			relation_emb = self.rel_transfer(triples[:, 1]).unsqueeze(1)
+			tail_emb = self.ent_transfer(triples[:, 2]).unsqueeze(1)
+			
+		elif mode == "head-batch" or mode == "head_predict":
+			if negs is None:
+				head_emb = self.ent_transfer.weight.data.unsqueeze(0)
+			else:
+				head_emb = self.ent_transfer(negs)
+				
+			relation_emb = self.rel_transfer(triples[:, 1]).unsqueeze(1)
+			tail_emb = self.ent_transfer(triples[:, 2]).unsqueeze(1)
+			
+		elif mode == "tail-batch" or mode == "tail_predict": 
+			head_emb = self.ent_transfer(triples[:, 0]).unsqueeze(1)
+			relation_emb = self.rel_transfer(triples[:, 1]).unsqueeze(1)
+			
+			if negs is None:
+				tail_emb = self.ent_transfer.weight.data.unsqueeze(0)
+			else:
+				tail_emb = self.ent_transfer(negs)
+		
+		return head_emb, relation_emb, tail_emb
 
 	def _transfer(
 		self,
@@ -184,23 +225,12 @@ class TransD(Model):
 		:returns: 投影后的实体向量
 		:rtype: torch.Tensor
 		"""
-
-		if e.shape[0] != r_transfer.shape[0]:
-			e = e.view(-1, r_transfer.shape[0], e.shape[-1])
-			e_transfer = e_transfer.view(-1, r_transfer.shape[0], e_transfer.shape[-1])
-			r_transfer = r_transfer.view(-1, r_transfer.shape[0], r_transfer.shape[-1])
-			e = F.normalize(
-				self._resize(e, -1, r_transfer.size()[-1]) + torch.sum(e * e_transfer, -1, True) * r_transfer,
-				p = 2, 
-				dim = -1
-			)			
-			return e.view(-1, e.shape[-1])
-		else:
-			return F.normalize(
-				self._resize(e, -1, r_transfer.size()[-1]) + torch.sum(e * e_transfer, -1, True) * r_transfer,
-				p = 2, 
-				dim = -1
-			)
+	
+		return F.normalize(
+			self._resize(e, len(e.size())-1, r_transfer.size()[-1]) + torch.sum(e * e_transfer, -1, True) * r_transfer,
+			p = 2, 
+			dim = -1
+		)
 
 	def _resize(
 		self,
@@ -235,28 +265,22 @@ class TransD(Model):
 				paddings = [0, size - osize] + paddings
 			else:
 				paddings = [0, 0] + paddings
-		print (paddings)
 		return F.pad(tensor, paddings = paddings, mode = "constant", value = 0)
 
 	def _calc(
 		self,
 		h: torch.Tensor,
-		t: torch.Tensor,
 		r: torch.Tensor,
-		mode: str) -> torch.Tensor:
+		t: torch.Tensor) -> torch.Tensor:
 
 		"""计算 TransD 的评分函数。
 		
 		:param h: 头实体的向量。
 		:type h: torch.Tensor
-		:param t: 尾实体的向量。
-		:type t: torch.Tensor
 		:param r: 关系的向量。
 		:type r: torch.Tensor
-		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
-		:type mode: str
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
@@ -267,21 +291,38 @@ class TransD(Model):
 			r = F.normalize(r, 2, -1)
 			t = F.normalize(t, 2, -1)
 		
-		# 保证 h, r, t 都是三维的
-		if mode != 'normal':
-			h = h.view(-1, r.shape[0], h.shape[-1])
-			t = t.view(-1, r.shape[0], t.shape[-1])
-			r = r.view(-1, r.shape[0], r.shape[-1])
-		
-		# 两者结果一样，括号只是逻辑上的，'head_batch' 是替换 head，否则替换 tail
-		if mode == 'head_batch':
-			score = h + (r - t)
-		else:
-			score = (h + r) - t
+		score = (h + r) - t
 		
 		# 利用距离函数计算得分
-		score = torch.norm(score, self.p_norm, -1).flatten()
+		score = torch.norm(score, self.p_norm, -1)
 		return score
+
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]],
+		mode) -> torch.Tensor:
+		
+		"""TransH 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		triples = data["positive_sample"]
+		h, r, t = self.tri2emb(triples, mode)
+		h_transfer, r_transfer, t_transfer = self.tri2transfer(triples, mode)
+		h = self._transfer(h, h_transfer, r_transfer)
+		t = self._transfer(t, t_transfer, r_transfer)
+		score = self._calc(h, r, t)
+
+		if self.margin_flag:
+			score = self.margin - score
+			return score
+		else:
+			return -score
 
 	def regularization(
 		self,
@@ -295,42 +336,31 @@ class TransD(Model):
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		h_transfer = self.ent_transfer(batch_h)
-		t_transfer = self.ent_transfer(batch_t)
-		r_transfer = self.rel_transfer(batch_r)
-		regul = (torch.mean(h ** 2) + 
-				 torch.mean(t ** 2) + 
-				 torch.mean(r ** 2) + 
-				 torch.mean(h_transfer ** 2) + 
-				 torch.mean(t_transfer ** 2) + 
-				 torch.mean(r_transfer ** 2)) / 6
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_h, pos_r, pos_t = self.tri2emb(pos_sample)
+		pos_h_transfer, pos_r_transfer, pos_t_transfer = self.tri2transfer(pos_sample)
+		neg_h, neg_r, neg_t = self.tri2emb(pos_sample, neg_sample, mode)
+		neg_h_transfer, neg_r_transfer, neg_t_transfer = self.tri2transfer(pos_sample, neg_sample, mode)
+
+		pos_regul = (torch.mean(pos_h ** 2) + 
+					 torch.mean(pos_r ** 2) + 
+					 torch.mean(pos_t ** 2) +
+					 torch.mean(pos_h_transfer ** 2) + 
+					 torch.mean(pos_r_transfer ** 2) +
+					 torch.mean(pos_t_transfer ** 2)) / 6
+
+		neg_regul = (torch.mean(neg_h ** 2) + 
+					 torch.mean(neg_r ** 2) + 
+					 torch.mean(neg_t ** 2) +
+					 torch.mean(neg_h_transfer ** 2) + 
+					 torch.mean(neg_r_transfer ** 2) +
+					 torch.mean(neg_t_transfer ** 2)) / 6
+
+		regul = (pos_regul + neg_regul) / 2
+
 		return regul
-
-	@override
-	def predict(
-		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
-
-		"""TransD 的推理方法。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
-
-		score = self.forward(data)
-		if self.margin_flag:
-			score = self.margin - score
-			return score.cpu().data.numpy()
-		else:
-			return score.cpu().data.numpy()
 
 def get_transd_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
