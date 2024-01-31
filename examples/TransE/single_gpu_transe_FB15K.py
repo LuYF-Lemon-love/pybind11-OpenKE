@@ -21,7 +21,7 @@ from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
-from pybind11_ke.config import TradTrainer, Tester
+from pybind11_ke.config import Trainer, Tester
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
@@ -83,8 +83,8 @@ model = NegativeSampling(
 ######################################################################
 # 训练模型
 # -------------
-# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.TradTrainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.TradTrainer.run` 函数进行模型学习；
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
 # 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
 # 使得训练器能够在训练过程中评估模型。
 	
@@ -92,7 +92,7 @@ model = NegativeSampling(
 tester = Tester(model = transe, data_loader = dataloader, use_gpu = True, device = 'cuda:1')
 
 # train the model
-trainer = TradTrainer(model = model, data_loader = dataloader.train_dataloader(),
+trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 	epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
 	tester = tester, test = True, valid_interval = 100,
 	log_interval = 100, save_interval = 100,

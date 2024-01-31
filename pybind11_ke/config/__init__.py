@@ -14,8 +14,6 @@ from __future__ import division
 from __future__ import print_function
 
 from .Trainer import Trainer, get_trainer_hpo_config
-from .TradTrainer import TradTrainer
-from .GraphTrainer import GraphTrainer
 
 from .Tester import Tester, get_tester_hpo_config, link_predict, head_predict, tail_predict, calc_ranks
 
@@ -24,8 +22,6 @@ from .Tester import Tester, get_tester_hpo_config, link_predict, head_predict, t
 
 __all__ = [
 	'Trainer',
-	'TradTrainer',
-	'GraphTrainer',
 	'get_trainer_hpo_config',
 	'Tester',
 	'get_tester_hpo_config',

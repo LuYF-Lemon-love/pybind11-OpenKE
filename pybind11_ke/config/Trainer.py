@@ -176,18 +176,23 @@ class Trainer(object):
 
 	def train_one_step(
 		self,
-		data: dict[str, typing.Union[str, torch.Tensor, dgl.DGLGraph]]) -> float:
+		data: dict[str, typing.Union[str, dgl.DGLGraph, torch.Tensor]]) -> float:
 
 		"""根据 :py:attr:`data_loader` 生成的 1 批次（batch） ``data`` 将
 		模型训练 1 步。
 
 		:param data: 训练数据
-		:type data: dict[str, typing.Union[str, torch.Tensor, dgl.DGLGraph]]
+		:type data: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
 		:returns: 损失值
 		:rtype: float
 		"""
-		
-		raise NotImplementedError
+
+		self.optimizer.zero_grad()
+		data = {key : self.to_var(value) if key != 'mode' else value for key, value in data.items()}
+		loss = self.model(data)
+		loss.backward()
+		self.optimizer.step()		 
+		return loss.item()
 
 	def run(self):
 
