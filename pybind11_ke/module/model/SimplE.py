@@ -91,55 +91,94 @@ class SimplE(Model):
         
         #: 实体嵌入向量和关系嵌入向量的维度
         self.dim: int = dim
-        #: 根据实体个数，创建的头实体嵌入
-        self.ent_h_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
-        #: 根据实体个数，创建的尾实体嵌入
-        self.ent_t_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
+
+        #: 根据实体个数，创建的实体嵌入
+        self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim * 2)
         #: 根据关系个数，创建的关系嵌入
-        self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
-        #: 根据关系个数，创建的逆关系嵌入
-        self.rel_inv_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
+        self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim * 2)
 
-        sqrt_size = 6.0 / math.sqrt(self.dim)
-        nn.init.uniform_(self.ent_h_embeddings.weight.data, -sqrt_size, sqrt_size)
-        nn.init.uniform_(self.ent_t_embeddings.weight.data, -sqrt_size, sqrt_size)
-        nn.init.uniform_(self.rel_embeddings.weight.data, -sqrt_size, sqrt_size)
-        nn.init.uniform_(self.rel_inv_embeddings.weight.data, -sqrt_size, sqrt_size)
-
-    @override   
-    def forward(
-        self,
-        data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+        nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
+        nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
         
         """
         定义每次调用时执行的计算。
         :py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
         利用 :py:func:`torch.clamp` 裁剪最后的的得分，防止遇到 NaN 问题。
+        """
+
+    @override
+    def forward(
+        self,
+        triples: torch.Tensor,
+        negs: torch.Tensor = None,
+        mode: str = 'single') -> torch.Tensor:
         
-        :param data: 数据。
-        :type data: dict[str, typing.Union[torch.Tensor, str]]
+        """
+        定义每次调用时执行的计算。
+        :py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        
+        :param triples: 正确的三元组
+        :type triples: torch.Tensor
+        :param negs: 负三元组类别
+        :type negs: torch.Tensor
+        :param mode: 模式
+        :type triples: str
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+		"""
+
+        head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+        score = self._calc(head_emb, relation_emb, tail_emb)
+        return score
+
+    def _calc(
+        self,
+        h: torch.Tensor,
+        r: torch.Tensor,
+        t: torch.Tensor) -> torch.Tensor:
+        
+        """计算 SimplE 的评分函数。
+        
+        :param h: 头实体的向量。
+        :type h: torch.Tensor
+        :param r: 关系的向量。
+        :type r: torch.Tensor
+        :param t: 尾实体的向量。
+        :type t: torch.Tensor
         :returns: 三元组的得分
         :rtype: torch.Tensor
         """
 
-        batch_h = data['batch_h']
-        batch_t = data['batch_t']
-        batch_r = data['batch_r']
-
-        hh_embs = self.ent_h_embeddings(batch_h)
-        ht_embs = self.ent_h_embeddings(batch_t)
-        th_embs = self.ent_t_embeddings(batch_h)
-        tt_embs = self.ent_t_embeddings(batch_t)
-        r_embs = self.rel_embeddings(batch_r)
-        r_inv_embs = self.rel_inv_embeddings(batch_r)
+        hh_embs, th_embs = torch.chunk(h, 2, dim=-1)
+        r_embs, r_inv_embs = torch.chunk(r, 2, dim=-1)
+        ht_embs, tt_embs = torch.chunk(t, 2, dim=-1)
 
         scores1 = torch.sum(hh_embs * r_embs * tt_embs, -1)
         scores2 = torch.sum(ht_embs * r_inv_embs * th_embs, -1)
-
+        
         # Without clipping, we run into NaN problems.
         # 基于论文作者的实现。
         return torch.clamp((scores1 + scores2) / 2, -20, 20)
+
+    @override
+    def predict(
+        self,
+        data: dict[str, typing.Union[torch.Tensor,str]],
+        mode) -> torch.Tensor:
         
+        """SimplE 的推理方法。
+        
+        :param data: 数据。
+        :type data: dict[str, typing.Union[torch.Tensor,str]]
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+        """
+
+        triples = data["positive_sample"]
+        head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
+        score = self._calc(head_emb, relation_emb, tail_emb)
+        return score
+
     def regularization(
         self,
         data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
@@ -152,41 +191,26 @@ class SimplE(Model):
         :rtype: torch.Tensor
         """
 
-        batch_h = data['batch_h']
-        batch_t = data['batch_t']
-        batch_r = data['batch_r']
-
-        hh_embs = self.ent_h_embeddings(batch_h)
-        ht_embs = self.ent_h_embeddings(batch_t)
-        th_embs = self.ent_t_embeddings(batch_h)
-        tt_embs = self.ent_t_embeddings(batch_t)
-        r_embs = self.rel_embeddings(batch_r)
-        r_inv_embs = self.rel_inv_embeddings(batch_r)
-
-        regul = (torch.mean(hh_embs ** 2) + 
-                 torch.mean(ht_embs ** 2) + 
-                 torch.mean(th_embs ** 2) +
-                 torch.mean(tt_embs ** 2) +
-                 torch.mean(r_embs ** 2) +
-                 torch.mean(r_inv_embs ** 2)) / 6
+        pos_sample = data["positive_sample"]
+        neg_sample = data["negative_sample"]
+        mode = data["mode"]
+        pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
+        if mode == "bern":
+            neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(neg_sample)
+        else:
+            neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+            
+        pos_regul = (torch.mean(pos_head_emb ** 2) + 
+                     torch.mean(pos_relation_emb ** 2) + 
+                     torch.mean(pos_tail_emb ** 2)) / 3
+                     
+        neg_regul = (torch.mean(neg_head_emb ** 2) + 
+                     torch.mean(neg_relation_emb ** 2) + 
+                     torch.mean(neg_tail_emb ** 2)) / 3
+                     
+        regul = (pos_regul + neg_regul) / 2
 
         return regul
-
-    @override
-    def predict(
-        self,
-        data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
-
-        """SimplE 的推理方法。
-        
-        :param data: 数据。
-        :type data: dict[str, typing.Union[torch.Tensor,str]]
-        :returns: 三元组的得分
-        :rtype: numpy.ndarray
-        """
-        
-        score = -self.forward(data)
-        return score.cpu().data.numpy()
 
 def get_simple_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
