@@ -341,8 +341,12 @@ class TransD(Model):
 		mode = data["mode"]
 		pos_h, pos_r, pos_t = self.tri2emb(pos_sample)
 		pos_h_transfer, pos_r_transfer, pos_t_transfer = self.tri2transfer(pos_sample)
-		neg_h, neg_r, neg_t = self.tri2emb(pos_sample, neg_sample, mode)
-		neg_h_transfer, neg_r_transfer, neg_t_transfer = self.tri2transfer(pos_sample, neg_sample, mode)
+		if mode == "bern":
+			neg_h, neg_r, neg_t = self.tri2emb(neg_sample)
+			neg_h_transfer, neg_r_transfer, neg_t_transfer = self.tri2transfer(neg_sample)
+		else:
+			neg_h, neg_r, neg_t = self.tri2emb(pos_sample, neg_sample, mode)
+			neg_h_transfer, neg_r_transfer, neg_t_transfer = self.tri2transfer(pos_sample, neg_sample, mode)
 
 		pos_regul = (torch.mean(pos_h ** 2) + 
 					 torch.mean(pos_r ** 2) + 

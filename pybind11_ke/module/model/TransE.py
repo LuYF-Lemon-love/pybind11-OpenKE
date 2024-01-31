@@ -215,7 +215,10 @@ class TransE(Model):
 		neg_sample = data["negative_sample"]
 		mode = data["mode"]
 		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
-		neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+		if mode == "bern":
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(neg_sample)
+		else:
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
 
 		pos_regul = (torch.mean(pos_head_emb ** 2) + 
 					 torch.mean(pos_relation_emb ** 2) + 

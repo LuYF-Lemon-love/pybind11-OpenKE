@@ -244,7 +244,10 @@ class TransH(Model):
 		mode = data["mode"]
 		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
 		pos_norm_vector = self.norm_vector(pos_sample[:, 1]).unsqueeze(dim=1)
-		neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+		if mode == "bern":
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(neg_sample)
+		else:
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
 		neg_norm_vector = self.norm_vector(pos_sample[:, 1]).unsqueeze(dim=1)
 
 		pos_regul = (torch.mean(pos_head_emb ** 2) + 

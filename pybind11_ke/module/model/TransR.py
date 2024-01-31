@@ -303,7 +303,10 @@ class TransR(Model):
 		mode = data["mode"]
 		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
 		pos_rel_transfer = self.transfer_matrix(pos_sample[:, 1])
-		neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+		if mode == "bern":
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(neg_sample)
+		else:
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
 		neg_rel_transfer = self.transfer_matrix(pos_sample[:, 1])
 
 		pos_regul = (torch.mean(pos_head_emb ** 2) + 
