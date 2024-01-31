@@ -99,12 +99,6 @@ class SimplE(Model):
 
         nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
         nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
-        
-        """
-        定义每次调用时执行的计算。
-        :py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-        利用 :py:func:`torch.clamp` 裁剪最后的的得分，防止遇到 NaN 问题。
-        """
 
     @override
     def forward(
