@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/RESCAL.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 12, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 31, 2023
 # 
 # 该头文件定义了 RESCAL.
 
@@ -13,7 +13,6 @@ RESCAL - 一个张量分解模型。
 
 import torch
 import typing
-import numpy as np
 import torch.nn as nn
 from .Model import Model
 from typing_extensions import override
@@ -91,54 +90,119 @@ class RESCAL(Model):
 
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_matrices.weight.data)
-	
-	def _calc(
-		self,
-		h: torch.Tensor,
-		t: torch.Tensor,
-		r: torch.Tensor) -> torch.Tensor:
-
-		"""计算 RESCAL 的评分函数。
-		
-		:param h: 头实体的向量。
-		:type h: torch.Tensor
-		:param t: 尾实体的向量。
-		:type t: torch.Tensor
-		:param r: 关系矩阵。
-		:type r: torch.Tensor
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
-		"""
-
-		t = t.view(-1, self.dim, 1)
-		r = r.view(-1, self.dim, self.dim)
-		tr = torch.matmul(r, t)
-		tr = tr.view(-1, self.dim)
-		return -torch.sum(h * tr, -1)
 
 	@override
 	def forward(
 		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> torch.Tensor:
 
 		"""
 		定义每次调用时执行的计算。
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor, str]]
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_matrices(batch_r)
-		score = self._calc(h ,t, r)
+		head_emb, tail_emb = self.tri2emb(triples, negs, mode)
+		rel_matric = self.rel_matrices(triples[:, 1])
+		score = self._calc(head_emb, rel_matric, tail_emb)
 		return score
+
+	@override
+	def tri2emb(
+		self,
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> tuple[torch.Tensor, torch.Tensor]:
+
+		"""
+		返回三元组对应的嵌入向量。
+		
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
+		:returns: 头实体和尾实体的嵌入向量
+		:rtype: tuple[torch.Tensor, torch.Tensor]
+		"""
+		
+		if mode == "single":
+			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)
+			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)
+			
+		elif mode == "head-batch" or mode == "head_predict":
+			if negs is None:
+				head_emb = self.ent_embeddings.weight.data.unsqueeze(0)
+			else:
+				head_emb = self.ent_embeddings(negs)
+				
+			tail_emb = self.ent_embeddings(triples[:, 2]).unsqueeze(1)
+			
+		elif mode == "tail-batch" or mode == "tail_predict": 
+			head_emb = self.ent_embeddings(triples[:, 0]).unsqueeze(1)
+			
+			if negs is None:
+				tail_emb = self.ent_embeddings.weight.data.unsqueeze(0)
+			else:
+				tail_emb = self.ent_embeddings(negs)
+		
+		return head_emb, tail_emb
+
+	def _calc(
+		self,
+		h: torch.Tensor,
+		r: torch.Tensor,
+		t: torch.Tensor) -> torch.Tensor:
+
+		"""计算 RESCAL 的评分函数。
+		
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param r: 关系矩阵。
+		:type r: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+		
+		r = r.view(-1, self.dim, self.dim)
+		r = r.unsqueeze(dim=1)
+		h = h.unsqueeze(dim=-2)
+		hr = torch.matmul(h, r)
+		hr = hr.squeeze(dim=-2)
+		return -torch.sum(hr * t, -1)
+
+	@override
+	def predict(
+		self,
+		data: dict[str, typing.Union[torch.Tensor,str]],
+		mode) -> torch.Tensor:
+		
+		"""RESCAL 的推理方法。
+		
+		:param data: 数据。
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		triples = data["positive_sample"]
+		head_emb, tail_emb = self.tri2emb(triples, mode=mode)
+		rel_matric = self.rel_matrices(triples[:, 1])
+		score = self._calc(head_emb, rel_matric, tail_emb)
+		return -score
 
 	def regularization(
 		self,
@@ -152,30 +216,28 @@ class RESCAL(Model):
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_matrices(batch_r)
-		regul = (torch.mean(h ** 2) + torch.mean(t ** 2) + torch.mean(r ** 2)) / 3
-		return regul
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_head_emb, pos_tail_emb = self.tri2emb(pos_sample)
+		pos_rel_transfer = self.rel_matrices(pos_sample[:, 1])
+		if mode == "bern":
+			neg_head_emb, neg_tail_emb = self.tri2emb(neg_sample)
+		else:
+			neg_head_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+		neg_rel_transfer = self.rel_matrices(pos_sample[:, 1])
 
-	@override
-	def predict(
-		self,
-		data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
+		pos_regul = (torch.mean(pos_head_emb ** 2) +
+					 torch.mean(pos_tail_emb ** 2) +
+					 torch.mean(pos_rel_transfer ** 2)) / 3
 
-		"""RESCAL 的推理方法。
+		neg_regul = (torch.mean(neg_head_emb ** 2) +
+					 torch.mean(neg_tail_emb ** 2) +
+					 torch.mean(neg_rel_transfer ** 2)) / 3
+
+		regul = (pos_regul + neg_regul) / 2
 		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
-
-		score = self.forward(data)
-		return score.cpu().data.numpy()
+		return regul
 
 def get_rescal_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
