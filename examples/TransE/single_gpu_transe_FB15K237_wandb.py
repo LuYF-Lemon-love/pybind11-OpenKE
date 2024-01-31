@@ -18,7 +18,7 @@ pybind11-OpenKE 有 1 个工具用于导入数据: :py:class:`pybind11_ke.data.K
 """
 
 from pybind11_ke.utils import WandbLogger
-from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
@@ -42,7 +42,7 @@ wandb_logger = WandbLogger(
 		norm_flag = True,
 		margin = 5.0,
 		use_gpu = True,
-		device = 'cuda:1',
+		device = 'cuda:0',
 		epochs = 1000,
 		lr = 1.0,
 		valid_interval = 100,
@@ -66,7 +66,7 @@ dataloader = KGEDataLoader(
 	test = config.test,
 	test_batch_size = config.test_batch_size,
 	num_workers = config.num_workers,
-	train_sampler = UniSampler,
+	train_sampler = BernSampler,
 	test_sampler = TradTestSampler
 )
 
