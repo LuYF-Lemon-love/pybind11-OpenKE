@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/HolE.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 9, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 31, 2024
 # 
 # 该头文件定义了 HolE.
 
@@ -13,7 +13,6 @@ HolE - 利用循环相关进行知识图谱嵌入，是 RESCAL 的压缩版本�
 
 import torch
 import typing
-import numpy as np
 import torch.nn as nn
 from .Model import Model
 from typing_extensions import override
@@ -96,6 +95,53 @@ class HolE(Model):
 		nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
 		nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
 
+	@override
+	def forward(
+		self,
+		triples: torch.Tensor,
+		negs: torch.Tensor = None,
+		mode: str = 'single') -> torch.Tensor:
+
+		"""
+		定义每次调用时执行的计算。
+		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		
+		:param triples: 正确的三元组
+		:type triples: torch.Tensor
+		:param negs: 负三元组类别
+		:type negs: torch.Tensor
+		:param mode: 模式
+		:type triples: str
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+		score = self._calc(head_emb, relation_emb, tail_emb)
+		return score
+
+	def _calc(
+		self,
+		h: torch.Tensor,
+		r: torch.Tensor,
+		t: torch.Tensor) -> torch.Tensor:
+
+		"""计算 HolE 的评分函数。
+		
+		:param h: 头实体的向量。
+		:type h: torch.Tensor
+		:param r: 关系的向量。
+		:type r: torch.Tensor
+		:param t: 尾实体的向量。
+		:type t: torch.Tensor
+		:returns: 三元组的得分
+		:rtype: torch.Tensor
+		"""
+
+		score = self._ccorr(h, t) * r
+		score = torch.sum(score, -1)
+		return score
+
 	def _ccorr(
 		self,
 		a: torch.Tensor,
@@ -127,60 +173,23 @@ class HolE(Model):
 		# 傅里叶变换的逆变换
 		return torch.fft.irfft(p_fft, n=a.shape[-1], dim=-1)
 
-	def _calc(
-		self,
-		h: torch.Tensor,
-		t: torch.Tensor,
-		r: torch.Tensor,
-		mode: str) -> torch.Tensor:
-
-		"""计算 HolE 的评分函数。
-		
-		:param h: 头实体的向量。
-		:type h: torch.Tensor
-		:param t: 尾实体的向量。
-		:type t: torch.Tensor
-		:param r: 关系的向量。
-		:type r: torch.Tensor
-		:param mode: ``normal`` 表示 :py:class:`pybind11_ke.data.TrainDataLoader` 
-					 为训练同时进行头实体和尾实体负采样的数据，``head_batch`` 和 ``tail_batch`` 
-					 表示为了减少数据传输成本，需要进行广播的数据，在广播前需要 reshape。
-		:type mode: str
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
-		"""
-
-		if mode != 'normal':
-			h = h.view(-1, r.shape[0], h.shape[-1])
-			t = t.view(-1, r.shape[0], t.shape[-1])
-			r = r.view(-1, r.shape[0], r.shape[-1])
-		score = self._ccorr(h, t) * r
-		score = torch.sum(score, -1).flatten()
-		return score
-
 	@override
-	def forward(
+	def predict(
 		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
-
-		"""
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+		data: dict[str, typing.Union[torch.Tensor,str]],
+		mode) -> torch.Tensor:
+		
+		"""HolE 的推理方法。
 		
 		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor, str]]
+		:type data: dict[str, typing.Union[torch.Tensor,str]]
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		mode = data['mode']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		score = self._calc(h ,t, r, mode)
+		triples = data["positive_sample"]
+		head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
+		score = self._calc(head_emb, relation_emb, tail_emb)
 		return score
 
 	def regularization(
@@ -195,13 +204,25 @@ class HolE(Model):
 		:rtype: torch.Tensor
 		"""
 
-		batch_h = data['batch_h']
-		batch_t = data['batch_t']
-		batch_r = data['batch_r']
-		h = self.ent_embeddings(batch_h)
-		t = self.ent_embeddings(batch_t)
-		r = self.rel_embeddings(batch_r)
-		regul = (torch.mean(h ** 2) + torch.mean(t ** 2) + torch.mean(r ** 2)) / 3
+		pos_sample = data["positive_sample"]
+		neg_sample = data["negative_sample"]
+		mode = data["mode"]
+		pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
+		if mode == "bern":
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(neg_sample)
+		else:
+			neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+
+		pos_regul = (torch.mean(pos_head_emb ** 2) + 
+					 torch.mean(pos_relation_emb ** 2) + 
+					 torch.mean(pos_tail_emb ** 2)) / 3
+
+		neg_regul = (torch.mean(neg_head_emb ** 2) + 
+					 torch.mean(neg_relation_emb ** 2) + 
+					 torch.mean(neg_tail_emb ** 2)) / 3
+
+		regul = (pos_regul + neg_regul) / 2
+
 		return regul
 
 	def l3_regularization(self) -> torch.Tensor:
@@ -213,22 +234,6 @@ class HolE(Model):
 		"""
 		
 		return (self.ent_embeddings.weight.norm(p = 3)**3 + self.rel_embeddings.weight.norm(p = 3)**3)
-	
-	@override
-	def predict(
-		self,
-		data: dict[str, typing.Union[torch.Tensor, str]]) -> np.ndarray:
-		
-		"""HolE 的推理方法。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor, str]]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
-
-		score = -self.forward(data)
-		return score.cpu().data.numpy()
 
 def get_hole_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
