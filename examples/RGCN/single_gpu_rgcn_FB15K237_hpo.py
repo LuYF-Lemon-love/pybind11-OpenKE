@@ -121,7 +121,7 @@ print()
 # 定义训练器超参数优化范围
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.config.get_graph_trainer_hpo_config` 返回了
-# :py:class:`pybind11_ke.config.GraphTrainer` 的默认超参数优化范围。
+# :py:class:`pybind11_ke.config.Trainer` 的默认超参数优化范围。
 
 # set the hpo config
 trainer_config = get_graph_trainer_hpo_config()

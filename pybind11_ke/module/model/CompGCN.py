@@ -32,7 +32,7 @@ class CompGCN(Model):
         from pybind11_ke.module.model import CompGCN
         from pybind11_ke.module.loss import Cross_Entropy_Loss
         from pybind11_ke.module.strategy import CompGCNSampling
-        from pybind11_ke.config import GraphTrainer, GraphTester
+        from pybind11_ke.config import Trainer, GraphTester
         
         # define the model
         compgcn = CompGCN(
@@ -52,7 +52,7 @@ class CompGCN(Model):
         tester = GraphTester(model = compgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0', prediction = "tail")
         
         # train the model
-        trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+        trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
         	epochs = 2000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
         	tester = tester, test = True, valid_interval = 50, log_interval = 50,
         	save_interval = 50, save_path = '../../checkpoint/compgcn.pth'

@@ -18,7 +18,7 @@ from pybind11_ke.data import CompGCNSampler, CompGCNTestSampler, GraphDataLoader
 from pybind11_ke.module.model import CompGCN
 from pybind11_ke.module.loss import Cross_Entropy_Loss
 from pybind11_ke.module.strategy import CompGCNSampling
-from pybind11_ke.config import GraphTrainer, GraphTester
+from pybind11_ke.config import Trainer, GraphTester
 
 ######################################################################
 # 首先初始化 :py:class:`pybind11_ke.utils.WandbLogger` 日志记录器，它是对 wandb 初始化操作的一层简单封装。
@@ -104,8 +104,8 @@ model = CompGCNSampling(
 ######################################################################
 # 训练模型
 # -------------
-# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.GraphTrainer`，
-# 可以运行它的 :py:meth:`pybind11_ke.config.GraphTrainer.run` 函数进行模型学习；
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
 # 也可以通过传入 :py:class:`pybind11_ke.config.GraphTester`，
 # 使得训练器能够在训练过程中评估模型；:py:class:`pybind11_ke.config.GraphTester` 使用
 # :py:class:`pybind11_ke.data.GraphDataLoader` 作为数据采样器。
@@ -114,7 +114,7 @@ model = CompGCNSampling(
 tester = GraphTester(model = compgcn, data_loader = dataloader, use_gpu = config.use_gpu, device = config.device, prediction = config.prediction)
 
 # train the model
-trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 	epochs = config.epochs, lr = config.lr, use_gpu = config.use_gpu, device = config.device,
 	tester = tester, test = config.test, valid_interval = config.valid_interval, log_interval = config.log_interval,
 	save_interval = config.save_interval, save_path = config.save_path, use_wandb = True

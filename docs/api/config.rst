@@ -17,8 +17,6 @@ pybind11_ke.config
     :template: classtemplate.rst
 
     Trainer
-    TradTrainer
-    GraphTrainer
 
 评估循环
 ----------------------------------

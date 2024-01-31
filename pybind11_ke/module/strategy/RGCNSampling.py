@@ -29,7 +29,7 @@ class RGCNSampling(Strategy):
         from pybind11_ke.module.model import RGCN
         from pybind11_ke.module.loss import RGCNLoss
         from pybind11_ke.module.strategy import RGCNSampling
-        from pybind11_ke.config import GraphTrainer, GraphTester
+        from pybind11_ke.config import Trainer, GraphTester
         
         dataloader = GraphDataLoader(
         	in_path = "../../benchmarks/FB15K237/",
@@ -58,7 +58,7 @@ class RGCNSampling(Strategy):
         tester = GraphTester(model = rgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
         
         # train the model
-        trainer = GraphTrainer(model = model, data_loader = dataloader.train_dataloader(),
+        trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
         	epochs = 10000, lr = 0.0001, use_gpu = True, device = 'cuda:0',
         	tester = tester, test = True, valid_interval = 500, log_interval = 500,
         	save_interval = 500, save_path = '../../checkpoint/rgcn.pth'
