@@ -13,7 +13,6 @@ ComplEx - 第一个真正意义上复数域模型，简单而且高效。
 
 import torch
 import typing
-import numpy as np
 import torch.nn as nn
 from .Model import Model
 from typing_extensions import override
@@ -90,80 +89,86 @@ class ComplEx(Model):
 
         #: 实体嵌入向量和关系嵌入向量的维度
         self.dim: int = dim
-        #: 根据实体个数，创建的实体嵌入的实部
-        self.ent_re_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
-        #: 根据实体个数，创建的实体嵌入的虚部
-        self.ent_im_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim)
-        #: 根据关系个数，创建的关系嵌入的实部
-        self.rel_re_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
-        #: 根据关系个数，创建的关系嵌入的虚部
-        self.rel_im_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim)
+        #: 根据实体个数，创建的实体嵌入
+        self.ent_embeddings: torch.nn.Embedding = nn.Embedding(self.ent_tol, self.dim * 2)
+        #: 根据关系个数，创建的关系嵌入
+        self.rel_embeddings: torch.nn.Embedding = nn.Embedding(self.rel_tol, self.dim * 2)
 
-        nn.init.xavier_uniform_(self.ent_re_embeddings.weight.data)
-        nn.init.xavier_uniform_(self.ent_im_embeddings.weight.data)
-        nn.init.xavier_uniform_(self.rel_re_embeddings.weight.data)
-        nn.init.xavier_uniform_(self.rel_im_embeddings.weight.data)
-
-    def _calc(
-        self,
-        h_re: torch.Tensor,
-        h_im: torch.Tensor,
-        t_re: torch.Tensor,
-        t_im: torch.Tensor,
-        r_re: torch.Tensor,
-        r_im: torch.Tensor) -> torch.Tensor:
-
-        """计算 ComplEx 的评分函数。
-		
-        :param h_re: 头实体的实部向量。
-        :type h_re: torch.Tensor
-        :param h_im: 头实体的虚部向量。
-        :type h_im: torch.Tensor
-        :param t_re: 尾实体的实部向量。
-        :type t_re: torch.Tensor
-        :param t_im: 尾实体的虚部向量。
-        :type t_im: torch.Tensor
-        :param r_re: 关系的实部向量。
-        :type r_re: torch.Tensor
-        :param r_im: 关系的虚部向量。
-        :type r_im: torch.Tensor
-        :returns: 三元组的得分
-        :rtype: torch.Tensor
-		"""
-
-        return torch.sum(
-            h_re * t_re * r_re
-            + h_im * t_im * r_re
-            + h_re * t_im * r_im
-            - h_im * t_re * r_im,
-            -1
-        )
-    
+        nn.init.xavier_uniform_(self.ent_embeddings.weight.data)
+        nn.init.xavier_uniform_(self.rel_embeddings.weight.data)
+   
     @override
     def forward(
         self,
-        data: dict[str, typing.Union[torch.Tensor, str]]) -> torch.Tensor:
-
+        triples: torch.Tensor,
+        negs: torch.Tensor = None,
+        mode: str = 'single') -> torch.Tensor:
+        
         """
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor, str]]
-		:returns: 三元组的得分
-		:rtype: torch.Tensor
+        定义每次调用时执行的计算。
+        :py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+        
+        :param triples: 正确的三元组
+        :type triples: torch.Tensor
+        :param negs: 负三元组类别
+        :type negs: torch.Tensor
+        :param mode: 模式
+        :type triples: str
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
 		"""
+        
+        head_emb, relation_emb, tail_emb = self.tri2emb(triples, negs, mode)
+        score = self._calc(head_emb, relation_emb, tail_emb)
+        return score
 
-        batch_h = data['batch_h']
-        batch_t = data['batch_t']
-        batch_r = data['batch_r']
-        h_re = self.ent_re_embeddings(batch_h)
-        h_im = self.ent_im_embeddings(batch_h)
-        t_re = self.ent_re_embeddings(batch_t)
-        t_im = self.ent_im_embeddings(batch_t)
-        r_re = self.rel_re_embeddings(batch_r)
-        r_im = self.rel_im_embeddings(batch_r)
-        score = self._calc(h_re, h_im, t_re, t_im, r_re, r_im)
+    def _calc(
+        self,
+        h: torch.Tensor,
+        r: torch.Tensor,
+        t: torch.Tensor) -> torch.Tensor:
+        
+        """计算 ComplEx 的评分函数。
+        
+        :param h: 头实体的向量。
+        :type h: torch.Tensor
+        :param r: 关系的向量。
+        :type r: torch.Tensor
+        :param t: 尾实体的向量。
+        :type t: torch.Tensor
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+        """
+
+        re_head, im_head = torch.chunk(h, 2, dim=-1)
+        re_relation, im_relation = torch.chunk(r, 2, dim=-1)
+        re_tail, im_tail = torch.chunk(t, 2, dim=-1)
+        
+        return torch.sum(
+            re_head * re_tail * re_relation
+            + im_head * im_tail * re_relation
+            + re_head * im_tail * im_relation
+            - im_head * re_tail * im_relation,
+            -1
+        )
+        
+    @override
+    def predict(
+        self,
+        data: dict[str, typing.Union[torch.Tensor,str]],
+        mode) -> torch.Tensor:
+        
+        """ComplEx 的推理方法。
+        
+        :param data: 数据。
+        :type data: dict[str, typing.Union[torch.Tensor,str]]
+        :returns: 三元组的得分
+        :rtype: torch.Tensor
+        """
+
+        triples = data["positive_sample"]
+        head_emb, relation_emb, tail_emb = self.tri2emb(triples, mode=mode)
+        score = self._calc(head_emb, relation_emb, tail_emb)
         return score
 
     def regularization(
@@ -177,39 +182,27 @@ class ComplEx(Model):
 		:returns: 模型参数的正则损失
 		:rtype: torch.Tensor
 		"""
+        
+        pos_sample = data["positive_sample"]
+        neg_sample = data["negative_sample"]
+        mode = data["mode"]
+        pos_head_emb, pos_relation_emb, pos_tail_emb = self.tri2emb(pos_sample)
+        if mode == "bern":
+            neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(neg_sample)
+        else:
+            neg_head_emb, neg_relation_emb, neg_tail_emb = self.tri2emb(pos_sample, neg_sample, mode)
+            
+        pos_regul = (torch.mean(pos_head_emb ** 2) + 
+                     torch.mean(pos_relation_emb ** 2) + 
+                     torch.mean(pos_tail_emb ** 2)) / 3
+                     
+        neg_regul = (torch.mean(neg_head_emb ** 2) + 
+                     torch.mean(neg_relation_emb ** 2) + 
+                     torch.mean(neg_tail_emb ** 2)) / 3
+                     
+        regul = (pos_regul + neg_regul) / 2
 
-        batch_h = data['batch_h']
-        batch_t = data['batch_t']
-        batch_r = data['batch_r']
-        h_re = self.ent_re_embeddings(batch_h)
-        h_im = self.ent_im_embeddings(batch_h)
-        t_re = self.ent_re_embeddings(batch_t)
-        t_im = self.ent_im_embeddings(batch_t)
-        r_re = self.rel_re_embeddings(batch_r)
-        r_im = self.rel_im_embeddings(batch_r)
-        regul = (torch.mean(h_re ** 2) + 
-                 torch.mean(h_im ** 2) + 
-                 torch.mean(t_re ** 2) +
-                 torch.mean(t_im ** 2) +
-                 torch.mean(r_re ** 2) +
-                 torch.mean(r_im ** 2)) / 6
         return regul
-
-    @override
-    def predict(
-        self,
-        data: dict[str, typing.Union[torch.Tensor,str]]) -> np.ndarray:
-
-        """ComplEx 的推理方法。
-		
-		:param data: 数据。
-		:type data: dict[str, typing.Union[torch.Tensor,str]]
-		:returns: 三元组的得分
-		:rtype: numpy.ndarray
-		"""
-
-        score = -self.forward(data)
-        return score.cpu().data.numpy()
 
 def get_complex_hpo_config() -> dict[str, dict[str, typing.Any]]:
 
