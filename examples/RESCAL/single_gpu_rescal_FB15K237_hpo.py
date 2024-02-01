@@ -132,7 +132,7 @@ print()
 # set the hpo config
 sweep_config = set_hpo_config(
     sweep_name = "RESCAL_FB15K237",
-    train_data_loader_config = data_loader_config,
+    data_loader_config = data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,
     strategy_config = strategy_config,
