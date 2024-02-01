@@ -34,7 +34,10 @@ print()
 data_loader_config.update({
     'in_path': {
         'value': '../../benchmarks/WN18RR/'
-    }
+    },
+    'test_batch_size': {
+        'value': 5
+    },
 })
 
 ######################################################################

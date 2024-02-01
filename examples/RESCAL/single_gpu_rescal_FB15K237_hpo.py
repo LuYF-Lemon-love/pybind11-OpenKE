@@ -13,29 +13,31 @@ RESCAL-FB15K237-single-gpu-hpo
 """
 
 import pprint
-from pybind11_ke.data import get_train_data_loader_hpo_config
+from pybind11_ke.data import get_kge_data_loader_hpo_config
 from pybind11_ke.module.model import get_rescal_hpo_config
 from pybind11_ke.module.loss import get_margin_loss_hpo_config
 from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
-from pybind11_ke.data import get_test_data_loader_hpo_config
 from pybind11_ke.config import get_tester_hpo_config
 from pybind11_ke.config import get_trainer_hpo_config
 from pybind11_ke.config import set_hpo_config, start_hpo_train
 
 ######################################################################
-# :py:func:`pybind11_ke.data.get_train_data_loader_hpo_config` 将返回
-# :py:class:`pybind11_ke.data.TrainDataLoader` 的默认超参数优化范围，
+# :py:func:`pybind11_ke.data.get_kge_data_loader_hpo_config` 将返回
+# :py:class:`pybind11_ke.data.KGEDataLoader` 的默认超参数优化范围，
 # 你可以修改数据目录等信息。
 
-train_data_loader_config = get_train_data_loader_hpo_config()
-print("train_data_loader_config:")
-pprint.pprint(train_data_loader_config)
+data_loader_config = get_kge_data_loader_hpo_config()
+print("data_loader_config:")
+pprint.pprint(data_loader_config)
 print()
 
-train_data_loader_config.update({
+data_loader_config.update({
     'in_path': {
         'value': '../../benchmarks/FB15K237/'
-    }
+    },
+    'test_batch_size': {
+        'value': 5
+    },
 })
 
 ######################################################################
@@ -91,22 +93,6 @@ print()
 #
 
 ################################
-# 定义测试数据加载器超参数优化范围
-# ---------------------------------------------------------
-# :py:func:`pybind11_ke.data.get_test_data_loader_hpo_config` 返回了
-# :py:class:`pybind11_ke.data.TestDataLoader` 的默认超参数优化范围。
-
-# set the hpo config
-test_data_loader_config = get_test_data_loader_hpo_config()
-print("test_data_loader_config:")
-pprint.pprint(test_data_loader_config)
-print()
-
-######################################################################
-# --------------
-#
-
-################################
 # 定义评估器超参数优化范围
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.config.get_tester_hpo_config` 返回了
@@ -146,11 +132,10 @@ print()
 # set the hpo config
 sweep_config = set_hpo_config(
     sweep_name = "RESCAL_FB15K237",
-    train_data_loader_config = train_data_loader_config,
+    train_data_loader_config = data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,
     strategy_config = strategy_config,
-    test_data_loader_config = test_data_loader_config,
     tester_config = tester_config,
     trainer_config = trainer_config)
 print("sweep_config:")

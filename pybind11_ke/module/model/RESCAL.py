@@ -32,34 +32,73 @@ class RESCAL(Model):
 
 	例子::
 
-		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.utils import WandbLogger
+		from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 		from pybind11_ke.module.model import RESCAL
 		from pybind11_ke.module.loss import MarginLoss
 		from pybind11_ke.module.strategy import NegativeSampling
-
+		from pybind11_ke.config import Trainer, Tester
+		
+		wandb_logger = WandbLogger(
+			project="pybind11-ke",
+			name="RESCAL-FB15K237",
+			config=dict(
+				in_path = '../../benchmarks/FB15K237/',
+				batch_size = 2048,
+				neg_ent = 25,
+				test = True,
+				test_batch_size = 10,
+				num_workers = 16,
+				dim = 50,
+				margin = 1.0,
+				use_gpu = True,
+				device = 'cuda:0',
+				epochs = 1000,
+				lr = 0.1,
+				opt_method = 'adagrad',
+				valid_interval = 100,
+				log_interval = 100,
+				save_interval = 100,
+				save_path = '../../checkpoint/rescal.pth'
+			)
+		)
+		
+		config = wandb_logger.config
+		
+		# dataloader for training
+		dataloader = KGEDataLoader(
+			in_path = config.in_path, 
+			batch_size = config.batch_size,
+			neg_ent = config.neg_ent,
+			test = config.test,
+			test_batch_size = config.test_batch_size,
+			num_workers = config.num_workers,
+			train_sampler = BernSampler,
+			test_sampler = TradTestSampler
+		)
+		
 		# define the model
 		rescal = RESCAL(
-			ent_tol = train_dataloader.get_ent_tol(),
-			rel_tol = train_dataloader.get_rel_tol(),
-			dim = 50
+			ent_tol = dataloader.get_ent_tol(),
+			rel_tol = dataloader.get_rel_tol(),
+			dim = config.dim
 		)
-
+		
 		# define the loss function
 		model = NegativeSampling(
 			model = rescal, 
-			loss = MarginLoss(margin = 1.0),
-			batch_size = train_dataloader.get_batch_size(), 
+			loss = MarginLoss(margin = config.margin)
 		)
-
+		
 		# test the model
-		tester = Tester(model = rescal, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
-
+		tester = Tester(model = rescal, data_loader = dataloader, use_gpu = config.use_gpu, device = config.device)
+		
 		# train the model
-		trainer = Trainer(model = model, data_loader = train_dataloader, epochs = 1000,
-			lr = 0.1, opt_method = 'adagrad', use_gpu = True, device = 'cuda:1',
-			tester = tester, test = True, valid_interval = 100,
-			log_interval = 100, save_interval = 100,
-			save_path = '../../checkpoint/rescal.pth', use_wandb = False)
+		trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(), epochs = config.epochs,
+			lr = config.lr, opt_method = config.opt_method, use_gpu = config.use_gpu, device = config.device,
+			tester = tester, test = config.test, valid_interval = config.valid_interval,
+			log_interval = config.log_interval, save_interval = config.save_interval,
+			save_path = config.save_path, use_wandb = True)
 		trainer.run()
 	"""
 
