@@ -16,12 +16,13 @@ import typing
 import warnings
 import numpy as np
 from .TradSampler import TradSampler
+from typing_extensions import override
 
 warnings.filterwarnings("ignore")
 
 class UniSampler(TradSampler):
 
-    """平移模型和语义匹配模型的训练集普通的数据采样器。
+    """平移模型和语义匹配模型的训练集普通的数据采样器（均值分布）。
     """
     
     def __init__(
@@ -45,7 +46,7 @@ class UniSampler(TradSampler):
         :type train_file: str
         :param batch_size: batch size 在该采样器中不起作用，只是占位符。
         :type batch_size: int | None
-        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity
         :type neg_ent: int
         """
 
@@ -60,6 +61,7 @@ class UniSampler(TradSampler):
 
         self.cross_sampling_flag = 0
 
+    @override
     def sampling(
         self,
         pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[str, torch.Tensor]]:

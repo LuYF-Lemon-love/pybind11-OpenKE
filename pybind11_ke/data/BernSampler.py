@@ -17,10 +17,11 @@ import random
 import collections
 import numpy as np
 from .TradSampler import TradSampler
+from typing_extensions import override
 
 class BernSampler(TradSampler):
 
-    """平移模型和语义匹配模型的训练集 Bern 数据采样器。
+    """平移模型和语义匹配模型的训练集 Bern 数据采样器（伯努利分布），如果想获得更详细的信息请访问 :ref:`TransH <transh>`。。
     """
 
     def __init__(
@@ -32,7 +33,7 @@ class BernSampler(TradSampler):
         batch_size: int | None = None,
         neg_ent: int = 1):
 
-        """创建 UniSampler 对象。
+        """创建 BernSampler 对象。
 
         :param in_path: 数据集目录
         :type in_path: str
@@ -44,7 +45,7 @@ class BernSampler(TradSampler):
         :type train_file: str
         :param batch_size: batch size 在该采样器中不起作用，只是占位符。
         :type batch_size: int | None
-        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity
         :type neg_ent: int
         """
 
@@ -81,6 +82,7 @@ class BernSampler(TradSampler):
             hpt[r] = freq_rel[r] / len(t_of_r[r])
         return tph, hpt
 
+    @override
     def sampling(
         self,
         pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[str, torch.Tensor]]:
@@ -141,7 +143,7 @@ class BernSampler(TradSampler):
         neg_list_h = []
         neg_cur_size = 0
         while neg_cur_size < neg_size_h:
-            neg_tmp_h = self.corrupt_head(t, r, num_max=(neg_size_h - neg_cur_size) * 2)
+            neg_tmp_h = self.__corrupt_head(t, r, num_max=(neg_size_h - neg_cur_size) * 2)
             neg_list_h.append(neg_tmp_h)
             neg_cur_size += len(neg_tmp_h)
         if neg_list_h != []:
@@ -153,7 +155,7 @@ class BernSampler(TradSampler):
         neg_list_t = []
         neg_cur_size = 0
         while neg_cur_size < neg_size_t:
-            neg_tmp_t = self.corrupt_tail(h, r, num_max=(neg_size_t - neg_cur_size) * 2)
+            neg_tmp_t = self.__corrupt_tail(h, r, num_max=(neg_size_t - neg_cur_size) * 2)
             neg_list_t.append(neg_tmp_t)
             neg_cur_size += len(neg_tmp_t)
         if neg_list_t != []:

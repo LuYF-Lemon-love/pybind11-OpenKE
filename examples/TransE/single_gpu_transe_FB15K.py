@@ -17,7 +17,7 @@ TransE-FB15K-single-gpu
 pybind11-OpenKE 有 1 个工具用于导入数据: :py:class:`pybind11_ke.data.KGEDataLoader`。
 """
 
-from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
@@ -35,7 +35,7 @@ dataloader = KGEDataLoader(
 	test = True,
 	test_batch_size = 256,
 	num_workers = 16,
-	train_sampler = UniSampler,
+	train_sampler = BernSampler,
 	test_sampler = TradTestSampler
 )
 

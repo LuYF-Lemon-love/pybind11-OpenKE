@@ -12,6 +12,7 @@ TradSampler - 为 KGReader 增加构建负三元组的函数，用于平移模�
 """
 
 import torch
+import typing
 import numpy as np
 from .KGReader import KGReader
 
@@ -41,7 +42,7 @@ class TradSampler(KGReader):
         :type train_file: str
         :param batch_size: batch size 在该采样器中不起作用，只是占位符。
         :type batch_size: int | None
-        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity
         :type neg_ent: int
         """
         
@@ -58,6 +59,20 @@ class TradSampler(KGReader):
         self.neg_ent: int = neg_ent
 
         self.get_hr2t_rt2h_from_train()
+
+    def sampling(
+        self,
+        pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[str, torch.Tensor]]:
+        
+        """平移模型和语义匹配模型的训练集普通的数据采样函数。
+        
+        :param pos_triples: 知识图谱中的正确三元组
+        :type pos_triples: list[tuple[int, int, int]]
+        :returns: 平移模型和语义匹配模型的训练数据
+        :rtype: dict[str, typing.Union[str, torch.Tensor]]
+        """
+        
+        raise NotImplementedError
 
     def head_batch(
         self,
@@ -80,12 +95,12 @@ class TradSampler(KGReader):
         neg_list = []
         neg_cur_size = 0
         while neg_cur_size < neg_size:
-            neg_tmp = self.corrupt_head(t, r, num_max=(neg_size - neg_cur_size) * 2)
+            neg_tmp = self.__corrupt_head(t, r, num_max=(neg_size - neg_cur_size) * 2)
             neg_list.append(neg_tmp)
             neg_cur_size += len(neg_tmp)
         return np.concatenate(neg_list)[:neg_size]
 
-    def corrupt_head(
+    def __corrupt_head(
         self,
         t: int,
         r: int,
@@ -129,12 +144,12 @@ class TradSampler(KGReader):
         neg_list = []
         neg_cur_size = 0
         while neg_cur_size < neg_size:
-            neg_tmp = self.corrupt_tail(h, r, num_max=(neg_size - neg_cur_size) * 2)
+            neg_tmp = self.__corrupt_tail(h, r, num_max=(neg_size - neg_cur_size) * 2)
             neg_list.append(neg_tmp)
             neg_cur_size += len(neg_tmp)
         return np.concatenate(neg_list)[:neg_size]
         
-    def corrupt_tail(
+    def __corrupt_tail(
         self,
         h: int,
         r: int,

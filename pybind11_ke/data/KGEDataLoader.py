@@ -13,7 +13,9 @@ KGEDataLoader - KGE 模型读取数据集类。
 
 import typing
 from .UniSampler import UniSampler
+from .BernSampler import BernSampler
 from .RGCNSampler import RGCNSampler
+from .CompGCNSampler import CompGCNSampler
 from .TestSampler import TestSampler
 from .TradTestSampler import TradTestSampler
 from torch.utils.data import DataLoader
@@ -21,6 +23,21 @@ from torch.utils.data import DataLoader
 class KGEDataLoader:
 
     """KGE 模型数据加载器。
+
+    例子::
+
+        from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
+
+        dataloader = KGEDataLoader(
+        	in_path = "../../benchmarks/FB15K/", 
+        	batch_size = 8192,
+        	neg_ent = 25,
+        	test = True,
+        	test_batch_size = 256,
+        	num_workers = 16,
+        	train_sampler = BernSampler,
+        	test_sampler = TradTestSampler
+        )
     """
     
     def __init__(
@@ -36,7 +53,7 @@ class KGEDataLoader:
         test: bool = False,
         test_batch_size: int | None = None,
         num_workers: int | None = None,
-        train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[RGCNSampler]] = UniSampler,
+        train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[BernSampler], typing.Type[RGCNSampler], typing.Type[CompGCNSampler]] = BernSampler,
         test_sampler: typing.Type[TestSampler] = TradTestSampler):
 
         """创建 GraphDataLoader 对象。
@@ -55,7 +72,7 @@ class KGEDataLoader:
         :type test_file: str
         :param batch_size: batch size
         :type batch_size: int | None
-        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)；对于 CompGCN 不起作用。
+        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity；对于 CompGCN 不起作用。
         :type neg_ent: int
         :param test: 是否读取验证集和测试集
         :type test: bool
@@ -64,7 +81,7 @@ class KGEDataLoader:
         :param num_workers: 加载数据的进程数
         :type num_workers: int
         :param train_sampler: 训练数据采样器
-        :type train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[RGCNSampler]]
+        :type train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[BernSampler], typing.Type[RGCNSampler], typing.Type[CompGCNSampler]]
         :param test_sampler: 测试数据采样器
         :type test_sampler: typing.Type[TestSampler]
         """
@@ -83,7 +100,7 @@ class KGEDataLoader:
         self.test_file: str = test_file
         #: batch size
         self.batch_size: int = batch_size
-        #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity (head + tail)；对于 CompGCN 不起作用。
+        #: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity；对于 CompGCN 不起作用。
         self.neg_ent: int = neg_ent
         #: 是否读取验证集和测试集
         self.test: bool = test
@@ -93,7 +110,7 @@ class KGEDataLoader:
         self.num_workers: int = num_workers
 
         #: 训练数据采样器
-        self.train_sampler: typing.Union[UniSampler, RGCNSampler] = train_sampler(
+        self.train_sampler: typing.Union[UniSampler, BernSampler, RGCNSampler, CompGCNSampler] = train_sampler(
             in_path=self.in_path,
             ent_file=self.ent_file,
             rel_file=self.rel_file,
