@@ -34,71 +34,73 @@ class TransR(Model):
 
 	例子::
 
-		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 		from pybind11_ke.module.model import TransE, TransR
 		from pybind11_ke.module.loss import MarginLoss
 		from pybind11_ke.module.strategy import NegativeSampling
-		from pybind11_ke.data import TrainDataLoader, TestDataLoader
-
+		from pybind11_ke.config import Trainer, Tester
+		
 		# dataloader for training
-		train_dataloader = TrainDataLoader(
+		dataloader = KGEDataLoader(
 			in_path = "../../benchmarks/FB15K237/", 
-			nbatches = 100,
-			threads = 8, 
-			sampling_mode = "normal", 
-			bern = True, 
-			neg_ent = 25,
-			neg_rel = 0)
-
+			batch_size = 2048,
+			neg_ent = 25, 
+			test = True,
+			test_batch_size = 10,
+			num_workers = 16,
+			train_sampler = BernSampler,
+			test_sampler = TradTestSampler
+		)
+		
 		# define the transe
 		transe = TransE(
-			ent_tol = train_dataloader.get_ent_tol(),
-			rel_tol = train_dataloader.get_rel_tol(),
+			ent_tol = dataloader.get_ent_tol(),
+			rel_tol = dataloader.get_rel_tol(),
 			dim = 100, 
 			p_norm = 1, 
 			norm_flag = True)
-
+		
 		transr = TransR(
-			ent_tol = train_dataloader.get_ent_tol(),
-			rel_tol = train_dataloader.get_rel_tol(),
+			ent_tol = dataloader.get_ent_tol(),
+			rel_tol = dataloader.get_rel_tol(),
 			dim_e = 100,
 			dim_r = 100,
 			p_norm = 1, 
 			norm_flag = True,
 			rand_init = False)
-
+		
 		model_e = NegativeSampling(
 			model = transe, 
-			loss = MarginLoss(margin = 5.0),
-			batch_size = train_dataloader.get_batch_size()
+			loss = MarginLoss(margin = 5.0)
 		)
-
+		
 		model_r = NegativeSampling(
 			model = transr,
-			loss = MarginLoss(margin = 4.0),
-			batch_size = train_dataloader.get_batch_size()
+			loss = MarginLoss(margin = 4.0)
 		)
-
+		
 		# pretrain transe
-		trainer = Trainer(model = model_e, data_loader = train_dataloader,
-			epochs = 1, lr = 0.5, use_gpu = True, device = 'cuda:1')
+		trainer = Trainer(model = model_e, data_loader = dataloader.train_dataloader(),
+			epochs = 1, lr = 0.5, opt_method = "sgd", use_gpu = True, device = 'cuda:0')
 		trainer.run()
 		parameters = transe.get_parameters()
 		transe.save_parameters("../../checkpoint/transr_transe.json")
-
-		# dataloader for test
-		test_dataloader = TestDataLoader("../../benchmarks/FB15K237/")
-
+		
 		# test the transr
-		tester = Tester(model = transr, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
-
+		tester = Tester(model = transr, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
+		
 		# train transr
 		transr.set_parameters(parameters)
-		trainer = Trainer(model = model_r, data_loader = train_dataloader,
-			epochs = 1000, lr = 1.0, use_gpu = True, device = 'cuda:1',
+		trainer = Trainer(model = model_r, data_loader = dataloader.train_dataloader(),
+			epochs = 1000, lr = 1.0, opt_method = "sgd", use_gpu = True, device = 'cuda:0',
 			tester = tester, test = True, valid_interval = 100,
 			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transr.pth')
 		trainer.run()
+		
+		# test the model
+		transr.load_checkpoint('../../checkpoint/transr.pth')
+		tester.set_sampling_mode("link_test")
+		tester.run_link_prediction()
 	"""
 
 	def __init__(
@@ -329,7 +331,7 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	
 	``TransR`` :cite:`TransR` 进行超参数优化的时候，需要先训练一个 ``TransE`` :cite:`TransE` 模型（训练 1 epoch）。
 	然后 ``TransR`` :cite:`TransR` 的实体和关系的嵌入向量初始化为 TransE 的结果。
-	``margin_e``、``lr_e`` 和 ``opt_method_e`` 是 ``TransE`` :cite:`TransE` 的训练超参数。
+	**margin_e** 、 **lr_e** 和 **opt_method_e** 是 ``TransE`` :cite:`TransE` 的训练超参数。
 	如果想获得更详细的信息请访问 :ref:`TransR <transr>`。
 	
 	默认配置为::
@@ -339,7 +341,7 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'value': 'TransR'
 			},
 			'dim': {
-				'values': [50, 100, 200]
+				'values': [50, 100]
 			},
 			'p_norm': {
 				'values': [1, 2]
@@ -355,7 +357,7 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			},
 			'lr_e': {
 				'distribution': 'uniform',
-				'min': 0,
+				'min': 1e-5,
 				'max': 1.0
 			},
 			'opt_method_e': {
@@ -372,7 +374,7 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'value': 'TransR'
 		},
 		'dim': {
-			'values': [50, 100, 200]
+			'values': [50, 100]
 		},
 		'p_norm': {
 			'values': [1, 2]
@@ -388,7 +390,7 @@ def get_transr_hpo_config() -> dict[str, dict[str, typing.Any]]:
 		},
 		'lr_e': {
 			'distribution': 'uniform',
-			'min': 0,
+			'min': 1e-5,
 			'max': 1.0
 		},
 		'opt_method_e': {
