@@ -209,9 +209,9 @@ class KGEDataLoader:
 def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
     """返回 :py:class:`KGEDataLoader` 的默认超参数优化配置。
-	
-	默认配置为::
-	
+    
+    默认配置为::
+
         parameters_dict = {
             'dataloader': {
                 'value': 'KGEDataLoader'
@@ -253,10 +253,10 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'value': 'TradTestSampler'
             }
         }
-
-	:returns: :py:class:`KGEDataLoader` 的默认超参数优化配置
-	:rtype: dict[str, dict[str, typing.Any]]
-	"""
+        
+    :returns: :py:class:`KGEDataLoader` 的默认超参数优化配置
+    :rtype: dict[str, dict[str, typing.Any]]
+    """
     
     parameters_dict = {
         'dataloader': {

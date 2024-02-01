@@ -116,7 +116,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		# dataloader for training
 		dataloader_class = import_class(f"pybind11_ke.data.{config.dataloader}")
 		dataloader = dataloader_class(
-		    in_path = config.in_path,
+			in_path = config.in_path,
 			ent_file = config.ent_file,
 			rel_file = config.rel_file,
 			train_file = config.train_file,
@@ -139,7 +139,8 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			    rel_tol = dataloader.get_rel_tol(),
 			    dim = config.dim,
 			    p_norm = config.p_norm,
-			    norm_flag = config.norm_flag)
+			    norm_flag = config.norm_flag
+			)
 		elif config.model == "TransR":
 			transe = TransE(
 				ent_tol = dataloader.get_ent_tol(),
@@ -215,7 +216,8 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		if config.loss == 'MarginLoss':
 			loss = loss_class(
 				adv_temperature = config.adv_temperature,
-				margin = config.margin)
+				margin = config.margin
+			)
 		elif config.loss in ['SigmoidLoss', 'SoftplusLoss']:
 			loss = loss_class(adv_temperature = config.adv_temperature)
 		elif config.loss == 'RGCNLoss':
@@ -277,5 +279,6 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			metric = config.metric,
 			patience = config.patience,
 			delta = config.delta,
-			use_wandb = True)
+			use_wandb = True
+		)
 		trainer.run()

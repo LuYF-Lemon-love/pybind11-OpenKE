@@ -64,7 +64,7 @@ class TradSampler(KGReader):
         self,
         pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[str, torch.Tensor]]:
         
-        """平移模型和语义匹配模型的训练集普通的数据采样函数。
+        """平移模型和语义匹配模型的训练集数据采样函数。该方法未实现，子类必须重写该方法，否则抛出 :py:class`NotImplementedError` 错误。
         
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]

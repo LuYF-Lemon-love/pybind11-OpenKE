@@ -87,7 +87,7 @@ class BernSampler(TradSampler):
         self,
         pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[str, torch.Tensor]]:
 
-        """平移模型和语义匹配模型的训练集 bern 的数据采样函数。
+        """平移模型和语义匹配模型的训练集 bern 的数据采样函数（伯努利分布）。
         
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]

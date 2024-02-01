@@ -27,7 +27,7 @@ from pybind11_ke.config import set_hpo_config, start_hpo_train
 
 ######################################################################
 # :py:func:`pybind11_ke.data.get_kge_data_loader_hpo_config` 将返回
-# :py:class:`pybind11_ke.data.TrainDataLoader` 的默认超参数优化范围，
+# :py:class:`pybind11_ke.data.KGEDataLoader` 的默认超参数优化范围，
 # 你可以修改数据目录等信息。
 
 data_loader_config = get_kge_data_loader_hpo_config()
