@@ -39,9 +39,9 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 **易用的**
 
-- （1.0.0 版本）利用 C++ 重写底层数据处理、C++11 的线程库实现并行、 `pybind11 <https://github.com/pybind/pybind11>`__ 实现 Python 和 C++ 的交互，进而能够做到跨平台 (Windows, Linux)。
+- **1.0.0 版本**: 利用 C++ 重写底层数据处理、C++11 的线程库实现并行、 `pybind11 <https://github.com/pybind/pybind11>`__ 实现 Python 和 C++ 的交互，进而能够做到跨平台 (Windows, Linux)。
 
-- （2.0.0 版本）使用 Python 重写底层数据处理，进而能够做到跨平台 (Windows, Linux)。
+- **2.0.0 版本**: 使用 Python 重写底层数据处理，进而能够做到跨平台 (Windows, Linux)。
 
 - 使用 `Setuptools <https://setuptools.pypa.io/en/latest/>`__ 打包了 pybind11-OpenKE， 使得能够像其他第三方库一样使用。
 

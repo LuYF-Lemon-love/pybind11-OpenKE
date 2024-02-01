@@ -21,6 +21,28 @@ class NegativeSampling(Strategy):
 
 	"""
 	将模型和损失函数封装到一起，方便模型训练。
+
+	例子::
+
+		from pybind11_ke.module.model import TransE
+		from pybind11_ke.module.loss import MarginLoss
+		from pybind11_ke.module.strategy import NegativeSampling
+		
+		# define the model
+		transe = TransE(
+			ent_tol = dataloader.train_sampler.ent_tol,
+			rel_tol = dataloader.train_sampler.rel_tol,
+			dim = 50, 
+			p_norm = 1, 
+			norm_flag = True
+		)
+		
+		# define the loss function
+		model = NegativeSampling(
+			model = transe, 
+			loss = MarginLoss(margin = 1.0),
+			regul_rate = 0.01
+		)
 	"""
 
 	def __init__(

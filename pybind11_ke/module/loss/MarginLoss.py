@@ -27,14 +27,24 @@ class MarginLoss(Loss):
 
 	例子::
 
+		from pybind11_ke.module.model import TransE
 		from pybind11_ke.module.loss import MarginLoss
 		from pybind11_ke.module.strategy import NegativeSampling
+		
+		# define the model
+		transe = TransE(
+			ent_tol = dataloader.train_sampler.ent_tol,
+			rel_tol = dataloader.train_sampler.rel_tol,
+			dim = 50, 
+			p_norm = 1, 
+			norm_flag = True
+		)
 		
 		# define the loss function
 		model = NegativeSampling(
 			model = transe, 
 			loss = MarginLoss(margin = 1.0),
-			batch_size = train_dataloader.get_batch_size()
+			regul_rate = 0.01
 		)
 	"""
 
@@ -100,24 +110,6 @@ class MarginLoss(Loss):
 						 -self.margin)).sum(dim = -1).mean() + self.margin
 		else:
 			return (torch.max(p_score - n_score, -self.margin)).mean() + self.margin
-			
-	def predict(
-		self,
-		p_score: torch.Tensor,
-		n_score: torch.Tensor) ->np.ndarray:
-		
-		"""MarginLoss 的推理方法。
-		
-		:param p_score: 正样本评分函数的得分。
-		:type p_score: torch.Tensor
-		:param n_score: 负样本评分函数的得分。
-		:type n_score: torch.Tensor
-		:returns: 损失值
-		:rtype: numpy.ndarray
-		"""
-
-		score = self.forward(p_score, n_score)
-		return score.cpu().data.numpy()
 
 def get_margin_loss_hpo_config() -> dict[str, dict[str, Any]]:
 

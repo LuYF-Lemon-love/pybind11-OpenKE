@@ -55,7 +55,8 @@ transe = TransE(
 	rel_tol = dataloader.train_sampler.rel_tol,
 	dim = 50, 
 	p_norm = 1, 
-	norm_flag = True)
+	norm_flag = True
+)
 
 ######################################################################
 # --------------

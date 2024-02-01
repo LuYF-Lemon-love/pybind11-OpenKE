@@ -34,15 +34,28 @@ class TransE(Model):
 
 	例子::
 
-		from pybind11_ke.config import Trainer, Tester
+		from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 		from pybind11_ke.module.model import TransE
 		from pybind11_ke.module.loss import MarginLoss
 		from pybind11_ke.module.strategy import NegativeSampling
+		from pybind11_ke.config import Trainer, Tester
+		
+		# dataloader for training
+		dataloader = KGEDataLoader(
+			in_path = "../../benchmarks/FB15K/", 
+			batch_size = 8192,
+			neg_ent = 25,
+			test = True,
+			test_batch_size = 256,
+			num_workers = 16,
+			train_sampler = BernSampler,
+			test_sampler = TradTestSampler
+		)
 		
 		# define the model
 		transe = TransE(
-			ent_tol = train_dataloader.get_ent_tol(),
-			rel_tol = train_dataloader.get_rel_tol(),
+			ent_tol = dataloader.train_sampler.ent_tol,
+			rel_tol = dataloader.train_sampler.rel_tol,
 			dim = 50, 
 			p_norm = 1, 
 			norm_flag = True)
@@ -51,17 +64,18 @@ class TransE(Model):
 		model = NegativeSampling(
 			model = transe, 
 			loss = MarginLoss(margin = 1.0),
-			batch_size = train_dataloader.get_batch_size()
+			regul_rate = 0.01
 		)
 			
 		# test the model
-		tester = Tester(model = transe, data_loader = test_dataloader, use_gpu = True, device = 'cuda:1')
+		tester = Tester(model = transe, data_loader = dataloader, use_gpu = True, device = 'cuda:1')
 		
 		# train the model
-		trainer = Trainer(model = model, data_loader = train_dataloader,
+		trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 			epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
 			tester = tester, test = True, valid_interval = 100,
-			log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transe.pth')
+			log_interval = 100, save_interval = 100,
+			save_path = '../../checkpoint/transe.pth', delta = 0.01)
 		trainer.run()
 	"""
 

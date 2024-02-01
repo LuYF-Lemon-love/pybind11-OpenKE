@@ -74,33 +74,7 @@ class TradSampler(KGReader):
         
         raise NotImplementedError
 
-    def head_batch(
-        self,
-        t: int,
-        r: int,
-        neg_size: int= None) -> np.ndarray:
-
-        """替换头实体构建负三元组。
-
-        :param t: 尾实体
-        :type t: int
-        :param r: 关系
-        :type r: int
-        :param neg_size: 负三元组个数
-        :type neg_size: int
-        :returns: 负三元组中的头实体列表
-        :rtype: numpy.ndarray
-        """
-        
-        neg_list = []
-        neg_cur_size = 0
-        while neg_cur_size < neg_size:
-            neg_tmp = self.__corrupt_head(t, r, num_max=(neg_size - neg_cur_size) * 2)
-            neg_list.append(neg_tmp)
-            neg_cur_size += len(neg_tmp)
-        return np.concatenate(neg_list)[:neg_size]
-
-    def __corrupt_head(
+    def corrupt_head(
         self,
         t: int,
         r: int,
@@ -122,34 +96,8 @@ class TradSampler(KGReader):
         mask = np.in1d(tmp, self.rt2h_train[(r, t)], assume_unique=True, invert=True)
         neg = tmp[mask]
         return neg
-
-    def tail_batch(
-        self,
-        h: int,
-        r: int,
-        neg_size: int = None) -> np.ndarray:
         
-        """替换尾实体构建负三元组。
-
-        :param h: 头实体
-        :type h: int
-        :param r: 关系
-        :type r: int
-        :param neg_size: 负三元组个数
-        :type neg_size: int
-        :returns: 负三元组中的尾实体列表
-        :rtype: numpy.ndarray
-        """
-        
-        neg_list = []
-        neg_cur_size = 0
-        while neg_cur_size < neg_size:
-            neg_tmp = self.__corrupt_tail(h, r, num_max=(neg_size - neg_cur_size) * 2)
-            neg_list.append(neg_tmp)
-            neg_cur_size += len(neg_tmp)
-        return np.concatenate(neg_list)[:neg_size]
-        
-    def __corrupt_tail(
+    def corrupt_tail(
         self,
         h: int,
         r: int,

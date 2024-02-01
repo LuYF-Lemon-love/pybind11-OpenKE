@@ -143,7 +143,7 @@ class BernSampler(TradSampler):
         neg_list_h = []
         neg_cur_size = 0
         while neg_cur_size < neg_size_h:
-            neg_tmp_h = self.__corrupt_head(t, r, num_max=(neg_size_h - neg_cur_size) * 2)
+            neg_tmp_h = self.corrupt_head(t, r, num_max=(neg_size_h - neg_cur_size) * 2)
             neg_list_h.append(neg_tmp_h)
             neg_cur_size += len(neg_tmp_h)
         if neg_list_h != []:
@@ -155,7 +155,7 @@ class BernSampler(TradSampler):
         neg_list_t = []
         neg_cur_size = 0
         while neg_cur_size < neg_size_t:
-            neg_tmp_t = self.__corrupt_tail(h, r, num_max=(neg_size_t - neg_cur_size) * 2)
+            neg_tmp_t = self.corrupt_tail(h, r, num_max=(neg_size_t - neg_cur_size) * 2)
             neg_list_t.append(neg_tmp_t)
             neg_cur_size += len(neg_tmp_t)
         if neg_list_t != []:
