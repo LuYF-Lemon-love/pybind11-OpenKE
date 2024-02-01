@@ -35,7 +35,10 @@ print()
 data_loader_config.update({
     'in_path': {
         'value': '../../benchmarks/FB15K237/'
-    }
+    },
+    'test_batch_size': {
+        'value': 5
+    },
 })
 
 ######################################################################
