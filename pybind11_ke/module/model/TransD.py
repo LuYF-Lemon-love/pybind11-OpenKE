@@ -307,7 +307,7 @@ class TransD(Model):
 				paddings = [0, size - osize] + paddings
 			else:
 				paddings = [0, 0] + paddings
-		return F.pad(tensor, paddings = paddings, mode = "constant", value = 0)
+		return F.pad(tensor, paddings, mode = "constant", value = 0)
 
 	def _calc(
 		self,
