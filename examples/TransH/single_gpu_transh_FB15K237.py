@@ -14,7 +14,7 @@ TransH-FB15K237-single-gpu
 pybind11-OpenKE 有 1 个工具用于导入数据: :py:class:`pybind11_ke.data.KGEDataLoader`。
 """
 
-from pybind11_ke.data import KGEDataLoader, UniSampler, TradTestSampler
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransH
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
@@ -27,12 +27,12 @@ from pybind11_ke.config import Trainer, Tester
 # dataloader for training
 dataloader = KGEDataLoader(
 	in_path = "../../benchmarks/FB15K237/",
-	batch_size = 8192,
+	batch_size = 4096,
 	neg_ent = 25,
 	test = True,
-	test_batch_size = 256, 
+	test_batch_size = 30, 
 	num_workers = 16,
-	train_sampler = UniSampler,
+	train_sampler = BernSampler,
 	test_sampler = TradTestSampler
 )
 
