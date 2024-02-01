@@ -221,16 +221,16 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'values': [512, 1024, 2048, 4096]
             },
             'neg_ent': {
-                'values': [1, 4, 8, 16]
+                'values': [1, 4, 16, 64]
             },
             'test_batch_size': {
-                'value': 100
+                'value': 30
             },
             'num_workers': {
                 'value': 16
             },
             'train_sampler': {
-                'value': 'UniSampler'
+                'value': 'BernSampler'
             },
             'test_sampler': {
                 'value': 'TradTestSampler'
@@ -267,16 +267,16 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'values': [512, 1024, 2048, 4096]
         },
         'neg_ent': {
-            'values': [1, 4, 8, 16]
+            'values': [1, 4, 16, 64]
         },
         'test_batch_size': {
-            'value': 100
+            'value': 30
         },
         'num_workers': {
             'value': 16
         },
         'train_sampler': {
-            'value': 'UniSampler'
+            'value': 'BernSampler'
         },
         'test_sampler': {
             'value': 'TradTestSampler'

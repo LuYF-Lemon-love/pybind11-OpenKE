@@ -248,7 +248,7 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
         parameters_dict = {
             'tester': {
-                'value': 'GraphTester'
+                'value': 'Tester'
             },
             'prediction': {
                 'value': 'all'

@@ -13,7 +13,6 @@ hpo_train - 超参数优化训练循环函数。
 
 import wandb
 import typing
-from ..data import TestDataLoader
 from ..utils import import_class
 from ..module.model import TransE
 from ..module.loss import MarginLoss
@@ -25,12 +24,10 @@ def set_hpo_config(
 	sweep_name: str = 'pybind11_ke_hpo',
 	metric_name: str = 'val/hit10',
 	metric_goal: str = 'maximize',
-	graph_data_loader_config: dict[str, dict[str, typing.Any]] = {},
-	train_data_loader_config: dict[str, dict[str, typing.Any]] = {},
+	data_loader_config: dict[str, dict[str, typing.Any]] = {},
 	kge_config: dict[str, dict[str, typing.Any]] = {},
 	loss_config: dict[str, dict[str, typing.Any]] = {},
 	strategy_config: dict[str, dict[str, typing.Any]] = {},
-	test_data_loader_config: dict[str, dict[str, typing.Any]] = {},
 	tester_config: dict[str, dict[str, typing.Any]] = {},
 	trainer_config: dict[str, dict[str, typing.Any]] = {}) -> dict[str, dict[str, typing.Any]]:
 
@@ -44,18 +41,14 @@ def set_hpo_config(
 	:type metric_name: str
 	:param metric_goal: 超参数优化的指标目标，``maximize`` 或 ``minimize``
 	:type metric_goal: str
-	:param graph_data_loader_config: :py:class:`pybind11_ke.data.GraphDataLoader` 的超参数优化配置
-	:type graph_data_loader_config: dict
-	:param train_data_loader_config: :py:class:`pybind11_ke.data.TrainDataLoader` 的超参数优化配置
-	:type train_data_loader_config: dict
+	:param data_loader_config: :py:class:`pybind11_ke.data.KGEDataLoader` 的超参数优化配置
+	:type data_loader_config: dict
 	:param kge_config: :py:class:`pybind11_ke.module.model.Model` 的超参数优化配置
 	:type kge_config: dict
 	:param loss_config: :py:class:`pybind11_ke.module.loss.Loss` 的超参数优化配置
 	:type loss_config: dict
 	:param strategy_config: :py:class:`pybind11_ke.module.strategy.Strategy` 的超参数优化配置
 	:type strategy_config: dict
-	:param test_data_loader_config: :py:class:`pybind11_ke.data.TestDataLoader` 的超参数优化配置
-	:type test_data_loader_config: dict
 	:param tester_config: :py:class:`pybind11_ke.config.Tester` 的超参数优化配置
 	:type tester_config: dict
 	:param trainer_config: :py:class:`pybind11_ke.config.Trainer` 的超参数优化配置
@@ -75,12 +68,10 @@ def set_hpo_config(
 	}
 
 	parameters_dict: dict[str, dict[str, typing.Any]] | None = {}
-	parameters_dict.update(graph_data_loader_config)
-	parameters_dict.update(train_data_loader_config)
+	parameters_dict.update(data_loader_config)
 	parameters_dict.update(kge_config)
 	parameters_dict.update(loss_config)
 	parameters_dict.update(strategy_config)
-	parameters_dict.update(test_data_loader_config)
 	parameters_dict.update(tester_config)
 	parameters_dict.update(trainer_config)
 
@@ -124,56 +115,42 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 
 		# dataloader for training
 		dataloader_class = import_class(f"pybind11_ke.data.{config.dataloader}")
-		if config.dataloader == 'TrainDataLoader':
-			train_dataloader = dataloader_class(
-			    in_path = config.in_path,
-				ent_file = config.ent_file,
-				rel_file = config.rel_file,
-				train_file = config.train_file,
-				batch_size = config.batch_size,
-				threads = config.threads,
-				sampling_mode = config.sampling_mode,
-				bern = config.bern,
-				neg_ent = config.neg_ent,
-				neg_rel = config.neg_rel
-			)
-		elif config.dataloader == 'GraphDataLoader':
-			dataloader = dataloader_class(
-			    in_path = config.in_path,
-				ent_file = config.ent_file,
-				rel_file = config.rel_file,
-				train_file = config.train_file,
-				valid_file = config.valid_file,
-				test_file = config.test_file,
-				batch_size = config.batch_size,
-				neg_ent = config.neg_ent,
-				test = True,
-				test_batch_size = config.test_batch_size,
-				num_workers = config.num_workers,
-				train_sampler = import_class(f"pybind11_ke.data.{config.train_sampler}"),
-				test_sampler = import_class(f"pybind11_ke.data.{config.test_sampler}")
-			)
+		dataloader = dataloader_class(
+		    in_path = config.in_path,
+			ent_file = config.ent_file,
+			rel_file = config.rel_file,
+			train_file = config.train_file,
+			valid_file = config.valid_file,
+			test_file = config.test_file,
+			batch_size = config.batch_size,
+			neg_ent = config.neg_ent,
+			test = True,
+			test_batch_size = config.test_batch_size,
+			num_workers = config.num_workers,
+			train_sampler = import_class(f"pybind11_ke.data.{config.train_sampler}"),
+			test_sampler = import_class(f"pybind11_ke.data.{config.test_sampler}")
+		)
 
 		# define the model
 		model_class = import_class(f"pybind11_ke.module.model.{config.model}")
 		if config.model in ["TransE", "TransH"]:
 			kge_model = model_class(
-			    ent_tol = train_dataloader.get_ent_tol(),
-			    rel_tol = train_dataloader.get_rel_tol(),
+			    ent_tol = dataloader.get_ent_tol(),
+			    rel_tol = dataloader.get_rel_tol(),
 			    dim = config.dim,
 			    p_norm = config.p_norm,
 			    norm_flag = config.norm_flag)
 		elif config.model == "TransR":
 			transe = TransE(
-				ent_tol = train_dataloader.get_ent_tol(),
-				rel_tol = train_dataloader.get_rel_tol(),
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
 				dim = config.dim,
 				p_norm = config.p_norm,
 				norm_flag = config.norm_flag
 			)
 			kge_model = model_class(
-				ent_tol = train_dataloader.get_ent_tol(),
-				rel_tol = train_dataloader.get_rel_tol(),
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
 				dim_e = config.dim,
 				dim_r = config.dim,
 				p_norm = config.p_norm,
@@ -181,12 +158,11 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				rand_init = config.rand_init)
 			model_e = NegativeSampling(
 				model = transe,
-				loss = MarginLoss(margin = config.margin_e),
-				batch_size = train_dataloader.get_batch_size()
+				loss = MarginLoss(margin = config.margin_e)
 			)
 			trainer_e = Trainer(
 				model = model_e,
-				data_loader = train_dataloader,
+				data_loader = dataloader.train_dataloader(),
 				epochs = 1,
 				lr = config.lr_e,
 				opt_method = config.opt_method_e,
@@ -199,34 +175,34 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			kge_model.set_parameters(parameters)
 		elif config.model == "TransD":
 			kge_model = model_class(
-				ent_tol = train_dataloader.get_ent_tol(),
-				rel_tol = train_dataloader.get_rel_tol(),
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
 				dim_e = config.dim_e,
 				dim_r = config.dim_r,
 				p_norm = config.p_norm,
 				norm_flag = config.norm_flag)
 		elif config.model == "RotatE":
 			kge_model = model_class(
-				ent_tol = train_dataloader.get_ent_tol(),
-				rel_tol = train_dataloader.get_rel_tol(),
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
 				dim = config.dim,
 				margin = config.margin,
 				epsilon = config.epsilon)
 		elif config.model in ["RESCAL", "DistMult", "HolE", "ComplEx", "Analogy", "SimplE"]:
 			kge_model = model_class(
-			    ent_tol = train_dataloader.get_ent_tol(),
-			    rel_tol = train_dataloader.get_rel_tol(),
+			    ent_tol = dataloader.get_ent_tol(),
+			    rel_tol = dataloader.get_rel_tol(),
 			    dim = config.dim)
 		elif config.model == "RGCN":
 			kge_model = model_class(
-				ent_tol = dataloader.train_sampler.ent_tol,
-				rel_tol = dataloader.train_sampler.rel_tol,
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
 				dim = config.dim,
 				num_layers = config.num_layers)
 		elif config.model == "CompGCN":
 			kge_model = model_class(
-				ent_tol = dataloader.train_sampler.ent_tol,
-				rel_tol = dataloader.train_sampler.rel_tol,
+				ent_tol = dataloader.get_ent_tol(),
+				rel_tol = dataloader.get_rel_tol(),
 				dim = config.dim,
 				opn = config.opn,
 				fet_drop = config.fet_drop,
@@ -256,7 +232,6 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			model = strategy_class(
 				model = kge_model,
 				loss = loss,
-				batch_size = train_dataloader.get_batch_size(),
 				regul_rate = config.regul_rate,
 				l3_regul_rate = config.l3_regul_rate
 			)
@@ -273,41 +248,21 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				ent_tol = dataloader.train_sampler.ent_tol
 			)
 
-		# dataloader for test
-		if config.dataloader != 'GraphDataLoader':
-			test_dataloader = TestDataLoader(
-				in_path = train_dataloader.in_path,
-				ent_file = train_dataloader.ent_file,
-				rel_file = train_dataloader.rel_file,
-				train_file = train_dataloader.train_file,
-				valid_file = config.valid_file,
-				test_file = config.test_file,
-				type_constrain = config.type_constrain
-			)
-
 		# test the model
 		tester_class = import_class(f"pybind11_ke.config.{config.tester}")
-		if config.tester == 'Tester':
-			tester = tester_class(
-				model = kge_model,
-				data_loader = test_dataloader,
-				use_gpu = config.use_gpu,
-				device = config.device
-			)
-		elif config.tester == 'GraphTester':
-			tester = tester_class(
-				model = kge_model,
-				data_loader = dataloader,
-				prediction = config.prediction,
-				use_gpu = config.use_gpu,
-				device = config.device
-			)
+		tester = tester_class(
+			model = kge_model,
+			data_loader = dataloader,
+			prediction = config.prediction,
+			use_gpu = config.use_gpu,
+			device = config.device
+		)
 
 		# # train the model
 		trainer_class = import_class(f"pybind11_ke.config.{config.trainer}")
 		trainer = trainer_class(
 			model = model,
-			data_loader = train_dataloader if config.trainer == 'Trainer' else dataloader.train_dataloader(),
+			data_loader = dataloader.train_dataloader(),
 			epochs = config.epochs,
 			lr = config.lr,
 			opt_method = config.opt_method,

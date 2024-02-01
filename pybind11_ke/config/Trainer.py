@@ -360,7 +360,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			},
 			'lr': {
 				'distribution': 'uniform',
-				'min': 0,
+				'min': 1e-5,
 				'max': 1.0
 			},
 			'opt_method': {
@@ -402,7 +402,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 		},
 		'lr': {
 			'distribution': 'uniform',
-			'min': 0,
+			'min': 1e-5,
 			'max': 1.0
 		},
 		'opt_method': {
