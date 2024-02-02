@@ -125,12 +125,6 @@ print("trainer_config:")
 pprint.pprint(trainer_config)
 print()
 
-trainer_config.update({
-    'metric': {
-        'value': 'hits@100'
-    }
-})
-
 ######################################################################
 # --------------
 #
@@ -143,6 +137,7 @@ trainer_config.update({
 # set the hpo config
 sweep_config = set_hpo_config(
     sweep_name = "DistMult_WN18RR",
+    metric_name = "val/hits@10",
     data_loader_config = data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,
