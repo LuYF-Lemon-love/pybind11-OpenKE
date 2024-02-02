@@ -93,7 +93,7 @@ class Trainer(object):
 		save_interval: int | None = None,
 		save_path: str | None = None,
 		use_early_stopping: bool = True,
-		metric: str = 'hit10',
+		metric: str = 'hits@10',
 		patience: int = 2,
 		delta: float = 0,
 		use_wandb: bool = False,
@@ -129,7 +129,7 @@ class Trainer(object):
 		:type save_path: str
 		:param use_early_stopping: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 		:type use_early_stopping: bool
-		:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hit1', 'hit3', 'hit10'。默认值：'hit10'
+		:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hits@N'。默认值：'hits@10'
 		:type metric: str
 		:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 		:type patience: int
@@ -182,7 +182,7 @@ class Trainer(object):
 
 		#: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 		self.use_early_stopping: bool = use_early_stopping
-		#: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10'。默认值：'hit10'
+		#: 早停使用的验证指标，可选值：'mr', 'mrr', 'hits@N'。默认值：'hits@10'
 		self.metric: str = metric
 		#: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 		self.patience: int = patience
@@ -333,16 +333,12 @@ class Trainer(object):
 		elif sampling_mode == "link_valid":
 			mode = "val"
 
-		mr, mrr, hit1, hit3, hit10 = self.tester.run_link_prediction()
-		print(f"mr: {mr}, mrr: {mrr}, hits@1: {hit1}, hits@3: {hit3}, hits@10: {hit10}")
+		results = self.tester.run_link_prediction()
+		for key, value in results.items():
+			print(f"{key}: {value}", end=' ')
+		print()
 		if self.use_wandb:
-			log_dict = {
-				f"{mode}/mr" : mr,
-				f"{mode}/mrr" : mrr,
-				f"{mode}/hit1" : hit1,
-				f"{mode}/hit3" : hit3,
-				f"{mode}/hit10" : hit10,
-			}
+			log_dict = {f"{mode}/{key}" : value for key, value in results.items()}
 			if sampling_mode == "link_valid":
 				log_dict.update({
 					"val/epoch": epoch
@@ -351,15 +347,11 @@ class Trainer(object):
 				
 		if self.early_stopping is not None and sampling_mode == "link_valid":
 			if self.metric == 'mr':
-				self.early_stopping(-mr, self.get_model())
+				self.early_stopping(-results['mr'], self.get_model())
 			elif self.metric == 'mrr':
-				self.early_stopping(mrr, self.get_model())
-			elif self.metric == 'hit1':
-				self.early_stopping(hit1, self.get_model())
-			elif self.metric == 'hit3':
-				self.early_stopping(hit3, self.get_model())
-			elif self.metric == 'hit10':
-				self.early_stopping(hit10, self.get_model())
+				self.early_stopping(results['mrr'], self.get_model())
+			elif self.metric in results.keys():
+				self.early_stopping(results[self.metric], self.get_model())
 			else:
 				raise ValueError("Early stopping metric is not valid.")
 
@@ -425,7 +417,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 				'value': True
 			},
 			'metric': {
-				'value': 'hit10'
+				'value': 'hits@10'
 			},
 			'patience': {
 				'value': 2
@@ -467,7 +459,7 @@ def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'value': True
 		},
 		'metric': {
-			'value': 'hit10'
+			'value': 'hits@10'
 		},
 		'patience': {
 			'value': 2

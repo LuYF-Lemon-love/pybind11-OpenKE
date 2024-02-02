@@ -14,6 +14,7 @@ Tester - 验证模型类，内部使用 ``tqmn`` 实现进度条。
 import dgl
 import torch
 import typing
+import collections
 import numpy as np
 from tqdm import tqdm
 from ..module.model import Model
@@ -77,6 +78,8 @@ class Tester(object):
         data_loader: KGEDataLoader | None = None,
         sampling_mode: str = 'link_test',
         prediction: str = "all",
+        hits: list[int] = [1, 3, 10],
+        use_tqdm: bool = True,
         use_gpu: bool = True,
         device: str = "cuda:0"):
 
@@ -90,6 +93,10 @@ class Tester(object):
         :type sampling_mode: str
         :param prediction: 链接预测模式: 'all'、'head'、'tail'
         :type prediction: str
+        :param hits: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
+        :type hits: list[int]
+        :param use_tqdm: 是否启用进度条
+        :type use_tqdm: bool
         :param use_gpu: 是否使用 gpu
         :type use_gpu: bool
         :param device: 使用哪个 gpu
@@ -104,6 +111,10 @@ class Tester(object):
         self.sampling_mode: str = sampling_mode
         #: 链接预测模式: 'all'、'head'、'tail'
         self.prediction: str = prediction
+        #: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
+        self.hits: list[int] = hits
+        #: 是否启用进度条
+        self.use_tqdm: bool = use_tqdm
         #: 是否使用 gpu
         self.use_gpu: bool = use_gpu
         #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
@@ -133,27 +144,20 @@ class Tester(object):
         else:
             return x
 
-    def run_link_prediction(self) -> tuple[float, ...]:
+    def run_link_prediction(self) -> dict[str, float]:
         
         """进行链接预测。
 
         :returns: 经典指标分别为 MR，MRR，Hits@1，Hits@3，Hits@10
-        :rtype: tuple[float, ...]
+        :rtype: dict[str, float]
         """
 
         if self.sampling_mode == "link_valid":
-            training_range = tqdm(self.val_dataloader)
+            training_range = tqdm(self.val_dataloader) if self.use_tqdm else self.val_dataloader
         elif self.sampling_mode == "link_test":
-            training_range = tqdm(self.test_dataloader)
+            training_range = tqdm(self.test_dataloader) if self.use_tqdm else self.test_dataloader
         self.model.eval()
-        results = dict(
-            count = 0,
-            mr = 0.0,
-            mrr = 0.0,
-            hit1 = 0.0,
-            hit3 = 0.0,
-            hit10 = 0.0
-        )
+        results = collections.defaultdict(float)
         with torch.no_grad():
             for data in training_range:
                 data = {key : self.to_var(value) for key, value in data.items()}
@@ -161,17 +165,13 @@ class Tester(object):
                 results["count"] += torch.numel(ranks)
                 results["mr"] += torch.sum(ranks).item()
                 results["mrr"] += torch.sum(1.0 / ranks).item()
-                for k in [1, 3, 10]:
-                    results['hit{}'.format(k)] += torch.numel(ranks[ranks <= k])
+                for k in self.hits:
+                    results['hits@{}'.format(k)] += torch.numel(ranks[ranks <= k])
 
         count = results["count"]
-        mr = np.around(results["mr"] / count, decimals=3).item()
-        mrr = np.around(results["mrr"] / count, decimals=3).item()
-        hit1 = np.around(results["hit1"] / count, decimals=3).item()
-        hit3 = np.around(results["hit3"] / count, decimals=3).item()
-        hit10 = np.around(results["hit10"] / count, decimals=3).item()
+        results = {key : np.around(value / count, decimals=3).item() for key, value in results.items() if key != "count"}
         
-        return mr, mrr, hit1, hit3, hit10
+        return results
     
     def set_sampling_mode(self, sampling_mode: str):
         
@@ -298,6 +298,12 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'prediction': {
                 'value': 'all'
             },
+	    	'hits': {
+	    		'values': [1, 3, 10]
+	    	},
+            'use_tqdm': {
+                'value': False
+            },
             'use_gpu': {
                 'value': True
             },
@@ -316,6 +322,12 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
         },
         'prediction': {
             'value': 'all'
+        },
+		'hits': {
+			'values': [1, 3, 10]
+		},
+        'use_tqdm': {
+            'value': False
         },
         'use_gpu': {
             'value': True

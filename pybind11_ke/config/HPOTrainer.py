@@ -256,6 +256,8 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			model = kge_model,
 			data_loader = dataloader,
 			prediction = config.prediction,
+			hits = config.hits,
+			use_tqdm = config.use_tqdm,
 			use_gpu = config.use_gpu,
 			device = config.device
 		)
