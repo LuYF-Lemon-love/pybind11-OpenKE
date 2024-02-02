@@ -19,3 +19,7 @@
 因此提供了名为
 "`type constraint <https://www.dbs.ifi.lmu.de/~krompass/papers/TypeConstrainedRepresentationLearningInKnowledgeGraphs.pdf>`__"
 的实验性的设置用有限的实体集合（取决于相应的关系）损坏三元组。 **该指标仅仅在 1.0.0 版本进行报告。**
+
+.. Important::
+
+    在 **2.0.0** 版本能够自定义 Hits@N。
