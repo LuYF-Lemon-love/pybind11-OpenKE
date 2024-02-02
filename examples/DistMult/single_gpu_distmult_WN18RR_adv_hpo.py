@@ -101,6 +101,15 @@ print("tester_config:")
 pprint.pprint(tester_config)
 print()
 
+tester_config.update({
+    'hits': {
+        'values': [1, 3, 10, 30, 100, 200]
+    },
+    'device': {
+        'value': 'cuda:0'
+    }
+})
+
 ######################################################################
 # --------------
 #
@@ -117,6 +126,12 @@ print("trainer_config:")
 pprint.pprint(trainer_config)
 print()
 
+trainer_config.update({
+    'metric': {
+        'value': 'hits@100'
+    }
+})
+
 ######################################################################
 # --------------
 #
@@ -129,7 +144,7 @@ print()
 # set the hpo config
 sweep_config = set_hpo_config(
     sweep_name = "DistMult_WN18RR",
-    train_data_loader_config = data_loader_config,
+    data_loader_config = data_loader_config,
     kge_config = kge_config,
     loss_config = loss_config,
     strategy_config = strategy_config,

@@ -298,9 +298,9 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'prediction': {
                 'value': 'all'
             },
-	    	'hits': {
-	    		'values': [1, 3, 10]
-	    	},
+            'hits': {
+                'values': [1, 3, 10]
+            },
             'use_tqdm': {
                 'value': False
             },
@@ -323,9 +323,9 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
         'prediction': {
             'value': 'all'
         },
-		'hits': {
-			'values': [1, 3, 10]
-		},
+        'hits': {
+            'values': [1, 3, 10]
+        },
         'use_tqdm': {
             'value': False
         },
