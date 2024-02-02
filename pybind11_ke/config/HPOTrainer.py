@@ -17,7 +17,7 @@ from ..utils import import_class
 from ..module.model import TransE
 from ..module.loss import MarginLoss
 from ..module.strategy import NegativeSampling
-from ..config import Trainer
+from ..config import Trainer, Tester
 
 def set_hpo_config(
 	method: str = 'bayes',
@@ -79,6 +79,19 @@ def set_hpo_config(
 	sweep_config['parameters'] = parameters_dict
 
 	return sweep_config
+
+def set_hpo_hits(
+    new_hits: list[int] = [1, 3, 10]):
+	
+	"""设置 Hits 指标。
+	
+	:param new_hits: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
+	:type new_hits: list[int]
+    """
+	
+	tmp = Tester.hits
+	Tester.hits = new_hits
+	print(f"Hits@N 指标由 {tmp} 变为 {Tester.hits}")
 
 def start_hpo_train(
 	config: dict[str, dict[str, typing.Any]] | None = None,
@@ -256,7 +269,6 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			model = kge_model,
 			data_loader = dataloader,
 			prediction = config.prediction,
-			hits = config.hits,
 			use_tqdm = config.use_tqdm,
 			use_gpu = config.use_gpu,
 			device = config.device

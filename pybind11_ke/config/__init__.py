@@ -17,7 +17,7 @@ from .Trainer import Trainer, get_trainer_hpo_config
 from .Tester import Tester, get_tester_hpo_config, link_predict, head_predict, tail_predict, calc_ranks
 
 # from .TrainerDataParallel import trainer_distributed_data_parallel
-from .HPOTrainer import set_hpo_config, start_hpo_train, hpo_train
+from .HPOTrainer import set_hpo_config, set_hpo_hits,start_hpo_train, hpo_train
 
 __all__ = [
 	'Trainer',
@@ -30,6 +30,7 @@ __all__ = [
 	'calc_ranks',
 	# 'trainer_distributed_data_parallel',
 	'set_hpo_config',
+	'set_hpo_hits',
 	'start_hpo_train',
 	'hpo_train'
 ]

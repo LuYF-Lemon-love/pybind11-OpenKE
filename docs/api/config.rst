@@ -71,5 +71,6 @@ pybind11_ke.config
     :template: functiontemplate.rst
 
     set_hpo_config
+    set_hpo_hits
     start_hpo_train
     hpo_train

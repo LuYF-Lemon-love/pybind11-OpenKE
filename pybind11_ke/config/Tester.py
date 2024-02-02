@@ -72,13 +72,15 @@ class Tester(object):
         trainer.run()
     """
 
+    #: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
+    hits: list[int] = [1, 3, 10]
+
     def __init__(
         self,
         model: typing.Union[Model, None] = None,
         data_loader: KGEDataLoader | None = None,
         sampling_mode: str = 'link_test',
         prediction: str = "all",
-        hits: list[int] = [1, 3, 10],
         use_tqdm: bool = True,
         use_gpu: bool = True,
         device: str = "cuda:0"):
@@ -93,8 +95,6 @@ class Tester(object):
         :type sampling_mode: str
         :param prediction: 链接预测模式: 'all'、'head'、'tail'
         :type prediction: str
-        :param hits: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
-        :type hits: list[int]
         :param use_tqdm: 是否启用进度条
         :type use_tqdm: bool
         :param use_gpu: 是否使用 gpu
@@ -111,8 +111,6 @@ class Tester(object):
         self.sampling_mode: str = sampling_mode
         #: 链接预测模式: 'all'、'head'、'tail'
         self.prediction: str = prediction
-        #: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
-        self.hits: list[int] = hits
         #: 是否启用进度条
         self.use_tqdm: bool = use_tqdm
         #: 是否使用 gpu
@@ -126,6 +124,21 @@ class Tester(object):
         
         if self.use_gpu:
             self.model.cuda(device = self.device)
+
+    def set_hits(
+        self,
+        new_hits: list[int] = [1, 3, 10]):
+
+        """定义 Hits 指标。
+        
+        :param new_hits: 准备报告的指标 Hit@N 的列表，默认为 [1, 3, 10], 表示报告 Hits@1, Hits@3, Hits@10
+        :type new_hits: list[int]
+        """
+
+        tmp = self.hits
+        self.hits = new_hits
+
+        print(f"Hits@N 指标由 {tmp} 变为 {self.hits}")
 
     def to_var(
         self,
@@ -298,9 +311,6 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'prediction': {
                 'value': 'all'
             },
-            'hits': {
-                'values': [1, 3, 10]
-            },
             'use_tqdm': {
                 'value': False
             },
@@ -322,9 +332,6 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
         },
         'prediction': {
             'value': 'all'
-        },
-        'hits': {
-            'values': [1, 3, 10]
         },
         'use_tqdm': {
             'value': False
