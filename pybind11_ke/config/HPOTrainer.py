@@ -22,7 +22,7 @@ from ..config import Trainer, Tester
 def set_hpo_config(
 	method: str = 'bayes',
 	sweep_name: str = 'pybind11_ke_hpo',
-	metric_name: str = 'val/hit10',
+	metric_name: str = 'val/hits@10',
 	metric_goal: str = 'maximize',
 	data_loader_config: dict[str, dict[str, typing.Any]] = {},
 	kge_config: dict[str, dict[str, typing.Any]] = {},
