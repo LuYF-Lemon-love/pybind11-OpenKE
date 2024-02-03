@@ -87,12 +87,12 @@ model = NegativeSampling(
 # 使得训练器能够在训练过程中评估模型。
 
 # test the model
-tester = Tester(model = transh, data_loader = dataloader, use_tqdm = False, use_gpu = True, device = 'cuda:1')
+tester = Tester(model = transh, data_loader = dataloader, use_tqdm = False, use_gpu = True, device = 'cuda:0')
 tester.set_hits([1, 3, 10, 30, 100, 200])
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
-	epochs = 1000, lr = 0.5, use_gpu = True, device = 'cuda:1',
+	epochs = 1000, lr = 0.5, use_gpu = True, device = 'cuda:0',
 	tester = tester, test = True, valid_interval = 100,
 	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transh.pth',
 	delta = 0.01)

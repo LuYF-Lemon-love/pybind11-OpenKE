@@ -346,10 +346,8 @@ class Trainer(object):
 			wandb.log(log_dict)
 				
 		if self.early_stopping is not None and sampling_mode == "link_valid":
-			if self.metric == 'mr':
-				self.early_stopping(-results['mr'], self.get_model())
-			elif self.metric == 'mrr':
-				self.early_stopping(results['mrr'], self.get_model())
+			if self.metric in ['mr', 'mr_type']:
+				self.early_stopping(-results[self.metric], self.get_model())
 			elif self.metric in results.keys():
 				self.early_stopping(results[self.metric], self.get_model())
 			else:

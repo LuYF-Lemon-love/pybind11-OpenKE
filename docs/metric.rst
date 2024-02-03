@@ -18,7 +18,7 @@
 对于大型知识图谱，用整个实体集合损坏三元组是极其耗时的。
 因此提供了名为
 "`type constraint <https://www.dbs.ifi.lmu.de/~krompass/papers/TypeConstrainedRepresentationLearningInKnowledgeGraphs.pdf>`__"
-的实验性的设置用有限的实体集合（取决于相应的关系）损坏三元组。 **该指标仅仅在 1.0.0 版本进行报告。**
+的实验性的设置用有限的实体集合（取决于相应的关系）损坏三元组。
 
 .. Important::
 

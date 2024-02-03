@@ -171,10 +171,19 @@ class Tester(object):
             training_range = tqdm(self.test_dataloader) if self.use_tqdm else self.test_dataloader
         self.model.eval()
         results = collections.defaultdict(float)
+        results_type = collections.defaultdict(float)
         with torch.no_grad():
             for data in training_range:
                 data = {key : self.to_var(value) for key, value in data.items()}
-                ranks = link_predict(data, self.model, prediction=self.prediction)
+                if "head_label_type" in data.keys():
+                    ranks, ranks_type = link_predict(data, self.model, prediction=self.prediction)
+                    results_type["count_type"] += torch.numel(ranks_type)
+                    results_type["mr_type"] += torch.sum(ranks_type).item()
+                    results_type["mrr_type"] += torch.sum(1.0 / ranks_type).item()
+                    for k in self.hits:
+                        results_type['hits@{}_type'.format(k)] += torch.numel(ranks_type[ranks_type <= k])
+                else:
+                    ranks = link_predict(data, self.model, prediction=self.prediction)
                 results["count"] += torch.numel(ranks)
                 results["mr"] += torch.sum(ranks).item()
                 results["mrr"] += torch.sum(1.0 / ranks).item()
@@ -183,7 +192,11 @@ class Tester(object):
 
         count = results["count"]
         results = {key : np.around(value / count, decimals=3).item() for key, value in results.items() if key != "count"}
-        
+        if "count_type" in results_type.keys():
+            count_type = results_type["count_type"]
+            results_type = {key : np.around(value / count_type, decimals=3).item() for key, value in results_type.items() if key != "count_type"}
+            for key, value in results_type.items():
+                results[key] = value
         return results
     
     def set_sampling_mode(self, sampling_mode: str):
@@ -199,7 +212,7 @@ class Tester(object):
 def link_predict(
     batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
     model: Model,
-    prediction: str = "all") -> torch.Tensor:
+    prediction: str = "all") -> tuple[torch.Tensor, ...]:
 
     """
     进行链接预测。
@@ -211,23 +224,34 @@ def link_predict(
     :param prediction: "all", "head", "tail"
     :type prediction: str
     :returns: 正确三元组的排名
-    :rtype: torch.Tensor
+    :rtype: tuple[torch.Tensor, ...]
     """
     
     if prediction == "all":
         tail_ranks = tail_predict(batch, model)
         head_ranks = head_predict(batch, model)
-        ranks = torch.cat([tail_ranks, head_ranks])
+        if "head_label_type" in batch.keys():
+            return torch.cat([tail_ranks[0], head_ranks[0]]).float(), torch.cat([tail_ranks[1], head_ranks[1]]).float()
+        else:
+            return torch.cat([tail_ranks, head_ranks]).float()
     elif prediction == "head":
-        ranks = head_predict(batch, model)
+        if "head_label_type" in batch.keys():
+            ranks, ranks_type = head_predict(batch, model)
+            return ranks.float(), ranks_type.float()
+        else:
+            ranks = head_predict(batch, model)
+            return ranks.float()
     elif prediction == "tail":
-        ranks = tail_predict(batch, model)
-
-    return ranks.float()
+        if "tail_label_type" in batch.keys():
+            ranks, ranks_type = tail_predict(batch, model)
+            return ranks.float(), ranks_type.float()
+        else:
+            ranks = tail_predict(batch, model)
+            return ranks.float()
 
 def head_predict(
     batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
-    model: Model) -> torch.Tensor:
+    model: Model) -> tuple[torch.Tensor, ...]:
 
     """
     进行头实体的链接预测。
@@ -237,18 +261,21 @@ def head_predict(
     :param model: KGE 模型
     :type model: pybind11_ke.module.model.Model
     :returns: 正确三元组的排名
-    :rtype: torch.Tensor
+    :rtype: tuple[torch.Tensor, ...]
     """
     
     pos_triple = batch["positive_sample"]
     idx = pos_triple[:, 0]
     label = batch["head_label"]
     pred_score = model.predict(batch, "head_predict")
+    if "head_label_type" in batch.keys():
+        label_type = batch["head_label_type"]
+        return calc_ranks(idx, label, pred_score), calc_ranks(idx, label_type, pred_score)
     return calc_ranks(idx, label, pred_score)
 
 def tail_predict(
     batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]],
-    model: Model) -> torch.Tensor:
+    model: Model) -> tuple[torch.Tensor, ...]:
 
     """
     进行尾实体的链接预测。
@@ -258,13 +285,16 @@ def tail_predict(
     :param model: KGE 模型
     :type model: pybind11_ke.module.model.Model
     :returns: 正确三元组的排名
-    :rtype: torch.Tensor
+    :rtype: tuple[torch.Tensor, ...]
     """
 
     pos_triple = batch["positive_sample"]
     idx = pos_triple[:, 2]
     label = batch["tail_label"]
     pred_score = model.predict(batch, "tail_predict")
+    if "tail_label_type" in batch.keys():
+        label_type = batch["tail_label_type"]
+        return calc_ranks(idx, label, pred_score), calc_ranks(idx, label_type, pred_score)
     return calc_ranks(idx, label, pred_score)
 
 def calc_ranks(
