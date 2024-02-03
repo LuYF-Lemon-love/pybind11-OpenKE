@@ -335,8 +335,7 @@ class Trainer(object):
 
 		results = self.tester.run_link_prediction()
 		for key, value in results.items():
-			print(f"{key}: {value}", end=' ')
-		print()
+			print(f"{key}: {value}")
 		if self.use_wandb:
 			log_dict = {f"{mode}/{key}" : value for key, value in results.items()}
 			if sampling_mode == "link_valid":
