@@ -218,50 +218,50 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
     默认配置为::
     
-    parameters_dict = {
-        'dataloader': {
-            'value': 'KGEDataLoader'
-        },
-        'in_path': {
-            'value': './'
-        },
-        'ent_file': {
-            'value': 'entity2id.txt'
-        },
-        'rel_file': {
-            'value': 'relation2id.txt'
-        },
-        'train_file': {
-            'value': 'train2id.txt'
-        },
-        'valid_file': {
-            'value': 'valid2id.txt'
-        },
-        'test_file': {
-            'value': 'test2id.txt'
-        },
-        'batch_size': {
-            'values': [512, 1024, 2048, 4096]
-        },
-        'neg_ent': {
-            'values': [1, 4, 16, 64]
-        },
-        'test_batch_size': {
-            'value': 30
-        },
-        'type_constrain': {
-            'value': True
-        },
-        'num_workers': {
-            'value': 16
-        },
-        'train_sampler': {
-            'value': 'BernSampler'
-        },
-        'test_sampler': {
-            'value': 'TradTestSampler'
+        parameters_dict = {
+            'dataloader': {
+                'value': 'KGEDataLoader'
+            },
+            'in_path': {
+                'value': './'
+            },
+            'ent_file': {
+                'value': 'entity2id.txt'
+            },
+            'rel_file': {
+                'value': 'relation2id.txt'
+            },
+            'train_file': {
+                'value': 'train2id.txt'
+            },
+            'valid_file': {
+                'value': 'valid2id.txt'
+            },
+            'test_file': {
+                'value': 'test2id.txt'
+            },
+            'batch_size': {
+                'values': [512, 1024, 2048, 4096]
+            },
+            'neg_ent': {
+                'values': [1, 4, 16, 64]
+            },
+            'test_batch_size': {
+                'value': 30
+            },
+            'type_constrain': {
+                'value': True
+            },
+            'num_workers': {
+                'value': 16
+            },
+            'train_sampler': {
+                'value': 'BernSampler'
+            },
+            'test_sampler': {
+                'value': 'TradTestSampler'
+            }
         }
-    }
     
     :returns: :py:class:`KGEDataLoader` 的默认超参数优化配置
     :rtype: dict[str, dict[str, typing.Any]]

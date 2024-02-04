@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "增加 HPO ComplEx"
+git commit -m "完善示例"
 git push
