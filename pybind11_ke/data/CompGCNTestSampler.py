@@ -58,18 +58,26 @@ class CompGCNTestSampler(RGCNTestSampler):
         self,
         sampler: CompGCNSampler,
         valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt"):
+        test_file: str = "test2id.txt",
+        type_constrain: bool = True):
 
         """创建 CompGCNTestSampler 对象。
 
         :param sampler: 训练数据采样器。
         :type sampler: CompGCNSampler
+        :param valid_file: valid2id.txt
+        :type valid_file: str
+        :param test_file: test2id.txt
+        :type test_file: str
+        :param type_constrain: 是否报告 type_constrain.txt 限制的测试结果
+        :type type_constrain: bool
         """
 
         super().__init__(
             sampler=sampler,
             valid_file = valid_file,
-            test_file = test_file
+            test_file = test_file,
+            type_constrain = type_constrain
         )
         
         #: 幂

@@ -52,6 +52,7 @@ class KGEDataLoader:
         neg_ent: int = 1,
         test: bool = False,
         test_batch_size: int | None = None,
+        type_constrain: bool = True,
         num_workers: int | None = None,
         train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[BernSampler], typing.Type[RGCNSampler], typing.Type[CompGCNSampler]] = BernSampler,
         test_sampler: typing.Type[TestSampler] = TradTestSampler):
@@ -78,6 +79,8 @@ class KGEDataLoader:
         :type test: bool
         :param test_batch_size: test batch size
         :type test_batch_size: int | None
+        :param type_constrain: 是否报告 type_constrain.txt 限制的测试结果
+        :type type_constrain: bool
         :param num_workers: 加载数据的进程数
         :type num_workers: int
         :param train_sampler: 训练数据采样器
@@ -106,6 +109,8 @@ class KGEDataLoader:
         self.test: bool = test
         #: test batch size
         self.test_batch_size: int = test_batch_size
+        #: 是否报告 type_constrain.txt 限制的测试结果
+        self.type_constrain: bool = type_constrain
         #: 加载数据的进程数
         self.num_workers: int = num_workers
 
@@ -128,6 +133,7 @@ class KGEDataLoader:
                 sampler=self.train_sampler,
                 valid_file=self.valid_file,
                 test_file=self.test_file,
+                type_constrain=type_constrain
             )
         
             #: 验证集三元组
@@ -212,47 +218,50 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
     
     默认配置为::
 
-        parameters_dict = {
-            'dataloader': {
-                'value': 'KGEDataLoader'
-            },
-            'in_path': {
-                'value': './'
-            },
-            'ent_file': {
-                'value': 'entity2id.txt'
-            },
-            'rel_file': {
-                'value': 'relation2id.txt'
-            },
-            'train_file': {
-                'value': 'train2id.txt'
-            },
-            'valid_file': {
-                'value': 'valid2id.txt'
-            },
-            'test_file': {
-                'value': 'test2id.txt'
-            },
-            'batch_size': {
-                'values': [512, 1024, 2048, 4096]
-            },
-            'neg_ent': {
-                'values': [1, 4, 16, 64]
-            },
-            'test_batch_size': {
-                'value': 30
-            },
-            'num_workers': {
-                'value': 16
-            },
-            'train_sampler': {
-                'value': 'BernSampler'
-            },
-            'test_sampler': {
-                'value': 'TradTestSampler'
-            }
+    parameters_dict = {
+        'dataloader': {
+            'value': 'KGEDataLoader'
+        },
+        'in_path': {
+            'value': './'
+        },
+        'ent_file': {
+            'value': 'entity2id.txt'
+        },
+        'rel_file': {
+            'value': 'relation2id.txt'
+        },
+        'train_file': {
+            'value': 'train2id.txt'
+        },
+        'valid_file': {
+            'value': 'valid2id.txt'
+        },
+        'test_file': {
+            'value': 'test2id.txt'
+        },
+        'batch_size': {
+            'values': [512, 1024, 2048, 4096]
+        },
+        'neg_ent': {
+            'values': [1, 4, 16, 64]
+        },
+        'test_batch_size': {
+            'value': 30
+        },
+        'type_constrain': {
+            'value': True
+        },
+        'num_workers': {
+            'value': 16
+        },
+        'train_sampler': {
+            'value': 'BernSampler'
+        },
+        'test_sampler': {
+            'value': 'TradTestSampler'
         }
+    }
         
     :returns: :py:class:`KGEDataLoader` 的默认超参数优化配置
     :rtype: dict[str, dict[str, typing.Any]]
@@ -288,6 +297,9 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
         },
         'test_batch_size': {
             'value': 30
+        },
+        'type_constrain': {
+            'value': True
         },
         'num_workers': {
             'value': 16

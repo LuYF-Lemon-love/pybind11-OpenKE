@@ -18,6 +18,7 @@ from ..module.model import TransE
 from ..module.loss import MarginLoss
 from ..module.strategy import NegativeSampling
 from ..config import Trainer, Tester
+from ..data import KGEDataLoader
 
 def set_hpo_config(
 	method: str = 'bayes',
@@ -127,7 +128,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		config = wandb.config
 
 		# dataloader for training
-		dataloader_class = import_class(f"pybind11_ke.data.{config.dataloader}")
+		dataloader_class: type[KGEDataLoader] = import_class(f"pybind11_ke.data.{config.dataloader}")
 		dataloader = dataloader_class(
 			in_path = config.in_path,
 			ent_file = config.ent_file,
@@ -139,6 +140,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			neg_ent = config.neg_ent,
 			test = True,
 			test_batch_size = config.test_batch_size,
+			type_constrain = config.type_constrain,
 			num_workers = config.num_workers,
 			train_sampler = import_class(f"pybind11_ke.data.{config.train_sampler}"),
 			test_sampler = import_class(f"pybind11_ke.data.{config.test_sampler}")
@@ -264,7 +266,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 			)
 
 		# test the model
-		tester_class = import_class(f"pybind11_ke.config.{config.tester}")
+		tester_class: type[Tester] = import_class(f"pybind11_ke.config.{config.tester}")
 		tester = tester_class(
 			model = kge_model,
 			data_loader = dataloader,
@@ -275,7 +277,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 		)
 
 		# # train the model
-		trainer_class = import_class(f"pybind11_ke.config.{config.trainer}")
+		trainer_class: type[Trainer] = import_class(f"pybind11_ke.config.{config.trainer}")
 		trainer = trainer_class(
 			model = model,
 			data_loader = dataloader.train_dataloader(),

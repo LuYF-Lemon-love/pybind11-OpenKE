@@ -18,6 +18,7 @@ from .TradSampler import TradSampler
 from .RGCNSampler import RGCNSampler
 from .CompGCNSampler import CompGCNSampler
 from collections import defaultdict as ddict
+from ..utils import construct_type_constrain
 
 class TestSampler(object):
 
@@ -28,7 +29,8 @@ class TestSampler(object):
         self,
         sampler: typing.Union[TradSampler, RGCNSampler, CompGCNSampler],
         valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt"):
+        test_file: str = "test2id.txt",
+        type_constrain: bool = True):
 
         """创建 TestSampler 对象。
 
@@ -38,6 +40,8 @@ class TestSampler(object):
         :type valid_file: str
         :param test_file: test2id.txt
         :type test_file: str
+        :param type_constrain: 是否报告 type_constrain.txt 限制的测试结果
+        :type type_constrain: bool
         """
 
         #: 训练数据采样器
@@ -68,6 +72,22 @@ class TestSampler(object):
         #: 知识图谱中所有 r-t 对对应的 h 集合
         self.rt2h_all: ddict[set] = ddict(set)
 
+        #: 是否报告 type_constrain.txt 限制的测试结果
+        self.type_constrain: bool = type_constrain
+
+        if self.type_constrain:
+            construct_type_constrain(
+                in_path = self.sampler.in_path,
+                train_file = self.sampler.train_file,
+                valid_file = self.valid_file,
+                test_file = self.test_file
+            )
+            #: 知识图谱中所有 r 存在头实体种类
+            self.rel_heads: ddict[set] = ddict(set)
+            #: 知识图谱中所有 r 存在尾实体种类
+            self.rel_tails: ddict[set] = ddict(set)
+            self.get_type_constrain_id()
+
     def get_valid_test_triples_id(self):
 
         """读取 :py:attr:`valid_file` 文件和 :py:attr:`test_file` 文件。"""
@@ -87,6 +107,27 @@ class TestSampler(object):
         self.all_true_triples = set(
             self.sampler.train_triples + self.valid_triples + self.test_triples
         )
+        
+    def get_type_constrain_id(self):
+
+        """读取 type_constrain.txt 文件。"""
+                
+        with open(os.path.join(self.sampler.in_path, "type_constrain.txt")) as f:
+            rel_tol = (int)(f.readline())
+            first_line = True
+            for line in f:
+                rel_types = line.strip().split("\t")
+                for entity in rel_types[2:]:
+                    if first_line:
+                        self.rel_heads[int(rel_types[0])].add(int(entity))
+                    else:
+                        self.rel_tails[int(rel_types[0])].add(int(entity))
+                first_line = not first_line
+
+        for rel in self.rel_heads:
+            self.rel_heads[rel] = torch.tensor(list(self.rel_heads[rel]))
+        for rel in self.rel_tails:
+            self.rel_tails[rel] = torch.tensor(list(self.rel_tails[rel]))
 
     def get_hr2t_rt2h_from_all(self):
 

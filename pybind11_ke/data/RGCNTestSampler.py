@@ -65,7 +65,8 @@ class RGCNTestSampler(TestSampler):
         self,
         sampler: typing.Union[RGCNSampler, CompGCNSampler],
         valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt"):
+        test_file: str = "test2id.txt",
+        type_constrain: bool = True):
 
         """创建 RGCNTestSampler 对象。
 
@@ -75,12 +76,15 @@ class RGCNTestSampler(TestSampler):
         :type valid_file: str
         :param test_file: test2id.txt
         :type test_file: str
+        :param type_constrain: 是否报告 type_constrain.txt 限制的测试结果
+        :type type_constrain: bool
         """
 
         super().__init__(
             sampler=sampler,
             valid_file=valid_file,
-            test_file=test_file
+            test_file=test_file,
+            type_constrain = type_constrain
         )
 
         #: 训练集三元组
@@ -154,6 +158,17 @@ class RGCNTestSampler(TestSampler):
             head, rel, tail = triple
             head_label[idx][self.rt2h_all[(rel, tail)]] = 1.0
             tail_label[idx][self.hr2t_all[(head, rel)]] = 1.0
+        if self.type_constrain:
+            head_label_type = torch.ones(len(data), self.ent_tol)
+            tail_laebl_type = torch.ones(len(data), self.ent_tol)
+            for idx, triple in enumerate(data):
+                head, rel, tail = triple
+                head_label_type[idx][self.rel_heads[rel]] = 0.0
+                tail_laebl_type[idx][self.rel_tails[rel]] = 0.0
+                head_label_type[idx][self.rt2h_all[(rel, tail)]] = 1.0
+                tail_laebl_type[idx][self.hr2t_all[(head, rel)]] = 1.0
+            batch_data["head_label_type"] = head_label_type
+            batch_data["tail_label_type"] = tail_laebl_type
         batch_data["positive_sample"] = torch.tensor(data)
         batch_data["head_label"] = head_label
         batch_data["tail_label"] = tail_label
