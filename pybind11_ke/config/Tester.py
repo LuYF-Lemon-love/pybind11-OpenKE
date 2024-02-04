@@ -353,7 +353,7 @@ def get_tester_hpo_config() -> dict[str, dict[str, typing.Any]]:
         }
 
     :returns: :py:class:`Tester` 的默认超参数优化配置
-	:rtype: dict[str, dict[str, typing.Any]]  
+    :rtype: dict[str, dict[str, typing.Any]]  
     """
     
     parameters_dict = {
