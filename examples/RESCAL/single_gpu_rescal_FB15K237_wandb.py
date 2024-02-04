@@ -51,7 +51,7 @@ config = wandb_logger.config
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
-# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
+# :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
 dataloader = KGEDataLoader(
