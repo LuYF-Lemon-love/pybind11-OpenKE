@@ -217,7 +217,7 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
     """返回 :py:class:`KGEDataLoader` 的默认超参数优化配置。
     
     默认配置为::
-
+    
     parameters_dict = {
         'dataloader': {
             'value': 'KGEDataLoader'

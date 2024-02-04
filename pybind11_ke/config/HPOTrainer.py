@@ -240,7 +240,7 @@ def hpo_train(config: dict[str, typing.Any] | None = None):
 				model = kge_model,
 				regularization = config.regularization
 			)
-		elif config.loss == 'Cross_Entropy_Loss':
+		elif config.loss == 'CompGCNLoss':
 			loss = loss_class(model = kge_model)
 		
 		# define the strategy

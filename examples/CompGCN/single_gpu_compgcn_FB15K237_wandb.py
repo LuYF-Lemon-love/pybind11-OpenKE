@@ -16,7 +16,7 @@ pybind11-OpenKE 有一个工具用于导入数据: :py:class:`pybind11_ke.data.G
 from pybind11_ke.utils import WandbLogger
 from pybind11_ke.data import CompGCNSampler, CompGCNTestSampler, GraphDataLoader
 from pybind11_ke.module.model import CompGCN
-from pybind11_ke.module.loss import Cross_Entropy_Loss
+from pybind11_ke.module.loss import CompGCNLoss
 from pybind11_ke.module.strategy import CompGCNSampling
 from pybind11_ke.config import Trainer, GraphTester
 
@@ -86,14 +86,14 @@ compgcn = CompGCN(
 #####################################################################
 # 损失函数
 # ----------------------------------------
-# 我们这里使用了 ``CompGCN`` :cite:`CompGCN` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.Cross_Entropy_Loss`，
+# 我们这里使用了 ``CompGCN`` :cite:`CompGCN` 原论文使用的损失函数：:py:class:`pybind11_ke.module.loss.CompGCNLoss`，
 # :py:class:`pybind11_ke.module.strategy.CompGCNSampling` 对
-# :py:class:`pybind11_ke.module.loss.Cross_Entropy_Loss` 进行了封装。
+# :py:class:`pybind11_ke.module.loss.CompGCNLoss` 进行了封装。
 
 # define the loss function
 model = CompGCNSampling(
 	model = compgcn,
-	loss = Cross_Entropy_Loss(model = compgcn),
+	loss = CompGCNLoss(model = compgcn),
 	ent_tol = dataloader.train_sampler.ent_tol
 )
 

@@ -26,7 +26,7 @@ class CompGCNSampling(Strategy):
 	例子::
 
 		from pybind11_ke.module.model import CompGCN
-		from pybind11_ke.module.loss import Cross_Entropy_Loss
+		from pybind11_ke.module.loss import CompGCNLoss
 		from pybind11_ke.module.strategy import CompGCNSampling
 		from pybind11_ke.config import Trainer, GraphTester
 		
@@ -40,7 +40,7 @@ class CompGCNSampling(Strategy):
 		# define the loss function
 		model = CompGCNSampling(
 			model = compgcn,
-			loss = Cross_Entropy_Loss(model = compgcn),
+			loss = CompGCNLoss(model = compgcn),
 			ent_tol = dataloader.train_sampler.ent_tol
 		)
 		

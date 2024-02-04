@@ -73,7 +73,7 @@ print()
 # 定义损失函数超参数优化范围
 # ---------------------------------------------------------
 # :py:func:`pybind11_ke.module.loss.get_cross_entropy_loss_hpo_config` 返回了
-# :py:class:`pybind11_ke.module.loss.Cross_Entropy_Loss` 的默认超参数优化范围。
+# :py:class:`pybind11_ke.module.loss.CompGCNLoss` 的默认超参数优化范围。
 
 # set the hpo config
 loss_config = get_cross_entropy_loss_hpo_config()
