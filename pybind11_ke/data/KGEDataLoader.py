@@ -262,7 +262,7 @@ def get_kge_data_loader_hpo_config() -> dict[str, dict[str, typing.Any]]:
             'value': 'TradTestSampler'
         }
     }
-        
+    
     :returns: :py:class:`KGEDataLoader` 的默认超参数优化配置
     :rtype: dict[str, dict[str, typing.Any]]
     """
