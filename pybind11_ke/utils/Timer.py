@@ -15,11 +15,11 @@ import time
 
 class Timer:
 
-    """记录多次运行的时间。 
+    """记录多次实验的时间。 
     
-    通过调用 :py:meth:`stop` 能够返回距离上一次 :py:meth:`stop` 调用或创建 :py:class:`Timer` 对象的时间间隔。
+    通过调用 :py:meth:`stop` 能够返回距离上一次 :py:meth:`stop` 调用或创建 :py:class:`Timer` 对象时的时间间隔。
     
-    :py:meth:`avg` 能够返回多次运行的平均时间；:py:meth:`sum` 能够返回多次运行的总时间。"""
+    :py:meth:`avg` 能够返回多次实验的平均时间；:py:meth:`sum` 能够返回多次实验的总时间。"""
 
     def __init__(self):
 
