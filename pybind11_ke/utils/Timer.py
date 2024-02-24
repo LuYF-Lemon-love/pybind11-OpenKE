@@ -3,7 +3,7 @@
 # pybind11_ke/utils/Timer.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 6, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 24, 2023
 #
 # 该脚本定义了计时器类.
 
@@ -15,7 +15,11 @@ import time
 
 class Timer:
 
-    """记录多次运行时间"""
+    """记录多次运行的时间。 
+    
+    通过调用 :py:meth:`stop` 能够返回距离上一次 :py:meth:`stop` 调用或创建 :py:class:`Timer` 对象的时间间隔。
+    
+    :py:meth:`avg` 能够返回多次运行的平均时间；:py:meth:`sum` 能够返回多次运行的总时间。"""
 
     def __init__(self):
 
@@ -28,9 +32,9 @@ class Timer:
         #: 记录上一次的时间
         self.last: float = None
 
-        self.restart()
+        self.__restart()
 
-    def restart(self):
+    def __restart(self):
 
         """重启计时器。"""
 
