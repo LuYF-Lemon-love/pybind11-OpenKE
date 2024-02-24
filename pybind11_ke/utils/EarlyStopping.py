@@ -3,7 +3,7 @@
 # pybind11_ke/utils/EarlyStopping.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 24, 2024
 #
 # 该脚本定义了 EarlyStopping 类.
 
@@ -29,28 +29,28 @@ class EarlyStopping:
         delta: float = 0):
 
         """创建 EarlyStopping 对象。
-
-		:param save_path: 模型保存目录
-		:type save_path: str
-		:param patience: 上次验证得分改善后等待多长时间。默认值：2
-		:type patience: int
-		:param verbose: 如果为 True，则为每个验证得分改进打印一条消息。默认值：True
-		:type verbose: bool
+        
+        :param save_path: 模型保存目录
+        :type save_path: str
+        :param patience: 上次验证得分改善后等待多长时间。默认值：2
+        :type patience: int
+        :param verbose: 如果为 True，则为每个验证得分改进打印一条消息。默认值：True
+        :type verbose: bool
         :param delta: 监测数量的最小变化才符合改进条件。默认值：0
-		:type delta: float
-		"""
+        :type delta: float
+        """
         
         #: 模型保存目录
-        self.save_path: str = save_path
+        self.save_path: str = os.path.join(save_path, 'best_network.pth')
         #: 上次验证得分改善后等待多长时间。默认值：7
         self.patience: int = patience
         #: 如果为 True，则为每个验证得分改进打印一条消息。默认值：True
         self.verbose: bool = verbose
         #: 监测数量的最小变化才符合改进条件。默认值：0
-        self.delta = delta
+        self.delta: float = delta
         
         #: 计数变量
-        self.counter = 0
+        self.counter: int = 0
         #: 保存最好的得分
         self.best_score: float = -np.Inf
         #: 早停开关
@@ -62,8 +62,8 @@ class EarlyStopping:
         model: Model):
 
         """
-		进行早停记录。
-		"""
+        进行早停记录。
+        """
        
         if score <= self.best_score + self.delta:
             self.counter += 1
@@ -85,6 +85,5 @@ class EarlyStopping:
         
         if self.verbose:
             print(f'Validation score improved ({self.best_score:.6f} --> {score:.6f}).  Saving model ...')
-        path = os.path.join(self.save_path, 'best_network.pth')
-        model.save_checkpoint(path)
+        model.save_checkpoint(self.save_path)
         self.best_score = score
