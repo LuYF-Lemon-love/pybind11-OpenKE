@@ -3,7 +3,7 @@
 # pybind11_ke/utils/EarlyStopping.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 24, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 #
 # 该脚本定义了 EarlyStopping 类.
 
@@ -42,7 +42,7 @@ class EarlyStopping:
         
         #: 模型保存目录
         self.save_path: str = os.path.join(save_path, 'best_network.pth')
-        #: 上次验证得分改善后等待多长时间。默认值：7
+        #: 上次验证得分改善后等待多长时间。默认值：2
         self.patience: int = patience
         #: 如果为 True，则为每个验证得分改进打印一条消息。默认值：True
         self.verbose: bool = verbose

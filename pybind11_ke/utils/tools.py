@@ -3,7 +3,7 @@
 # pybind11_ke/utils/tools.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 3, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 #
 # 该脚本定义了 WandbLogger 类.
 
@@ -13,7 +13,7 @@ def import_class(module_and_class_name: str) -> type:
 
     """从模块中导入类。
     
-    :param module_and_class_name: 模块和类名，如 ``pybind11_ke.module.model.TransE`` 。
+    :param module_and_class_name: 模块和类名，如 **pybind11_ke.module.model.TransE** 。
     :type module_and_class_name: str
     :returns: 类名
     :rtype: type
@@ -39,9 +39,9 @@ def construct_type_constrain(
     
     每个关系有两行：
     
-    第一行：``id of relation`` ``Number of head types`` ``head1`` ``head2`` ...
+    第一行：**rel_id** **heads_num** **head1** **head2** ...
     
-    第二行: ``id of relation`` ``number of tail types`` ``tail1`` ``tail2`` ...
+    第二行: **rel_id** **tail_num** **tail1** **tail2** ...
 
     如 benchmarks/FB15K 的 id 为 1200 的关系，它有 4 种类型头实体（3123，1034，58 和 5733）和 4 种类型的尾实体（12123，4388，11087 和 11088）。
     
