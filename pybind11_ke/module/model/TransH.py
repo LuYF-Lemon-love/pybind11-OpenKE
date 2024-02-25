@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransH.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 30, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 # 
 # 该头文件定义了 TransH.
 
@@ -97,8 +97,7 @@ class TransH(Model):
 		:type dim: int
 		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		:type p_norm: int
-		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
-						  对实体和关系嵌入的最后一维执行 L2-norm。
+		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
 		:param margin: 当使用 ``RotatE`` :cite:`RotatE` 的损失函数 :py:class:`pybind11_ke.module.loss.SigmoidLoss`，需要提供此参数，将 ``TransE`` :cite:`TransE` 的正三元组的评分由越小越好转化为越大越好，如果想获得更详细的信息请访问 :ref:`RotatE <rotate>`。
 		:type margin: float
@@ -218,12 +217,14 @@ class TransH(Model):
 	def predict(
 		self,
 		data: dict[str, typing.Union[torch.Tensor,str]],
-		mode) -> torch.Tensor:
+		mode: str) -> torch.Tensor:
 		
 		"""TransH 的推理方法。
 		
 		:param data: 数据。
 		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:param mode: 'head_predict' 或 'tail_predict'
+		:type mode: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
