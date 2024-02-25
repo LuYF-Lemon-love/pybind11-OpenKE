@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/Model.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2023
 # 
 # 该头文件定义了 Model.
 
@@ -41,7 +41,7 @@ class Model(BaseModule):
 	def forward(self) -> torch.Tensor:
 
 		"""
-		定义每次调用时执行的计算。
+		定义每次调用时执行的计算。该方法未实现，子类必须重写该方法，否则抛出 :py:class:`NotImplementedError` 错误。
 		
 		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
 
@@ -54,7 +54,7 @@ class Model(BaseModule):
 	def predict(self) -> torch.Tensor:
 
 		"""
-		KGE 模型的推理方法。
+		KGE 模型的推理方法。该方法未实现，子类必须重写该方法，否则抛出 :py:class:`NotImplementedError` 错误。
 		
 		:returns: 三元组的得分
 		:rtype: torch.Tensor

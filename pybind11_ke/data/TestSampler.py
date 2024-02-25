@@ -3,7 +3,7 @@
 # pybind11_ke/data/TestSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 #
 # 测试数据采样器基类.
 
@@ -145,7 +145,7 @@ class TestSampler(object):
         self,
         data: list[tuple[int, int, int]]) -> dict[str, torch.Tensor]:
 
-        """采样函数。
+        """采样函数。该方法未实现，子类必须重写该方法，否则抛出 :py:class:`NotImplementedError` 错误。
         
         :param data: 测试的正确三元组
         :type data: list[tuple[int, int, int]]
