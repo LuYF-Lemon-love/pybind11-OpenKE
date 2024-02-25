@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/TransR.py
 # 
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 21, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 # 
 # 该头文件定义了 TransR.
 
@@ -126,8 +126,7 @@ class TransR(Model):
 		:type dim_r: int
 		:param p_norm: 评分函数的距离函数, 按照原论文，这里可以取 1 或 2。
 		:type p_norm: int
-		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 
-						  对实体和关系嵌入的最后一维执行 L2-norm。
+		:param norm_flag: 是否利用 :py:func:`torch.nn.functional.normalize` 对实体和关系嵌入的最后一维执行 L2-norm。
 		:type norm_flag: bool
 		:param rand_init: 关系矩阵是否采用随机初始化。
 		:type rand_init: bool
@@ -265,12 +264,14 @@ class TransR(Model):
 	def predict(
 		self,
 		data: dict[str, typing.Union[torch.Tensor,str]],
-		mode) -> torch.Tensor:
+		mode: str) -> torch.Tensor:
 		
 		"""TransR 的推理方法。
 		
 		:param data: 数据。
 		:type data: dict[str, typing.Union[torch.Tensor,str]]
+		:param mode: 'head_predict' 或 'tail_predict'
+		:type mode: str
 		:returns: 三元组的得分
 		:rtype: torch.Tensor
 		"""
