@@ -3,7 +3,7 @@
 # pybind11_ke/data/BernSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 30, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 30, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 #
 # 该脚本定义了 BernSampler 类.
 
@@ -21,7 +21,8 @@ from typing_extensions import override
 
 class BernSampler(TradSampler):
 
-    """平移模型和语义匹配模型的训练集 Bern 数据采样器（伯努利分布），如果想获得更详细的信息请访问 :ref:`TransH <transh>`。。
+    """
+    平移模型和语义匹配模型的训练集 Bern 数据采样器（伯努利分布），如果想获得更详细的信息请访问 :ref:`TransH <transh>`。
     """
 
     def __init__(
