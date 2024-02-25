@@ -3,7 +3,7 @@
 # pybind11_ke/data/KGReader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 17, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 28, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 #
 # 从文件中读取知识图谱.
 
@@ -95,7 +95,7 @@ class KGReader:
     
     def get_train_triples_id(self):
 
-        """读取 :py:attr:`train_file` 文件、 :py:attr:`valid_file` 文件和 :py:attr:`test_file` 文件。"""
+        """读取 :py:attr:`train_file` 文件。"""
         
         with open(os.path.join(self.in_path, self.train_file)) as f:
             self.train_tol = (int)(f.readline())
