@@ -3,7 +3,7 @@
 # pybind11_ke/data/TradSampler.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 28, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
 #
 # 为 KGReader 增加构建负三元组的函数，用于平移模型和语义匹配模型.
 
@@ -18,7 +18,8 @@ from .KGReader import KGReader
 
 class TradSampler(KGReader):
     
-    """平移模型和语义匹配模型的采样器的基类。
+    """
+    平移模型和语义匹配模型的采样器的基类。
     """
     
     def __init__(
@@ -64,7 +65,7 @@ class TradSampler(KGReader):
         self,
         pos_triples: list[tuple[int, int, int]]) -> dict[str, typing.Union[str, torch.Tensor]]:
         
-        """平移模型和语义匹配模型的训练集数据采样函数。该方法未实现，子类必须重写该方法，否则抛出 :py:class`NotImplementedError` 错误。
+        """平移模型和语义匹配模型的训练集数据采样函数。该方法未实现，子类必须重写该方法，否则抛出 :py:class:`NotImplementedError` 错误。
         
         :param pos_triples: 知识图谱中的正确三元组
         :type pos_triples: list[tuple[int, int, int]]

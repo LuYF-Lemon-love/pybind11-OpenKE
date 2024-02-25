@@ -17,8 +17,9 @@ import collections
 
 class KGReader:
 
-    """从文件中读取知识图谱。
-	"""
+    """
+    从文件中读取知识图谱。
+    """
     
     def __init__(
         self,
