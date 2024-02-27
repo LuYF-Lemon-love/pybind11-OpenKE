@@ -135,7 +135,7 @@ def get_softplus_loss_hpo_config() -> dict[str, dict[str, Any]]:
 
 	parameters_dict = {
 		'loss': {
-			'value': 'SigmoidLoss'
+			'value': 'SoftplusLoss'
 		},
 		'adv_temperature': {
 			'values': [1.0, 3.0, 6.0]
