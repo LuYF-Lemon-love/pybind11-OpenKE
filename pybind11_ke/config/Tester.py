@@ -78,6 +78,7 @@ class Tester(object):
     def __init__(
         self,
         model: typing.Union[Model, None] = None,
+        data_loader: KGEDataLoader | None = None,
         val_dataloader: torch.utils.data.DataLoader | None = None,
         test_dataloader: torch.utils.data.DataLoader | None = None,
         sampling_mode: str = 'link_test',
@@ -90,6 +91,8 @@ class Tester(object):
         
         :param model: KGE 模型
         :type model: pybind11_ke.module.model.Model
+        :param data_loader: KGEDataLoader
+        :type data_loader: pybind11_ke.data.KGEDataLoader
         :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
         :type sampling_mode: str
         :param prediction: 链接预测模式: 'all'、'head'、'tail'
@@ -104,6 +107,8 @@ class Tester(object):
 
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
         self.model: typing.Union[Model, None] = model
+        #: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
+        self.data_loader: KGEDataLoader | None = data_loader
         #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
         self.sampling_mode: str = sampling_mode
         #: 链接预测模式: 'all'、'head'、'tail'
@@ -115,12 +120,12 @@ class Tester(object):
         #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
         self.device: torch.device = torch.device(device)
         #: 验证数据加载器。
-        self.val_dataloader: torch.utils.data.DataLoader = val_dataloader
+        self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader()
         #: 测试数据加载器。
-        self.test_dataloader: torch.utils.data.DataLoader = test_dataloader
+        self.test_dataloader: torch.utils.data.DataLoader = self.data_loader.test_dataloader()
         
-        if self.use_gpu:
-            self.model.cuda(device = self.device)
+        # if self.use_gpu:
+        #     self.model.cuda(device = self.data_loader.device)
 
     def set_hits(
         self,
@@ -154,7 +159,7 @@ class Tester(object):
         else:
             return x
 
-    def run_link_prediction(self, accelerate = False) -> dict[str, float]:
+    def run_link_prediction(self, accelerate=False) -> dict[str, float]:
         
         """进行链接预测。
 
@@ -171,8 +176,7 @@ class Tester(object):
         results_type = collections.defaultdict(float)
         with torch.no_grad():
             for data in training_range:
-                if not accelerate:
-                    data = {key : self.to_var(value) for key, value in data.items()}
+                data = {key : self.to_var(value) for key, value in data.items()}
                 if "head_label_type" in data.keys():
                     ranks, ranks_type = link_predict(data, self.model, prediction=self.prediction)
                     results_type["count_type"] += torch.numel(ranks_type)

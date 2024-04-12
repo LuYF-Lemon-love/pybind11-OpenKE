@@ -11,7 +11,6 @@
 KGEDataLoader - KGE 模型读取数据集类。
 """
 
-import copy
 import typing
 from .UniSampler import UniSampler
 from .BernSampler import BernSampler
@@ -179,129 +178,6 @@ class KGEDataLoader:
             drop_last=True,
             collate_fn=self.train_sampler.sampling,
         )
-            
-    def val_dataloader(self) -> DataLoader:
-
-        """返回验证数据加载器。
-        
-        :returns: 验证数据加载器
-        :rtype: torch.utils.data.DataLoader
-        """
-
-        return DataLoader(
-            self.data_val,
-            shuffle=False,
-            batch_size=self.test_batch_size,
-            num_workers=self.num_workers,
-            pin_memory=True,
-            collate_fn=self.test_sampler.sampling,
-        )
-
-    def test_dataloader(self) -> DataLoader:
-
-        """返回测试数据加载器。
-        
-        :returns: 测试数据加载器
-        :rtype: torch.utils.data.DataLoader"""
-        
-        return DataLoader(
-            self.data_test,
-            shuffle=False,
-            batch_size=self.test_batch_size,
-            num_workers=self.num_workers,
-            pin_memory=True,
-            collate_fn=self.test_sampler.sampling,
-        )
-    
-class TestDataLoader:
-
-    """KGE 模型数据加载器。
-
-    例子::
-
-        from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
-
-        dataloader = KGEDataLoader(
-        	in_path = "../../benchmarks/FB15K/", 
-        	batch_size = 8192,
-        	neg_ent = 25,
-        	test = True,
-        	test_batch_size = 256,
-        	num_workers = 16,
-        	train_sampler = BernSampler,
-        	test_sampler = TradTestSampler
-        )
-    """
-    
-    def __init__(
-        self,
-        valid_file: str = "valid2id.txt",
-        test_file: str = "test2id.txt",
-        test_batch_size: int | None = None,
-        type_constrain: bool = True,
-        num_workers: int | None = None,
-        train_sampler: typing.Union[UniSampler, BernSampler, RGCNSampler, CompGCNSampler] = None,
-        test_sampler: typing.Type[TestSampler] = TradTestSampler):
-
-        """创建 GraphDataLoader 对象。
-
-        :param in_path: 数据集目录
-        :type in_path: str
-        :param ent_file: entity2id.txt
-        :type ent_file: str
-        :param rel_file: relation2id.txt
-        :type rel_file: str
-        :param train_file: train2id.txt
-        :type train_file: str
-        :param valid_file: valid2id.txt
-        :type valid_file: str
-        :param test_file: test2id.txt
-        :type test_file: str
-        :param batch_size: batch size
-        :type batch_size: int | None
-        :param neg_ent: 对于每一个正三元组, 构建的负三元组的个数, 替换 entity；对于 CompGCN 不起作用。
-        :type neg_ent: int
-        :param test: 是否读取验证集和测试集
-        :type test: bool
-        :param test_batch_size: test batch size
-        :type test_batch_size: int | None
-        :param type_constrain: 是否报告 type_constrain.txt 限制的测试结果
-        :type type_constrain: bool
-        :param num_workers: 加载数据的进程数
-        :type num_workers: int
-        :param train_sampler: 训练数据采样器
-        :type train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[BernSampler], typing.Type[RGCNSampler], typing.Type[CompGCNSampler]]
-        :param test_sampler: 测试数据采样器
-        :type test_sampler: typing.Type[TestSampler]
-        """
-
-        #: valid2id.txt
-        self.valid_file: str = valid_file
-        #: test2id.txt
-        self.test_file: str = test_file
-        #: test batch size
-        self.test_batch_size: int = test_batch_size
-        #: 是否报告 type_constrain.txt 限制的测试结果
-        self.type_constrain: bool = type_constrain
-        #: 加载数据的进程数
-        self.num_workers: int = num_workers
-
-        #: 训练数据采样器
-        self.train_sampler: typing.Union[UniSampler, BernSampler, RGCNSampler, CompGCNSampler] = train_sampler
-        # self.train_sampler: typing.Union[UniSampler, BernSampler, RGCNSampler, CompGCNSampler] = copy.deepcopy(train_sampler)
-
-        #: 测试数据采样器
-        self.test_sampler: TestSampler = test_sampler(
-            sampler=self.train_sampler,
-            valid_file=self.valid_file,
-            test_file=self.test_file,
-            type_constrain=type_constrain
-        )
-    
-        #: 验证集三元组
-        self.data_val: list[tuple[int, int, int]] = self.test_sampler.get_valid()
-        #: 测试集三元组
-        self.data_test: list[tuple[int, int, int]] = self.test_sampler.get_test()
             
     def val_dataloader(self) -> DataLoader:
 

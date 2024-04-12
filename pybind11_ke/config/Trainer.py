@@ -285,7 +285,7 @@ class Trainer(object):
 			timer.stop()
 			self.scheduler.step()
 
-			if self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
 				print(f"[{self.model.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.print_test("link_valid", epoch)
 			
@@ -294,7 +294,7 @@ class Trainer(object):
 				break
 			
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				if self.use_wandb:
+				if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
 				print(f"[{self.model.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			
@@ -304,14 +304,14 @@ class Trainer(object):
 				print(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		
 		print(f"[{self.model.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
-		if self.use_wandb:
+		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.use_wandb:
 			wandb.log({"duration" : timer.sum()})
 		
 		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.save_path:
 			self.get_model().save_checkpoint(self.save_path)
 			print(f"[{self.model.device}] Model saved at {self.save_path}.")
 		
-		if self.test and self.tester:
+		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.test and self.tester:
 			print(f"[{self.model.device}] The model starts evaluating in the test set.")
 			self.print_test("link_test")
 
