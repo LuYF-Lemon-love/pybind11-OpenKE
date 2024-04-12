@@ -1,6 +1,14 @@
 安装
 ==================================
 
+Pip
+----------------------------------
+
+.. prompt:: bash
+
+    pip install dgl -f https://data.dgl.ai/wheels/cu118/repo.html
+    pip install git+https://github.com/LuYF-Lemon-love/pybind11-OpenKE.git
+
 Linux
 ----------------------------------
 
@@ -14,7 +22,7 @@ Linux
     source env/bin/activate
     which python
     pip install --upgrade pip
-    pip install dgl -f https://data.dgl.ai/wheels/cu117/repo.html
+    pip install dgl -f https://data.dgl.ai/wheels/cu118/repo.html
     pip install . -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 2. 快速开始。
