@@ -23,7 +23,6 @@ from ..module.model import Model
 from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
 from ..module.strategy import NegativeSampling, RGCNSampling, CompGCNSampling
-from torch.nn.parallel import DistributedDataParallel as DDP
 
 class Trainer(object):
 
@@ -84,6 +83,7 @@ class Trainer(object):
 		epochs: int = 1000,
 		lr: float = 0.5,
 		opt_method: str = "Adam",
+		accelerator: str = None,
 		use_gpu: bool = True,
 		device: str = "cuda:0",
 		tester: Tester | None = None,
@@ -96,8 +96,7 @@ class Trainer(object):
 		metric: str = 'hits@10',
 		patience: int = 2,
 		delta: float = 0,
-		use_wandb: bool = False,
-		gpu_id: int | None = None):
+		use_wandb: bool = False):
 
 		"""创建 Trainer 对象。
 
@@ -137,15 +136,10 @@ class Trainer(object):
 		:type delta: float
 		:param use_wandb: 是否启用 wandb 进行日志输出
 		:type use_wandb: bool
-		:param gpu_id: 第几个 gpu，用于并行训练
-		:type gpu_id: int
 		"""
-
-		#: 第几个 gpu
-		self.gpu_id: int | None = gpu_id
 		
 		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
-		self.model: torch.nn.parallel.DistributedDataParallel | NegativeSampling | RGCNSampling | CompGCNSampling | None = DDP(model.to(self.gpu_id), device_ids=[self.gpu_id]) if self.gpu_id is not None else model
+		self.model: NegativeSampling | RGCNSampling | CompGCNSampling = model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`torch.utils.data.DataLoader`
 		self.data_loader: torch.utils.data.DataLoader = data_loader
@@ -161,6 +155,9 @@ class Trainer(object):
 		#: 学习率调度器
 		self.scheduler: torch.optim.lr_scheduler.MultiStepLR | None = None
 
+		#: 是否进行分布式并行训练
+		self.accelerator = accelerator
+		
 		#: 是否使用 gpu
 		self.use_gpu: bool = use_gpu
 		#: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
@@ -194,8 +191,6 @@ class Trainer(object):
 		#: 是否启用 wandb 进行日志输出
 		self.use_wandb: bool = use_wandb
 
-		self.print_device: str = f"GPU{self.gpu_id}" if self.gpu_id is not None else self.device
-
 	def configure_optimizers(self):
 
 		"""可以通过重新实现该方法自定义配置优化器。"""
@@ -216,6 +211,9 @@ class Trainer(object):
 				lr = self.lr,
 				momentum=0.9,
 			)
+
+		if self.accelerator:
+			self.optimizer = self.accelerator.prepare(self.optimizer)
 			
 		milestones = int(self.epochs / 3)
 		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
@@ -234,9 +232,13 @@ class Trainer(object):
 		"""
 
 		self.optimizer.zero_grad()
-		data = {key : self.to_var(value) if key != 'mode' else value for key, value in data.items()}
+		if not self.accelerator:
+			data = {key : self.to_var(value) if key != 'mode' else value for key, value in data.items()}
 		loss = self.model(data)
-		loss.backward()
+		if not self.accelerator:
+			loss.backward()
+		else:
+			self.accelerator.backward(loss)
 		self.optimizer.step()		 
 		return loss.item()
 
@@ -248,7 +250,7 @@ class Trainer(object):
 		并利用 :py:meth:`train_one_step` 训练。
 		"""
 
-		if self.gpu_id is None and self.use_gpu:
+		if self.accelerator is None and self.use_gpu:
 			self.model.cuda(device = self.device)
 
 		if self.use_early_stopping and self.tester is not None and self.save_path is not None:
@@ -259,60 +261,55 @@ class Trainer(object):
 
 		self.configure_optimizers()
 		
-		if self.gpu_id is not None or self.use_gpu:
-			print(f"[{self.print_device}] Initialization completed, start model training.")
+		if self.accelerator is None and self.use_gpu:
+			print(f"[{self.device}] Initialization completed, start model training.")
 		else:
 			print("Initialization completed, start model training.")
 		
 		if self.use_wandb:
-			if self.gpu_id is None:
-				wandb.watch(self.model.model, log_freq=100)
-			elif self.gpu_id == 0:
-				wandb.watch(self.model.module.model, log_freq=100)
+			wandb.watch(self.model.model, log_freq=100)
 		
 		timer = Timer()
 
 		for epoch in range(self.epochs):
 
 			res = 0.0
-			if self.gpu_id is not None:
-				self.model.module.model.train()
-			else:
-				self.model.model.train()
+			self.model.module.model.train()
+			# self.model.model.train()
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
 			timer.stop()
 			self.scheduler.step()
 
-			if (self.gpu_id is None or self.gpu_id == 0) and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
-				print(f"[{self.print_device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
+			if self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+				print(f"[{self.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.print_test("link_valid", epoch)
 			
 			if self.early_stopping is not None and self.early_stopping.early_stop:
-				print(f"[{self.print_device}] Early stopping")
+				print(f"[{self.device}] Early stopping")
 				break
 			
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
+				if self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
-				print(f"[{self.print_device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
+				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			
-			if (self.gpu_id is None or self.gpu_id == 0) and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
+			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.get_model().save_checkpoint(path)
-				print(f"[{self.print_device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+				print(f"[{self.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		
-		print(f"[{self.print_device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
-		if (self.gpu_id is None or self.gpu_id == 0) and self.use_wandb:
+		print(f"[{self.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+		if self.use_wandb:
 			wandb.log({"duration" : timer.sum()})
 		
-		if (self.gpu_id is None or self.gpu_id == 0) and self.save_path:
+		if self.save_path:
 			self.get_model().save_checkpoint(self.save_path)
-			print(f"[{self.print_device}] Model saved at {self.save_path}.")
+			print(f"[{self.device}] Model saved at {self.save_path}.")
 		
-		if (self.gpu_id is None or self.gpu_id == 0) and self.test and self.tester:
-			print(f"[{self.print_device}] The model starts evaluating in the test set.")
+		if self.test and self.tester:
+			print(f"[{self.device}] The model starts evaluating in the test set.")
 			self.print_test("link_test")
 
 	def print_test(
@@ -364,9 +361,7 @@ class Trainer(object):
 		:rtype: torch.Tensor
 		"""
 
-		if self.gpu_id is not None:
-			return x.to(self.gpu_id)
-		elif self.use_gpu:
+		if self.use_gpu:
 			return x.to(self.device)
 		else:
 			return x
@@ -375,10 +370,7 @@ class Trainer(object):
 
 		"""返回原始的 KGE 模型"""
 
-		if self.gpu_id == 0:
-			return self.model.module.model
-		else:
-			return self.model.model
+		return self.model.model
 
 def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

@@ -20,9 +20,10 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 
 from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransE
-from pybind11_ke.config import trainer_distributed_data_parallel
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
+from pybind11_ke.config import accelerator_prepare
+from pybind11_ke.config import Trainer, Tester
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
@@ -87,14 +88,21 @@ model = NegativeSampling(
 # pybind11-OpenKE 将训练循环包装成了 :py:func:`pybind11_ke.config.trainer_distributed_data_parallel` 函数，
 # 进行并行训练，该函数必须由 ``if __name__ == '__main__'`` 保护。
 
-if __name__ == "__main__":
-	
-	print("Start parallel training...")
-	
-	trainer_distributed_data_parallel(
-		model = model,
-		train_dataloader = dataloader.train_dataloader(),
-		epochs = 1000, lr = 0.01, opt_method = "adam",
-		valid_interval = 1, log_interval = 1,
-		save_interval = 1, save_path = '../../checkpoint/transe.pth',
-		delta = 0.01)
+train_dataloader, model, accelerator = accelerator_prepare(
+    dataloader.train_dataloader(),
+    # dataloader.val_dataloader(),
+    # dataloader.test_dataloader(),
+    model
+)
+
+# # test the model
+# tester = Tester(model = transe, val_dataloader = val_dataloader,
+#                 test_dataloader = test_dataloader)
+
+# train the model
+trainer = Trainer(model = model, data_loader = train_dataloader,
+	epochs = 1000, lr = 0.01, accelerator = accelerator,
+	# tester = tester, test = True, valid_interval = 100,
+	log_interval = 1, save_interval = 100,
+	save_path = '../../checkpoint/transe.pth', delta = 0.01)
+trainer.run()

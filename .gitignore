@@ -151,3 +151,5 @@ benchmarks/WN18RR/type_constrain.txt
 best_network.pth
 model.pth
 transr_transe.json
+data
+test.py
