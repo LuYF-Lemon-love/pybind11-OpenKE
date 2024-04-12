@@ -28,7 +28,7 @@ from .TradTestSampler import TradTestSampler
 from .RGCNTestSampler import RGCNTestSampler
 from .CompGCNTestSampler import CompGCNTestSampler
 
-from .KGEDataLoader import KGEDataLoader, get_kge_data_loader_hpo_config
+from .KGEDataLoader import KGEDataLoader, get_kge_data_loader_hpo_config, TestDataLoader
 
 __all__ = [
 	'KGReader',
@@ -43,5 +43,6 @@ __all__ = [
 	'RGCNTestSampler',
 	'CompGCNTestSampler',
 	'KGEDataLoader',
+    'TestDataLoader',
 	'get_kge_data_loader_hpo_config'
 ]

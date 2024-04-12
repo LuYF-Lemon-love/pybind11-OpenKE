@@ -18,7 +18,7 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 :py:class:`pybind11_ke.data.TestDataLoader`。
 """
 
-from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler, TestDataLoader
 from pybind11_ke.module.model import TransE
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
@@ -30,14 +30,25 @@ from pybind11_ke.config import Trainer, Tester
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
-dataloader = KGEDataLoader(
+train_dataloader = KGEDataLoader(
 	in_path = "/home/luyanfeng/my_code/github/pybind11-OpenKE/benchmarks/FB15K/", 
 	batch_size = 8192*4,
 	neg_ent = 25,
-	test = True,
-	test_batch_size = 256,
-	num_workers = 0,
+	num_workers = 16,
 	train_sampler = BernSampler,
+)
+
+valid_dataloader = TestDataLoader(
+	test_batch_size = 256,
+	num_workers = 16,
+	train_sampler = train_dataloader.train_sampler,
+	test_sampler = TradTestSampler
+)
+
+test_dataloader = TestDataLoader(
+	test_batch_size = 256,
+	num_workers = 16,
+	train_sampler = train_dataloader.train_sampler,
 	test_sampler = TradTestSampler
 )
 
@@ -53,8 +64,8 @@ dataloader = KGEDataLoader(
 
 # define the model
 transe = TransE(
-	ent_tol = dataloader.train_sampler.ent_tol,
-	rel_tol = dataloader.train_sampler.rel_tol,
+	ent_tol = train_dataloader.train_sampler.ent_tol,
+	rel_tol = train_dataloader.train_sampler.rel_tol,
 	dim = 50, 
 	p_norm = 1, 
 	norm_flag = True
@@ -89,16 +100,23 @@ model = NegativeSampling(
 # 进行并行训练，该函数必须由 ``if __name__ == '__main__'`` 保护。
 
 # train_dataloader, val_dataloader, test_dataloader, model, accelerator = accelerator_prepare(
-#     dataloader.train_dataloader(),
-#     dataloader.val_dataloader(),
-#     dataloader.test_dataloader(),
+#     train_dataloader.train_dataloader(),
+#     valid_dataloader.val_dataloader(),
+#     test_dataloader.test_dataloader(),
 #     model
 # )
 
-train_dataloader, model, accelerator = accelerator_prepare(
-    dataloader.train_dataloader(),
+train_dataloader, val_dataloader, model, accelerator = accelerator_prepare(
+    train_dataloader.train_dataloader(),
+    valid_dataloader.val_dataloader(),
+    # test_dataloader.test_dataloader(),
     model
 )
+
+# train_dataloader, model, accelerator = accelerator_prepare(
+#     dataloader.train_dataloader(),
+#     model
+# )
 
 # test the model
 # tester = Tester(model = transe, val_dataloader = val_dataloader,
