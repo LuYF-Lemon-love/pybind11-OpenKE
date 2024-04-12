@@ -333,7 +333,7 @@ class Trainer(object):
 		elif sampling_mode == "link_valid":
 			mode = "val"
 
-		results = self.tester.run_link_prediction()
+		results = self.tester.run_link_prediction(accelerate=True if self.accelerator else False)
 		for key, value in results.items():
 			print(f"{key}: {value}")
 		if self.use_wandb:

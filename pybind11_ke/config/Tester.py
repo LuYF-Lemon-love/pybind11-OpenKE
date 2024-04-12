@@ -154,7 +154,7 @@ class Tester(object):
         else:
             return x
 
-    def run_link_prediction(self) -> dict[str, float]:
+    def run_link_prediction(self, accelerate = False) -> dict[str, float]:
         
         """进行链接预测。
 
@@ -171,7 +171,8 @@ class Tester(object):
         results_type = collections.defaultdict(float)
         with torch.no_grad():
             for data in training_range:
-                data = {key : self.to_var(value) for key, value in data.items()}
+                if not accelerate:
+                    data = {key : self.to_var(value) for key, value in data.items()}
                 if "head_label_type" in data.keys():
                     ranks, ranks_type = link_predict(data, self.model, prediction=self.prediction)
                     results_type["count_type"] += torch.numel(ranks_type)
