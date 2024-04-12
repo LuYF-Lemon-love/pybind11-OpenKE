@@ -103,6 +103,6 @@ train_dataloader, model, accelerator = accelerator_prepare(
 trainer = Trainer(model = model, data_loader = train_dataloader,
 	epochs = 1000, lr = 0.01, accelerator = accelerator,
 	# tester = tester, test = True, valid_interval = 100,
-	log_interval = 1, save_interval = 100,
+	log_interval = 1, save_interval = 1,
 	save_path = '../../checkpoint/transe.pth', delta = 0.01)
 trainer.run()

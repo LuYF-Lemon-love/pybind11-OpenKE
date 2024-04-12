@@ -261,21 +261,24 @@ class Trainer(object):
 
 		self.configure_optimizers()
 		
-		if self.accelerator is None and self.use_gpu:
-			print(f"[{self.device}] Initialization completed, start model training.")
-		else:
-			print("Initialization completed, start model training.")
+		print(f"[{self.model.device}] Initialization completed, start model training.")
 		
 		if self.use_wandb:
-			wandb.watch(self.model.model, log_freq=100)
+			if not self.accelerator:
+				wandb.watch(self.model.model, log_freq=100)
+			else:
+				wandb.watch(self.model.module.model, log_freq=100)
 		
 		timer = Timer()
 
 		for epoch in range(self.epochs):
 
 			res = 0.0
-			self.model.module.model.train()
-			# self.model.model.train()
+			if not self.accelerator:
+				self.model.model.train()
+			else:
+				self.model.module.model.train()
+
 			for data in self.data_loader:
 				loss = self.train_one_step(data)
 				res += loss
@@ -283,33 +286,33 @@ class Trainer(object):
 			self.scheduler.step()
 
 			if self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
-				print(f"[{self.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
+				print(f"[{self.model.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.print_test("link_valid", epoch)
 			
 			if self.early_stopping is not None and self.early_stopping.early_stop:
-				print(f"[{self.device}] Early stopping")
+				print(f"[{self.model.device}] Early stopping")
 				break
 			
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
 				if self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
-				print(f"[{self.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
+				print(f"[{self.model.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			
-			if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
+			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
 				self.get_model().save_checkpoint(path)
-				print(f"[{self.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+				print(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		
-		print(f"[{self.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+		print(f"[{self.model.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
 		if self.use_wandb:
 			wandb.log({"duration" : timer.sum()})
 		
-		if self.save_path:
+		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.save_path:
 			self.get_model().save_checkpoint(self.save_path)
-			print(f"[{self.device}] Model saved at {self.save_path}.")
+			print(f"[{self.model.device}] Model saved at {self.save_path}.")
 		
 		if self.test and self.tester:
-			print(f"[{self.device}] The model starts evaluating in the test set.")
+			print(f"[{self.model.device}] The model starts evaluating in the test set.")
 			self.print_test("link_test")
 
 	def print_test(
@@ -370,7 +373,10 @@ class Trainer(object):
 
 		"""返回原始的 KGE 模型"""
 
-		return self.model.model
+		if self.accelerator:
+			return self.model.module.model
+		else:
+			return self.model.model
 
 def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

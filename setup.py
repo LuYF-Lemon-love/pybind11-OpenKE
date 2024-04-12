@@ -22,6 +22,7 @@ setup(
         "numpy",
         "tqdm",
         "wandb",
+        "accelerate",
         "packaging",
     ],
 )
