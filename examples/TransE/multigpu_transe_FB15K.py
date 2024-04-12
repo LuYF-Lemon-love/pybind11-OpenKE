@@ -18,25 +18,27 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 :py:class:`pybind11_ke.data.TestDataLoader`。
 """
 
-from pybind11_ke.config import trainer_distributed_data_parallel
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransE
+from pybind11_ke.config import trainer_distributed_data_parallel
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
-from pybind11_ke.data import TrainDataLoader
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
-# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
+# :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
-train_dataloader = TrainDataLoader(
-	in_path = "../../benchmarks/FB15K/", 
-	nbatches = 200,
-	threads = 8, 
-	sampling_mode = "normal", 
-	bern = True,  
+dataloader = KGEDataLoader(
+	in_path = "/home/luyanfeng/my_code/github/pybind11-OpenKE/benchmarks/FB15K237/", 
+	batch_size = 8192*4,
 	neg_ent = 25,
-	neg_rel = 0)
+	test = True,
+	test_batch_size = 256,
+	num_workers = 0,
+	train_sampler = BernSampler,
+	test_sampler = TradTestSampler
+)
 
 ######################################################################
 # --------------
@@ -50,11 +52,12 @@ train_dataloader = TrainDataLoader(
 
 # define the model
 transe = TransE(
-	ent_tol = train_dataloader.get_ent_tol(),
-	rel_tol = train_dataloader.get_rel_tol(),
+	ent_tol = dataloader.train_sampler.ent_tol,
+	rel_tol = dataloader.train_sampler.rel_tol,
 	dim = 50, 
 	p_norm = 1, 
-	norm_flag = True)
+	norm_flag = True
+)
 
 ######################################################################
 # --------------
@@ -71,8 +74,7 @@ transe = TransE(
 # define the loss function
 model = NegativeSampling(
 	model = transe, 
-	loss = MarginLoss(margin = 1.0),
-	batch_size = train_dataloader.get_batch_size()
+	loss = MarginLoss(margin = 1.0)
 )
 
 ######################################################################
@@ -86,10 +88,15 @@ model = NegativeSampling(
 # 进行并行训练，该函数必须由 ``if __name__ == '__main__'`` 保护。
 
 if __name__ == "__main__":
-
+	
 	print("Start parallel training...")
-
-	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
+	
+	trainer_distributed_data_parallel(
+		model = model,
+		train_dataloader = dataloader.train_dataloader(),
+		# val_dataloader = dataloader.val_dataloader(),
+		# test_dataloader = dataloader.test_dataloader(),
 		epochs = 1000, lr = 0.01, opt_method = "adam",
-		test = True, valid_interval = 100, log_interval = 100, save_interval = 100,
-		save_path = "../../checkpoint/transe.pth", delta = 0.01, type_constrain = True)
+		valid_interval = 1, log_interval = 1,
+		save_interval = 1, save_path = '../../checkpoint/transe.pth',
+		delta = 0.01)

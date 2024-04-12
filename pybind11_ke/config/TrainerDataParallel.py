@@ -3,7 +3,7 @@
 # pybind11_ke/config/TrainerDataParallel.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on July 5, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 6, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 2, 2024
 #
 # 该脚本定义了并行训练循环函数.
 
@@ -17,8 +17,10 @@ import torch.multiprocessing as mp
 from torch.distributed import init_process_group, destroy_process_group
 from .Tester import Tester
 from .Trainer import Trainer
-from ..data import TrainDataLoader, TestDataLoader
+from ..data import KGEDataLoader, BernSampler, TradTestSampler
 from ..module.strategy import NegativeSampling
+from torch.utils.data import DataLoader
+
 
 def ddp_setup(rank: int, world_size: int):
 
@@ -40,11 +42,14 @@ def train(
 	rank: int,
 	world_size: int,
 	model: NegativeSampling,
-	data_loader: TrainDataLoader,
+	train_dataloader: DataLoader,
+	val_dataloader: DataLoader,
+	test_dataloader: DataLoader,
 	epochs: int,
 	lr: float,
 	opt_method: str,
-	test: bool,
+	prediction: str,
+	use_tqdm: bool,
 	valid_interval: int | None,
 	log_interval: int | None,
 	save_interval: int | None,
@@ -53,9 +58,6 @@ def train(
 	metric: str,
 	patience: int,
 	delta: float,
-	valid_file: str,
-	test_file: str,
-	type_constrain: bool,
 	use_wandb: bool):
 
 	"""进程函数。
@@ -66,16 +68,16 @@ def train(
 	:type world_size: int
 	:param model: 包装 KGE 模型的训练策略类
 	:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-	:param data_loader: TrainDataLoader
-	:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
 	:param epochs: 训练轮次数
 	:type epochs: int
 	:param lr: 学习率
 	:type lr: float
 	:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 	:type opt_method: str
-	:param test: 是否在测试集上评估模型
-	:type test: bool
+	:param prediction: 链接预测模式: 'all'、'head'、'tail'
+	:type prediction: str
+	:param use_tqdm: 是否启用进度条
+	:type use_tqdm: bool
 	:param valid_interval: 训练几轮在验证集上评估一次模型
 	:type valid_interval: int
 	:param log_interval: 训练几轮输出一次日志
@@ -86,33 +88,32 @@ def train(
 	:type save_path: str
 	:param use_early_stopping: 是否启用早停
 	:type use_early_stopping: bool
-	:param metric: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
-		'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。
+	:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hits@N'。默认值：'hits@10'
 	:type metric: str
 	:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。
 	:type patience: int
 	:param delta: :py:attr:`pybind11_ke.utils.EarlyStopping.delta` 参数，监测数量的最小变化才符合改进条件。
 	:type delta: float
-	:param valid_file: valid2id.txt
-	:type valid_file: str
-	:param test_file: test2id.txt
-	:type test_file: str
-	:param type_constrain: 是否用 type_constrain.txt 进行负采样
-	:type type_constrain: bool
 	:param use_wandb: 是否启用 wandb 进行日志输出
 	:type use_wandb: bool
 	"""
 	
 	ddp_setup(rank, world_size)
+
 	tester = None
-	if test:
-		test_dataloader = TestDataLoader(in_path = data_loader.in_path, ent_file = data_loader.ent_file,
-			rel_file = data_loader.rel_file, train_file = data_loader.train_file, valid_file = valid_file,
-			test_file = test_file, type_constrain = type_constrain)
-		tester = Tester(model = model.model, data_loader = test_dataloader)
+	test = False
+	if val_dataloader and test_dataloader:
+		test = True
+		tester = Tester(
+			model=model.model,
+			val_dataloader=val_dataloader,
+			test_dataloader=test_dataloader,
+			prediction=prediction,
+			use_tqdm=use_tqdm
+		)
 	trainer = Trainer(
 		model=model,
-		data_loader=data_loader,
+		data_loader=train_dataloader,
 		epochs=epochs,
 		lr=lr,
 		opt_method=opt_method,
@@ -137,23 +138,23 @@ def train(
 		destroy_process_group()
 	
 def trainer_distributed_data_parallel(
-	model = None,
-	data_loader: TrainDataLoader | None = None,
+	model: NegativeSampling = None,
+	train_dataloader: DataLoader = None,
+	val_dataloader: DataLoader = None,
+	test_dataloader: DataLoader = None,
 	epochs: int = 1000,
 	lr: float = 0.5,
 	opt_method: str = "Adam",
-	test: bool = False,
+	prediction: str = "all",
+	use_tqdm: bool = True,
 	valid_interval: int | None = None,
 	log_interval: int | None = None,
 	save_interval: int | None = None,
 	save_path: str | None = None,
 	use_early_stopping: bool = True,
-	metric: str = 'hit10',
+	metric: str = 'hits@10',
 	patience: int = 2,
 	delta: float = 0,
-	valid_file: str = "valid2id.txt",
-	test_file: str = "test2id.txt",
-	type_constrain: bool = True,
 	use_wandb: bool = False):
 
 	"""并行训练循环函数，用于生成单独子进程进行训练模型。
@@ -175,16 +176,18 @@ def trainer_distributed_data_parallel(
 
 	:param model: 包装 KGE 模型的训练策略类
 	:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling`
-	:param data_loader: TrainDataLoader
-	:type data_loader: :py:class:`pybind11_ke.data.TrainDataLoader`
+	:param train_dataloader: KGEDataLoader
+	:type train_dataloader: :py:class:`pybind11_ke.data.KGEDataLoader`
 	:param epochs: 训练轮次数
 	:type epochs: int
 	:param lr: 学习率
 	:type lr: float
 	:param opt_method: 优化器: ``Adam`` or ``adam``, ``SGD`` or ``sgd``
 	:type opt_method: str
-	:param test: 是否在测试集上评估模型
-	:type test: bool
+	:param prediction: 链接预测模式: 'all'、'head'、'tail'
+	:type prediction: str
+	:param use_tqdm: 是否启用进度条
+	:type use_tqdm: bool
 	:param valid_interval: 训练几轮在验证集上评估一次模型
 	:type valid_interval: int
 	:param log_interval: 训练几轮输出一次日志
@@ -195,26 +198,20 @@ def trainer_distributed_data_parallel(
 	:type save_path: str
 	:param use_early_stopping: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 	:type use_early_stopping: bool
-	:param metric: 早停使用的验证指标，可选值：'mrr', 'hit1', 'hit3', 'hit10', 'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC'。
-		'mrTC', 'mrrTC', 'hit1TC', 'hit3TC', 'hit10TC' 需要 :py:attr:`pybind11_ke.data.TestDataLoader.type_constrain` 为 True。默认值：'hit10'
+	:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hits@N'。默认值：'hits@10'
 	:type metric: str
 	:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 	:type patience: int
 	:param delta: :py:attr:`pybind11_ke.utils.EarlyStopping.delta` 参数，监测数量的最小变化才符合改进条件。默认值：0
 	:type delta: float
-	:param valid_file: valid2id.txt
-	:type valid_file: str
-	:param test_file: test2id.txt
-	:type test_file: str
-	:param type_constrain: 是否用 type_constrain.txt 进行负采样
-	:type type_constrain: bool
 	:param use_wandb: 是否启用 wandb 进行日志输出
 	:type use_wandb: bool
 	"""
 	
 	world_size = torch.cuda.device_count()
-	mp.spawn(train, args = (world_size, model, data_loader, epochs, lr, opt_method,
-							test, valid_interval, log_interval, save_interval, save_path,
-							use_early_stopping, metric, patience, delta,
-							valid_file, test_file, type_constrain, use_wandb),
+	mp.spawn(train, args = (world_size, model, train_dataloader, val_dataloader, test_dataloader,
+							epochs, lr, opt_method, prediction,
+							use_tqdm, valid_interval, log_interval, save_interval,
+							save_path, use_early_stopping, metric, patience,
+							delta, use_wandb),
 				nprocs = world_size)

@@ -19,41 +19,37 @@ pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.T
 """
 
 from pybind11_ke.utils import WandbLogger
-from pybind11_ke.config import trainer_distributed_data_parallel
+from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
 from pybind11_ke.module.model import TransE
+from pybind11_ke.config import trainer_distributed_data_parallel
 from pybind11_ke.module.loss import MarginLoss
 from pybind11_ke.module.strategy import NegativeSampling
-from pybind11_ke.data import TrainDataLoader
 
 ######################################################################
 # 首先初始化 :py:class:`pybind11_ke.utils.WandbLogger` 日志记录器，它是对 wandb 初始化操作的一层简单封装。
 
 wandb_logger = WandbLogger(
 	project="pybind11-ke",
-	name="transe",
+	name="TransE-FB15K-multi",
 	config=dict(
 		in_path = "../../benchmarks/FB15K/",
-		nbatches = 200,
-		threads = 8,
-		sampling_mode = "normal",
-		bern = True,
+		batch_size = 1024,
 		neg_ent = 25,
-		neg_rel = 0,
+		test = True,
+		test_batch_size = 256,
+		num_workers = 16,
 		dim = 50,
 		p_norm = 1,
 		norm_flag = True,
 		margin = 1.0,
-		use_gpu = True,
-		device = 'cuda:1',
 		epochs = 1000,
 		lr = 0.01,
 		opt_method = "adam",
-		test = True,
 		valid_interval = 100,
 		log_interval = 100,
 		save_interval = 100,
 		save_path = '../../checkpoint/transe.pth',
-		type_constrain = True
+		delta = 0.01
 	)
 )
 
@@ -61,17 +57,19 @@ config = wandb_logger.config
 
 ######################################################################
 # pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
-# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
+# :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
-train_dataloader = TrainDataLoader(
+dataloader = KGEDataLoader(
 	in_path = config.in_path, 
-	nbatches = config.nbatches,
-	threads = config.threads, 
-	sampling_mode = config.sampling_mode, 
-	bern = config.bern,  
+	batch_size = config.batch_size,
 	neg_ent = config.neg_ent,
-	neg_rel = config.neg_rel)
+	test = config.test,
+	test_batch_size = config.test_batch_size,
+	num_workers = config.num_workers,
+	train_sampler = BernSampler,
+	test_sampler = TradTestSampler
+)
 
 ######################################################################
 # --------------
@@ -85,8 +83,8 @@ train_dataloader = TrainDataLoader(
 
 # define the model
 transe = TransE(
-	ent_tol = train_dataloader.get_ent_tol(),
-	rel_tol = train_dataloader.get_rel_tol(),
+	ent_tol = dataloader.train_sampler.ent_tol,
+	rel_tol = dataloader.train_sampler.rel_tol,
 	dim = config.dim, 
 	p_norm = config.p_norm, 
 	norm_flag = config.norm_flag)
@@ -106,8 +104,7 @@ transe = TransE(
 # define the loss function
 model = NegativeSampling(
 	model = transe, 
-	loss = MarginLoss(margin = config.margin),
-	batch_size = train_dataloader.get_batch_size()
+	loss = MarginLoss(margin = config.margin)
 )
 
 ######################################################################
@@ -124,11 +121,10 @@ if __name__ == "__main__":
 
 	print("Start parallel training...")
 
-	trainer_distributed_data_parallel(model = model, data_loader = train_dataloader,
+	trainer_distributed_data_parallel(model = model,
 		epochs = config.epochs, lr = config.lr, opt_method = config.opt_method,
-		test = config.test, valid_interval = config.valid_interval, log_interval = config.log_interval,
-		save_interval = config.save_interval, save_path = config.save_path,
-		type_constrain = True, use_wandb=True)
+		valid_interval = config.valid_interval, log_interval = config.log_interval,
+		save_interval = config.save_interval, save_path = config.save_path)
 	
 	# close your wandb run
 	wandb_logger.finish()

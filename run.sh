@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修复 get_softplus_loss_hpo_config"
+git commit -m "修复 2.0 版本并行训练函数"
 git push
