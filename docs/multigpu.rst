@@ -1,6 +1,11 @@
 多 GPU 配置
 ==================================
 
+.. _accelerate-config:
+
+accelerate config
+----------------------------------
+
 由于多 GPU 设置依赖于 `accelerate <https://github.com/huggingface/accelerate>`_ ，
 因此，您需要首先需要创建并保存一个配置文件：
 
@@ -8,11 +13,9 @@
 
 	accelerate config
 
-.. _accelerate:
-
 参考配置为：
 
-.. prompt:: bash
+::
 
     $ accelerate config
     ---------------------------------------------------------------------------------------------------------------------------------------------------In which compute environment are you running?

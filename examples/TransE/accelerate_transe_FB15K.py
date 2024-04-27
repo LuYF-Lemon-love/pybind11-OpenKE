@@ -13,7 +13,7 @@ TransE-FB15K-accelerate
 这一部分介绍如何用多个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
 
 由于多 GPU 设置依赖于 `accelerate <https://github.com/huggingface/accelerate>`_ ，
-因此，您需要首先需要创建并保存一个配置文件（如果想获得更详细的配置文件信息请访问 :ref:`多GPU配置 <accelerate>`。）：
+因此，您需要首先需要创建并保存一个配置文件（如果想获得更详细的配置文件信息请访问 :ref:`多GPU配置 <accelerate-config>` ）：
 
 .. prompt:: bash
 
