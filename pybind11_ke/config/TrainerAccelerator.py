@@ -3,7 +3,7 @@
 # pybind11_ke/config/TrainerAccelerator.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 12, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 12, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 27, 2024
 #
 # 该脚本定义了并行训练循环函数.
 
