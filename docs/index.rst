@@ -7,10 +7,6 @@
 
 为了使用 pybind11-OpenKE，请先 :doc:`install` 这个项目。 
 
-.. note::
-
-   这个项目依旧处于积极开发中。
-
 目录
 --------
 
@@ -22,6 +18,7 @@
    install
    datasets
    metric
+   multigpu
    details
 
 .. toctree::
@@ -39,7 +36,7 @@
    examples/TransE/single_gpu_transe_FB15K
    examples/TransE/single_gpu_transe_FB15K_wandb
    examples/TransE/single_gpu_transe_FB15K_hpo
-   examples/TransE/multigpu_transe_FB15K
+   examples/TransE/accelerate_transe_FB15K
    examples/TransE/multigpu_transe_FB15K_wandb
    examples/TransE/single_gpu_transe_FB15K237_wandb
    examples/TransE/single_gpu_transe_WN18_adv_sigmoidloss_wandb

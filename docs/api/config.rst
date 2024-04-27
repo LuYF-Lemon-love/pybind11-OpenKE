@@ -49,7 +49,7 @@ pybind11_ke.config
     :nosignatures:
     :template: functiontemplate.rst
 
-    trainer_distributed_data_parallel
+    accelerator_prepare
 
 超参数优化默认搜索范围
 ----------------------------------

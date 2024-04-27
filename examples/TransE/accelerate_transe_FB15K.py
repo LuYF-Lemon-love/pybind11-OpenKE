@@ -2,20 +2,32 @@
 `TransE-FB15K-single-gpu <single_gpu_transe_FB15K.html>`_ ||
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K-single-gpu-hpo <single_gpu_transe_FB15K_hpo.html>`_ ||
-**TransE-FB15K-multigpu** ||
+**TransE-FB15K-accelerate** ||
 `TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K237-single-gpu-wandb <single_gpu_transe_FB15K237_wandb.html>`_ ||
 `TransE-WN18RR-single-gpu-adv-wandb <single_gpu_transe_WN18_adv_sigmoidloss_wandb.html>`_
 
-TransE-FB15K-multigpu
+TransE-FB15K-accelerate
 ====================================================================
 
 这一部分介绍如何用多个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
 
+由于多 GPU 设置依赖于 `accelerate <https://github.com/huggingface/accelerate>`_ ，
+因此，您需要首先需要创建并保存一个配置文件（如果想获得更详细的配置文件信息请访问 :ref:`多GPU配置 <accelerate>`。）：
+
+.. prompt:: bash
+
+	accelerate config
+    
+然后，您可以开始训练：
+
+.. prompt:: bash
+
+	accelerate launch accelerate_transe_FB15K.py
+
 导入数据
 -----------------
-pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
-:py:class:`pybind11_ke.data.TestDataLoader`。
+pybind11-OpenKE 有 1 个工具用于导入数据: :py:class:`pybind11_ke.data.KGEDataLoader`。
 """
 
 from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
@@ -30,15 +42,6 @@ from pybind11_ke.config import Trainer, Tester
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
-# train_dataloader = TrainDataLoader(
-# 	in_path = "/home/luyanfeng/my_code/github/pybind11-OpenKE/benchmarks/FB15K/", 
-# 	batch_size = 8192*4,
-# 	neg_ent = 25,
-# 	num_workers = 16,
-# 	train_sampler = BernSampler,
-# )
-
-# dataloader for training
 dataloader = KGEDataLoader(
     in_path = "../../benchmarks/FB15K/",
     batch_size = 8192,
@@ -49,20 +52,6 @@ dataloader = KGEDataLoader(
     train_sampler = BernSampler,
     test_sampler = TradTestSampler
 )
-
-# valid_dataloader = TestDataLoader(
-# 	test_batch_size = 256,
-# 	num_workers = 16,
-# 	train_sampler = train_dataloader.train_sampler,
-# 	test_sampler = TradTestSampler
-# )
-
-# test_dataloader = TestDataLoader(
-# 	test_batch_size = 256,
-# 	num_workers = 16,
-# 	train_sampler = train_dataloader.train_sampler,
-# 	test_sampler = TradTestSampler
-# )
 
 ######################################################################
 # --------------
@@ -108,8 +97,12 @@ model = NegativeSampling(
 ######################################################################
 # 训练模型
 # -------------
-# pybind11-OpenKE 将训练循环包装成了 :py:func:`pybind11_ke.config.trainer_distributed_data_parallel` 函数，
-# 进行并行训练，该函数必须由 ``if __name__ == '__main__'`` 保护。
+# 为了进行多 GPU 训练，需要先调用 :py:meth:`pybind11_ke.config.accelerator_prepare` 对数据和模型进行包装。
+#
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
+# 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
+# 使得训练器能够在训练过程中评估模型。
 
 dataloader, model, accelerator = accelerator_prepare(
     dataloader,
@@ -117,12 +110,12 @@ dataloader, model, accelerator = accelerator_prepare(
 )
 
 # test the model
-valider = Tester(model = transe, data_loader=dataloader)
+tester = Tester(model = transe, data_loader=dataloader)
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
-	epochs = 3, lr = 0.01, accelerator = accelerator,
-	tester = valider, test = True, valid_interval = 1,
-	log_interval = 1, save_interval = 1,
+	epochs = 1000, lr = 0.01, accelerator = accelerator,
+	tester = tester, test = True, valid_interval = 100,
+	log_interval = 100, save_interval = 100,
 	save_path = '../../checkpoint/transe.pth', delta = 0.01)
 trainer.run()
