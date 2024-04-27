@@ -1,10 +1,7 @@
-多 GPU 配置
-==================================
-
 .. _accelerate-config:
 
-accelerate config
-----------------------------------
+多 GPU 配置
+==================================
 
 由于多 GPU 设置依赖于 `accelerate <https://github.com/huggingface/accelerate>`_ ，
 因此，您需要首先需要创建并保存一个配置文件：
@@ -18,10 +15,10 @@ accelerate config
 ::
 
     $ accelerate config
-    ---------------------------------------------------------------------------------------------------------------------------------------------------In which compute environment are you running?
+    ---------------------------------------------------------------------------------------------------------------------------------------------------
     In which compute environment are you running?
     This machine                                                                                                                                       
-    ---------------------------------------------------------------------------------------------------------------------------------------------------Which type of machine are you using?                                                                                                               
+    ---------------------------------------------------------------------------------------------------------------------------------------------------                                                                                                               
     Which type of machine are you using?
     multi-GPU                                                                                                                                          
     How many different machines will you use (use more than 1 for multi-node training)? [1]:                                                           
@@ -32,7 +29,7 @@ accelerate config
     Do you want to use Megatron-LM ? [yes/NO]: No                                                                                                      
     How many GPU(s) should be used for distributed training? [1]:2                                                                                     
     What GPU(s) (by id) should be used for training on this machine as a comma-seperated list? [all]:
-    ---------------------------------------------------------------------------------------------------------------------------------------------------Do you wish to use FP16 or BF16 (mixed precision)?
+    ---------------------------------------------------------------------------------------------------------------------------------------------------
     Do you wish to use FP16 or BF16 (mixed precision)?
     no                                                                                                                                                 
     accelerate configuration saved at /home/luyanfeng/.cache/huggingface/accelerate/default_config.yaml                                                
