@@ -6,6 +6,7 @@ build/
 
 # self add
 checkpoint/
+docs/_build
 docs/examples
 docs/experiments
 wandb
