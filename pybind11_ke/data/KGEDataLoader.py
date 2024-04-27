@@ -3,7 +3,7 @@
 # pybind11_ke/data/KGEDataLoader.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 27, 2024
 #
 # 为 KGE 模型读取数据.
 
@@ -57,7 +57,7 @@ class KGEDataLoader:
         train_sampler: typing.Union[typing.Type[UniSampler], typing.Type[BernSampler], typing.Type[RGCNSampler], typing.Type[CompGCNSampler]] = BernSampler,
         test_sampler: typing.Type[TestSampler] = TradTestSampler):
 
-        """创建 GraphDataLoader 对象。
+        """创建 KGEDataLoader 对象。
 
         :param in_path: 数据集目录
         :type in_path: str
