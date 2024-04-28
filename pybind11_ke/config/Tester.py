@@ -3,7 +3,7 @@
 # pybind11_ke/config/Tester.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Ari 28, 2023
 #
 # 该脚本定义了验证模型类.
 
@@ -77,21 +77,20 @@ class Tester(object):
 
     def __init__(
         self,
-        model: typing.Union[Model, None] = None,
-        data_loader: KGEDataLoader | None = None,
-        val_dataloader: torch.utils.data.DataLoader = None,
-        test_dataloader: torch.utils.data.DataLoader = None,
+        model: Model = None,
+        data_loader: KGEDataLoader = None,
         sampling_mode: str = 'link_test',
         prediction: str = "all",
         use_tqdm: bool = True,
         use_gpu: bool = True,
-        device: str = "cuda:0"):
+        device: str = "cuda:0",
+        only_test: bool = False):
 
         """创建 Tester 对象。
         
         :param model: KGE 模型
         :type model: pybind11_ke.module.model.Model
-        :param data_loader: KGEDataLoader
+        :param data_loader: py:class:`pybind11_ke.data.KGEDataLoader`
         :type data_loader: pybind11_ke.data.KGEDataLoader
         :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
         :type sampling_mode: str
@@ -103,13 +102,15 @@ class Tester(object):
         :type use_gpu: bool
         :param device: 使用哪个 gpu
         :type device: str
+        :param only_test: 是否是评估已经训练好的模型
+        :type only_test: bool
         """
 
         #: KGE 模型，即 :py:class:`pybind11_ke.module.model.Model`
-        self.model: typing.Union[Model, None] = model
-        #: :py:class:`pybind11_ke.data.TestDataLoader` or :py:class:`pybind11_ke.data.GraphDataLoader`
-        self.data_loader: KGEDataLoader | None = data_loader
-        #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：``link_test`` or ``link_valid``
+        self.model: Model = model
+        #: :py:class:`pybind11_ke.data.KGEDataLoader`
+        self.data_loader: KGEDataLoader = data_loader
+        #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：**link_test** or **link_valid**
         self.sampling_mode: str = sampling_mode
         #: 链接预测模式: 'all'、'head'、'tail'
         self.prediction: str = prediction
@@ -124,8 +125,8 @@ class Tester(object):
         #: 测试数据加载器。
         self.test_dataloader: torch.utils.data.DataLoader = self.data_loader.test_dataloader()
         
-        # if self.use_gpu:
-        #     self.model.cuda(device = self.data_loader.device)
+        if self.use_gpu and only_test:
+            self.model.cuda(device = self.device)
 
     def set_hits(
         self,
