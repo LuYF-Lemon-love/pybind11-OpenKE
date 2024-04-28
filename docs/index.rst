@@ -37,7 +37,7 @@
    examples/TransE/single_gpu_transe_FB15K_wandb
    examples/TransE/single_gpu_transe_FB15K_hpo
    examples/TransE/accelerate_transe_FB15K
-   examples/TransE/multigpu_transe_FB15K_wandb
+   examples/TransE/accelerate_transe_FB15K_wandb
    examples/TransE/single_gpu_transe_FB15K237_wandb
    examples/TransE/single_gpu_transe_WN18_adv_sigmoidloss_wandb
    examples/TransH/single_gpu_transh_FB15K237

@@ -3,7 +3,7 @@
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K-single-gpu-hpo <single_gpu_transe_FB15K_hpo.html>`_ ||
 **TransE-FB15K-accelerate** ||
-`TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_ ||
+`TransE-FB15K-accelerate-wandb <accelerate_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K237-single-gpu-wandb <single_gpu_transe_FB15K237_wandb.html>`_ ||
 `TransE-WN18RR-single-gpu-adv-wandb <single_gpu_transe_WN18_adv_sigmoidloss_wandb.html>`_
 
