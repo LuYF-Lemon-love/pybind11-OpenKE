@@ -59,7 +59,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 
 **高效的**
 
-- 使用 :py:class:`torch.nn.parallel.DistributedDataParallel` 完成数据并行，使得 ``pybind11-OpenKE`` 能够利用多个 ``GPU`` 同时训练。
+- 使用 :py:class:`torch.nn.parallel.DistributedDataParallel` 完成数据并行（ **2.0.0 版本** 使用 `accelerate <https://github.com/huggingface/accelerate>`_ 实现），使得 ``pybind11-OpenKE`` 能够利用多个 ``GPU`` 同时训练。
 
 - 增加超参数扫描功能（随机搜索、网格搜索和贝叶斯搜索）。
 
