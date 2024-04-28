@@ -3,7 +3,7 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 28, 2023
 #
 # 该脚本定义了训练循环基类类.
 
@@ -22,7 +22,8 @@ from ..utils.Timer import Timer
 from ..module.model import Model
 from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
-from ..module.strategy import NegativeSampling, RGCNSampling, CompGCNSampling
+from ..module.strategy import Strategy
+from accelerate import Accelerator
 
 class Trainer(object):
 
@@ -78,12 +79,12 @@ class Trainer(object):
 
 	def __init__(
 		self,
-		model: NegativeSampling | RGCNSampling | CompGCNSampling | None = None,
-		data_loader: typing.Union[DataLoader, None] = None,
+		model: Strategy = None,
+		data_loader: DataLoader = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
 		opt_method: str = "Adam",
-		accelerator: str = None,
+		accelerator: Accelerator = None,
 		use_gpu: bool = True,
 		device: str = "cuda:0",
 		tester: Tester | None = None,
@@ -91,7 +92,7 @@ class Trainer(object):
 		valid_interval: int | None = None,
 		log_interval: int | None = None,
 		save_interval: int | None = None,
-		save_path: str | None = None,
+		save_path: str = None,
 		use_early_stopping: bool = True,
 		metric: str = 'hits@10',
 		patience: int = 2,
@@ -101,15 +102,17 @@ class Trainer(object):
 		"""创建 Trainer 对象。
 
 		:param model: 包装 KGE 模型的训练策略类
-		:type model: :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
+		:type model: :py:class:`pybind11_ke.module.strategy.Strategy`
 		:param data_loader: DataLoader
 		:type data_loader: torch.utils.data.DataLoader
 		:param epochs: 训练轮次数
 		:type epochs: int
 		:param lr: 学习率
 		:type lr: float
-		:param opt_method: 优化器: 'Adam' or 'adam', 'Adagrad' or 'adagrad', 'SGD' or 'sgd'
+		:param opt_method: 优化器: **'Adam'** or **'adam'**, **'Adagrad'** or **'adagrad'**, **'SGD'** or **'sgd'**
 		:type opt_method: str
+		:param accelerator: :py:meth:`pybind11_ke.config.accelerator_prepare` 返回列表中的最后一个元素。
+		:type accelerator: object
 		:param use_gpu: 是否使用 gpu
 		:type use_gpu: bool
 		:param device: 使用哪个 gpu
@@ -138,8 +141,8 @@ class Trainer(object):
 		:type use_wandb: bool
 		"""
 		
-		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.NegativeSampling` or :py:class:`pybind11_ke.module.strategy.RGCNSampling` or :py:class:`pybind11_ke.module.strategy.CompGCNSampling`
-		self.model: NegativeSampling | RGCNSampling | CompGCNSampling = model
+		#: 包装 KGE 模型的训练策略类，即 :py:class:`pybind11_ke.module.strategy.Strategy`
+		self.model: Strategy = model
 
 		#: :py:meth:`__init__` 传入的 :py:class:`torch.utils.data.DataLoader`
 		self.data_loader: torch.utils.data.DataLoader = data_loader
@@ -155,7 +158,7 @@ class Trainer(object):
 		#: 学习率调度器
 		self.scheduler: torch.optim.lr_scheduler.MultiStepLR | None = None
 
-		#: 是否进行分布式并行训练
+		#: 是否进行分布式并行训练，:py:meth:`pybind11_ke.config.accelerator_prepare` 返回列表中的最后一个元素。
 		self.accelerator = accelerator
 		
 		#: 是否使用 gpu
@@ -216,7 +219,10 @@ class Trainer(object):
 			self.optimizer = self.accelerator.prepare(self.optimizer)
 			
 		milestones = int(self.epochs / 3)
-		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[milestones, milestones*2], gamma=0.1)
+		self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
+			self.optimizer, milestones=[milestones, milestones*2],
+			gamma=0.1
+		)
 
 	def train_one_step(
 		self,
@@ -250,10 +256,10 @@ class Trainer(object):
 		并利用 :py:meth:`train_one_step` 训练。
 		"""
 
-		if self.accelerator is None and self.use_gpu:
+		if not self.accelerator and self.use_gpu:
 			self.model.cuda(device = self.device)
 
-		if self.use_early_stopping and self.tester is not None and self.save_path is not None:
+		if self.use_early_stopping and self.tester and self.save_path:
 			self.early_stopping = EarlyStopping(
 				save_path = os.path.split(self.save_path)[0],
 				patience = self.patience,
@@ -285,11 +291,12 @@ class Trainer(object):
 			timer.stop()
 			self.scheduler.step()
 
-			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
+			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and \
+					self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
 				print(f"[{self.model.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 				self.print_test("link_valid", epoch)
 			
-			if self.early_stopping is not None and self.early_stopping.early_stop:
+			if self.early_stopping and self.early_stopping.early_stop:
 				print(f"[{self.model.device}] Early stopping")
 				break
 			
@@ -298,8 +305,10 @@ class Trainer(object):
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
 				print(f"[{self.model.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 			
-			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
-				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + os.path.splitext(self.save_path)[-1])
+			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and \
+					self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
+				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + \
+							os.path.splitext(self.save_path)[-1])
 				self.get_model().save_checkpoint(path)
 				print(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 		
@@ -333,7 +342,7 @@ class Trainer(object):
 		elif sampling_mode == "link_valid":
 			mode = "val"
 
-		results = self.tester.run_link_prediction(accelerate=True if self.accelerator else False)
+		results = self.tester.run_link_prediction()
 		for key, value in results.items():
 			print(f"{key}: {value}")
 		if self.use_wandb:
