@@ -92,9 +92,9 @@ class Tester(object):
         :type model: pybind11_ke.module.model.Model
         :param data_loader: py:class:`pybind11_ke.data.KGEDataLoader`
         :type data_loader: pybind11_ke.data.KGEDataLoader
-        :param sampling_mode: 评估验证集还是测试集：'link_test' or 'link_valid'
+        :param sampling_mode: 评估验证集还是测试集：'**link_test**' or '**link_valid**'
         :type sampling_mode: str
-        :param prediction: 链接预测模式: 'all'、'head'、'tail'
+        :param prediction: 链接预测模式: '**all**'、'**head**'、'**tail**'
         :type prediction: str
         :param use_tqdm: 是否启用进度条
         :type use_tqdm: bool
@@ -110,9 +110,9 @@ class Tester(object):
         self.model: Model = model
         #: :py:class:`pybind11_ke.data.KGEDataLoader`
         self.data_loader: KGEDataLoader = data_loader
-        #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：**link_test** or **link_valid**
+        #: :py:class:`pybind11_ke.data.TestDataLoader` 负采样的方式：'**link_test**' or '**link_valid**'
         self.sampling_mode: str = sampling_mode
-        #: 链接预测模式: 'all'、'head'、'tail'
+        #: 链接预测模式: '**all**'、'**head**'、'**tail**'
         self.prediction: str = prediction
         #: 是否启用进度条
         self.use_tqdm: bool = use_tqdm
@@ -206,7 +206,7 @@ class Tester(object):
         
         """设置 :py:attr:`sampling_mode`
         
-        :param sampling_mode: 数据采样模式，``link_test`` 和 ``link_valid`` 分别表示为链接预测进行测试集和验证集的负采样
+        :param sampling_mode: 数据采样模式，'**link_test**' 和 '**link_valid**' 分别表示为链接预测进行测试集和验证集的负采样
         :type sampling_mode: str
         """
         
@@ -224,7 +224,7 @@ def link_predict(
     :type batch: dict[str, typing.Union[dgl.DGLGraph, torch.Tensor]]
     :param model: KGE 模型
     :type model: pybind11_ke.module.model.Model
-    :param prediction: "all", "head", "tail"
+    :param prediction: '**all**', '**head**', '**tail**'
     :type prediction: str
     :returns: 正确三元组的排名
     :rtype: tuple[torch.Tensor, ...]
