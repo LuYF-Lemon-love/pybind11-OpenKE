@@ -103,7 +103,7 @@ class Trainer(object):
 
 		:param model: 包装 KGE 模型的训练策略类
 		:type model: :py:class:`pybind11_ke.module.strategy.Strategy`
-		:param data_loader: DataLoader
+		:param data_loader: :py:class:`torch.utils.data.DataLoader`
 		:type data_loader: torch.utils.data.DataLoader
 		:param epochs: 训练轮次数
 		:type epochs: int
@@ -131,7 +131,7 @@ class Trainer(object):
 		:type save_path: str
 		:param use_early_stopping: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 		:type use_early_stopping: bool
-		:param metric: 早停使用的验证指标，可选值：'mr', 'mrr', 'hits@N'。默认值：'hits@10'
+		:param metric: 早停使用的验证指标，可选值：**'mr'**, **'mrr'**, **'hits@N'**, **'mr_type'**, **'mrr_type'**, **'hits@N_type'**。默认值：**'hits@10'**
 		:type metric: str
 		:param patience: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 		:type patience: int
@@ -182,7 +182,7 @@ class Trainer(object):
 
 		#: 是否启用早停，需要 :py:attr:`tester` 和 :py:attr:`save_path` 不为空
 		self.use_early_stopping: bool = use_early_stopping
-		#: 早停使用的验证指标，可选值：'mr', 'mrr', 'hits@N'。默认值：'hits@10'
+		#: 早停使用的验证指标，可选值：**'mr'**, **'mrr'**, **'hits@N'**, **'mr_type'**, **'mrr_type'**, **'hits@N_type'**。默认值：**'hits@10'**
 		self.metric: str = metric
 		#: :py:attr:`pybind11_ke.utils.EarlyStopping.patience` 参数，上次验证得分改善后等待多长时间。默认值：2
 		self.patience: int = patience
