@@ -306,7 +306,7 @@ class Trainer(object):
 			
 				if self.early_stopping and self.early_stopping.early_stop:
 					logger.info(f"[{self.model.device}] Send an early stopping signal")
-					self.accelerator.set_breakpoint()
+					self.accelerator.set_trigger()
 
 				if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
 
@@ -317,7 +317,7 @@ class Trainer(object):
 					self.get_model().save_checkpoint(path)
 					logger.info(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 
-			if self.accelerator.check_breakpoint():
+			if self.accelerator.check_trigger():
 				logger.info(f"[{self.model.device}] Early stopping")
 				break
 			
