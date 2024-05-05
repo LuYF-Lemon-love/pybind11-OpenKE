@@ -19,6 +19,9 @@ import numpy as np
 from tqdm import tqdm
 from ..module.model import Model
 from ..data import KGEDataLoader
+from accelerate.logging import get_logger
+
+logger = get_logger(__name__, log_level="DEBUG")
 
 class Tester(object):
 
@@ -141,7 +144,7 @@ class Tester(object):
         tmp = self.hits
         self.hits = new_hits
 
-        print(f"Hits@N 指标由 {tmp} 变为 {self.hits}")
+        logger.info(f"Hits@N 指标由 {tmp} 变为 {self.hits}")
 
     def to_var(
         self,

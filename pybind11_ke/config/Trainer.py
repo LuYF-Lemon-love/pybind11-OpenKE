@@ -24,6 +24,9 @@ from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
 from ..module.strategy import Strategy
 from accelerate import Accelerator
+from accelerate.logging import get_logger
+
+logger = get_logger(__name__, log_level="DEBUG")
 
 class Trainer(object):
 
@@ -267,7 +270,7 @@ class Trainer(object):
 
 		self.configure_optimizers()
 		
-		print(f"[{self.model.device}] Initialization completed, start model training.")
+		logger.info(f"[{self.model.device}] Initialization completed, start model training.")
 		
 		if self.use_wandb:
 			if not self.accelerator:
@@ -290,39 +293,53 @@ class Trainer(object):
 				res += loss
 			timer.stop()
 			self.scheduler.step()
-
-			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and \
-					self.valid_interval and self.tester and (epoch + 1) % self.valid_interval == 0:
-				print(f"[{self.model.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
-				self.print_test("link_valid", epoch)
 			
-			if self.early_stopping and self.early_stopping.early_stop:
-				print(f"[{self.model.device}] Early stopping")
+			if self.is_local_main_process():
+
+				if self.valid_interval and self.tester and \
+						(epoch + 1) % self.valid_interval == 0:
+					
+					if self.accelerator:
+						self.accelerator.wait_for_everyone()
+					logger.info(f"[{self.model.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
+					self.print_test("link_valid", epoch)
+			
+				if self.early_stopping and self.early_stopping.early_stop:
+					logger.info(f"[{self.model.device}] Send an early stopping signal")
+					self.accelerator.set_breakpoint()
+
+				if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
+
+					path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + \
+								os.path.splitext(self.save_path)[-1])
+					if self.accelerator:
+						self.accelerator.wait_for_everyone()
+					self.get_model().save_checkpoint(path)
+					logger.info(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+
+			if self.accelerator.check_breakpoint():
+				logger.info(f"[{self.model.device}] Early stopping")
 				break
 			
 			if self.log_interval and (epoch + 1) % self.log_interval == 0:
-				if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.use_wandb:
+				if self.is_local_main_process() and self.use_wandb:
 					wandb.log({"train/train_loss" : res, "train/epoch" : epoch + 1})
-				print(f"[{self.model.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
-			
-			if (self.model.device.index == 0 or self.model.device.type == 'cpu') and \
-					self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
-				path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + \
-							os.path.splitext(self.save_path)[-1])
-				self.get_model().save_checkpoint(path)
-				print(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
+				logger.info(f"[{self.model.device}] Epoch [{epoch+1:>4d}/{self.epochs:>4d}] | Batchsize: {self.data_loader.batch_size} | loss: {res:>9f} | {timer.avg():.5f} seconds/epoch")
 		
-		print(f"[{self.model.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
-		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.use_wandb:
-			wandb.log({"duration" : timer.sum()})
-		
-		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.save_path:
-			self.get_model().save_checkpoint(self.save_path)
-			print(f"[{self.model.device}] Model saved at {self.save_path}.")
-		
-		if (self.model.device.index == 0 or self.model.device.type == 'cpu') and self.test and self.tester:
-			print(f"[{self.model.device}] The model starts evaluating in the test set.")
-			self.print_test("link_test")
+		logger.info(f"[{self.model.device}] The model training is completed, taking a total of {timer.sum():.5f} seconds.")
+
+		if self.is_local_main_process():
+
+			if self.use_wandb:
+				wandb.log({"duration" : timer.sum()})
+
+			if self.save_path:
+				self.get_model().save_checkpoint(self.save_path)
+				logger.info(f"[{self.model.device}] Model saved at {self.save_path}.")
+
+			if self.test and self.tester:
+				logger.info(f"[{self.model.device}] The model starts evaluating in the test set.")
+				self.print_test("link_test")
 
 	def print_test(
 		self,
@@ -344,7 +361,7 @@ class Trainer(object):
 
 		results = self.tester.run_link_prediction()
 		for key, value in results.items():
-			print(f"{key}: {value}")
+			logger.info(f"{key}: {value}")
 		if self.use_wandb:
 			log_dict = {f"{mode}/{key}" : value for key, value in results.items()}
 			if sampling_mode == "link_valid":
@@ -380,12 +397,26 @@ class Trainer(object):
 
 	def get_model(self) -> Model:
 
-		"""返回原始的 KGE 模型"""
+		"""返回原始的 KGE 模型。
+		
+		:returns: KGE 模型
+		:rtype: :py:class:`pybind11_ke.module.model.Model`
+		"""
 
 		if self.accelerator:
 			return self.model.module.model
 		else:
 			return self.model.model
+		
+	def is_local_main_process(self) -> bool:
+
+		"""当前进程是否是主进程。
+		
+		:returns: 当前进程是否是主进程。
+		:rtype: bool
+		"""
+
+		return not self.accelerator or self.accelerator.is_local_main_process
 
 def get_trainer_hpo_config() -> dict[str, dict[str, typing.Any]]:
 

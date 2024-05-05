@@ -14,6 +14,9 @@ EarlyStopping - 使用早停止避免过拟合。
 import os
 import numpy as np
 from ..module.model import Model
+from accelerate.logging import get_logger
+
+logger = get_logger(__name__, log_level="DEBUG")
 
 class EarlyStopping:
 
@@ -67,7 +70,7 @@ class EarlyStopping:
        
         if score <= self.best_score + self.delta:
             self.counter += 1
-            print(f'EarlyStopping counter: {self.counter} / {self.patience}')
+            logger.info(f'EarlyStopping counter: {self.counter} / {self.patience}')
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
@@ -84,6 +87,6 @@ class EarlyStopping:
         """
         
         if self.verbose:
-            print(f'Validation score improved ({self.best_score:.6f} --> {score:.6f}).  Saving model ...')
+            logger.info(f'Validation score improved ({self.best_score:.6f} --> {score:.6f}).  Saving model ...')
         model.save_checkpoint(self.save_path)
         self.best_score = score

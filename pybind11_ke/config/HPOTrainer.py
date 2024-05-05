@@ -2,8 +2,8 @@
 #
 # pybind11_ke/config/HPOTrainer.py
 #
-# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 2, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2023
+# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 2, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 5, 2024
 #
 # 该脚本定义了并行训练循环函数.
 
@@ -19,6 +19,9 @@ from ..module.loss import MarginLoss
 from ..module.strategy import NegativeSampling
 from ..config import Trainer, Tester
 from ..data import KGEDataLoader
+from accelerate.logging import get_logger
+
+logger = get_logger(__name__, log_level="DEBUG")
 
 def set_hpo_config(
 	method: str = 'bayes',
@@ -92,7 +95,7 @@ def set_hpo_hits(
 	
 	tmp = Tester.hits
 	Tester.hits = new_hits
-	print(f"Hits@N 指标由 {tmp} 变为 {Tester.hits}")
+	logger.info(f"Hits@N 指标由 {tmp} 变为 {Tester.hits}")
 
 def start_hpo_train(
 	config: dict[str, dict[str, typing.Any]] | None = None,
