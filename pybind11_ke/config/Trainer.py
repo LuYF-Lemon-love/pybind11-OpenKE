@@ -3,7 +3,7 @@
 # pybind11_ke/config/Trainer.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Apr 28, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 6, 2024
 #
 # 该脚本定义了训练循环基类类.
 
@@ -24,9 +24,11 @@ from torch.utils.data import DataLoader
 from ..utils.EarlyStopping import EarlyStopping
 from ..module.strategy import Strategy
 from accelerate import Accelerator
-from accelerate.logging import get_logger
+import logging
 
-logger = get_logger(__name__, log_level="DEBUG")
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(levelname)s:%(module)s:%(asctime)s:%(message)s',
+					datefmt='%Y-%d-%m %H:%M:%S', level=logging.DEBUG)
 
 class Trainer(object):
 

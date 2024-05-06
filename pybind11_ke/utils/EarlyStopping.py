@@ -3,7 +3,7 @@
 # pybind11_ke/utils/EarlyStopping.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 5, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Feb 25, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 6, 2024
 #
 # 该脚本定义了 EarlyStopping 类.
 
@@ -14,9 +14,11 @@ EarlyStopping - 使用早停止避免过拟合。
 import os
 import numpy as np
 from ..module.model import Model
-from accelerate.logging import get_logger
+import logging
 
-logger = get_logger(__name__, log_level="DEBUG")
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(levelname)s:%(module)s:%(asctime)s:%(message)s',
+					datefmt='%Y-%d-%m %H:%M:%S', level=logging.DEBUG)
 
 class EarlyStopping:
 
