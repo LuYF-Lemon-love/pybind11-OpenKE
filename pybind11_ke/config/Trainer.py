@@ -300,9 +300,6 @@ class Trainer(object):
 
 				if self.valid_interval and self.tester and \
 						(epoch + 1) % self.valid_interval == 0:
-					
-					if self.accelerator:
-						self.accelerator.wait_for_everyone()
 					logger.info(f"[{self.model.device}] Epoch {epoch+1} | The model starts evaluation on the validation set.")
 					self.print_test("link_valid", epoch)
 			
@@ -311,11 +308,8 @@ class Trainer(object):
 					self.accelerator.set_trigger()
 
 				if self.save_interval and self.save_path and (epoch + 1) % self.save_interval == 0:
-
 					path = os.path.join(os.path.splitext(self.save_path)[0] + "-" + str(epoch+1) + \
 								os.path.splitext(self.save_path)[-1])
-					if self.accelerator:
-						self.accelerator.wait_for_everyone()
 					self.get_model().save_checkpoint(path)
 					logger.info(f"[{self.model.device}] Epoch {epoch+1} | Training checkpoint saved at {path}")
 
