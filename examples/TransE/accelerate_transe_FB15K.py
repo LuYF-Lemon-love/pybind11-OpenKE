@@ -119,3 +119,22 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 	log_interval = 100, save_interval = 100,
 	save_path = '../../checkpoint/transe.pth', delta = 0.01)
 trainer.run()
+
+######################################################################
+# --------------
+#
+
+######################################################################
+# 测试模型
+# -------------
+# 重新加载模型，将模型传入 :py:class:`pybind11_ke.config.Tester` 进行评估。
+#
+# pybind11-OpenKE 将训练循环包装成了 :py:class:`pybind11_ke.config.Trainer`，
+# 可以运行它的 :py:meth:`pybind11_ke.config.Trainer.run` 函数进行模型学习；
+# 也可以通过传入 :py:class:`pybind11_ke.config.Tester`，
+# 使得训练器能够在训练过程中评估模型。
+
+# test the model
+transe.load_checkpoint('../../checkpoint/transe.pth')
+tester = Tester(model = transe, data_loader=dataloader, use_gpu = True)
+tester.run_link_prediction()
