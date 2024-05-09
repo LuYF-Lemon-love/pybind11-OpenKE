@@ -79,8 +79,6 @@ class Tester(object):
         self,
         model: typing.Union[Model, None] = None,
         data_loader: KGEDataLoader | None = None,
-        val_dataloader: torch.utils.data.DataLoader | None = None,
-        test_dataloader: torch.utils.data.DataLoader | None = None,
         sampling_mode: str = 'link_test',
         prediction: str = "all",
         use_tqdm: bool = True,
@@ -120,9 +118,9 @@ class Tester(object):
         #: gpu，利用 ``device`` 构造的 :py:class:`torch.device` 对象
         self.device: torch.device = torch.device(device)
         #: 验证数据加载器。
-        self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader() if data_loader else val_dataloader
+        self.val_dataloader: torch.utils.data.DataLoader = self.data_loader.val_dataloader()
         #: 测试数据加载器。
-        self.test_dataloader: torch.utils.data.DataLoader = self.data_loader.test_dataloader() if data_loader else test_dataloader
+        self.test_dataloader: torch.utils.data.DataLoader = self.data_loader.test_dataloader()
         
         if self.use_gpu:
             self.model.cuda(device = self.device)
