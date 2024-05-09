@@ -3,7 +3,7 @@
 # pybind11_ke/module/loss/MarginLoss.py
 #
 # git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 4, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2024
 #
 # 该脚本定义了 margin-based ranking criterion 损失函数.
 
@@ -33,8 +33,8 @@ class MarginLoss(Loss):
 		
 		# define the model
 		transe = TransE(
-			ent_tol = dataloader.train_sampler.ent_tol,
-			rel_tol = dataloader.train_sampler.rel_tol,
+			ent_tol = dataloader.get_ent_tol(),
+			rel_tol = dataloader.get_rel_tol(),
 			dim = 50, 
 			p_norm = 1, 
 			norm_flag = True

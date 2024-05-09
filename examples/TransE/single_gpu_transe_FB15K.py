@@ -2,13 +2,19 @@
 **TransE-FB15K-single-gpu** ||
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K-single-gpu-hpo <single_gpu_transe_FB15K_hpo.html>`_ ||
-`TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
-`TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_ ||
+`TransE-FB15K-accelerate <accelerate_transe_FB15K.html>`_ ||
+`TransE-FB15K-accelerate-wandb <accelerate_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K237-single-gpu-wandb <single_gpu_transe_FB15K237_wandb.html>`_ ||
 `TransE-WN18RR-single-gpu-adv-wandb <single_gpu_transe_WN18_adv_sigmoidloss_wandb.html>`_
 
 TransE-FB15K-single-gpu
 ====================================================================
+
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2024
 
 这一部分介绍如何用一个 GPU 在 ``FB15k`` 知识图谱上训练 ``TransE`` :cite:`TransE`。
 
@@ -24,7 +30,7 @@ from pybind11_ke.module.strategy import NegativeSampling
 from pybind11_ke.config import Trainer, Tester
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
@@ -51,8 +57,8 @@ dataloader = KGEDataLoader(
 
 # define the model
 transe = TransE(
-	ent_tol = dataloader.train_sampler.ent_tol,
-	rel_tol = dataloader.train_sampler.rel_tol,
+	ent_tol = dataloader.get_ent_tol(),
+	rel_tol = dataloader.get_rel_tol(),
 	dim = 50, 
 	p_norm = 1, 
 	norm_flag = True

@@ -2,8 +2,8 @@
 #
 # pybind11_ke/module/strategy/NegativeSampling.py
 #
-# created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 29, 2024
+# git pull from OpenKE-PyTorch by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2024
 #
 # 该脚本定义了平移模型和语义匹配模型的训练策略.
 
@@ -30,8 +30,8 @@ class NegativeSampling(Strategy):
 		
 		# define the model
 		transe = TransE(
-			ent_tol = dataloader.train_sampler.ent_tol,
-			rel_tol = dataloader.train_sampler.rel_tol,
+			ent_tol = dataloader.get_ent_tol(),
+			rel_tol = dataloader.get_rel_tol(),
 			dim = 50, 
 			p_norm = 1, 
 			norm_flag = True
