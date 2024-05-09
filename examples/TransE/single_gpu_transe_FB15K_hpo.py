@@ -2,13 +2,19 @@
 `TransE-FB15K-single-gpu <single_gpu_transe_FB15K.html>`_ ||
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
 **TransE-FB15K-single-gpu-hpo** ||
-`TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
-`TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_ ||
+`TransE-FB15K-accelerate <accelerate_transe_FB15K.html>`_ ||
+`TransE-FB15K-accelerate-wandb <accelerate_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K237-single-gpu-wandb <single_gpu_transe_FB15K237_wandb.html>`_ ||
 `TransE-WN18RR-single-gpu-adv-wandb <single_gpu_transe_WN18_adv_sigmoidloss_wandb.html>`_
 
 TransE-FB15K-single-gpu-hpo
 ====================================================================
+
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 9, 2024
 
 这一部分介绍如何用一个 GPU 在 ``FB15k`` 知识图谱上寻找 ``TransE`` :cite:`TransE` 的超参数。
 
