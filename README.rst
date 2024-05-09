@@ -1,4 +1,4 @@
-.. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@pybind11-OpenKE-PyTorch/docs/_static/logo-best.svg
+.. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@main/docs/_static/logo-best.svg
     :alt: pybind11-OpenKE logo
 
 pybind11-OpenKE — 知识图谱嵌入工具包
@@ -8,25 +8,28 @@ pybind11-OpenKE — 知识图谱嵌入工具包
     :target: https://pybind11-openke.readthedocs.io/zh_CN/latest/?badge=latest
     :alt: Documentation Status
 
-基于 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 开发的知识图谱嵌入工具包，能够运行在 Windows 和 Linux 操作系统上。
+基于 `OpenKE-PyTorch <https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch>`__ 开发的知识图谱嵌入工具包，支持跨平台运行，具备自动超参数搜索、高效并行训练以及实验结果记录功能，为研究与应用提供强大助力。
 
 教程和 API 参考文档可以访问 
 `pybind11-openke.readthedocs.io <https://pybind11-openke.readthedocs.io/zh_CN/latest/>`_。
 源代码可以访问 `github.com/LuYF-Lemon-love/pybind11-OpenKE <https://github.com/LuYF-Lemon-love/pybind11-OpenKE>`_。
 
-📁 `pybind11_ke/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/pybind11_ke/>`_
+📁 `pybind11_ke/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/main/pybind11_ke/>`_
     pybind11-OpenKE 源代码保存在 ``pybind11_ke/``。
 
-📚 `docs/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/docs/>`_
+📚 `docs/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/main/docs/>`_
     所有的文档源文件保存在 ``docs/``。 所有的 ``*.rst`` 构成了文档中的各个部分。
 
-🌰 `examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/examples/>`_
+🌰 `examples/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/main/examples/>`_
     pybind11-OpenKE 的例子保存在 ``examples/``，修改自 ``OpenKE-PyTorch``。
 
-💡 `benchmarks/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/>`_
+📍 `logs/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/main/logs/>`_
+    pybind11-OpenKE 的例子运行日志保存在 ``logs/``。
+
+💡 `benchmarks/ <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/main/benchmarks/>`_
     常用的知识图谱保存在 ``benchmarks/``。
 
-📜 `README.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/README.rst>`_
+📜 `README.rst <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/main/README.rst>`_
     项目主页。
     
 ⁉️ Questions / comments
