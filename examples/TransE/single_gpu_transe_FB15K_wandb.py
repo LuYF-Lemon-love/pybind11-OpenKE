@@ -140,11 +140,7 @@ trainer.run()
 wandb_logger.finish()
 
 ######################################################################
-# .. figure:: /_static/pdfs/examples/TransE/TransE单卡训练示例（一）.pdf
-#      :align: center
-#      :height: 300
-#
-#      训练过程中损失值的变化
+# 上述代码的运行报告可以从`此处 </_static/pdfs/examples/TransE/TransE单卡训练示例（一）.pdf>`_下载。
 
 ######################################################################
 # --------------
