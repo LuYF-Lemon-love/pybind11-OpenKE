@@ -80,7 +80,7 @@ class Trainer(object):
 	def __init__(
 		self,
 		model: NegativeSampling | RGCNSampling | CompGCNSampling | None = None,
-		data_loader: typing.Union[DataLoader, None] = None,
+		data_loader: DataLoader = None,
 		epochs: int = 1000,
 		lr: float = 0.5,
 		opt_method: str = "Adam",
