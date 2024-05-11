@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "上传 TransE-FB15K-accelerate-wandb 示例报告"
+git commit -m "执行 TransE-FB15K237-single-gpu-wandb 示例"
 git push

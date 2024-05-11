@@ -2,13 +2,19 @@
 `TransE-FB15K-single-gpu <single_gpu_transe_FB15K.html>`_ ||
 `TransE-FB15K-single-gpu-wandb <single_gpu_transe_FB15K_wandb.html>`_ ||
 `TransE-FB15K-single-gpu-hpo <single_gpu_transe_FB15K_hpo.html>`_ ||
-`TransE-FB15K-multigpu <multigpu_transe_FB15K.html>`_ ||
-`TransE-FB15K-multigpu-wandb <multigpu_transe_FB15K_wandb.html>`_ ||
+`TransE-FB15K-accelerate <accelerate_transe_FB15K.html>`_ ||
+`TransE-FB15K-accelerate-wandb <accelerate_transe_FB15K_wandb.html>`_ ||
 **TransE-FB15K237-single-gpu-wandb** ||
 `TransE-WN18RR-single-gpu-adv-wandb <single_gpu_transe_WN18_adv_sigmoidloss_wandb.html>`_
 
 TransE-FB15K237-single-gpu-wandb
 ====================================================================
+
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 11, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 11, 2024
 
 这一部分介绍如何用一个 GPU 在 ``FB15K237`` 知识图谱上训练 ``TransE`` :cite:`TransE`，使用 ``wandb`` 记录实验结果。
 
@@ -55,7 +61,7 @@ wandb_logger = WandbLogger(
 config = wandb_logger.config
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
@@ -131,35 +137,3 @@ trainer.run()
 
 # close your wandb run
 wandb_logger.finish()
-
-######################################################################
-# .. figure:: /_static/images/examples/TransE/TransE-FB15K237-Loss.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中损失值的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/TransE/TransE-FB15K237-MR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/TransE/TransE-FB15K237-MRR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MRR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/TransE/TransE-FB15K237-Hit.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
-
-######################################################################
-# --------------
-#
