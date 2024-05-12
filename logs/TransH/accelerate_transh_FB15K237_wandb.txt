@@ -1,0 +1,35 @@
+Using RTX 4000 series which doesn't support faster communication speedups. Ensuring P2P and IB communications are disabled.
+DEBUG:cmd:2024-12-05 18:50:19:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-12-05 18:50:19:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-12-05 18:50:19:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-12-05 18:50:19:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-12-05 18:50:19:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-12-05 18:50:20:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-12-05 18:50:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-12-05 18:50:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-12-05 18:50:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:connectionpool:2024-12-05 18:50:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:cmd:2024-12-05 18:50:20:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-12-05 18:50:20:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/TransH/wandb/run-20240512_185020-q2t7lym7
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run TransH-FB15K237-multi
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/q2t7lym7
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/TransH/wandb/run-20240512_185020-x9qosnku
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run TransH-FB15K237-multi
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/x9qosnku
+INFO:distributed_c10d:2024-12-05 18:50:27:Added key: store_based_barrier_key:1 to store for rank: 1
+INFO:distributed_c10d:2024-12-05 18:50:28:Added key: store_based_barrier_key:1 to store for rank: 0
+INFO:distributed_c10d:2024-12-05 18:50:28:Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
+INFO:distributed_c10d:2024-12-05 18:50:28:Rank 1: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
+INFO:Trainer:2024-12-05 18:50:29:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-12-05 18:50:29:[cuda:1] Initialization completed, start model training.
+INFO:distributed:2024-12-05 18:50:31:Reducer buckets have been rebuilt in this iteration.
+INFO:distributed:2024-12-05 18:50:31:Reducer buckets have been rebuilt in this iteration.

@@ -3,7 +3,7 @@
 `TransH-FB15K237-single-gpu-wandb <single_gpu_transh_FB15K237_wandb.html>`_ ||
 `TransH-FB15K237-single-gpu-hpo <single_gpu_transh_FB15K237_hpo.html>`_ ||
 **TransH-FB15K237-accelerate** ||
-`TransH-FB15K-multigpu-wandb <multigpu_transh_FB15K237_wandb.html>`_
+`TransH-FB15K237-accelerate-wandb <accelerate_transh_FB15K237_wandb.html>`_
 
 TransH-FB15K237-accelerate
 =====================================================
@@ -31,8 +31,7 @@ TransH-FB15K237-accelerate
 
 导入数据
 -----------------
-pybind11-OpenKE 有两个工具用于导入数据: :py:class:`pybind11_ke.data.TrainDataLoader` 和
-:py:class:`pybind11_ke.data.TestDataLoader`。
+pybind11-OpenKE 有 1 个工具用于导入数据: :py:class:`pybind11_ke.data.KGEDataLoader`。
 """
 
 from pybind11_ke.data import KGEDataLoader, BernSampler, TradTestSampler
@@ -43,8 +42,8 @@ from pybind11_ke.config import accelerator_prepare
 from pybind11_ke.config import Trainer, Tester
 
 ######################################################################
-# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
-# :py:class:`pybind11_ke.data.TrainDataLoader` 包含 ``in_path`` 用于传递数据集目录。
+# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
 dataloader = KGEDataLoader(
