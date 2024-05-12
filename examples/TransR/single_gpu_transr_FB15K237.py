@@ -117,7 +117,8 @@ parameters = transe.get_parameters()
 transe.save_parameters("../../checkpoint/transr_transe.json")
 
 # test the transr
-tester = Tester(model = transr, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
+tester = Tester(model = transr, data_loader = dataloader, use_tqdm = False,
+                use_gpu = True, device = 'cuda:0')
 
 # train transr
 transr.set_parameters(parameters)
