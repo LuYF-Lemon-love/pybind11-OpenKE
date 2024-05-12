@@ -1,0 +1,3 @@
+INFO:Trainer:2024-12-05 20:34:26:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-12-05 20:34:29:[cuda:0] The model training is completed, taking a total of 2.94897 seconds.
+INFO:Trainer:2024-12-05 20:34:30:[cuda:0] Initialization completed, start model training.
