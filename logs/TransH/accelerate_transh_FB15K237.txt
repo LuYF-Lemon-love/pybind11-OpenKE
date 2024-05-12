@@ -1,81 +1,9 @@
 Using RTX 4000 series which doesn't support faster communication speedups. Ensuring P2P and IB communications are disabled.
-INFO:distributed_c10d:2024-12-05 15:40:56:Added key: store_based_barrier_key:1 to store for rank: 0
-INFO:distributed_c10d:2024-12-05 15:40:56:Added key: store_based_barrier_key:1 to store for rank: 1
-INFO:distributed_c10d:2024-12-05 15:40:56:Rank 1: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
-INFO:distributed_c10d:2024-12-05 15:40:56:Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
-INFO:Trainer:2024-12-05 15:40:57:[cuda:0] Initialization completed, start model training.
-INFO:Trainer:2024-12-05 15:40:57:[cuda:1] Initialization completed, start model training.
-INFO:distributed:2024-12-05 15:40:59:Reducer buckets have been rebuilt in this iteration.
-INFO:distributed:2024-12-05 15:40:59:Reducer buckets have been rebuilt in this iteration.
-INFO:Trainer:2024-12-05 15:46:40:[cuda:0] Epoch 100 | The model starts evaluation on the validation set.
-  0%|          | 0/69 [00:00<?, ?it/s]  1%|▏         | 1/69 [00:00<00:45,  1.49it/s]  1%|▏         | 1/69 [00:00<00:45,  1.49it/s]
-Traceback (most recent call last):
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/examples/TransH/accelerate_transh_FB15K237.py", line 126, in <module>
-    trainer.run()
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/pybind11_ke/config/Trainer.py", line 304, in run
-    self.print_test("link_valid", epoch)
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/pybind11_ke/config/Trainer.py", line 361, in print_test
-    results = self.tester.run_link_prediction()
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/pybind11_ke/config/Tester.py", line 184, in run_link_prediction
-    for data in training_range:
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
-    for obj in iterable:
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 634, in __next__
-    data = self._next_data()
-           ^^^^^^^^^^^^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1326, in _next_data
-    return self._process_data(data)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1372, in _process_data
-    data.reraise()
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/_utils.py", line 644, in reraise
-    raise exception
-IndexError: Caught IndexError in DataLoader worker process 1.
-Original Traceback (most recent call last):
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
-    data = fetcher.fetch(index)
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
-    return self.collate_fn(data)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/pybind11_ke/data/TradTestSampler.py", line 78, in sampling
-    head_label_type[idx][self.rel_heads[rel]] = 0.0
-    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
-IndexError: only integers, slices (`:`), ellipsis (`...`), None and long or byte Variables are valid indices (got set)
-
-WARNING:torch.distributed.elastic.multiprocessing.api:Sending process 791048 closing signal SIGTERM
-ERROR:torch.distributed.elastic.multiprocessing.api:failed (exitcode: 1) local_rank: 0 (pid: 791047) of binary: /home/luyanfeng/my_code/github/pybind11-OpenKE/env/bin/python
-Traceback (most recent call last):
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/bin/accelerate", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/accelerate/commands/accelerate_cli.py", line 46, in main
-    args.func(args)
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/accelerate/commands/launch.py", line 1073, in launch_command
-    multi_gpu_launcher(args)
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/accelerate/commands/launch.py", line 718, in multi_gpu_launcher
-    distrib_run.run(args)
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/distributed/run.py", line 785, in run
-    elastic_launch(
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
-    return launch_agent(self._config, self._entrypoint, list(args))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/luyanfeng/my_code/github/pybind11-OpenKE/env/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 250, in launch_agent
-    raise ChildFailedError(
-torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
-============================================================
-accelerate_transh_FB15K237.py FAILED
-------------------------------------------------------------
-Failures:
-  <NO_OTHER_FAILURES>
-------------------------------------------------------------
-Root Cause (first observed failure):
-[0]:
-  time      : 2024-05-12_15:46:42
-  host      : star-Super-Server
-  rank      : 0 (local_rank: 0)
-  exitcode  : 1 (pid: 791047)
-  error_file: <N/A>
-  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
-============================================================
+INFO:distributed_c10d:2024-12-05 16:58:22:Added key: store_based_barrier_key:1 to store for rank: 1
+INFO:distributed_c10d:2024-12-05 16:58:23:Added key: store_based_barrier_key:1 to store for rank: 0
+INFO:distributed_c10d:2024-12-05 16:58:23:Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
+INFO:distributed_c10d:2024-12-05 16:58:23:Rank 1: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
+INFO:Trainer:2024-12-05 16:58:24:[cuda:1] Initialization completed, start model training.
+INFO:Trainer:2024-12-05 16:58:24:[cuda:0] Initialization completed, start model training.
+INFO:distributed:2024-12-05 16:58:26:Reducer buckets have been rebuilt in this iteration.
+INFO:distributed:2024-12-05 16:58:26:Reducer buckets have been rebuilt in this iteration.
