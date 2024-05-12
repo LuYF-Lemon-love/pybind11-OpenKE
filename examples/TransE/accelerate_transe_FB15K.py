@@ -71,8 +71,8 @@ dataloader = KGEDataLoader(
 
 # define the model
 transe = TransE(
-	ent_tol = dataloader.train_sampler.ent_tol,
-	rel_tol = dataloader.train_sampler.rel_tol,
+	ent_tol = dataloader.get_ent_tol(),
+	rel_tol = dataloader.get_rel_tol(),
 	dim = 50, 
 	p_norm = 1, 
 	norm_flag = True

@@ -2,7 +2,7 @@
 **TransH-FB15K237-single-gpu** ||
 `TransH-FB15K237-single-gpu-wandb <single_gpu_transh_FB15K237_wandb.html>`_ ||
 `TransH-FB15K237-single-gpu-hpo <single_gpu_transh_FB15K237_hpo.html>`_ ||
-`TransH-FB15K237-multigpu <multigpu_transh_FB15K237.html>`_ ||
+`TransH-FB15K237-accelerate <accelerate_transh_FB15K237.html>`_ ||
 `TransH-FB15K-multigpu-wandb <multigpu_transh_FB15K237_wandb.html>`_
 
 TransH-FB15K237-single-gpu
