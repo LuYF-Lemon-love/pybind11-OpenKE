@@ -126,8 +126,3 @@ trainer = Trainer(model = model_r, data_loader = dataloader.train_dataloader(),
 	tester = tester, test = True, valid_interval = 100,
 	log_interval = 100, save_interval = 100, save_path = '../../checkpoint/transr.pth')
 trainer.run()
-
-# test the model
-transr.load_checkpoint('../../checkpoint/transr.pth')
-tester.set_sampling_mode("link_test")
-tester.run_link_prediction()
