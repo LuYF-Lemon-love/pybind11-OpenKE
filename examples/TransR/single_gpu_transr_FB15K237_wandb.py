@@ -7,6 +7,12 @@
 TransR-FB15K237-single-gpu-wandb
 =====================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 13, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 13, 2024
+
 这一部分介绍如何用一个 GPU 在 FB15K237 知识图谱上训练 ``TransR`` :cite:`TransR`，使用 ``wandb`` 记录实验结果。
 
 导入数据
@@ -59,7 +65,7 @@ wandb_logger = WandbLogger(
 config = wandb_logger.config
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。 
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。 
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
@@ -150,7 +156,8 @@ parameters = transe.get_parameters()
 transe.save_parameters("../../checkpoint/transr_transe.json")
 
 # test the transr
-tester = Tester(model = transr, data_loader = dataloader, use_gpu = config.use_gpu, device = config.device)
+tester = Tester(model = transr, data_loader = dataloader, use_tqdm = False,
+                use_gpu = config.use_gpu, device = config.device)
 
 # train transr
 transr.set_parameters(parameters)
@@ -161,11 +168,6 @@ trainer = Trainer(model = model_r, data_loader = dataloader.train_dataloader(),
 	log_interval = config.log_interval, save_interval = config.save_interval,
 	save_path = config.save_path, use_wandb = True)
 trainer.run()
-
-# test the model
-transr.load_checkpoint('../../checkpoint/transr.pth')
-tester.set_sampling_mode("link_test")
-tester.run_link_prediction()
 
 ######################################################################
 # .. figure:: /_static/images/examples/TransR/TransR-FB15K237-Loss.png
