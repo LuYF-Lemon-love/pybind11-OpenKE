@@ -7,6 +7,12 @@
 TransR-FB15K237-single-gpu-hpo
 ====================================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 13, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 13, 2024
+
 这一部分介绍如何用一个 GPU 在 ``FB15K237`` 知识图谱上寻找 ``TransR`` :cite:`TransR` 的超参数。
 
 定义训练数据加载器超参数优化范围
