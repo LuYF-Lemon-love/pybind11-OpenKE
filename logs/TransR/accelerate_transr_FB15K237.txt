@@ -1,0 +1,13 @@
+Using RTX 4000 series which doesn't support faster communication speedups. Ensuring P2P and IB communications are disabled.
+INFO:Trainer:2024-13-05 20:36:03:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-13-05 20:36:04:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-13-05 20:36:06:[cuda:0] The model training is completed, taking a total of 3.43352 seconds.
+INFO:distributed_c10d:2024-13-05 20:36:07:Added key: store_based_barrier_key:1 to store for rank: 0
+INFO:Trainer:2024-13-05 20:36:08:[cuda:0] The model training is completed, taking a total of 3.42585 seconds.
+INFO:distributed_c10d:2024-13-05 20:36:09:Added key: store_based_barrier_key:1 to store for rank: 1
+INFO:distributed_c10d:2024-13-05 20:36:09:Rank 1: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
+INFO:distributed_c10d:2024-13-05 20:36:09:Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 2 nodes.
+INFO:Trainer:2024-13-05 20:36:10:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-13-05 20:36:10:[cuda:1] Initialization completed, start model training.
+INFO:distributed:2024-13-05 20:36:12:Reducer buckets have been rebuilt in this iteration.
+INFO:distributed:2024-13-05 20:36:12:Reducer buckets have been rebuilt in this iteration.

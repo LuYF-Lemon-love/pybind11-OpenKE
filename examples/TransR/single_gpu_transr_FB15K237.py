@@ -2,7 +2,7 @@
 **TransR-FB15K237-single-gpu** ||
 `TransR-FB15K237-single-gpu-wandb <single_gpu_transr_FB15K237_wandb.html>`_ ||
 `TransR-FB15K237-single-gpu-hpo <single_gpu_transr_FB15K237_hpo.html>`_ ||
-`TransR-FB15K237-multigpu <multigpu_transr_FB15K237.html>`_
+`TransR-FB15K237-accelerate <accelerate_transr_FB15K237.html>`_
 
 TransR-FB15K237-single-gpu
 =====================================================
