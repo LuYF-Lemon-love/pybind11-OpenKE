@@ -1,0 +1,172 @@
+DEBUG:cmd:2024-13-05 12:42:36:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-13-05 12:42:36:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-13-05 12:42:36:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-13-05 12:42:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-13-05 12:42:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:cmd:2024-13-05 12:42:38:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/TransR/wandb/run-20240513_124238-i0dw4z0f
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run TransR-FB15K237
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/i0dw4z0f
+INFO:Trainer:2024-13-05 12:42:49:[cuda:0] Initialization completed, start model training.
+wandb: Network error (TransientError), entering retry loop.
+INFO:Trainer:2024-13-05 12:42:51:[cuda:0] The model training is completed, taking a total of 2.80103 seconds.
+INFO:Trainer:2024-13-05 12:42:53:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-13-05 12:51:38:[cuda:0] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-13-05 12:52:30:mr: 309.743
+INFO:Trainer:2024-13-05 12:52:30:mrr: 0.297
+INFO:Trainer:2024-13-05 12:52:30:hits@1: 0.208
+INFO:Trainer:2024-13-05 12:52:30:hits@3: 0.329
+INFO:Trainer:2024-13-05 12:52:30:hits@10: 0.475
+INFO:Trainer:2024-13-05 12:52:30:mr_type: 123.27
+INFO:Trainer:2024-13-05 12:52:30:mrr_type: 0.331
+INFO:Trainer:2024-13-05 12:52:30:hits@1_type: 0.239
+INFO:Trainer:2024-13-05 12:52:30:hits@3_type: 0.363
+INFO:Trainer:2024-13-05 12:52:30:hits@10_type: 0.513
+INFO:EarlyStopping:2024-13-05 12:52:30:Validation score improved (-inf --> 0.475000).  Saving model ...
+INFO:Trainer:2024-13-05 12:52:30:[cuda:0] Epoch 100 | Training checkpoint saved at ../../checkpoint/transr-100.pth
+INFO:Trainer:2024-13-05 12:52:30:[cuda:0] Epoch [ 100/1000] | Batchsize: 2048 | loss:  1.747092 | 5.25230 seconds/epoch
+INFO:Trainer:2024-13-05 13:01:17:[cuda:0] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-13-05 13:02:07:mr: 356.507
+INFO:Trainer:2024-13-05 13:02:07:mrr: 0.304
+INFO:Trainer:2024-13-05 13:02:07:hits@1: 0.215
+INFO:Trainer:2024-13-05 13:02:07:hits@3: 0.337
+INFO:Trainer:2024-13-05 13:02:07:hits@10: 0.482
+INFO:Trainer:2024-13-05 13:02:07:mr_type: 120.118
+INFO:Trainer:2024-13-05 13:02:07:mrr_type: 0.34
+INFO:Trainer:2024-13-05 13:02:07:hits@1_type: 0.248
+INFO:Trainer:2024-13-05 13:02:07:hits@3_type: 0.372
+INFO:Trainer:2024-13-05 13:02:07:hits@10_type: 0.524
+INFO:EarlyStopping:2024-13-05 13:02:07:Validation score improved (0.475000 --> 0.482000).  Saving model ...
+INFO:Trainer:2024-13-05 13:02:07:[cuda:0] Epoch 200 | Training checkpoint saved at ../../checkpoint/transr-200.pth
+INFO:Trainer:2024-13-05 13:02:07:[cuda:0] Epoch [ 200/1000] | Batchsize: 2048 | loss:  1.279602 | 5.51924 seconds/epoch
+INFO:Trainer:2024-13-05 13:10:52:[cuda:0] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-13-05 13:11:42:mr: 397.568
+INFO:Trainer:2024-13-05 13:11:42:mrr: 0.307
+INFO:Trainer:2024-13-05 13:11:42:hits@1: 0.219
+INFO:Trainer:2024-13-05 13:11:42:hits@3: 0.339
+INFO:Trainer:2024-13-05 13:11:42:hits@10: 0.484
+INFO:Trainer:2024-13-05 13:11:42:mr_type: 119.829
+INFO:Trainer:2024-13-05 13:11:42:mrr_type: 0.344
+INFO:Trainer:2024-13-05 13:11:42:hits@1_type: 0.253
+INFO:Trainer:2024-13-05 13:11:42:hits@3_type: 0.375
+INFO:Trainer:2024-13-05 13:11:42:hits@10_type: 0.526
+INFO:EarlyStopping:2024-13-05 13:11:42:Validation score improved (0.482000 --> 0.484000).  Saving model ...
+INFO:Trainer:2024-13-05 13:11:42:[cuda:0] Epoch 300 | Training checkpoint saved at ../../checkpoint/transr-300.pth
+INFO:Trainer:2024-13-05 13:11:42:[cuda:0] Epoch [ 300/1000] | Batchsize: 2048 | loss:  1.060465 | 5.59595 seconds/epoch
+INFO:Trainer:2024-13-05 13:20:30:[cuda:0] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-13-05 13:21:21:mr: 417.456
+INFO:Trainer:2024-13-05 13:21:21:mrr: 0.309
+INFO:Trainer:2024-13-05 13:21:21:hits@1: 0.22
+INFO:Trainer:2024-13-05 13:21:21:hits@3: 0.342
+INFO:Trainer:2024-13-05 13:21:21:hits@10: 0.487
+INFO:Trainer:2024-13-05 13:21:21:mr_type: 118.67
+INFO:Trainer:2024-13-05 13:21:21:mrr_type: 0.346
+INFO:Trainer:2024-13-05 13:21:21:hits@1_type: 0.254
+INFO:Trainer:2024-13-05 13:21:21:hits@3_type: 0.38
+INFO:Trainer:2024-13-05 13:21:21:hits@10_type: 0.53
+INFO:EarlyStopping:2024-13-05 13:21:21:Validation score improved (0.484000 --> 0.487000).  Saving model ...
+INFO:Trainer:2024-13-05 13:21:21:[cuda:0] Epoch 400 | Training checkpoint saved at ../../checkpoint/transr-400.pth
+INFO:Trainer:2024-13-05 13:21:21:[cuda:0] Epoch [ 400/1000] | Batchsize: 2048 | loss:  0.925178 | 5.64320 seconds/epoch
+INFO:Trainer:2024-13-05 13:30:10:[cuda:0] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-13-05 13:31:00:mr: 425.662
+INFO:Trainer:2024-13-05 13:31:00:mrr: 0.309
+INFO:Trainer:2024-13-05 13:31:00:hits@1: 0.221
+INFO:Trainer:2024-13-05 13:31:00:hits@3: 0.343
+INFO:Trainer:2024-13-05 13:31:00:hits@10: 0.486
+INFO:Trainer:2024-13-05 13:31:00:mr_type: 118.646
+INFO:Trainer:2024-13-05 13:31:00:mrr_type: 0.346
+INFO:Trainer:2024-13-05 13:31:00:hits@1_type: 0.254
+INFO:Trainer:2024-13-05 13:31:00:hits@3_type: 0.38
+INFO:Trainer:2024-13-05 13:31:00:hits@10_type: 0.529
+INFO:EarlyStopping:2024-13-05 13:31:00:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-13-05 13:31:00:[cuda:0] Epoch 500 | Training checkpoint saved at ../../checkpoint/transr-500.pth
+INFO:Trainer:2024-13-05 13:31:00:[cuda:0] Epoch [ 500/1000] | Batchsize: 2048 | loss:  0.914159 | 5.67373 seconds/epoch
+INFO:Trainer:2024-13-05 13:39:48:[cuda:0] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-13-05 13:40:38:mr: 432.2
+INFO:Trainer:2024-13-05 13:40:38:mrr: 0.309
+INFO:Trainer:2024-13-05 13:40:38:hits@1: 0.221
+INFO:Trainer:2024-13-05 13:40:38:hits@3: 0.342
+INFO:Trainer:2024-13-05 13:40:38:hits@10: 0.487
+INFO:Trainer:2024-13-05 13:40:38:mr_type: 118.869
+INFO:Trainer:2024-13-05 13:40:38:mrr_type: 0.346
+INFO:Trainer:2024-13-05 13:40:38:hits@1_type: 0.255
+INFO:Trainer:2024-13-05 13:40:38:hits@3_type: 0.38
+INFO:Trainer:2024-13-05 13:40:38:hits@10_type: 0.53
+INFO:EarlyStopping:2024-13-05 13:40:38:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-13-05 13:40:38:[cuda:0] Send an early stopping signal
+INFO:Trainer:2024-13-05 13:40:38:[cuda:0] The model training is completed, taking a total of 3415.11504 seconds.
+INFO:Trainer:2024-13-05 13:40:39:[cuda:0] Model saved at ../../checkpoint/transr.pth.
+INFO:Trainer:2024-13-05 13:40:39:[cuda:0] The model starts evaluating in the test set.
+INFO:Trainer:2024-13-05 13:41:37:mr: 445.449
+INFO:Trainer:2024-13-05 13:41:37:mrr: 0.302
+INFO:Trainer:2024-13-05 13:41:37:hits@1: 0.212
+INFO:Trainer:2024-13-05 13:41:37:hits@3: 0.337
+INFO:Trainer:2024-13-05 13:41:37:hits@10: 0.48
+INFO:Trainer:2024-13-05 13:41:37:mr_type: 123.652
+INFO:Trainer:2024-13-05 13:41:37:mrr_type: 0.338
+INFO:Trainer:2024-13-05 13:41:37:hits@1_type: 0.244
+INFO:Trainer:2024-13-05 13:41:37:hits@3_type: 0.374
+INFO:Trainer:2024-13-05 13:41:37:hits@10_type: 0.523
+wandb: - 0.025 MB of 0.025 MB uploadedwandb: \ 0.025 MB of 0.040 MB uploadedwandb: | 0.032 MB of 0.040 MB uploadedwandb: / 0.040 MB of 0.040 MB uploadedwandb: - 0.040 MB of 0.040 MB uploadedwandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▃▅▆█
+wandb:  train/train_loss █▄▂▁▁
+wandb:         val/epoch ▁▂▄▅▇█
+wandb:        val/hits@1 ▁▅▇▇██
+wandb:       val/hits@10 ▁▅▆█▇█
+wandb:  val/hits@10_type ▁▆▆███
+wandb:   val/hits@1_type ▁▅▇███
+wandb:        val/hits@3 ▁▅▆███
+wandb:   val/hits@3_type ▁▅▆███
+wandb:            val/mr ▁▄▆▇██
+wandb:       val/mr_type █▃▃▁▁▁
+wandb:           val/mrr ▁▅▇███
+wandb:      val/mrr_type ▁▅▇███
+wandb: 
+wandb: Run summary:
+wandb:          duration 3415.11504
+wandb:       test/hits@1 0.212
+wandb:      test/hits@10 0.48
+wandb: test/hits@10_type 0.523
+wandb:  test/hits@1_type 0.244
+wandb:       test/hits@3 0.337
+wandb:  test/hits@3_type 0.374
+wandb:           test/mr 445.449
+wandb:      test/mr_type 123.652
+wandb:          test/mrr 0.302
+wandb:     test/mrr_type 0.338
+wandb:       train/epoch 500
+wandb:  train/train_loss 0.91416
+wandb:         val/epoch 599
+wandb:        val/hits@1 0.221
+wandb:       val/hits@10 0.487
+wandb:  val/hits@10_type 0.53
+wandb:   val/hits@1_type 0.255
+wandb:        val/hits@3 0.342
+wandb:   val/hits@3_type 0.38
+wandb:            val/mr 432.2
+wandb:       val/mr_type 118.869
+wandb:           val/mrr 0.309
+wandb:      val/mrr_type 0.346
+wandb: 
+wandb: 🚀 View run TransR-FB15K237 at: https://wandb.ai/3555028709/pybind11-ke/runs/i0dw4z0f
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240513_124238-i0dw4z0f/logs
+DEBUG:connectionpool:2024-13-05 13:41:51:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-13-05 13:41:53:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
