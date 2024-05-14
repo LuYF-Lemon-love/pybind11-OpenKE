@@ -29,5 +29,5 @@ Linux
 
 .. prompt:: bash
 
-    cd experiments/TransE/
+    cd examples/TransE/
     python single_gpu_transe_FB15K.py
