@@ -146,6 +146,7 @@ trainer.run()
 wandb_logger.finish()
 
 ######################################################################
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransE/single_gpu_transe_WN18_adv_sigmoidloss_wandb.txt>`_ 下载。
 # .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/TransE/TransE单卡训练示例（三）.pdf>`_ 下载。
 
 ######################################################################

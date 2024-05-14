@@ -105,3 +105,10 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 	log_interval = 100, save_interval = 100,
 	save_path = '../../checkpoint/transe.pth', delta = 0.01)
 trainer.run()
+
+######################################################################
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransE/single_gpu_transe_FB15K.txt>`_ 下载。
+
+######################################################################
+# --------------
+#

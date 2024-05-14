@@ -138,6 +138,7 @@ trainer.run()
 wandb_logger.finish()
 
 ######################################################################
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransH/single_gpu_transh_FB15K237_wandb.txt>`_ 下载。
 # .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/TransH/TransH单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################
