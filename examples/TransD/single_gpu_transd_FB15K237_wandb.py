@@ -140,32 +140,8 @@ trainer.run()
 wandb_logger.finish()
 
 ######################################################################
-# .. figure:: /_static/images/examples/TransD/TransD-FB15K237-Loss.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中损失值的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/TransD/TransD-FB15K237-MR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/TransD/TransD-FB15K237-MRR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MRR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/TransD/TransD-FB15K237-Hit.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/logs/TransD/single_gpu_transd_FB15K237_wandb.txt>`_ 下载。
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/TransD/TransD单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################
 # --------------

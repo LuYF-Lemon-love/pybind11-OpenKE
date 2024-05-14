@@ -1,0 +1,212 @@
+DEBUG:cmd:2024-14-05 12:40:53:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-14-05 12:40:53:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-14-05 12:40:54:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-14-05 12:40:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-14-05 12:40:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:cmd:2024-14-05 12:40:57:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/TransD/wandb/run-20240514_124057-f3erd715
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run TransD-FB15K237
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/f3erd715
+INFO:Trainer:2024-14-05 12:41:07:[cuda:1] Initialization completed, start model training.
+INFO:Trainer:2024-14-05 12:46:08:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 12:46:21:mr: 226.693
+INFO:Trainer:2024-14-05 12:46:21:mrr: 0.282
+INFO:Trainer:2024-14-05 12:46:21:hits@1: 0.184
+INFO:Trainer:2024-14-05 12:46:21:hits@3: 0.322
+INFO:Trainer:2024-14-05 12:46:21:hits@10: 0.473
+INFO:Trainer:2024-14-05 12:46:21:mr_type: 122.725
+INFO:Trainer:2024-14-05 12:46:21:mrr_type: 0.332
+INFO:Trainer:2024-14-05 12:46:21:hits@1_type: 0.241
+INFO:Trainer:2024-14-05 12:46:21:hits@3_type: 0.363
+INFO:Trainer:2024-14-05 12:46:21:hits@10_type: 0.517
+INFO:EarlyStopping:2024-14-05 12:46:21:Validation score improved (-inf --> 0.473000).  Saving model ...
+INFO:Trainer:2024-14-05 12:46:21:[cuda:1] Epoch 100 | Training checkpoint saved at ../../checkpoint/transd-100.pth
+INFO:Trainer:2024-14-05 12:46:21:[cuda:1] Epoch [ 100/1000] | Batchsize: 2048 | loss:  1.729745 | 3.00691 seconds/epoch
+INFO:Trainer:2024-14-05 12:51:22:[cuda:1] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 12:51:35:mr: 222.661
+INFO:Trainer:2024-14-05 12:51:35:mrr: 0.29
+INFO:Trainer:2024-14-05 12:51:35:hits@1: 0.192
+INFO:Trainer:2024-14-05 12:51:35:hits@3: 0.33
+INFO:Trainer:2024-14-05 12:51:35:hits@10: 0.482
+INFO:Trainer:2024-14-05 12:51:35:mr_type: 116.63
+INFO:Trainer:2024-14-05 12:51:35:mrr_type: 0.341
+INFO:Trainer:2024-14-05 12:51:35:hits@1_type: 0.248
+INFO:Trainer:2024-14-05 12:51:35:hits@3_type: 0.373
+INFO:Trainer:2024-14-05 12:51:35:hits@10_type: 0.527
+INFO:EarlyStopping:2024-14-05 12:51:35:Validation score improved (0.473000 --> 0.482000).  Saving model ...
+INFO:Trainer:2024-14-05 12:51:35:[cuda:1] Epoch 200 | Training checkpoint saved at ../../checkpoint/transd-200.pth
+INFO:Trainer:2024-14-05 12:51:35:[cuda:1] Epoch [ 200/1000] | Batchsize: 2048 | loss:  1.427577 | 3.07396 seconds/epoch
+INFO:Trainer:2024-14-05 12:56:43:[cuda:1] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 12:56:55:mr: 222.549
+INFO:Trainer:2024-14-05 12:56:55:mrr: 0.293
+INFO:Trainer:2024-14-05 12:56:55:hits@1: 0.196
+INFO:Trainer:2024-14-05 12:56:55:hits@3: 0.333
+INFO:Trainer:2024-14-05 12:56:55:hits@10: 0.486
+INFO:Trainer:2024-14-05 12:56:55:mr_type: 114.487
+INFO:Trainer:2024-14-05 12:56:55:mrr_type: 0.343
+INFO:Trainer:2024-14-05 12:56:55:hits@1_type: 0.25
+INFO:Trainer:2024-14-05 12:56:55:hits@3_type: 0.376
+INFO:Trainer:2024-14-05 12:56:55:hits@10_type: 0.532
+INFO:EarlyStopping:2024-14-05 12:56:55:Validation score improved (0.482000 --> 0.486000).  Saving model ...
+INFO:Trainer:2024-14-05 12:56:55:[cuda:1] Epoch 300 | Training checkpoint saved at ../../checkpoint/transd-300.pth
+INFO:Trainer:2024-14-05 12:56:55:[cuda:1] Epoch [ 300/1000] | Batchsize: 2048 | loss:  1.293752 | 3.11850 seconds/epoch
+INFO:Trainer:2024-14-05 13:01:58:[cuda:1] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 13:02:10:mr: 221.752
+INFO:Trainer:2024-14-05 13:02:10:mrr: 0.294
+INFO:Trainer:2024-14-05 13:02:10:hits@1: 0.196
+INFO:Trainer:2024-14-05 13:02:10:hits@3: 0.335
+INFO:Trainer:2024-14-05 13:02:10:hits@10: 0.487
+INFO:Trainer:2024-14-05 13:02:10:mr_type: 113.548
+INFO:Trainer:2024-14-05 13:02:10:mrr_type: 0.345
+INFO:Trainer:2024-14-05 13:02:10:hits@1_type: 0.251
+INFO:Trainer:2024-14-05 13:02:10:hits@3_type: 0.378
+INFO:Trainer:2024-14-05 13:02:10:hits@10_type: 0.533
+INFO:EarlyStopping:2024-14-05 13:02:10:Validation score improved (0.486000 --> 0.487000).  Saving model ...
+INFO:Trainer:2024-14-05 13:02:10:[cuda:1] Epoch 400 | Training checkpoint saved at ../../checkpoint/transd-400.pth
+INFO:Trainer:2024-14-05 13:02:10:[cuda:1] Epoch [ 400/1000] | Batchsize: 2048 | loss:  1.210015 | 3.12582 seconds/epoch
+INFO:Trainer:2024-14-05 13:07:13:[cuda:1] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 13:07:26:mr: 221.789
+INFO:Trainer:2024-14-05 13:07:26:mrr: 0.295
+INFO:Trainer:2024-14-05 13:07:26:hits@1: 0.197
+INFO:Trainer:2024-14-05 13:07:26:hits@3: 0.336
+INFO:Trainer:2024-14-05 13:07:26:hits@10: 0.488
+INFO:Trainer:2024-14-05 13:07:26:mr_type: 113.318
+INFO:Trainer:2024-14-05 13:07:26:mrr_type: 0.345
+INFO:Trainer:2024-14-05 13:07:26:hits@1_type: 0.252
+INFO:Trainer:2024-14-05 13:07:26:hits@3_type: 0.379
+INFO:Trainer:2024-14-05 13:07:26:hits@10_type: 0.533
+INFO:EarlyStopping:2024-14-05 13:07:26:Validation score improved (0.487000 --> 0.488000).  Saving model ...
+INFO:Trainer:2024-14-05 13:07:26:[cuda:1] Epoch 500 | Training checkpoint saved at ../../checkpoint/transd-500.pth
+INFO:Trainer:2024-14-05 13:07:26:[cuda:1] Epoch [ 500/1000] | Batchsize: 2048 | loss:  1.192042 | 3.13228 seconds/epoch
+INFO:Trainer:2024-14-05 13:12:31:[cuda:1] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 13:12:44:mr: 221.622
+INFO:Trainer:2024-14-05 13:12:44:mrr: 0.295
+INFO:Trainer:2024-14-05 13:12:44:hits@1: 0.197
+INFO:Trainer:2024-14-05 13:12:44:hits@3: 0.335
+INFO:Trainer:2024-14-05 13:12:44:hits@10: 0.488
+INFO:Trainer:2024-14-05 13:12:44:mr_type: 113.217
+INFO:Trainer:2024-14-05 13:12:44:mrr_type: 0.345
+INFO:Trainer:2024-14-05 13:12:44:hits@1_type: 0.252
+INFO:Trainer:2024-14-05 13:12:44:hits@3_type: 0.378
+INFO:Trainer:2024-14-05 13:12:44:hits@10_type: 0.533
+INFO:EarlyStopping:2024-14-05 13:12:44:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-14-05 13:12:44:[cuda:1] Epoch 600 | Training checkpoint saved at ../../checkpoint/transd-600.pth
+INFO:Trainer:2024-14-05 13:12:44:[cuda:1] Epoch [ 600/1000] | Batchsize: 2048 | loss:  1.178756 | 3.13922 seconds/epoch
+INFO:Trainer:2024-14-05 13:17:47:[cuda:1] Epoch 700 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 13:18:00:mr: 221.542
+INFO:Trainer:2024-14-05 13:18:00:mrr: 0.295
+INFO:Trainer:2024-14-05 13:18:00:hits@1: 0.197
+INFO:Trainer:2024-14-05 13:18:00:hits@3: 0.336
+INFO:Trainer:2024-14-05 13:18:00:hits@10: 0.489
+INFO:Trainer:2024-14-05 13:18:00:mr_type: 113.169
+INFO:Trainer:2024-14-05 13:18:00:mrr_type: 0.346
+INFO:Trainer:2024-14-05 13:18:00:hits@1_type: 0.252
+INFO:Trainer:2024-14-05 13:18:00:hits@3_type: 0.379
+INFO:Trainer:2024-14-05 13:18:00:hits@10_type: 0.534
+INFO:EarlyStopping:2024-14-05 13:18:00:Validation score improved (0.488000 --> 0.489000).  Saving model ...
+INFO:Trainer:2024-14-05 13:18:00:[cuda:1] Epoch 700 | Training checkpoint saved at ../../checkpoint/transd-700.pth
+INFO:Trainer:2024-14-05 13:18:00:[cuda:1] Epoch [ 700/1000] | Batchsize: 2048 | loss:  1.163579 | 3.14283 seconds/epoch
+INFO:Trainer:2024-14-05 13:23:03:[cuda:1] Epoch 800 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 13:23:16:mr: 221.537
+INFO:Trainer:2024-14-05 13:23:16:mrr: 0.295
+INFO:Trainer:2024-14-05 13:23:16:hits@1: 0.197
+INFO:Trainer:2024-14-05 13:23:16:hits@3: 0.336
+INFO:Trainer:2024-14-05 13:23:16:hits@10: 0.489
+INFO:Trainer:2024-14-05 13:23:16:mr_type: 113.153
+INFO:Trainer:2024-14-05 13:23:16:mrr_type: 0.346
+INFO:Trainer:2024-14-05 13:23:16:hits@1_type: 0.252
+INFO:Trainer:2024-14-05 13:23:16:hits@3_type: 0.379
+INFO:Trainer:2024-14-05 13:23:16:hits@10_type: 0.534
+INFO:EarlyStopping:2024-14-05 13:23:16:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-14-05 13:23:16:[cuda:1] Epoch 800 | Training checkpoint saved at ../../checkpoint/transd-800.pth
+INFO:Trainer:2024-14-05 13:23:16:[cuda:1] Epoch [ 800/1000] | Batchsize: 2048 | loss:  1.152555 | 3.14443 seconds/epoch
+INFO:Trainer:2024-14-05 13:28:23:[cuda:1] Epoch 900 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-14-05 13:28:35:mr: 221.526
+INFO:Trainer:2024-14-05 13:28:35:mrr: 0.295
+INFO:Trainer:2024-14-05 13:28:35:hits@1: 0.197
+INFO:Trainer:2024-14-05 13:28:35:hits@3: 0.336
+INFO:Trainer:2024-14-05 13:28:35:hits@10: 0.489
+INFO:Trainer:2024-14-05 13:28:35:mr_type: 113.148
+INFO:Trainer:2024-14-05 13:28:35:mrr_type: 0.346
+INFO:Trainer:2024-14-05 13:28:35:hits@1_type: 0.253
+INFO:Trainer:2024-14-05 13:28:35:hits@3_type: 0.379
+INFO:Trainer:2024-14-05 13:28:35:hits@10_type: 0.534
+INFO:EarlyStopping:2024-14-05 13:28:35:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-14-05 13:28:35:[cuda:1] Send an early stopping signal
+INFO:Trainer:2024-14-05 13:28:35:[cuda:1] The model training is completed, taking a total of 2835.38799 seconds.
+INFO:Trainer:2024-14-05 13:28:35:[cuda:1] Model saved at ../../checkpoint/transd.pth.
+INFO:Trainer:2024-14-05 13:28:35:[cuda:1] The model starts evaluating in the test set.
+INFO:Trainer:2024-14-05 13:28:49:mr: 232.398
+INFO:Trainer:2024-14-05 13:28:49:mrr: 0.291
+INFO:Trainer:2024-14-05 13:28:49:hits@1: 0.193
+INFO:Trainer:2024-14-05 13:28:49:hits@3: 0.331
+INFO:Trainer:2024-14-05 13:28:49:hits@10: 0.483
+INFO:Trainer:2024-14-05 13:28:49:mr_type: 116.654
+INFO:Trainer:2024-14-05 13:28:49:mrr_type: 0.34
+INFO:Trainer:2024-14-05 13:28:49:hits@1_type: 0.246
+INFO:Trainer:2024-14-05 13:28:49:hits@3_type: 0.374
+INFO:Trainer:2024-14-05 13:28:49:hits@10_type: 0.526
+wandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.014 MB of 0.014 MB uploadedwandb: | 0.014 MB of 0.014 MB uploadedwandb: / 0.014 MB of 0.014 MB uploadedwandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.025 MB of 0.025 MB uploadedwandb: | 0.027 MB of 0.046 MB uploadedwandb: / 0.044 MB of 0.046 MB uploadedwandb: - 0.046 MB of 0.046 MB uploadedwandb: \ 0.046 MB of 0.046 MB uploadedwandb: | 0.046 MB of 0.046 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▂▃▄▅▆▇█
+wandb:  train/train_loss █▄▃▂▁▁▁▁
+wandb:         val/epoch ▁▂▃▄▅▅▆▇█
+wandb:        val/hits@1 ▁▅▇▇█████
+wandb:       val/hits@10 ▁▅▇▇█████
+wandb:  val/hits@10_type ▁▅▇██████
+wandb:   val/hits@1_type ▁▅▆▇▇▇▇▇█
+wandb:        val/hits@3 ▁▅▇██████
+wandb:   val/hits@3_type ▁▅▇██████
+wandb:            val/mr █▃▂▁▁▁▁▁▁
+wandb:       val/mr_type █▄▂▁▁▁▁▁▁
+wandb:           val/mrr ▁▅▇▇█████
+wandb:      val/mrr_type ▁▆▇██████
+wandb: 
+wandb: Run summary:
+wandb:          duration 2835.38799
+wandb:       test/hits@1 0.193
+wandb:      test/hits@10 0.483
+wandb: test/hits@10_type 0.526
+wandb:  test/hits@1_type 0.246
+wandb:       test/hits@3 0.331
+wandb:  test/hits@3_type 0.374
+wandb:           test/mr 232.398
+wandb:      test/mr_type 116.654
+wandb:          test/mrr 0.291
+wandb:     test/mrr_type 0.34
+wandb:       train/epoch 800
+wandb:  train/train_loss 1.15256
+wandb:         val/epoch 899
+wandb:        val/hits@1 0.197
+wandb:       val/hits@10 0.489
+wandb:  val/hits@10_type 0.534
+wandb:   val/hits@1_type 0.253
+wandb:        val/hits@3 0.336
+wandb:   val/hits@3_type 0.379
+wandb:            val/mr 221.526
+wandb:       val/mr_type 113.148
+wandb:           val/mrr 0.295
+wandb:      val/mrr_type 0.346
+wandb: 
+wandb: 🚀 View run TransD-FB15K237 at: https://wandb.ai/3555028709/pybind11-ke/runs/f3erd715
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240514_124057-f3erd715/logs
+DEBUG:connectionpool:2024-14-05 13:29:00:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-14-05 13:29:01:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
