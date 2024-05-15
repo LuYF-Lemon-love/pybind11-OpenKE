@@ -14,3 +14,187 @@ wandb: Syncing run RotatE-WN18RR
 wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
 wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/nd4jtkh6
 INFO:Trainer:2024-15-05 16:41:27:[cuda:1] Initialization completed, start model training.
+INFO:Trainer:2024-15-05 16:46:02:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 16:46:27:mr: 6393.536
+INFO:Trainer:2024-15-05 16:46:27:mrr: 0.453
+INFO:Trainer:2024-15-05 16:46:27:hits@1: 0.426
+INFO:Trainer:2024-15-05 16:46:27:hits@3: 0.465
+INFO:Trainer:2024-15-05 16:46:27:hits@10: 0.502
+INFO:Trainer:2024-15-05 16:46:27:mr_type: 3839.883
+INFO:Trainer:2024-15-05 16:46:27:mrr_type: 0.463
+INFO:Trainer:2024-15-05 16:46:27:hits@1_type: 0.433
+INFO:Trainer:2024-15-05 16:46:27:hits@3_type: 0.477
+INFO:Trainer:2024-15-05 16:46:27:hits@10_type: 0.518
+INFO:EarlyStopping:2024-15-05 16:46:27:Validation score improved (-inf --> 0.502000).  Saving model ...
+INFO:Trainer:2024-15-05 16:46:31:[cuda:1] Epoch 100 | Training checkpoint saved at ../../checkpoint/rotate-100.pth
+INFO:Trainer:2024-15-05 16:46:31:[cuda:1] Epoch [ 100/6000] | Batchsize: 2000 | loss:  3.688644 | 2.75020 seconds/epoch
+INFO:Trainer:2024-15-05 16:51:06:[cuda:1] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 16:51:31:mr: 4928.871
+INFO:Trainer:2024-15-05 16:51:31:mrr: 0.47
+INFO:Trainer:2024-15-05 16:51:31:hits@1: 0.433
+INFO:Trainer:2024-15-05 16:51:31:hits@3: 0.486
+INFO:Trainer:2024-15-05 16:51:31:hits@10: 0.54
+INFO:Trainer:2024-15-05 16:51:31:mr_type: 3060.168
+INFO:Trainer:2024-15-05 16:51:31:mrr_type: 0.483
+INFO:Trainer:2024-15-05 16:51:31:hits@1_type: 0.444
+INFO:Trainer:2024-15-05 16:51:31:hits@3_type: 0.5
+INFO:Trainer:2024-15-05 16:51:31:hits@10_type: 0.556
+INFO:EarlyStopping:2024-15-05 16:51:31:Validation score improved (0.502000 --> 0.540000).  Saving model ...
+INFO:Trainer:2024-15-05 16:51:35:[cuda:1] Epoch 200 | Training checkpoint saved at ../../checkpoint/rotate-200.pth
+INFO:Trainer:2024-15-05 16:51:35:[cuda:1] Epoch [ 200/6000] | Batchsize: 2000 | loss:  2.476432 | 2.89729 seconds/epoch
+INFO:Trainer:2024-15-05 16:56:14:[cuda:1] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 16:56:39:mr: 4281.298
+INFO:Trainer:2024-15-05 16:56:39:mrr: 0.474
+INFO:Trainer:2024-15-05 16:56:39:hits@1: 0.435
+INFO:Trainer:2024-15-05 16:56:39:hits@3: 0.485
+INFO:Trainer:2024-15-05 16:56:39:hits@10: 0.549
+INFO:Trainer:2024-15-05 16:56:39:mr_type: 2669.541
+INFO:Trainer:2024-15-05 16:56:39:mrr_type: 0.488
+INFO:Trainer:2024-15-05 16:56:39:hits@1_type: 0.445
+INFO:Trainer:2024-15-05 16:56:39:hits@3_type: 0.503
+INFO:Trainer:2024-15-05 16:56:39:hits@10_type: 0.568
+INFO:EarlyStopping:2024-15-05 16:56:39:Validation score improved (0.540000 --> 0.549000).  Saving model ...
+INFO:Trainer:2024-15-05 16:56:43:[cuda:1] Epoch 300 | Training checkpoint saved at ../../checkpoint/rotate-300.pth
+INFO:Trainer:2024-15-05 16:56:43:[cuda:1] Epoch [ 300/6000] | Batchsize: 2000 | loss:  2.180725 | 2.95628 seconds/epoch
+INFO:Trainer:2024-15-05 17:01:19:[cuda:1] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 17:01:44:mr: 3947.129
+INFO:Trainer:2024-15-05 17:01:44:mrr: 0.474
+INFO:Trainer:2024-15-05 17:01:44:hits@1: 0.432
+INFO:Trainer:2024-15-05 17:01:44:hits@3: 0.487
+INFO:Trainer:2024-15-05 17:01:44:hits@10: 0.556
+INFO:Trainer:2024-15-05 17:01:44:mr_type: 2459.746
+INFO:Trainer:2024-15-05 17:01:44:mrr_type: 0.49
+INFO:Trainer:2024-15-05 17:01:44:hits@1_type: 0.445
+INFO:Trainer:2024-15-05 17:01:44:hits@3_type: 0.508
+INFO:Trainer:2024-15-05 17:01:44:hits@10_type: 0.576
+INFO:EarlyStopping:2024-15-05 17:01:44:Validation score improved (0.549000 --> 0.556000).  Saving model ...
+INFO:Trainer:2024-15-05 17:01:48:[cuda:1] Epoch 400 | Training checkpoint saved at ../../checkpoint/rotate-400.pth
+INFO:Trainer:2024-15-05 17:01:48:[cuda:1] Epoch [ 400/6000] | Batchsize: 2000 | loss:  2.045412 | 2.98094 seconds/epoch
+INFO:Trainer:2024-15-05 17:06:24:[cuda:1] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 17:06:49:mr: 3737.329
+INFO:Trainer:2024-15-05 17:06:49:mrr: 0.474
+INFO:Trainer:2024-15-05 17:06:49:hits@1: 0.432
+INFO:Trainer:2024-15-05 17:06:49:hits@3: 0.486
+INFO:Trainer:2024-15-05 17:06:49:hits@10: 0.557
+INFO:Trainer:2024-15-05 17:06:49:mr_type: 2329.311
+INFO:Trainer:2024-15-05 17:06:49:mrr_type: 0.491
+INFO:Trainer:2024-15-05 17:06:49:hits@1_type: 0.445
+INFO:Trainer:2024-15-05 17:06:49:hits@3_type: 0.507
+INFO:Trainer:2024-15-05 17:06:49:hits@10_type: 0.579
+INFO:EarlyStopping:2024-15-05 17:06:49:Validation score improved (0.556000 --> 0.557000).  Saving model ...
+INFO:Trainer:2024-15-05 17:06:53:[cuda:1] Epoch 500 | Training checkpoint saved at ../../checkpoint/rotate-500.pth
+INFO:Trainer:2024-15-05 17:06:53:[cuda:1] Epoch [ 500/6000] | Batchsize: 2000 | loss:  1.969864 | 2.99488 seconds/epoch
+INFO:Trainer:2024-15-05 17:11:33:[cuda:1] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 17:11:58:mr: 3623.428
+INFO:Trainer:2024-15-05 17:11:58:mrr: 0.476
+INFO:Trainer:2024-15-05 17:11:58:hits@1: 0.433
+INFO:Trainer:2024-15-05 17:11:58:hits@3: 0.488
+INFO:Trainer:2024-15-05 17:11:58:hits@10: 0.562
+INFO:Trainer:2024-15-05 17:11:58:mr_type: 2261.589
+INFO:Trainer:2024-15-05 17:11:58:mrr_type: 0.493
+INFO:Trainer:2024-15-05 17:11:58:hits@1_type: 0.446
+INFO:Trainer:2024-15-05 17:11:58:hits@3_type: 0.51
+INFO:Trainer:2024-15-05 17:11:58:hits@10_type: 0.585
+INFO:EarlyStopping:2024-15-05 17:11:58:Validation score improved (0.557000 --> 0.562000).  Saving model ...
+INFO:Trainer:2024-15-05 17:12:02:[cuda:1] Epoch 600 | Training checkpoint saved at ../../checkpoint/rotate-600.pth
+INFO:Trainer:2024-15-05 17:12:02:[cuda:1] Epoch [ 600/6000] | Batchsize: 2000 | loss:  1.940919 | 3.01018 seconds/epoch
+INFO:Trainer:2024-15-05 17:16:40:[cuda:1] Epoch 700 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 17:17:05:mr: 3539.394
+INFO:Trainer:2024-15-05 17:17:05:mrr: 0.475
+INFO:Trainer:2024-15-05 17:17:05:hits@1: 0.433
+INFO:Trainer:2024-15-05 17:17:05:hits@3: 0.485
+INFO:Trainer:2024-15-05 17:17:05:hits@10: 0.56
+INFO:Trainer:2024-15-05 17:17:05:mr_type: 2210.803
+INFO:Trainer:2024-15-05 17:17:05:mrr_type: 0.492
+INFO:Trainer:2024-15-05 17:17:05:hits@1_type: 0.446
+INFO:Trainer:2024-15-05 17:17:05:hits@3_type: 0.507
+INFO:Trainer:2024-15-05 17:17:05:hits@10_type: 0.583
+INFO:EarlyStopping:2024-15-05 17:17:05:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-15-05 17:17:07:[cuda:1] Epoch 700 | Training checkpoint saved at ../../checkpoint/rotate-700.pth
+INFO:Trainer:2024-15-05 17:17:07:[cuda:1] Epoch [ 700/6000] | Batchsize: 2000 | loss:  1.895523 | 3.01894 seconds/epoch
+INFO:Trainer:2024-15-05 17:21:46:[cuda:1] Epoch 800 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-15-05 17:22:11:mr: 3472.851
+INFO:Trainer:2024-15-05 17:22:11:mrr: 0.476
+INFO:Trainer:2024-15-05 17:22:11:hits@1: 0.433
+INFO:Trainer:2024-15-05 17:22:11:hits@3: 0.488
+INFO:Trainer:2024-15-05 17:22:11:hits@10: 0.562
+INFO:Trainer:2024-15-05 17:22:11:mr_type: 2162.796
+INFO:Trainer:2024-15-05 17:22:11:mrr_type: 0.494
+INFO:Trainer:2024-15-05 17:22:11:hits@1_type: 0.447
+INFO:Trainer:2024-15-05 17:22:11:hits@3_type: 0.511
+INFO:Trainer:2024-15-05 17:22:11:hits@10_type: 0.585
+INFO:EarlyStopping:2024-15-05 17:22:11:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-15-05 17:22:11:[cuda:1] Send an early stopping signal
+INFO:Trainer:2024-15-05 17:22:11:[cuda:1] The model training is completed, taking a total of 2419.42781 seconds.
+INFO:Trainer:2024-15-05 17:22:13:[cuda:1] Model saved at ../../checkpoint/rotate.pth.
+INFO:Trainer:2024-15-05 17:22:13:[cuda:1] The model starts evaluating in the test set.
+INFO:Trainer:2024-15-05 17:22:39:mr: 3551.318
+INFO:Trainer:2024-15-05 17:22:39:mrr: 0.473
+INFO:Trainer:2024-15-05 17:22:39:hits@1: 0.428
+INFO:Trainer:2024-15-05 17:22:39:hits@3: 0.488
+INFO:Trainer:2024-15-05 17:22:39:hits@10: 0.563
+INFO:Trainer:2024-15-05 17:22:39:mr_type: 2296.903
+INFO:Trainer:2024-15-05 17:22:39:mrr_type: 0.493
+INFO:Trainer:2024-15-05 17:22:39:hits@1_type: 0.445
+INFO:Trainer:2024-15-05 17:22:39:hits@3_type: 0.51
+INFO:Trainer:2024-15-05 17:22:39:hits@10_type: 0.586
+wandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.014 MB of 0.014 MB uploadedwandb: | 0.014 MB of 0.014 MB uploadedwandb: / 0.014 MB of 0.014 MB uploadedwandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.014 MB of 0.014 MB uploadedwandb: | 0.014 MB of 0.014 MB uploadedwandb: / 0.023 MB of 0.023 MB uploadedwandb: - 0.024 MB of 0.039 MB uploadedwandb: \ 0.037 MB of 0.039 MB uploadedwandb: | 0.037 MB of 0.039 MB uploadedwandb: / 0.037 MB of 0.039 MB uploadedwandb: - 0.037 MB of 0.039 MB uploadedwandb: \ 0.037 MB of 0.039 MB uploadedwandb: | 0.037 MB of 0.039 MB uploadedwandb: / 0.037 MB of 0.039 MB uploadedwandb: - 0.037 MB of 0.039 MB uploadedwandb: \ 0.037 MB of 0.039 MB uploadedwandb: | 0.037 MB of 0.039 MB uploadedwandb: / 0.037 MB of 0.039 MB uploadedwandb: - 0.037 MB of 0.039 MB uploadedwandb: \ 0.037 MB of 0.039 MB uploadedwandb: | 0.039 MB of 0.039 MB uploadedwandb: / 0.039 MB of 0.039 MB uploadedwandb: - 0.039 MB of 0.039 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▂▃▅▆▇█
+wandb:  train/train_loss █▃▂▂▁▁▁
+wandb:         val/epoch ▁▂▃▄▅▆▇█
+wandb:        val/hits@1 ▁▆█▆▆▆▆▆
+wandb:       val/hits@10 ▁▅▆▇▇███
+wandb:  val/hits@10_type ▁▅▆▇▇███
+wandb:   val/hits@1_type ▁▇▇▇▇███
+wandb:        val/hits@3 ▁▇▇█▇█▇█
+wandb:   val/hits@3_type ▁▆▆▇▇█▇█
+wandb:            val/mr █▄▃▂▂▁▁▁
+wandb:       val/mr_type █▅▃▂▂▁▁▁
+wandb:           val/mrr ▁▆▇▇▇███
+wandb:      val/mrr_type ▁▆▇▇▇███
+wandb: 
+wandb: Run summary:
+wandb:          duration 2419.42781
+wandb:       test/hits@1 0.428
+wandb:      test/hits@10 0.563
+wandb: test/hits@10_type 0.586
+wandb:  test/hits@1_type 0.445
+wandb:       test/hits@3 0.488
+wandb:  test/hits@3_type 0.51
+wandb:           test/mr 3551.318
+wandb:      test/mr_type 2296.903
+wandb:          test/mrr 0.473
+wandb:     test/mrr_type 0.493
+wandb:       train/epoch 700
+wandb:  train/train_loss 1.89552
+wandb:         val/epoch 799
+wandb:        val/hits@1 0.433
+wandb:       val/hits@10 0.562
+wandb:  val/hits@10_type 0.585
+wandb:   val/hits@1_type 0.447
+wandb:        val/hits@3 0.488
+wandb:   val/hits@3_type 0.511
+wandb:            val/mr 3472.851
+wandb:       val/mr_type 2162.796
+wandb:           val/mrr 0.476
+wandb:      val/mrr_type 0.494
+wandb: 
+wandb: 🚀 View run RotatE-WN18RR at: https://wandb.ai/3555028709/pybind11-ke/runs/nd4jtkh6
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240515_164117-nd4jtkh6/logs
+DEBUG:connectionpool:2024-15-05 17:23:05:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-15-05 17:23:05:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
