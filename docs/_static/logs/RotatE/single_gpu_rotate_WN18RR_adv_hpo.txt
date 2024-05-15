@@ -1,0 +1,183 @@
+DEBUG:cmd:2024-15-05 20:58:26:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-15-05 20:58:26:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-15-05 20:58:26:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-15-05 20:58:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:58:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:connectionpool:2024-15-05 20:58:31:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-15-05 20:58:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:pyagent:2024-15-05 20:58:32:Starting sweep agent: entity=None, project=None, count=3
+DEBUG:pyagent:2024-15-05 20:58:32:Agent._setup()
+DEBUG:pyagent:2024-15-05 20:58:32:Agent._register()
+DEBUG:connectionpool:2024-15-05 20:58:32:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-15-05 20:58:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:pyagent:2024-15-05 20:58:33:agent_id = QWdlbnQ6eW94Z3FreTE=
+DEBUG:connectionpool:2024-15-05 20:58:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:pyagent:2024-15-05 20:58:33:Job received: Job(cm6z4c9s,{'adv_temperature': {'value': 3}, 'batch_size': {'value': 1024}, 'dataloader': {'value': 'KGEDataLoader'}, 'delta': {'value': 0.0001}, 'device': {'value': 'cuda:0'}, 'dim': {'value': 256}, 'ent_file': {'value': 'entity2id.txt'}, 'epochs': {'value': 10000}, 'epsilon': {'value': 2}, 'in_path': {'value': '../../benchmarks/WN18RR/'}, 'l3_regul_rate': {'value': 0}, 'log_interval': {'value': 100}, 'loss': {'value': 'SigmoidLoss'}, 'lr': {'value': 0.5894575056757012}, 'margin': {'value': 6}, 'metric': {'value': 'hits@10'}, 'model': {'value': 'RotatE'}, 'neg_ent': {'value': 16}, 'num_workers': {'value': 16}, 'opt_method': {'value': 'adagrad'}, 'patience': {'value': 2}, 'prediction': {'value': 'all'}, 'regul_rate': {'value': 0}, 'rel_file': {'value': 'relation2id.txt'}, 'save_path': {'value': './model.pth'}, 'strategy': {'value': 'NegativeSampling'}, 'test_batch_size': {'value': 5}, 'test_file': {'value': 'test2id.txt'}, 'test_sampler': {'value': 'TradTestSampler'}, 'tester': {'value': 'Tester'}, 'train_file': {'value': 'train2id.txt'}, 'train_sampler': {'value': 'BernSampler'}, 'trainer': {'value': 'Trainer'}, 'type_constrain': {'value': True}, 'use_early_stopping': {'value': True}, 'use_gpu': {'value': True}, 'use_tqdm': {'value': False}, 'valid_file': {'value': 'valid2id.txt'}, 'valid_interval': {'value': 100}})
+DEBUG:pyagent:2024-15-05 20:58:33:Spawning new thread for run cm6z4c9s.
+wandb: Agent Starting Run: cm6z4c9s with config:
+wandb: 	adv_temperature: 3
+wandb: 	batch_size: 1024
+wandb: 	dataloader: KGEDataLoader
+wandb: 	delta: 0.0001
+wandb: 	device: cuda:0
+wandb: 	dim: 256
+wandb: 	ent_file: entity2id.txt
+wandb: 	epochs: 10000
+wandb: 	epsilon: 2
+wandb: 	in_path: ../../benchmarks/WN18RR/
+wandb: 	l3_regul_rate: 0
+wandb: 	log_interval: 100
+wandb: 	loss: SigmoidLoss
+wandb: 	lr: 0.5894575056757012
+wandb: 	margin: 6
+wandb: 	metric: hits@10
+wandb: 	model: RotatE
+wandb: 	neg_ent: 16
+wandb: 	num_workers: 16
+wandb: 	opt_method: adagrad
+wandb: 	patience: 2
+wandb: 	prediction: all
+wandb: 	regul_rate: 0
+wandb: 	rel_file: relation2id.txt
+wandb: 	save_path: ./model.pth
+wandb: 	strategy: NegativeSampling
+wandb: 	test_batch_size: 5
+wandb: 	test_file: test2id.txt
+wandb: 	test_sampler: TradTestSampler
+wandb: 	tester: Tester
+wandb: 	train_file: train2id.txt
+wandb: 	train_sampler: BernSampler
+wandb: 	trainer: Trainer
+wandb: 	type_constrain: True
+wandb: 	use_early_stopping: True
+wandb: 	use_gpu: True
+wandb: 	use_tqdm: False
+wandb: 	valid_file: valid2id.txt
+wandb: 	valid_interval: 100
+DEBUG:cmd:2024-15-05 20:58:33:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-15-05 20:58:33:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-15-05 20:58:34:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-15-05 20:58:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:58:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:cmd:2024-15-05 20:58:37:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-15-05 20:58:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: wandb version 0.17.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/RotatE/wandb/run-20240515_205837-cm6z4c9s
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run mild-sweep-1
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke-sweeps
+wandb: 🧹 View sweep at https://wandb.ai/3555028709/pybind11-ke-sweeps/sweeps/wwnjk94o
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke-sweeps/runs/cm6z4c9s
+INFO:Trainer:2024-15-05 20:58:42:[cuda:0] Initialization completed, start model training.
+data_loader_config:
+{'batch_size': {'values': [512, 1024, 2048, 4096]},
+ 'dataloader': {'value': 'KGEDataLoader'},
+ 'ent_file': {'value': 'entity2id.txt'},
+ 'in_path': {'value': './'},
+ 'neg_ent': {'values': [1, 4, 16, 64]},
+ 'num_workers': {'value': 16},
+ 'rel_file': {'value': 'relation2id.txt'},
+ 'test_batch_size': {'value': 30},
+ 'test_file': {'value': 'test2id.txt'},
+ 'test_sampler': {'value': 'TradTestSampler'},
+ 'train_file': {'value': 'train2id.txt'},
+ 'train_sampler': {'value': 'BernSampler'},
+ 'type_constrain': {'value': True},
+ 'valid_file': {'value': 'valid2id.txt'}}
+
+kge_config:
+{'dim': {'values': [256, 512, 1024]},
+ 'epsilon': {'value': 2.0},
+ 'margin': {'values': [1.0, 3.0, 6.0]},
+ 'model': {'value': 'RotatE'}}
+
+loss_config:
+{'adv_temperature': {'values': [1.0, 3.0, 6.0]},
+ 'loss': {'value': 'SigmoidLoss'}}
+
+strategy_config:
+{'l3_regul_rate': {'value': 0.0},
+ 'regul_rate': {'value': 0.0},
+ 'strategy': {'value': 'NegativeSampling'}}
+
+tester_config:
+{'device': {'value': 'cuda:0'},
+ 'prediction': {'value': 'all'},
+ 'tester': {'value': 'Tester'},
+ 'use_gpu': {'value': True},
+ 'use_tqdm': {'value': False}}
+
+trainer_config:
+{'delta': {'value': 0.0001},
+ 'epochs': {'value': 10000},
+ 'log_interval': {'value': 100},
+ 'lr': {'distribution': 'uniform', 'max': 1.0, 'min': 1e-05},
+ 'metric': {'value': 'hits@10'},
+ 'opt_method': {'values': ['adam', 'adagrad', 'sgd']},
+ 'patience': {'value': 2},
+ 'save_path': {'value': './model.pth'},
+ 'trainer': {'value': 'Trainer'},
+ 'use_early_stopping': {'value': True},
+ 'valid_interval': {'value': 100}}
+
+sweep_config:
+{'method': 'bayes',
+ 'metric': {'goal': 'maximize', 'name': 'val/hits@10'},
+ 'name': 'RotatE_WN18RR',
+ 'parameters': {'adv_temperature': {'values': [1.0, 3.0, 6.0]},
+                'batch_size': {'values': [512, 1024, 2048, 4096]},
+                'dataloader': {'value': 'KGEDataLoader'},
+                'delta': {'value': 0.0001},
+                'device': {'value': 'cuda:0'},
+                'dim': {'values': [256, 512, 1024]},
+                'ent_file': {'value': 'entity2id.txt'},
+                'epochs': {'value': 10000},
+                'epsilon': {'value': 2.0},
+                'in_path': {'value': '../../benchmarks/WN18RR/'},
+                'l3_regul_rate': {'value': 0.0},
+                'log_interval': {'value': 100},
+                'loss': {'value': 'SigmoidLoss'},
+                'lr': {'distribution': 'uniform', 'max': 1.0, 'min': 1e-05},
+                'margin': {'values': [1.0, 3.0, 6.0]},
+                'metric': {'value': 'hits@10'},
+                'model': {'value': 'RotatE'},
+                'neg_ent': {'values': [1, 4, 16, 64]},
+                'num_workers': {'value': 16},
+                'opt_method': {'values': ['adam', 'adagrad', 'sgd']},
+                'patience': {'value': 2},
+                'prediction': {'value': 'all'},
+                'regul_rate': {'value': 0.0},
+                'rel_file': {'value': 'relation2id.txt'},
+                'save_path': {'value': './model.pth'},
+                'strategy': {'value': 'NegativeSampling'},
+                'test_batch_size': {'value': 5},
+                'test_file': {'value': 'test2id.txt'},
+                'test_sampler': {'value': 'TradTestSampler'},
+                'tester': {'value': 'Tester'},
+                'train_file': {'value': 'train2id.txt'},
+                'train_sampler': {'value': 'BernSampler'},
+                'trainer': {'value': 'Trainer'},
+                'type_constrain': {'value': True},
+                'use_early_stopping': {'value': True},
+                'use_gpu': {'value': True},
+                'use_tqdm': {'value': False},
+                'valid_file': {'value': 'valid2id.txt'},
+                'valid_interval': {'value': 100}}}
+
+Create sweep with ID: wwnjk94o
+Sweep URL: https://wandb.ai/3555028709/pybind11-ke-sweeps/sweeps/wwnjk94o
+DEBUG:connectionpool:2024-15-05 20:58:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Network error (TransientError), entering retry loop.
+DEBUG:connectionpool:2024-15-05 20:58:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:58:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-15-05 20:59:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
