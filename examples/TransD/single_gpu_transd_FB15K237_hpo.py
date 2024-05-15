@@ -163,11 +163,8 @@ print()
 start_hpo_train(config=sweep_config, count=3)
 
 ######################################################################
-# .. figure:: /_static/images/examples/TransD/TransD-FB15K237-HPO.png
-#      :align: center
-#      :height: 300
-#
-#      超参数优化结果
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransD/single_gpu_transd_FB15K237_hpo.txt>`_ 下载。
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/TransD/TransD超参数搜索示例（一）.pdf>`_ 下载。
 
 ######################################################################
 # --------------
