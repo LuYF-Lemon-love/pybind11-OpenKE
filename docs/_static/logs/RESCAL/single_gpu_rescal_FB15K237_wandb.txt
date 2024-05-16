@@ -1,0 +1,16 @@
+DEBUG:cmd:2024-05-16 15:31:26:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-05-16 15:31:26:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-05-16 15:31:27:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-05-16 15:31:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 15:31:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:cmd:2024-05-16 15:31:28:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: wandb version 0.17.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/RESCAL/wandb/run-20240516_153128-yglrood1
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run RESCAL-FB15K237
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/yglrood1
+INFO:Trainer:2024-05-16 15:31:36:[cuda:0] Initialization completed, start model training.
