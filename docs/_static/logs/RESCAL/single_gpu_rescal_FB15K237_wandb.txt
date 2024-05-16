@@ -14,3 +14,158 @@ wandb: Syncing run RESCAL-FB15K237
 wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
 wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/yglrood1
 INFO:Trainer:2024-05-16 15:31:36:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-05-16 15:36:19:[cuda:0] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 15:36:35:mr: 405.744
+INFO:Trainer:2024-05-16 15:36:35:mrr: 0.259
+INFO:Trainer:2024-05-16 15:36:35:hits@1: 0.186
+INFO:Trainer:2024-05-16 15:36:35:hits@3: 0.281
+INFO:Trainer:2024-05-16 15:36:35:hits@10: 0.403
+INFO:Trainer:2024-05-16 15:36:35:mr_type: 160.862
+INFO:Trainer:2024-05-16 15:36:35:mrr_type: 0.291
+INFO:Trainer:2024-05-16 15:36:35:hits@1_type: 0.213
+INFO:Trainer:2024-05-16 15:36:35:hits@3_type: 0.312
+INFO:Trainer:2024-05-16 15:36:35:hits@10_type: 0.444
+INFO:EarlyStopping:2024-05-16 15:36:35:Validation score improved (-inf --> 0.403000).  Saving model ...
+INFO:Trainer:2024-05-16 15:36:35:[cuda:0] Epoch 100 | Training checkpoint saved at ../../checkpoint/rescal-100.pth
+INFO:Trainer:2024-05-16 15:36:35:[cuda:0] Epoch [ 100/1000] | Batchsize: 2048 | loss:  0.206524 | 2.83429 seconds/epoch
+INFO:Trainer:2024-05-16 15:41:17:[cuda:0] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 15:41:32:mr: 403.897
+INFO:Trainer:2024-05-16 15:41:32:mrr: 0.263
+INFO:Trainer:2024-05-16 15:41:32:hits@1: 0.188
+INFO:Trainer:2024-05-16 15:41:32:hits@3: 0.287
+INFO:Trainer:2024-05-16 15:41:32:hits@10: 0.412
+INFO:Trainer:2024-05-16 15:41:32:mr_type: 150.556
+INFO:Trainer:2024-05-16 15:41:32:mrr_type: 0.295
+INFO:Trainer:2024-05-16 15:41:32:hits@1_type: 0.214
+INFO:Trainer:2024-05-16 15:41:32:hits@3_type: 0.319
+INFO:Trainer:2024-05-16 15:41:32:hits@10_type: 0.454
+INFO:EarlyStopping:2024-05-16 15:41:32:Validation score improved (0.403000 --> 0.412000).  Saving model ...
+INFO:Trainer:2024-05-16 15:41:32:[cuda:0] Epoch 200 | Training checkpoint saved at ../../checkpoint/rescal-200.pth
+INFO:Trainer:2024-05-16 15:41:32:[cuda:0] Epoch [ 200/1000] | Batchsize: 2048 | loss:  0.128248 | 2.90515 seconds/epoch
+INFO:Trainer:2024-05-16 15:46:08:[cuda:0] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 15:46:24:mr: 406.795
+INFO:Trainer:2024-05-16 15:46:24:mrr: 0.265
+INFO:Trainer:2024-05-16 15:46:24:hits@1: 0.191
+INFO:Trainer:2024-05-16 15:46:24:hits@3: 0.287
+INFO:Trainer:2024-05-16 15:46:24:hits@10: 0.412
+INFO:Trainer:2024-05-16 15:46:24:mr_type: 146.531
+INFO:Trainer:2024-05-16 15:46:24:mrr_type: 0.298
+INFO:Trainer:2024-05-16 15:46:24:hits@1_type: 0.218
+INFO:Trainer:2024-05-16 15:46:24:hits@3_type: 0.321
+INFO:Trainer:2024-05-16 15:46:24:hits@10_type: 0.456
+INFO:EarlyStopping:2024-05-16 15:46:24:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-16 15:46:24:[cuda:0] Epoch 300 | Training checkpoint saved at ../../checkpoint/rescal-300.pth
+INFO:Trainer:2024-05-16 15:46:24:[cuda:0] Epoch [ 300/1000] | Batchsize: 2048 | loss:  0.099204 | 2.90636 seconds/epoch
+INFO:Trainer:2024-05-16 15:51:05:[cuda:0] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 15:51:20:mr: 406.774
+INFO:Trainer:2024-05-16 15:51:20:mrr: 0.265
+INFO:Trainer:2024-05-16 15:51:20:hits@1: 0.19
+INFO:Trainer:2024-05-16 15:51:20:hits@3: 0.29
+INFO:Trainer:2024-05-16 15:51:20:hits@10: 0.416
+INFO:Trainer:2024-05-16 15:51:20:mr_type: 144.661
+INFO:Trainer:2024-05-16 15:51:20:mrr_type: 0.298
+INFO:Trainer:2024-05-16 15:51:20:hits@1_type: 0.217
+INFO:Trainer:2024-05-16 15:51:20:hits@3_type: 0.322
+INFO:Trainer:2024-05-16 15:51:20:hits@10_type: 0.461
+INFO:EarlyStopping:2024-05-16 15:51:20:Validation score improved (0.412000 --> 0.416000).  Saving model ...
+INFO:Trainer:2024-05-16 15:51:20:[cuda:0] Epoch 400 | Training checkpoint saved at ../../checkpoint/rescal-400.pth
+INFO:Trainer:2024-05-16 15:51:20:[cuda:0] Epoch [ 400/1000] | Batchsize: 2048 | loss:  0.088507 | 2.92218 seconds/epoch
+INFO:Trainer:2024-05-16 15:56:00:[cuda:0] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 15:56:16:mr: 405.058
+INFO:Trainer:2024-05-16 15:56:16:mrr: 0.267
+INFO:Trainer:2024-05-16 15:56:16:hits@1: 0.191
+INFO:Trainer:2024-05-16 15:56:16:hits@3: 0.291
+INFO:Trainer:2024-05-16 15:56:16:hits@10: 0.416
+INFO:Trainer:2024-05-16 15:56:16:mr_type: 144.149
+INFO:Trainer:2024-05-16 15:56:16:mrr_type: 0.3
+INFO:Trainer:2024-05-16 15:56:16:hits@1_type: 0.219
+INFO:Trainer:2024-05-16 15:56:16:hits@3_type: 0.324
+INFO:Trainer:2024-05-16 15:56:16:hits@10_type: 0.46
+INFO:EarlyStopping:2024-05-16 15:56:16:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-16 15:56:16:[cuda:0] Epoch 500 | Training checkpoint saved at ../../checkpoint/rescal-500.pth
+INFO:Trainer:2024-05-16 15:56:16:[cuda:0] Epoch [ 500/1000] | Batchsize: 2048 | loss:  0.082520 | 2.92879 seconds/epoch
+INFO:Trainer:2024-05-16 16:01:01:[cuda:0] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 16:01:17:mr: 403.936
+INFO:Trainer:2024-05-16 16:01:17:mrr: 0.267
+INFO:Trainer:2024-05-16 16:01:17:hits@1: 0.192
+INFO:Trainer:2024-05-16 16:01:17:hits@3: 0.291
+INFO:Trainer:2024-05-16 16:01:17:hits@10: 0.416
+INFO:Trainer:2024-05-16 16:01:17:mr_type: 143.804
+INFO:Trainer:2024-05-16 16:01:17:mrr_type: 0.3
+INFO:Trainer:2024-05-16 16:01:17:hits@1_type: 0.219
+INFO:Trainer:2024-05-16 16:01:17:hits@3_type: 0.324
+INFO:Trainer:2024-05-16 16:01:17:hits@10_type: 0.46
+INFO:EarlyStopping:2024-05-16 16:01:17:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-16 16:01:17:[cuda:0] Send an early stopping signal
+INFO:Trainer:2024-05-16 16:01:17:[cuda:0] The model training is completed, taking a total of 1765.01537 seconds.
+INFO:Trainer:2024-05-16 16:01:17:[cuda:0] Model saved at ../../checkpoint/rescal.pth.
+INFO:Trainer:2024-05-16 16:01:17:[cuda:0] The model starts evaluating in the test set.
+INFO:Trainer:2024-05-16 16:01:34:mr: 415.845
+INFO:Trainer:2024-05-16 16:01:34:mrr: 0.264
+INFO:Trainer:2024-05-16 16:01:34:hits@1: 0.189
+INFO:Trainer:2024-05-16 16:01:34:hits@3: 0.288
+INFO:Trainer:2024-05-16 16:01:34:hits@10: 0.412
+INFO:Trainer:2024-05-16 16:01:34:mr_type: 146.57
+INFO:Trainer:2024-05-16 16:01:34:mrr_type: 0.295
+INFO:Trainer:2024-05-16 16:01:34:hits@1_type: 0.215
+INFO:Trainer:2024-05-16 16:01:34:hits@3_type: 0.319
+INFO:Trainer:2024-05-16 16:01:34:hits@10_type: 0.455
+wandb: - 0.023 MB of 0.036 MB uploadedwandb: \ 0.023 MB of 0.036 MB uploadedwandb: | 0.036 MB of 0.036 MB uploadedwandb: / 0.036 MB of 0.036 MB uploadedwandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▃▅▆█
+wandb:  train/train_loss █▄▂▁▁
+wandb:         val/epoch ▁▂▄▅▇█
+wandb:        val/hits@1 ▁▃▇▆▇█
+wandb:       val/hits@10 ▁▆▆███
+wandb:  val/hits@10_type ▁▅▆███
+wandb:   val/hits@1_type ▁▂▇▆██
+wandb:        val/hits@3 ▁▅▅▇██
+wandb:   val/hits@3_type ▁▅▆▇██
+wandb:            val/mr ▅▁██▄▁
+wandb:       val/mr_type █▄▂▁▁▁
+wandb:           val/mrr ▁▅▆▆██
+wandb:      val/mrr_type ▁▄▆▆██
+wandb: 
+wandb: Run summary:
+wandb:          duration 1765.01537
+wandb:       test/hits@1 0.189
+wandb:      test/hits@10 0.412
+wandb: test/hits@10_type 0.455
+wandb:  test/hits@1_type 0.215
+wandb:       test/hits@3 0.288
+wandb:  test/hits@3_type 0.319
+wandb:           test/mr 415.845
+wandb:      test/mr_type 146.57
+wandb:          test/mrr 0.264
+wandb:     test/mrr_type 0.295
+wandb:       train/epoch 500
+wandb:  train/train_loss 0.08252
+wandb:         val/epoch 599
+wandb:        val/hits@1 0.192
+wandb:       val/hits@10 0.416
+wandb:  val/hits@10_type 0.46
+wandb:   val/hits@1_type 0.219
+wandb:        val/hits@3 0.291
+wandb:   val/hits@3_type 0.324
+wandb:            val/mr 403.936
+wandb:       val/mr_type 143.804
+wandb:           val/mrr 0.267
+wandb:      val/mrr_type 0.3
+wandb: 
+wandb: 🚀 View run RESCAL-FB15K237 at: https://wandb.ai/3555028709/pybind11-ke/runs/yglrood1
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240516_153128-yglrood1/logs
+DEBUG:connectionpool:2024-05-16 16:01:46:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-05-16 16:01:47:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
