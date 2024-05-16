@@ -95,3 +95,10 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(), ep
 	log_interval = 100, save_interval = 100,
 	save_path = '../../checkpoint/rescal.pth', use_wandb = False)
 trainer.run()
+
+######################################################################
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/RESCAL/single_gpu_rescal_FB15K237.txt>`_ 下载。
+
+######################################################################
+# --------------
+#
