@@ -40,3 +40,59 @@ INFO:Trainer:2024-05-16 21:28:51:hits@10_type: 0.466
 INFO:EarlyStopping:2024-05-16 21:28:51:Validation score improved (0.441000 --> 0.449000).  Saving model ...
 INFO:Trainer:2024-05-16 21:28:52:[cuda:1] Epoch 200 | Training checkpoint saved at ../../checkpoint/distMult-200.pth
 INFO:Trainer:2024-05-16 21:28:52:[cuda:1] Epoch [ 200/2000] | Batchsize: 4096 | loss:  2.142169 | 1.52945 seconds/epoch
+INFO:Trainer:2024-05-16 21:31:08:[cuda:1] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:31:10:mr: 4380.868
+INFO:Trainer:2024-05-16 21:31:10:mrr: 0.333
+INFO:Trainer:2024-05-16 21:31:10:hits@1: 0.261
+INFO:Trainer:2024-05-16 21:31:10:hits@3: 0.38
+INFO:Trainer:2024-05-16 21:31:10:hits@10: 0.454
+INFO:Trainer:2024-05-16 21:31:10:mr_type: 2234.896
+INFO:Trainer:2024-05-16 21:31:10:mrr_type: 0.348
+INFO:Trainer:2024-05-16 21:31:10:hits@1_type: 0.272
+INFO:Trainer:2024-05-16 21:31:10:hits@3_type: 0.397
+INFO:Trainer:2024-05-16 21:31:10:hits@10_type: 0.472
+INFO:EarlyStopping:2024-05-16 21:31:10:Validation score improved (0.449000 --> 0.454000).  Saving model ...
+INFO:Trainer:2024-05-16 21:31:11:[cuda:1] Epoch 300 | Training checkpoint saved at ../../checkpoint/distMult-300.pth
+INFO:Trainer:2024-05-16 21:31:11:[cuda:1] Epoch [ 300/2000] | Batchsize: 4096 | loss:  2.113290 | 1.48337 seconds/epoch
+INFO:Trainer:2024-05-16 21:33:26:[cuda:1] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:33:29:mr: 4248.959
+INFO:Trainer:2024-05-16 21:33:29:mrr: 0.335
+INFO:Trainer:2024-05-16 21:33:29:hits@1: 0.263
+INFO:Trainer:2024-05-16 21:33:29:hits@3: 0.382
+INFO:Trainer:2024-05-16 21:33:29:hits@10: 0.456
+INFO:Trainer:2024-05-16 21:33:29:mr_type: 2169.249
+INFO:Trainer:2024-05-16 21:33:29:mrr_type: 0.349
+INFO:Trainer:2024-05-16 21:33:29:hits@1_type: 0.273
+INFO:Trainer:2024-05-16 21:33:29:hits@3_type: 0.4
+INFO:Trainer:2024-05-16 21:33:29:hits@10_type: 0.476
+INFO:EarlyStopping:2024-05-16 21:33:29:Validation score improved (0.454000 --> 0.456000).  Saving model ...
+INFO:Trainer:2024-05-16 21:33:29:[cuda:1] Epoch 400 | Training checkpoint saved at ../../checkpoint/distMult-400.pth
+INFO:Trainer:2024-05-16 21:33:29:[cuda:1] Epoch [ 400/2000] | Batchsize: 4096 | loss:  2.096703 | 1.45826 seconds/epoch
+INFO:Trainer:2024-05-16 21:35:44:[cuda:1] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:35:47:mr: 4166.612
+INFO:Trainer:2024-05-16 21:35:47:mrr: 0.335
+INFO:Trainer:2024-05-16 21:35:47:hits@1: 0.263
+INFO:Trainer:2024-05-16 21:35:47:hits@3: 0.382
+INFO:Trainer:2024-05-16 21:35:47:hits@10: 0.459
+INFO:Trainer:2024-05-16 21:35:47:mr_type: 2142.348
+INFO:Trainer:2024-05-16 21:35:47:mrr_type: 0.349
+INFO:Trainer:2024-05-16 21:35:47:hits@1_type: 0.273
+INFO:Trainer:2024-05-16 21:35:47:hits@3_type: 0.399
+INFO:Trainer:2024-05-16 21:35:47:hits@10_type: 0.48
+INFO:EarlyStopping:2024-05-16 21:35:47:Validation score improved (0.456000 --> 0.459000).  Saving model ...
+INFO:Trainer:2024-05-16 21:35:47:[cuda:1] Epoch 500 | Training checkpoint saved at ../../checkpoint/distMult-500.pth
+INFO:Trainer:2024-05-16 21:35:47:[cuda:1] Epoch [ 500/2000] | Batchsize: 4096 | loss:  2.087295 | 1.44328 seconds/epoch
+INFO:Trainer:2024-05-16 21:38:01:[cuda:1] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:38:04:mr: 4102.903
+INFO:Trainer:2024-05-16 21:38:04:mrr: 0.333
+INFO:Trainer:2024-05-16 21:38:04:hits@1: 0.258
+INFO:Trainer:2024-05-16 21:38:04:hits@3: 0.38
+INFO:Trainer:2024-05-16 21:38:04:hits@10: 0.461
+INFO:Trainer:2024-05-16 21:38:04:mr_type: 2108.926
+INFO:Trainer:2024-05-16 21:38:04:mrr_type: 0.348
+INFO:Trainer:2024-05-16 21:38:04:hits@1_type: 0.269
+INFO:Trainer:2024-05-16 21:38:04:hits@3_type: 0.396
+INFO:Trainer:2024-05-16 21:38:04:hits@10_type: 0.484
+INFO:EarlyStopping:2024-05-16 21:38:04:Validation score improved (0.459000 --> 0.461000).  Saving model ...
+INFO:Trainer:2024-05-16 21:38:04:[cuda:1] Epoch 600 | Training checkpoint saved at ../../checkpoint/distMult-600.pth
+INFO:Trainer:2024-05-16 21:38:04:[cuda:1] Epoch [ 600/2000] | Batchsize: 4096 | loss:  2.080595 | 1.43110 seconds/epoch

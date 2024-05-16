@@ -28,7 +28,7 @@
       - 86,835
       - 3,034
       - 3,134
-      - 未知
+      - :cite:`ConvE`
     * - `FB15K <https://github.com/LuYF-Lemon-love/pybind11-OpenKE/tree/pybind11-OpenKE-PyTorch/benchmarks/FB15K>`_
       - 14,951
       - 1,345
@@ -42,7 +42,7 @@
       - 272,115
       - 17,535
       - 20,466
-      - 未知
+      - :cite:`FB15k-237`
 
 数据集格式
 ----------------------------------------
