@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "修复 log 日期 bug"
+git commit -m "执行 RESCAL 示例"
 git push
