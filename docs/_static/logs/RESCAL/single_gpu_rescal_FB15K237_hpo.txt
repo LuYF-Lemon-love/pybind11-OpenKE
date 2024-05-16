@@ -207,3 +207,1605 @@ DEBUG:connectionpool:2024-05-16 18:37:04:https://api.wandb.ai:443 "POST /graphql
 DEBUG:connectionpool:2024-05-16 18:37:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
 DEBUG:connectionpool:2024-05-16 18:37:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
 DEBUG:connectionpool:2024-05-16 18:37:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:37:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:38:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:39:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:40:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:41:21:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 18:41:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:41:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:41:53:mr: 401.796
+INFO:Trainer:2024-05-16 18:41:53:mrr: 0.267
+INFO:Trainer:2024-05-16 18:41:53:hits@1: 0.19
+INFO:Trainer:2024-05-16 18:41:53:hits@3: 0.291
+INFO:Trainer:2024-05-16 18:41:53:hits@10: 0.421
+INFO:Trainer:2024-05-16 18:41:53:hits@30: 0.554
+INFO:Trainer:2024-05-16 18:41:53:hits@50: 0.614
+INFO:Trainer:2024-05-16 18:41:53:hits@100: 0.691
+INFO:Trainer:2024-05-16 18:41:53:hits@200: 0.765
+INFO:Trainer:2024-05-16 18:41:53:mr_type: 138.051
+INFO:Trainer:2024-05-16 18:41:53:mrr_type: 0.294
+INFO:Trainer:2024-05-16 18:41:53:hits@1_type: 0.214
+INFO:Trainer:2024-05-16 18:41:53:hits@3_type: 0.317
+INFO:Trainer:2024-05-16 18:41:53:hits@10_type: 0.451
+INFO:Trainer:2024-05-16 18:41:53:hits@30_type: 0.591
+INFO:Trainer:2024-05-16 18:41:53:hits@50_type: 0.658
+INFO:Trainer:2024-05-16 18:41:53:hits@100_type: 0.741
+INFO:Trainer:2024-05-16 18:41:53:hits@200_type: 0.825
+INFO:EarlyStopping:2024-05-16 18:41:53:Validation score improved (-inf --> 0.421000).  Saving model ...
+INFO:Trainer:2024-05-16 18:41:53:[cuda:1] Epoch [ 100/10000] | Batchsize: 512 | loss: 13.597711 | 4.23444 seconds/epoch
+DEBUG:connectionpool:2024-05-16 18:41:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:42:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:43:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:44:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:45:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:46:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:47:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:48:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:48:54:[cuda:1] Epoch 200 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 18:48:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:49:27:mr: 486.935
+INFO:Trainer:2024-05-16 18:49:27:mrr: 0.262
+INFO:Trainer:2024-05-16 18:49:27:hits@1: 0.187
+INFO:Trainer:2024-05-16 18:49:27:hits@3: 0.283
+INFO:Trainer:2024-05-16 18:49:27:hits@10: 0.413
+INFO:Trainer:2024-05-16 18:49:27:hits@30: 0.542
+INFO:Trainer:2024-05-16 18:49:27:hits@50: 0.601
+INFO:Trainer:2024-05-16 18:49:27:hits@100: 0.679
+INFO:Trainer:2024-05-16 18:49:27:hits@200: 0.754
+INFO:Trainer:2024-05-16 18:49:27:mr_type: 134.644
+INFO:Trainer:2024-05-16 18:49:27:mrr_type: 0.29
+INFO:Trainer:2024-05-16 18:49:27:hits@1_type: 0.21
+INFO:Trainer:2024-05-16 18:49:27:hits@3_type: 0.312
+INFO:Trainer:2024-05-16 18:49:27:hits@10_type: 0.449
+INFO:Trainer:2024-05-16 18:49:27:hits@30_type: 0.59
+INFO:Trainer:2024-05-16 18:49:27:hits@50_type: 0.656
+INFO:Trainer:2024-05-16 18:49:27:hits@100_type: 0.748
+INFO:Trainer:2024-05-16 18:49:27:hits@200_type: 0.83
+INFO:EarlyStopping:2024-05-16 18:49:27:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-16 18:49:27:[cuda:1] Epoch [ 200/10000] | Batchsize: 512 | loss:  7.101692 | 4.38242 seconds/epoch
+DEBUG:connectionpool:2024-05-16 18:49:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:49:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:50:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:51:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:52:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:53:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:54:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:55:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:56:30:[cuda:1] Epoch 300 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 18:56:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:56:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:57:02:mr: 545.936
+INFO:Trainer:2024-05-16 18:57:02:mrr: 0.251
+INFO:Trainer:2024-05-16 18:57:02:hits@1: 0.178
+INFO:Trainer:2024-05-16 18:57:02:hits@3: 0.27
+INFO:Trainer:2024-05-16 18:57:02:hits@10: 0.396
+INFO:Trainer:2024-05-16 18:57:02:hits@30: 0.519
+INFO:Trainer:2024-05-16 18:57:02:hits@50: 0.577
+INFO:Trainer:2024-05-16 18:57:02:hits@100: 0.654
+INFO:Trainer:2024-05-16 18:57:02:hits@200: 0.732
+INFO:Trainer:2024-05-16 18:57:02:mr_type: 140.076
+INFO:Trainer:2024-05-16 18:57:02:mrr_type: 0.281
+INFO:Trainer:2024-05-16 18:57:02:hits@1_type: 0.203
+INFO:Trainer:2024-05-16 18:57:02:hits@3_type: 0.301
+INFO:Trainer:2024-05-16 18:57:02:hits@10_type: 0.437
+INFO:Trainer:2024-05-16 18:57:02:hits@30_type: 0.577
+INFO:Trainer:2024-05-16 18:57:02:hits@50_type: 0.646
+INFO:Trainer:2024-05-16 18:57:02:hits@100_type: 0.741
+INFO:Trainer:2024-05-16 18:57:02:hits@200_type: 0.824
+INFO:EarlyStopping:2024-05-16 18:57:02:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-16 18:57:02:[cuda:1] Send an early stopping signal
+INFO:Trainer:2024-05-16 18:57:02:[cuda:1] The model training is completed, taking a total of 1332.42059 seconds.
+INFO:Trainer:2024-05-16 18:57:02:[cuda:1] Model saved at ./model.pth.
+INFO:Trainer:2024-05-16 18:57:02:[cuda:1] The model starts evaluating in the test set.
+DEBUG:connectionpool:2024-05-16 18:57:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:57:41:mr: 589.883
+INFO:Trainer:2024-05-16 18:57:41:mrr: 0.247
+INFO:Trainer:2024-05-16 18:57:41:hits@1: 0.174
+INFO:Trainer:2024-05-16 18:57:41:hits@3: 0.268
+INFO:Trainer:2024-05-16 18:57:41:hits@10: 0.394
+INFO:Trainer:2024-05-16 18:57:41:hits@30: 0.517
+INFO:Trainer:2024-05-16 18:57:41:hits@50: 0.574
+INFO:Trainer:2024-05-16 18:57:41:hits@100: 0.653
+INFO:Trainer:2024-05-16 18:57:41:hits@200: 0.73
+INFO:Trainer:2024-05-16 18:57:41:mr_type: 143.711
+INFO:Trainer:2024-05-16 18:57:41:mrr_type: 0.277
+INFO:Trainer:2024-05-16 18:57:41:hits@1_type: 0.198
+INFO:Trainer:2024-05-16 18:57:41:hits@3_type: 0.298
+INFO:Trainer:2024-05-16 18:57:41:hits@10_type: 0.434
+INFO:Trainer:2024-05-16 18:57:41:hits@30_type: 0.574
+INFO:Trainer:2024-05-16 18:57:41:hits@50_type: 0.644
+INFO:Trainer:2024-05-16 18:57:41:hits@100_type: 0.737
+INFO:Trainer:2024-05-16 18:57:41:hits@200_type: 0.823
+wandb: - 0.014 MB of 0.014 MB uploadedDEBUG:connectionpool:2024-05-16 18:57:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: \ 0.014 MB of 0.053 MB uploadedwandb: | 0.048 MB of 0.053 MB uploadedwandb: / 0.053 MB of 0.053 MB uploadedwandb: - 0.053 MB of 0.053 MB uploadedwandb: \ 0.053 MB of 0.053 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:           duration ▁
+wandb:        test/hits@1 ▁
+wandb:       test/hits@10 ▁
+wandb:      test/hits@100 ▁
+wandb: test/hits@100_type ▁
+wandb:  test/hits@10_type ▁
+wandb:   test/hits@1_type ▁
+wandb:      test/hits@200 ▁
+wandb: test/hits@200_type ▁
+wandb:        test/hits@3 ▁
+wandb:       test/hits@30 ▁
+wandb:  test/hits@30_type ▁
+wandb:   test/hits@3_type ▁
+wandb:       test/hits@50 ▁
+wandb:  test/hits@50_type ▁
+wandb:            test/mr ▁
+wandb:       test/mr_type ▁
+wandb:           test/mrr ▁
+wandb:      test/mrr_type ▁
+wandb:        train/epoch ▁█
+wandb:   train/train_loss █▁
+wandb:          val/epoch ▁▅█
+wandb:         val/hits@1 █▆▁
+wandb:        val/hits@10 █▆▁
+wandb:       val/hits@100 █▆▁
+wandb:  val/hits@100_type ▁█▁
+wandb:   val/hits@10_type █▇▁
+wandb:    val/hits@1_type █▅▁
+wandb:       val/hits@200 █▆▁
+wandb:  val/hits@200_type ▂█▁
+wandb:         val/hits@3 █▅▁
+wandb:        val/hits@30 █▆▁
+wandb:   val/hits@30_type █▇▁
+wandb:    val/hits@3_type █▆▁
+wandb:        val/hits@50 █▆▁
+wandb:   val/hits@50_type █▇▁
+wandb:             val/mr ▁▅█
+wandb:        val/mr_type ▅▁█
+wandb:            val/mrr █▆▁
+wandb:       val/mrr_type █▆▁
+wandb: 
+wandb: Run summary:
+wandb:           duration 1332.42059
+wandb:        test/hits@1 0.174
+wandb:       test/hits@10 0.394
+wandb:      test/hits@100 0.653
+wandb: test/hits@100_type 0.737
+wandb:  test/hits@10_type 0.434
+wandb:   test/hits@1_type 0.198
+wandb:      test/hits@200 0.73
+wandb: test/hits@200_type 0.823
+wandb:        test/hits@3 0.268
+wandb:       test/hits@30 0.517
+wandb:  test/hits@30_type 0.574
+wandb:   test/hits@3_type 0.298
+wandb:       test/hits@50 0.574
+wandb:  test/hits@50_type 0.644
+wandb:            test/mr 589.883
+wandb:       test/mr_type 143.711
+wandb:           test/mrr 0.247
+wandb:      test/mrr_type 0.277
+wandb:        train/epoch 200
+wandb:   train/train_loss 7.10169
+wandb:          val/epoch 299
+wandb:         val/hits@1 0.178
+wandb:        val/hits@10 0.396
+wandb:       val/hits@100 0.654
+wandb:  val/hits@100_type 0.741
+wandb:   val/hits@10_type 0.437
+wandb:    val/hits@1_type 0.203
+wandb:       val/hits@200 0.732
+wandb:  val/hits@200_type 0.824
+wandb:         val/hits@3 0.27
+wandb:        val/hits@30 0.519
+wandb:   val/hits@30_type 0.577
+wandb:    val/hits@3_type 0.301
+wandb:        val/hits@50 0.577
+wandb:   val/hits@50_type 0.646
+wandb:             val/mr 545.936
+wandb:        val/mr_type 140.076
+wandb:            val/mrr 0.251
+wandb:       val/mrr_type 0.281
+wandb: 
+wandb: 🚀 View run resilient-sweep-1 at: https://wandb.ai/3555028709/pybind11-ke-sweeps/runs/xkzf2cfw
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke-sweeps
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240516_183407-xkzf2cfw/logs
+DEBUG:connectionpool:2024-05-16 18:57:48:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-05-16 18:57:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:57:49:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
+wandb: Sweep Agent: Waiting for job.
+DEBUG:connectionpool:2024-05-16 18:57:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Job received.
+DEBUG:connectionpool:2024-05-16 18:58:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Agent Starting Run: m58mal32 with config:
+wandb: 	adv_temperature: 1
+wandb: 	batch_size: 2048
+wandb: 	dataloader: KGEDataLoader
+wandb: 	delta: 0.0001
+wandb: 	device: cuda:1
+wandb: 	dim: 200
+wandb: 	ent_file: entity2id.txt
+wandb: 	epochs: 10000
+wandb: 	in_path: ../../benchmarks/FB15K237/
+wandb: 	l3_regul_rate: 0
+wandb: 	log_interval: 100
+wandb: 	loss: MarginLoss
+wandb: 	lr: 0.6437756296226022
+wandb: 	margin: 3
+wandb: 	metric: hits@10
+wandb: 	model: RESCAL
+wandb: 	neg_ent: 4
+wandb: 	num_workers: 16
+wandb: 	opt_method: adam
+wandb: 	patience: 2
+wandb: 	prediction: all
+wandb: 	regul_rate: 0
+wandb: 	rel_file: relation2id.txt
+wandb: 	save_path: ./model.pth
+wandb: 	strategy: NegativeSampling
+wandb: 	test_batch_size: 5
+wandb: 	test_file: test2id.txt
+wandb: 	test_sampler: TradTestSampler
+wandb: 	tester: Tester
+wandb: 	train_file: train2id.txt
+wandb: 	train_sampler: BernSampler
+wandb: 	trainer: Trainer
+wandb: 	type_constrain: True
+wandb: 	use_early_stopping: True
+wandb: 	use_gpu: True
+wandb: 	use_tqdm: False
+wandb: 	valid_file: valid2id.txt
+wandb: 	valid_interval: 100
+DEBUG:cmd:2024-05-16 18:58:01:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-05-16 18:58:01:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-05-16 18:58:01:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-05-16 18:58:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:cmd:2024-05-16 18:58:03:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...DEBUG:connectionpool:2024-05-16 18:58:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/RESCAL/wandb/run-20240516_185803-m58mal32
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run valiant-sweep-2
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke-sweeps
+wandb: 🧹 View sweep at https://wandb.ai/3555028709/pybind11-ke-sweeps/sweeps/6e3jvo5e
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke-sweeps/runs/m58mal32
+DEBUG:connectionpool:2024-05-16 18:58:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 18:58:12:[cuda:1] Initialization completed, start model training.
+DEBUG:connectionpool:2024-05-16 18:58:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:58:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 18:59:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:00:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:01:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:02:38:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:02:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:02:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:03:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:04:20:mr: 687.871
+INFO:Trainer:2024-05-16 19:04:20:mrr: 0.2
+INFO:Trainer:2024-05-16 19:04:20:hits@1: 0.13
+INFO:Trainer:2024-05-16 19:04:20:hits@3: 0.216
+INFO:Trainer:2024-05-16 19:04:20:hits@10: 0.344
+INFO:Trainer:2024-05-16 19:04:20:hits@30: 0.469
+INFO:Trainer:2024-05-16 19:04:20:hits@50: 0.529
+INFO:Trainer:2024-05-16 19:04:20:hits@100: 0.605
+INFO:Trainer:2024-05-16 19:04:20:hits@200: 0.683
+INFO:Trainer:2024-05-16 19:04:20:mr_type: 428.731
+INFO:Trainer:2024-05-16 19:04:20:mrr_type: 0.232
+INFO:Trainer:2024-05-16 19:04:20:hits@1_type: 0.155
+INFO:Trainer:2024-05-16 19:04:20:hits@3_type: 0.248
+INFO:Trainer:2024-05-16 19:04:20:hits@10_type: 0.389
+INFO:Trainer:2024-05-16 19:04:20:hits@30_type: 0.538
+INFO:Trainer:2024-05-16 19:04:20:hits@50_type: 0.609
+INFO:Trainer:2024-05-16 19:04:20:hits@100_type: 0.702
+INFO:Trainer:2024-05-16 19:04:20:hits@200_type: 0.788
+INFO:EarlyStopping:2024-05-16 19:04:20:Validation score improved (-inf --> 0.344000).  Saving model ...
+INFO:Trainer:2024-05-16 19:04:20:[cuda:1] Epoch [ 100/10000] | Batchsize: 2048 | loss: 33220695.144531 | 2.66006 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:04:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:04:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:05:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:06:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:07:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:08:45:[cuda:1] Epoch 200 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:08:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:08:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:09:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:10:27:mr: 761.255
+INFO:Trainer:2024-05-16 19:10:27:mrr: 0.209
+INFO:Trainer:2024-05-16 19:10:27:hits@1: 0.139
+INFO:Trainer:2024-05-16 19:10:27:hits@3: 0.226
+INFO:Trainer:2024-05-16 19:10:27:hits@10: 0.35
+INFO:Trainer:2024-05-16 19:10:27:hits@30: 0.472
+INFO:Trainer:2024-05-16 19:10:27:hits@50: 0.528
+INFO:Trainer:2024-05-16 19:10:27:hits@100: 0.601
+INFO:Trainer:2024-05-16 19:10:27:hits@200: 0.676
+INFO:Trainer:2024-05-16 19:10:27:mr_type: 541.351
+INFO:Trainer:2024-05-16 19:10:27:mrr_type: 0.241
+INFO:Trainer:2024-05-16 19:10:27:hits@1_type: 0.164
+INFO:Trainer:2024-05-16 19:10:27:hits@3_type: 0.258
+INFO:Trainer:2024-05-16 19:10:27:hits@10_type: 0.398
+INFO:Trainer:2024-05-16 19:10:27:hits@30_type: 0.546
+INFO:Trainer:2024-05-16 19:10:27:hits@50_type: 0.616
+INFO:Trainer:2024-05-16 19:10:27:hits@100_type: 0.707
+INFO:Trainer:2024-05-16 19:10:27:hits@200_type: 0.79
+INFO:EarlyStopping:2024-05-16 19:10:27:Validation score improved (0.344000 --> 0.350000).  Saving model ...
+INFO:Trainer:2024-05-16 19:10:28:[cuda:1] Epoch [ 200/10000] | Batchsize: 2048 | loss: 44007016.833984 | 3.16695 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:10:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:10:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:11:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:12:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:13:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:14:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:14:54:[cuda:1] Epoch 300 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:14:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:15:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:16:37:mr: 841.381
+INFO:Trainer:2024-05-16 19:16:37:mrr: 0.207
+INFO:Trainer:2024-05-16 19:16:37:hits@1: 0.138
+INFO:Trainer:2024-05-16 19:16:37:hits@3: 0.226
+INFO:Trainer:2024-05-16 19:16:37:hits@10: 0.345
+INFO:Trainer:2024-05-16 19:16:37:hits@30: 0.46
+INFO:Trainer:2024-05-16 19:16:37:hits@50: 0.513
+INFO:Trainer:2024-05-16 19:16:37:hits@100: 0.588
+INFO:Trainer:2024-05-16 19:16:37:hits@200: 0.665
+INFO:Trainer:2024-05-16 19:16:37:mr_type: 605.683
+INFO:Trainer:2024-05-16 19:16:37:mrr_type: 0.241
+INFO:Trainer:2024-05-16 19:16:37:hits@1_type: 0.163
+INFO:Trainer:2024-05-16 19:16:37:hits@3_type: 0.26
+INFO:Trainer:2024-05-16 19:16:37:hits@10_type: 0.398
+INFO:Trainer:2024-05-16 19:16:37:hits@30_type: 0.545
+INFO:Trainer:2024-05-16 19:16:37:hits@50_type: 0.615
+INFO:Trainer:2024-05-16 19:16:37:hits@100_type: 0.708
+INFO:Trainer:2024-05-16 19:16:37:hits@200_type: 0.791
+INFO:EarlyStopping:2024-05-16 19:16:37:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-16 19:16:37:[cuda:1] Epoch [ 300/10000] | Batchsize: 2048 | loss: 47145158.976562 | 3.34181 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:16:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:16:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:17:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:18:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:19:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:20:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:21:09:[cuda:1] Epoch 400 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:21:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:21:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:22:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:22:51:mr: 864.178
+INFO:Trainer:2024-05-16 19:22:51:mrr: 0.207
+INFO:Trainer:2024-05-16 19:22:51:hits@1: 0.138
+INFO:Trainer:2024-05-16 19:22:51:hits@3: 0.226
+INFO:Trainer:2024-05-16 19:22:51:hits@10: 0.344
+INFO:Trainer:2024-05-16 19:22:51:hits@30: 0.461
+INFO:Trainer:2024-05-16 19:22:51:hits@50: 0.516
+INFO:Trainer:2024-05-16 19:22:51:hits@100: 0.587
+INFO:Trainer:2024-05-16 19:22:51:hits@200: 0.664
+INFO:Trainer:2024-05-16 19:22:51:mr_type: 649.586
+INFO:Trainer:2024-05-16 19:22:51:mrr_type: 0.243
+INFO:Trainer:2024-05-16 19:22:51:hits@1_type: 0.165
+INFO:Trainer:2024-05-16 19:22:51:hits@3_type: 0.263
+INFO:Trainer:2024-05-16 19:22:51:hits@10_type: 0.4
+INFO:Trainer:2024-05-16 19:22:51:hits@30_type: 0.547
+INFO:Trainer:2024-05-16 19:22:51:hits@50_type: 0.618
+INFO:Trainer:2024-05-16 19:22:51:hits@100_type: 0.707
+INFO:Trainer:2024-05-16 19:22:51:hits@200_type: 0.79
+INFO:EarlyStopping:2024-05-16 19:22:51:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-16 19:22:51:[cuda:1] Send an early stopping signal
+INFO:Trainer:2024-05-16 19:22:51:[cuda:1] The model training is completed, taking a total of 1377.02944 seconds.
+INFO:Trainer:2024-05-16 19:22:51:[cuda:1] Model saved at ./model.pth.
+INFO:Trainer:2024-05-16 19:22:51:[cuda:1] The model starts evaluating in the test set.
+DEBUG:connectionpool:2024-05-16 19:22:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:23:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:24:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:24:50:mr: 874.091
+INFO:Trainer:2024-05-16 19:24:50:mrr: 0.202
+INFO:Trainer:2024-05-16 19:24:50:hits@1: 0.134
+INFO:Trainer:2024-05-16 19:24:50:hits@3: 0.22
+INFO:Trainer:2024-05-16 19:24:50:hits@10: 0.337
+INFO:Trainer:2024-05-16 19:24:50:hits@30: 0.45
+INFO:Trainer:2024-05-16 19:24:50:hits@50: 0.504
+INFO:Trainer:2024-05-16 19:24:50:hits@100: 0.576
+INFO:Trainer:2024-05-16 19:24:50:hits@200: 0.652
+INFO:Trainer:2024-05-16 19:24:50:mr_type: 633.471
+INFO:Trainer:2024-05-16 19:24:50:mrr_type: 0.236
+INFO:Trainer:2024-05-16 19:24:50:hits@1_type: 0.159
+INFO:Trainer:2024-05-16 19:24:50:hits@3_type: 0.254
+INFO:Trainer:2024-05-16 19:24:50:hits@10_type: 0.392
+INFO:Trainer:2024-05-16 19:24:50:hits@30_type: 0.537
+INFO:Trainer:2024-05-16 19:24:50:hits@50_type: 0.608
+INFO:Trainer:2024-05-16 19:24:50:hits@100_type: 0.701
+INFO:Trainer:2024-05-16 19:24:50:hits@200_type: 0.785
+DEBUG:connectionpool:2024-05-16 19:24:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.014 MB of 0.014 MB uploadedwandb: | 0.014 MB of 0.014 MB uploadedwandb: / 0.016 MB of 0.057 MB uploadedDEBUG:connectionpool:2024-05-16 19:24:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: - 0.016 MB of 0.057 MB uploadedwandb: \ 0.057 MB of 0.057 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:           duration ▁
+wandb:        test/hits@1 ▁
+wandb:       test/hits@10 ▁
+wandb:      test/hits@100 ▁
+wandb: test/hits@100_type ▁
+wandb:  test/hits@10_type ▁
+wandb:   test/hits@1_type ▁
+wandb:      test/hits@200 ▁
+wandb: test/hits@200_type ▁
+wandb:        test/hits@3 ▁
+wandb:       test/hits@30 ▁
+wandb:  test/hits@30_type ▁
+wandb:   test/hits@3_type ▁
+wandb:       test/hits@50 ▁
+wandb:  test/hits@50_type ▁
+wandb:            test/mr ▁
+wandb:       test/mr_type ▁
+wandb:           test/mrr ▁
+wandb:      test/mrr_type ▁
+wandb:        train/epoch ▁▅█
+wandb:   train/train_loss ▁▆█
+wandb:          val/epoch ▁▃▆█
+wandb:         val/hits@1 ▁█▇▇
+wandb:        val/hits@10 ▁█▂▁
+wandb:       val/hits@100 █▆▁▁
+wandb:  val/hits@100_type ▁▇█▇
+wandb:   val/hits@10_type ▁▇▇█
+wandb:    val/hits@1_type ▁▇▇█
+wandb:       val/hits@200 █▅▁▁
+wandb:  val/hits@200_type ▁▆█▆
+wandb:         val/hits@3 ▁███
+wandb:        val/hits@30 ▆█▁▂
+wandb:   val/hits@30_type ▁▇▆█
+wandb:    val/hits@3_type ▁▆▇█
+wandb:        val/hits@50 ██▁▂
+wandb:   val/hits@50_type ▁▆▆█
+wandb:             val/mr ▁▄▇█
+wandb:        val/mr_type ▁▅▇█
+wandb:            val/mrr ▁█▆▆
+wandb:       val/mrr_type ▁▇▇█
+wandb: 
+wandb: Run summary:
+wandb:           duration 1377.02944
+wandb:        test/hits@1 0.134
+wandb:       test/hits@10 0.337
+wandb:      test/hits@100 0.576
+wandb: test/hits@100_type 0.701
+wandb:  test/hits@10_type 0.392
+wandb:   test/hits@1_type 0.159
+wandb:      test/hits@200 0.652
+wandb: test/hits@200_type 0.785
+wandb:        test/hits@3 0.22
+wandb:       test/hits@30 0.45
+wandb:  test/hits@30_type 0.537
+wandb:   test/hits@3_type 0.254
+wandb:       test/hits@50 0.504
+wandb:  test/hits@50_type 0.608
+wandb:            test/mr 874.091
+wandb:       test/mr_type 633.471
+wandb:           test/mrr 0.202
+wandb:      test/mrr_type 0.236
+wandb:        train/epoch 300
+wandb:   train/train_loss 47145158.97656
+wandb:          val/epoch 399
+wandb:         val/hits@1 0.138
+wandb:        val/hits@10 0.344
+wandb:       val/hits@100 0.587
+wandb:  val/hits@100_type 0.707
+wandb:   val/hits@10_type 0.4
+wandb:    val/hits@1_type 0.165
+wandb:       val/hits@200 0.664
+wandb:  val/hits@200_type 0.79
+wandb:         val/hits@3 0.226
+wandb:        val/hits@30 0.461
+wandb:   val/hits@30_type 0.547
+wandb:    val/hits@3_type 0.263
+wandb:        val/hits@50 0.516
+wandb:   val/hits@50_type 0.618
+wandb:             val/mr 864.178
+wandb:        val/mr_type 649.586
+wandb:            val/mrr 0.207
+wandb:       val/mrr_type 0.243
+wandb: 
+wandb: 🚀 View run valiant-sweep-2 at: https://wandb.ai/3555028709/pybind11-ke-sweeps/runs/m58mal32
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke-sweeps
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240516_185803-m58mal32/logs
+DEBUG:connectionpool:2024-05-16 19:24:58:Resetting dropped connection: o151352.ingest.sentry.io
+DEBUG:connectionpool:2024-05-16 19:24:59:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
+DEBUG:connectionpool:2024-05-16 19:25:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Agent Starting Run: tpsc941f with config:
+wandb: 	adv_temperature: 3
+wandb: 	batch_size: 512
+wandb: 	dataloader: KGEDataLoader
+wandb: 	delta: 0.0001
+wandb: 	device: cuda:1
+wandb: 	dim: 50
+wandb: 	ent_file: entity2id.txt
+wandb: 	epochs: 10000
+wandb: 	in_path: ../../benchmarks/FB15K237/
+wandb: 	l3_regul_rate: 0
+wandb: 	log_interval: 100
+wandb: 	loss: MarginLoss
+wandb: 	lr: 0.6244989043406323
+wandb: 	margin: 6
+wandb: 	metric: hits@10
+wandb: 	model: RESCAL
+wandb: 	neg_ent: 4
+wandb: 	num_workers: 16
+wandb: 	opt_method: sgd
+wandb: 	patience: 2
+wandb: 	prediction: all
+wandb: 	regul_rate: 0
+wandb: 	rel_file: relation2id.txt
+wandb: 	save_path: ./model.pth
+wandb: 	strategy: NegativeSampling
+wandb: 	test_batch_size: 5
+wandb: 	test_file: test2id.txt
+wandb: 	test_sampler: TradTestSampler
+wandb: 	tester: Tester
+wandb: 	train_file: train2id.txt
+wandb: 	train_sampler: BernSampler
+wandb: 	trainer: Trainer
+wandb: 	type_constrain: True
+wandb: 	use_early_stopping: True
+wandb: 	use_gpu: True
+wandb: 	use_tqdm: False
+wandb: 	valid_file: valid2id.txt
+wandb: 	valid_interval: 100
+DEBUG:cmd:2024-05-16 19:25:02:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-05-16 19:25:02:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-05-16 19:25:02:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-05-16 19:25:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:cmd:2024-05-16 19:25:04:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...DEBUG:connectionpool:2024-05-16 19:25:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/RESCAL/wandb/run-20240516_192504-tpsc941f
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run whole-sweep-3
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke-sweeps
+wandb: 🧹 View sweep at https://wandb.ai/3555028709/pybind11-ke-sweeps/sweeps/6e3jvo5e
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke-sweeps/runs/tpsc941f
+DEBUG:connectionpool:2024-05-16 19:25:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:25:14:[cuda:1] Initialization completed, start model training.
+DEBUG:connectionpool:2024-05-16 19:25:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:25:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:26:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:27:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:28:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:29:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:30:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:31:11:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:31:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:31:30:mr: 351.498
+INFO:Trainer:2024-05-16 19:31:30:mrr: 0.24
+INFO:Trainer:2024-05-16 19:31:30:hits@1: 0.166
+INFO:Trainer:2024-05-16 19:31:30:hits@3: 0.259
+INFO:Trainer:2024-05-16 19:31:30:hits@10: 0.388
+INFO:Trainer:2024-05-16 19:31:30:hits@30: 0.518
+INFO:Trainer:2024-05-16 19:31:30:hits@50: 0.579
+INFO:Trainer:2024-05-16 19:31:30:hits@100: 0.662
+INFO:Trainer:2024-05-16 19:31:30:hits@200: 0.744
+INFO:Trainer:2024-05-16 19:31:30:mr_type: 158.891
+INFO:Trainer:2024-05-16 19:31:30:mrr_type: 0.267
+INFO:Trainer:2024-05-16 19:31:30:hits@1_type: 0.189
+INFO:Trainer:2024-05-16 19:31:30:hits@3_type: 0.287
+INFO:Trainer:2024-05-16 19:31:30:hits@10_type: 0.422
+INFO:Trainer:2024-05-16 19:31:30:hits@30_type: 0.559
+INFO:Trainer:2024-05-16 19:31:30:hits@50_type: 0.625
+INFO:Trainer:2024-05-16 19:31:30:hits@100_type: 0.713
+INFO:Trainer:2024-05-16 19:31:30:hits@200_type: 0.8
+INFO:EarlyStopping:2024-05-16 19:31:30:Validation score improved (-inf --> 0.388000).  Saving model ...
+INFO:Trainer:2024-05-16 19:31:30:[cuda:1] Epoch [ 100/10000] | Batchsize: 512 | loss: 63.536616 | 3.57533 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:31:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:31:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:32:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:33:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:11:Resetting dropped connection: api.wandb.ai
+DEBUG:connectionpool:2024-05-16 19:34:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:34:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:35:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:36:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:37:24:[cuda:1] Epoch 200 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:37:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:37:41:mr: 363.054
+INFO:Trainer:2024-05-16 19:37:41:mrr: 0.249
+INFO:Trainer:2024-05-16 19:37:41:hits@1: 0.171
+INFO:Trainer:2024-05-16 19:37:41:hits@3: 0.27
+INFO:Trainer:2024-05-16 19:37:41:hits@10: 0.404
+INFO:Trainer:2024-05-16 19:37:41:hits@30: 0.536
+INFO:Trainer:2024-05-16 19:37:41:hits@50: 0.599
+INFO:Trainer:2024-05-16 19:37:41:hits@100: 0.679
+INFO:Trainer:2024-05-16 19:37:41:hits@200: 0.757
+INFO:Trainer:2024-05-16 19:37:41:mr_type: 144.113
+INFO:Trainer:2024-05-16 19:37:41:mrr_type: 0.278
+INFO:Trainer:2024-05-16 19:37:41:hits@1_type: 0.197
+INFO:Trainer:2024-05-16 19:37:41:hits@3_type: 0.299
+INFO:Trainer:2024-05-16 19:37:41:hits@10_type: 0.439
+INFO:Trainer:2024-05-16 19:37:41:hits@30_type: 0.58
+INFO:Trainer:2024-05-16 19:37:41:hits@50_type: 0.648
+INFO:Trainer:2024-05-16 19:37:41:hits@100_type: 0.734
+INFO:Trainer:2024-05-16 19:37:41:hits@200_type: 0.819
+INFO:EarlyStopping:2024-05-16 19:37:41:Validation score improved (0.388000 --> 0.404000).  Saving model ...
+INFO:Trainer:2024-05-16 19:37:41:[cuda:1] Epoch [ 200/10000] | Batchsize: 512 | loss: 36.917781 | 3.65143 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:37:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:37:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:38:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:39:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:40:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:41:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:36:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:42:56:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:43:38:[cuda:1] Epoch 300 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:43:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:43:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:43:56:mr: 376.817
+INFO:Trainer:2024-05-16 19:43:56:mrr: 0.257
+INFO:Trainer:2024-05-16 19:43:56:hits@1: 0.181
+INFO:Trainer:2024-05-16 19:43:56:hits@3: 0.277
+INFO:Trainer:2024-05-16 19:43:56:hits@10: 0.41
+INFO:Trainer:2024-05-16 19:43:56:hits@30: 0.542
+INFO:Trainer:2024-05-16 19:43:56:hits@50: 0.602
+INFO:Trainer:2024-05-16 19:43:56:hits@100: 0.681
+INFO:Trainer:2024-05-16 19:43:56:hits@200: 0.757
+INFO:Trainer:2024-05-16 19:43:56:mr_type: 138.928
+INFO:Trainer:2024-05-16 19:43:56:mrr_type: 0.286
+INFO:Trainer:2024-05-16 19:43:56:hits@1_type: 0.205
+INFO:Trainer:2024-05-16 19:43:56:hits@3_type: 0.307
+INFO:Trainer:2024-05-16 19:43:56:hits@10_type: 0.447
+INFO:Trainer:2024-05-16 19:43:56:hits@30_type: 0.591
+INFO:Trainer:2024-05-16 19:43:56:hits@50_type: 0.656
+INFO:Trainer:2024-05-16 19:43:56:hits@100_type: 0.742
+INFO:Trainer:2024-05-16 19:43:56:hits@200_type: 0.824
+INFO:EarlyStopping:2024-05-16 19:43:56:Validation score improved (0.404000 --> 0.410000).  Saving model ...
+INFO:Trainer:2024-05-16 19:43:56:[cuda:1] Epoch [ 300/10000] | Batchsize: 512 | loss: 28.925970 | 3.68040 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:44:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:33:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:44:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:45:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:45:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:12:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:17:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:29:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:46:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:47:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:38:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:48:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:49:47:[cuda:1] Epoch 400 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:49:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:49:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:50:05:mr: 388.068
+INFO:Trainer:2024-05-16 19:50:05:mrr: 0.253
+INFO:Trainer:2024-05-16 19:50:05:hits@1: 0.177
+INFO:Trainer:2024-05-16 19:50:05:hits@3: 0.274
+INFO:Trainer:2024-05-16 19:50:05:hits@10: 0.405
+INFO:Trainer:2024-05-16 19:50:05:hits@30: 0.536
+INFO:Trainer:2024-05-16 19:50:05:hits@50: 0.597
+INFO:Trainer:2024-05-16 19:50:05:hits@100: 0.678
+INFO:Trainer:2024-05-16 19:50:05:hits@200: 0.756
+INFO:Trainer:2024-05-16 19:50:05:mr_type: 137.659
+INFO:Trainer:2024-05-16 19:50:05:mrr_type: 0.284
+INFO:Trainer:2024-05-16 19:50:05:hits@1_type: 0.203
+INFO:Trainer:2024-05-16 19:50:05:hits@3_type: 0.305
+INFO:Trainer:2024-05-16 19:50:05:hits@10_type: 0.445
+INFO:Trainer:2024-05-16 19:50:05:hits@30_type: 0.589
+INFO:Trainer:2024-05-16 19:50:05:hits@50_type: 0.655
+INFO:Trainer:2024-05-16 19:50:05:hits@100_type: 0.744
+INFO:Trainer:2024-05-16 19:50:05:hits@200_type: 0.827
+INFO:EarlyStopping:2024-05-16 19:50:05:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-16 19:50:05:[cuda:1] Epoch [ 400/10000] | Batchsize: 512 | loss: 27.672246 | 3.68323 seconds/epoch
+DEBUG:connectionpool:2024-05-16 19:50:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:25:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:41:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:51:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:50:57:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:02:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:07:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:13:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:18:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:23:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:28:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:39:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:44:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:50:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:51:55:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:01:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:06:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:11:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:52:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:00:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:05:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:22:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:27:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:49:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:54:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:53:59:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:10:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:43:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:48:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:53:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:54:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:04:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:09:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:15:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:20:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:32:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:37:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:42:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:47:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:55:52:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:55:57:[cuda:1] Epoch 500 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-16 19:55:58:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:56:03:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:56:08:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:56:14:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:56:15:mr: 397.66
+INFO:Trainer:2024-05-16 19:56:15:mrr: 0.255
+INFO:Trainer:2024-05-16 19:56:15:hits@1: 0.178
+INFO:Trainer:2024-05-16 19:56:15:hits@3: 0.277
+INFO:Trainer:2024-05-16 19:56:15:hits@10: 0.408
+INFO:Trainer:2024-05-16 19:56:15:hits@30: 0.538
+INFO:Trainer:2024-05-16 19:56:15:hits@50: 0.597
+INFO:Trainer:2024-05-16 19:56:15:hits@100: 0.677
+INFO:Trainer:2024-05-16 19:56:15:hits@200: 0.752
+INFO:Trainer:2024-05-16 19:56:15:mr_type: 134.334
+INFO:Trainer:2024-05-16 19:56:15:mrr_type: 0.287
+INFO:Trainer:2024-05-16 19:56:15:hits@1_type: 0.205
+INFO:Trainer:2024-05-16 19:56:15:hits@3_type: 0.31
+INFO:Trainer:2024-05-16 19:56:15:hits@10_type: 0.452
+INFO:Trainer:2024-05-16 19:56:15:hits@30_type: 0.595
+INFO:Trainer:2024-05-16 19:56:15:hits@50_type: 0.66
+INFO:Trainer:2024-05-16 19:56:15:hits@100_type: 0.747
+INFO:Trainer:2024-05-16 19:56:15:hits@200_type: 0.83
+INFO:EarlyStopping:2024-05-16 19:56:15:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-16 19:56:15:[cuda:1] Send an early stopping signal
+INFO:Trainer:2024-05-16 19:56:15:[cuda:1] The model training is completed, taking a total of 1842.97719 seconds.
+INFO:Trainer:2024-05-16 19:56:15:[cuda:1] Model saved at ./model.pth.
+INFO:Trainer:2024-05-16 19:56:15:[cuda:1] The model starts evaluating in the test set.
+DEBUG:connectionpool:2024-05-16 19:56:19:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:56:24:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:56:30:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 19:56:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-16 19:56:35:mr: 413.241
+INFO:Trainer:2024-05-16 19:56:35:mrr: 0.253
+INFO:Trainer:2024-05-16 19:56:35:hits@1: 0.176
+INFO:Trainer:2024-05-16 19:56:35:hits@3: 0.275
+INFO:Trainer:2024-05-16 19:56:35:hits@10: 0.406
+INFO:Trainer:2024-05-16 19:56:35:hits@30: 0.531
+INFO:Trainer:2024-05-16 19:56:35:hits@50: 0.593
+INFO:Trainer:2024-05-16 19:56:35:hits@100: 0.674
+INFO:Trainer:2024-05-16 19:56:35:hits@200: 0.752
+INFO:Trainer:2024-05-16 19:56:35:mr_type: 137.738
+INFO:Trainer:2024-05-16 19:56:35:mrr_type: 0.284
+INFO:Trainer:2024-05-16 19:56:35:hits@1_type: 0.202
+INFO:Trainer:2024-05-16 19:56:35:hits@3_type: 0.306
+INFO:Trainer:2024-05-16 19:56:35:hits@10_type: 0.448
+INFO:Trainer:2024-05-16 19:56:35:hits@30_type: 0.587
+INFO:Trainer:2024-05-16 19:56:35:hits@50_type: 0.657
+INFO:Trainer:2024-05-16 19:56:35:hits@100_type: 0.745
+INFO:Trainer:2024-05-16 19:56:35:hits@200_type: 0.828
+wandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.014 MB of 0.057 MB uploadedwandb: | 0.014 MB of 0.063 MB uploadedDEBUG:connectionpool:2024-05-16 19:56:40:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: / 0.021 MB of 0.063 MB uploadedwandb: - 0.023 MB of 0.063 MB uploadedwandb: \ 0.023 MB of 0.063 MB uploadedwandb: | 0.063 MB of 0.063 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:           duration ▁
+wandb:        test/hits@1 ▁
+wandb:       test/hits@10 ▁
+wandb:      test/hits@100 ▁
+wandb: test/hits@100_type ▁
+wandb:  test/hits@10_type ▁
+wandb:   test/hits@1_type ▁
+wandb:      test/hits@200 ▁
+wandb: test/hits@200_type ▁
+wandb:        test/hits@3 ▁
+wandb:       test/hits@30 ▁
+wandb:  test/hits@30_type ▁
+wandb:   test/hits@3_type ▁
+wandb:       test/hits@50 ▁
+wandb:  test/hits@50_type ▁
+wandb:            test/mr ▁
+wandb:       test/mr_type ▁
+wandb:           test/mrr ▁
+wandb:      test/mrr_type ▁
+wandb:        train/epoch ▁▃▆█
+wandb:   train/train_loss █▃▁▁
+wandb:          val/epoch ▁▃▅▆█
+wandb:         val/hits@1 ▁▃█▆▇
+wandb:        val/hits@10 ▁▆█▆▇
+wandb:       val/hits@100 ▁▇█▇▇
+wandb:  val/hits@100_type ▁▅▇▇█
+wandb:   val/hits@10_type ▁▅▇▆█
+wandb:    val/hits@1_type ▁▅█▇█
+wandb:       val/hits@200 ▁██▇▅
+wandb:  val/hits@200_type ▁▅▇▇█
+wandb:         val/hits@3 ▁▅█▇█
+wandb:        val/hits@30 ▁▆█▆▇
+wandb:   val/hits@30_type ▁▅▇▇█
+wandb:    val/hits@3_type ▁▅▇▆█
+wandb:        val/hits@50 ▁▇█▆▆
+wandb:   val/hits@50_type ▁▆▇▇█
+wandb:             val/mr ▁▃▅▇█
+wandb:        val/mr_type █▄▂▂▁
+wandb:            val/mrr ▁▅█▆▇
+wandb:       val/mrr_type ▁▅█▇█
+wandb: 
+wandb: Run summary:
+wandb:           duration 1842.97719
+wandb:        test/hits@1 0.176
+wandb:       test/hits@10 0.406
+wandb:      test/hits@100 0.674
+wandb: test/hits@100_type 0.745
+wandb:  test/hits@10_type 0.448
+wandb:   test/hits@1_type 0.202
+wandb:      test/hits@200 0.752
+wandb: test/hits@200_type 0.828
+wandb:        test/hits@3 0.275
+wandb:       test/hits@30 0.531
+wandb:  test/hits@30_type 0.587
+wandb:   test/hits@3_type 0.306
+wandb:       test/hits@50 0.593
+wandb:  test/hits@50_type 0.657
+wandb:            test/mr 413.241
+wandb:       test/mr_type 137.738
+wandb:           test/mrr 0.253
+wandb:      test/mrr_type 0.284
+wandb:        train/epoch 400
+wandb:   train/train_loss 27.67225
+wandb:          val/epoch 499
+wandb:         val/hits@1 0.178
+wandb:        val/hits@10 0.408
+wandb:       val/hits@100 0.677
+wandb:  val/hits@100_type 0.747
+wandb:   val/hits@10_type 0.452
+wandb:    val/hits@1_type 0.205
+wandb:       val/hits@200 0.752
+wandb:  val/hits@200_type 0.83
+wandb:         val/hits@3 0.277
+wandb:        val/hits@30 0.538
+wandb:   val/hits@30_type 0.595
+wandb:    val/hits@3_type 0.31
+wandb:        val/hits@50 0.597
+wandb:   val/hits@50_type 0.66
+wandb:             val/mr 397.66
+wandb:        val/mr_type 134.334
+wandb:            val/mrr 0.255
+wandb:       val/mrr_type 0.287
+wandb: 
+wandb: 🚀 View run whole-sweep-3 at: https://wandb.ai/3555028709/pybind11-ke-sweeps/runs/tpsc941f
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke-sweeps
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240516_192504-tpsc941f/logs
+DEBUG:connectionpool:2024-05-16 19:56:44:Resetting dropped connection: o151352.ingest.sentry.io
+DEBUG:connectionpool:2024-05-16 19:56:45:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
+DEBUG:connectionpool:2024-05-16 19:56:46:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None

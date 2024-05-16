@@ -46,7 +46,7 @@ html_theme_options = {
     },
 
     'logo': '',
-    'logo_dark': '_static/logo-dark.png',
+    'logo_dark': '_static/images/logo-dark.png',
     'logo_icon': '',
 }
 

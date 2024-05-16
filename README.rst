@@ -1,4 +1,4 @@
-.. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@main/docs/_static/logo-best.svg
+.. figure:: https://cdn.jsdelivr.net/gh/LuYF-Lemon-love/pybind11-OpenKE@main/docs/_static/images/logo-best.svg
     :alt: pybind11-OpenKE logo
 
 pybind11-OpenKE — 知识图谱嵌入工具包
