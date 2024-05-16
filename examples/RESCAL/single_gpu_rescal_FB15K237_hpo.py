@@ -6,6 +6,12 @@
 RESCAL-FB15K237-single-gpu-hpo
 ====================================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 16, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 16, 2024
+
 这一部分介绍如何用一个 GPU 在 ``FB15K237`` 知识图谱上寻找 ``RESCAL`` :cite:`RESCAL` 的超参数。
 
 定义训练数据加载器超参数优化范围
@@ -19,7 +25,7 @@ from pybind11_ke.module.loss import get_margin_loss_hpo_config
 from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
 from pybind11_ke.config import get_tester_hpo_config
 from pybind11_ke.config import get_trainer_hpo_config
-from pybind11_ke.config import set_hpo_config, start_hpo_train
+from pybind11_ke.config import set_hpo_config, set_hpo_hits, start_hpo_train
 
 ######################################################################
 # :py:func:`pybind11_ke.data.get_kge_data_loader_hpo_config` 将返回
@@ -101,6 +107,17 @@ print()
 # set the hpo config
 tester_config = get_tester_hpo_config()
 print("tester_config:")
+pprint.pprint(tester_config)
+print()
+
+set_hpo_hits([1, 3, 10, 30, 50, 100, 200])
+print()
+
+tester_config.update({
+    'device': {
+        'value': 'cuda:1'
+    },
+})
 pprint.pprint(tester_config)
 print()
 
