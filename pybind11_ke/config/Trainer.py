@@ -28,7 +28,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(levelname)s:%(module)s:%(asctime)s:%(message)s',
-					datefmt='%Y-%d-%m %H:%M:%S', level=logging.DEBUG)
+					datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
 class Trainer(object):
 
