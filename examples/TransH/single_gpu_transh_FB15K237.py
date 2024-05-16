@@ -106,7 +106,7 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 trainer.run()
 
 ######################################################################
-# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransH/single_gpu_transh_FB15K237.txt>`_ 下载。
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/TransH/single_gpu_transh_FB15K237.txt>`_ 下载。
 
 ######################################################################
 # --------------

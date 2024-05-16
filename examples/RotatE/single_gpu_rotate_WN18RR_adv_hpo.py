@@ -161,7 +161,7 @@ print()
 start_hpo_train(config=sweep_config, count=3)
 
 ######################################################################
-# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/RotatE/single_gpu_rotate_WN18RR_adv_hpo.txt>`_ 下载。
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/RotatE/single_gpu_rotate_WN18RR_adv_hpo.txt>`_ 下载。
 # .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/RotatE/RotatE超参数搜索示例（一）.pdf>`_ 下载。
 
 ######################################################################

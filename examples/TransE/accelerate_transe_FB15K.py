@@ -127,7 +127,7 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 trainer.run()
 
 ######################################################################
-# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransE/accelerate_transe_FB15K.txt>`_ 下载。
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/TransE/accelerate_transe_FB15K.txt>`_ 下载。
 
 ######################################################################
 # --------------

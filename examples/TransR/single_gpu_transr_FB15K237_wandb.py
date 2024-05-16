@@ -170,7 +170,7 @@ trainer = Trainer(model = model_r, data_loader = dataloader.train_dataloader(),
 trainer.run()
 
 ######################################################################
-# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/TransR/single_gpu_transr_FB15K237_wandb.txt>`_ 下载。
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/TransR/single_gpu_transr_FB15K237_wandb.txt>`_ 下载。
 # .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/TransR/TransR单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################

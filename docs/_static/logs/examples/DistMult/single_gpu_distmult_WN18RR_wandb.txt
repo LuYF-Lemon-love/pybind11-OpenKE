@@ -1,0 +1,42 @@
+DEBUG:cmd:2024-05-16 21:23:33:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:cmd:2024-05-16 21:23:33:Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=None, shell=False, universal_newlines=False)
+DEBUG:connectionpool:2024-05-16 21:23:33:Starting new HTTPS connection (1): api.wandb.ai:443
+DEBUG:connectionpool:2024-05-16 21:23:34:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+DEBUG:connectionpool:2024-05-16 21:23:35:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+wandb: Currently logged in as: 3555028709. Use `wandb login --relogin` to force relogin
+DEBUG:cmd:2024-05-16 21:23:35:Popen(['git', 'cat-file', '--batch-check'], cwd=/home/luyanfeng/my_code/github/pybind11-OpenKE, stdin=<valid stream>, shell=False, universal_newlines=False)
+wandb: Tracking run with wandb version 0.16.6
+wandb: Run data is saved locally in /home/luyanfeng/my_code/github/pybind11-OpenKE/examples/DistMult/wandb/run-20240516_212335-4aqb2ikm
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run DistMult-WN18RR
+wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
+wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/4aqb2ikm
+INFO:Trainer:2024-05-16 21:23:43:[cuda:1] Initialization completed, start model training.
+INFO:Trainer:2024-05-16 21:26:24:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:26:27:mr: 5265.586
+INFO:Trainer:2024-05-16 21:26:27:mrr: 0.354
+INFO:Trainer:2024-05-16 21:26:27:hits@1: 0.3
+INFO:Trainer:2024-05-16 21:26:27:hits@3: 0.392
+INFO:Trainer:2024-05-16 21:26:27:hits@10: 0.441
+INFO:Trainer:2024-05-16 21:26:27:mr_type: 2672.808
+INFO:Trainer:2024-05-16 21:26:27:mrr_type: 0.366
+INFO:Trainer:2024-05-16 21:26:27:hits@1_type: 0.309
+INFO:Trainer:2024-05-16 21:26:27:hits@3_type: 0.405
+INFO:Trainer:2024-05-16 21:26:27:hits@10_type: 0.455
+INFO:EarlyStopping:2024-05-16 21:26:27:Validation score improved (-inf --> 0.441000).  Saving model ...
+INFO:Trainer:2024-05-16 21:26:27:[cuda:1] Epoch 100 | Training checkpoint saved at ../../checkpoint/distMult-100.pth
+INFO:Trainer:2024-05-16 21:26:27:[cuda:1] Epoch [ 100/2000] | Batchsize: 4096 | loss:  2.206570 | 1.61467 seconds/epoch
+INFO:Trainer:2024-05-16 21:28:49:[cuda:1] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:28:51:mr: 4623.919
+INFO:Trainer:2024-05-16 21:28:51:mrr: 0.336
+INFO:Trainer:2024-05-16 21:28:51:hits@1: 0.269
+INFO:Trainer:2024-05-16 21:28:51:hits@3: 0.378
+INFO:Trainer:2024-05-16 21:28:51:hits@10: 0.449
+INFO:Trainer:2024-05-16 21:28:51:mr_type: 2365.995
+INFO:Trainer:2024-05-16 21:28:51:mrr_type: 0.35
+INFO:Trainer:2024-05-16 21:28:51:hits@1_type: 0.279
+INFO:Trainer:2024-05-16 21:28:51:hits@3_type: 0.396
+INFO:Trainer:2024-05-16 21:28:51:hits@10_type: 0.466
+INFO:EarlyStopping:2024-05-16 21:28:51:Validation score improved (0.441000 --> 0.449000).  Saving model ...
+INFO:Trainer:2024-05-16 21:28:52:[cuda:1] Epoch 200 | Training checkpoint saved at ../../checkpoint/distMult-200.pth
+INFO:Trainer:2024-05-16 21:28:52:[cuda:1] Epoch [ 200/2000] | Batchsize: 4096 | loss:  2.142169 | 1.52945 seconds/epoch

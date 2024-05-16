@@ -132,7 +132,7 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(), ep
 trainer.run()
 
 ######################################################################
-# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/RESCAL/single_gpu_rescal_FB15K237_wandb.txt>`_ 下载。
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/RESCAL/single_gpu_rescal_FB15K237_wandb.txt>`_ 下载。
 # .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/RESCAL/RESCAL单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################
