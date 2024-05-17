@@ -6,6 +6,12 @@
 DistMult-WN18RR-single-gpu-adv-wandb
 ====================================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 17, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 17, 2024
+
 这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上训练 ``DistMult`` :cite:`DistMult`，应用 ``RotatE`` :cite:`RotatE` 提出的自我对抗负采样损失函数进行模型训练，使用 ``wandb`` 记录实验结果。
 
 导入数据
@@ -36,8 +42,9 @@ wandb_logger = WandbLogger(
 		dim = 1024,
 		adv_temperature = 0.5,
 		l3_regul_rate = 0.000005,
+        use_tqdm = False,
 		use_gpu = True,
-		device = 'cuda:0',
+		device = 'cuda:1',
 		epochs = 400,
 		lr = 0.002,
 		opt_method = "adam",
@@ -51,7 +58,7 @@ wandb_logger = WandbLogger(
 config = wandb_logger.config
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
@@ -116,11 +123,13 @@ model = NegativeSampling(
 # 使得训练器能够在训练过程中评估模型。
 	
 # test the model
-tester = Tester(model = distmult, data_loader = dataloader, use_gpu = config.use_gpu, device = config.device)
+tester = Tester(model = distmult, data_loader = dataloader, use_tqdm = config.use_tqdm,
+                use_gpu = config.use_gpu, device = config.device)
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
-	epochs = config.epochs, lr = config.lr, opt_method = config.opt_method, use_gpu = config.use_gpu, device = config.device,
+	epochs = config.epochs, lr = config.lr, opt_method = config.opt_method,
+    use_gpu = config.use_gpu, device = config.device,
 	tester = tester, test = config.test, valid_interval = config.valid_interval,
 	log_interval = config.log_interval, save_interval = config.save_interval,
 	save_path = config.save_path, use_wandb = True)
