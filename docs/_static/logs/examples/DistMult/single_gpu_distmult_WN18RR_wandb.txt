@@ -96,3 +96,103 @@ INFO:Trainer:2024-05-16 21:38:04:hits@10_type: 0.484
 INFO:EarlyStopping:2024-05-16 21:38:04:Validation score improved (0.459000 --> 0.461000).  Saving model ...
 INFO:Trainer:2024-05-16 21:38:04:[cuda:1] Epoch 600 | Training checkpoint saved at ../../checkpoint/distMult-600.pth
 INFO:Trainer:2024-05-16 21:38:04:[cuda:1] Epoch [ 600/2000] | Batchsize: 4096 | loss:  2.080595 | 1.43110 seconds/epoch
+INFO:Trainer:2024-05-16 21:40:21:[cuda:1] Epoch 700 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:40:24:mr: 4093.753
+INFO:Trainer:2024-05-16 21:40:24:mrr: 0.332
+INFO:Trainer:2024-05-16 21:40:24:hits@1: 0.256
+INFO:Trainer:2024-05-16 21:40:24:hits@3: 0.383
+INFO:Trainer:2024-05-16 21:40:24:hits@10: 0.46
+INFO:Trainer:2024-05-16 21:40:24:mr_type: 2098.015
+INFO:Trainer:2024-05-16 21:40:24:mrr_type: 0.347
+INFO:Trainer:2024-05-16 21:40:24:hits@1_type: 0.267
+INFO:Trainer:2024-05-16 21:40:24:hits@3_type: 0.4
+INFO:Trainer:2024-05-16 21:40:24:hits@10_type: 0.479
+INFO:EarlyStopping:2024-05-16 21:40:24:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-16 21:40:24:[cuda:1] Epoch 700 | Training checkpoint saved at ../../checkpoint/distMult-700.pth
+INFO:Trainer:2024-05-16 21:40:24:[cuda:1] Epoch [ 700/2000] | Batchsize: 4096 | loss:  2.069847 | 1.42638 seconds/epoch
+INFO:Trainer:2024-05-16 21:42:41:[cuda:1] Epoch 800 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-16 21:42:43:mr: 4087.225
+INFO:Trainer:2024-05-16 21:42:43:mrr: 0.333
+INFO:Trainer:2024-05-16 21:42:43:hits@1: 0.258
+INFO:Trainer:2024-05-16 21:42:43:hits@3: 0.382
+INFO:Trainer:2024-05-16 21:42:43:hits@10: 0.46
+INFO:Trainer:2024-05-16 21:42:43:mr_type: 2094.564
+INFO:Trainer:2024-05-16 21:42:43:mrr_type: 0.347
+INFO:Trainer:2024-05-16 21:42:43:hits@1_type: 0.269
+INFO:Trainer:2024-05-16 21:42:43:hits@3_type: 0.399
+INFO:Trainer:2024-05-16 21:42:43:hits@10_type: 0.48
+INFO:EarlyStopping:2024-05-16 21:42:43:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-16 21:42:43:[cuda:1] Send an early stopping signal
+INFO:Trainer:2024-05-16 21:42:43:[cuda:1] The model training is completed, taking a total of 1137.93013 seconds.
+INFO:Trainer:2024-05-16 21:42:43:[cuda:1] Model saved at ../../checkpoint/distMult.pth.
+INFO:Trainer:2024-05-16 21:42:43:[cuda:1] The model starts evaluating in the test set.
+INFO:Trainer:2024-05-16 21:42:46:mr: 3844.078
+INFO:Trainer:2024-05-16 21:42:46:mrr: 0.334
+INFO:Trainer:2024-05-16 21:42:46:hits@1: 0.259
+INFO:Trainer:2024-05-16 21:42:46:hits@3: 0.381
+INFO:Trainer:2024-05-16 21:42:46:hits@10: 0.465
+INFO:Trainer:2024-05-16 21:42:46:mr_type: 2040.886
+INFO:Trainer:2024-05-16 21:42:46:mrr_type: 0.348
+INFO:Trainer:2024-05-16 21:42:46:hits@1_type: 0.269
+INFO:Trainer:2024-05-16 21:42:46:hits@3_type: 0.399
+INFO:Trainer:2024-05-16 21:42:46:hits@10_type: 0.483
+wandb: - 0.023 MB of 0.038 MB uploadedwandb: \ 0.024 MB of 0.038 MB uploadedwandb: | 0.034 MB of 0.038 MB uploadedwandb: / 0.038 MB of 0.038 MB uploadedwandb: - 0.038 MB of 0.038 MB uploadedwandb: \ 0.038 MB of 0.038 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▂▃▅▆▇█
+wandb:  train/train_loss █▅▃▂▂▂▁
+wandb:         val/epoch ▁▂▃▄▅▆▇█
+wandb:        val/hits@1 █▃▂▂▂▁▁▁
+wandb:       val/hits@10 ▁▄▆▆▇███
+wandb:  val/hits@10_type ▁▄▅▆▇█▇▇
+wandb:   val/hits@1_type █▃▂▂▂▁▁▁
+wandb:        val/hits@3 █▁▂▃▃▂▃▃
+wandb:   val/hits@3_type █▁▂▄▃▁▄▃
+wandb:            val/mr █▄▃▂▁▁▁▁
+wandb:       val/mr_type █▄▃▂▂▁▁▁
+wandb:           val/mrr █▂▁▂▂▁▁▁
+wandb:      val/mrr_type █▂▁▂▂▁▁▁
+wandb: 
+wandb: Run summary:
+wandb:          duration 1137.93013
+wandb:       test/hits@1 0.259
+wandb:      test/hits@10 0.465
+wandb: test/hits@10_type 0.483
+wandb:  test/hits@1_type 0.269
+wandb:       test/hits@3 0.381
+wandb:  test/hits@3_type 0.399
+wandb:           test/mr 3844.078
+wandb:      test/mr_type 2040.886
+wandb:          test/mrr 0.334
+wandb:     test/mrr_type 0.348
+wandb:       train/epoch 700
+wandb:  train/train_loss 2.06985
+wandb:         val/epoch 799
+wandb:        val/hits@1 0.258
+wandb:       val/hits@10 0.46
+wandb:  val/hits@10_type 0.48
+wandb:   val/hits@1_type 0.269
+wandb:        val/hits@3 0.382
+wandb:   val/hits@3_type 0.399
+wandb:            val/mr 4087.225
+wandb:       val/mr_type 2094.564
+wandb:           val/mrr 0.333
+wandb:      val/mrr_type 0.347
+wandb: 
+wandb: 🚀 View run DistMult-WN18RR at: https://wandb.ai/3555028709/pybind11-ke/runs/4aqb2ikm
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240516_212335-4aqb2ikm/logs
+DEBUG:connectionpool:2024-05-16 21:43:00:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-05-16 21:43:01:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0
