@@ -12,3 +12,211 @@ wandb: Syncing run HolE-WN18RR
 wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
 wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/35dork8m
 INFO:Trainer:2024-05-18 17:10:30:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-05-18 17:13:21:[cuda:0] Epoch 100 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:01<00:11,  1.02s/it] 17%|█▋        | 2/12 [00:01<00:09,  1.01it/s] 25%|██▌       | 3/12 [00:02<00:05,  1.67it/s] 33%|███▎      | 4/12 [00:02<00:03,  2.41it/s] 42%|████▏     | 5/12 [00:02<00:02,  3.20it/s] 50%|█████     | 6/12 [00:02<00:01,  3.99it/s] 58%|█████▊    | 7/12 [00:02<00:01,  4.73it/s] 67%|██████▋   | 8/12 [00:02<00:00,  5.38it/s] 75%|███████▌  | 9/12 [00:02<00:00,  5.93it/s] 83%|████████▎ | 10/12 [00:03<00:00,  6.38it/s] 92%|█████████▏| 11/12 [00:03<00:00,  6.72it/s]100%|██████████| 12/12 [00:03<00:00,  7.28it/s]100%|██████████| 12/12 [00:03<00:00,  3.60it/s]
+INFO:Trainer:2024-05-18 17:13:25:mr: 10234.677
+INFO:Trainer:2024-05-18 17:13:25:mrr: 0.279
+INFO:Trainer:2024-05-18 17:13:25:hits@1: 0.234
+INFO:Trainer:2024-05-18 17:13:25:hits@3: 0.317
+INFO:Trainer:2024-05-18 17:13:25:hits@10: 0.353
+INFO:Trainer:2024-05-18 17:13:25:mr_type: 4563.062
+INFO:Trainer:2024-05-18 17:13:25:mrr_type: 0.306
+INFO:Trainer:2024-05-18 17:13:25:hits@1_type: 0.264
+INFO:Trainer:2024-05-18 17:13:25:hits@3_type: 0.338
+INFO:Trainer:2024-05-18 17:13:25:hits@10_type: 0.37
+INFO:EarlyStopping:2024-05-18 17:13:25:Validation score improved (-inf --> 0.353000).  Saving model ...
+INFO:Trainer:2024-05-18 17:13:25:[cuda:0] Epoch 100 | Training checkpoint saved at ../../checkpoint/hole-100.pth
+INFO:Trainer:2024-05-18 17:13:25:[cuda:0] Epoch [ 100/1000] | Batchsize: 8192 | loss:  1.405430 | 1.71259 seconds/epoch
+INFO:Trainer:2024-05-18 17:15:48:[cuda:0] Epoch 200 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:00<00:08,  1.33it/s] 17%|█▋        | 2/12 [00:01<00:06,  1.66it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.59it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.50it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.35it/s] 50%|█████     | 6/12 [00:01<00:01,  5.10it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.72it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.22it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.61it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.90it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.11it/s]100%|██████████| 12/12 [00:02<00:00,  7.60it/s]100%|██████████| 12/12 [00:02<00:00,  4.63it/s]
+INFO:Trainer:2024-05-18 17:15:50:mr: 8918.152
+INFO:Trainer:2024-05-18 17:15:50:mrr: 0.353
+INFO:Trainer:2024-05-18 17:15:50:hits@1: 0.336
+INFO:Trainer:2024-05-18 17:15:50:hits@3: 0.365
+INFO:Trainer:2024-05-18 17:15:50:hits@10: 0.375
+INFO:Trainer:2024-05-18 17:15:50:mr_type: 4157.653
+INFO:Trainer:2024-05-18 17:15:50:mrr_type: 0.366
+INFO:Trainer:2024-05-18 17:15:50:hits@1_type: 0.35
+INFO:Trainer:2024-05-18 17:15:50:hits@3_type: 0.374
+INFO:Trainer:2024-05-18 17:15:50:hits@10_type: 0.392
+INFO:EarlyStopping:2024-05-18 17:15:50:Validation score improved (0.353000 --> 0.375000).  Saving model ...
+INFO:Trainer:2024-05-18 17:15:51:[cuda:0] Epoch 200 | Training checkpoint saved at ../../checkpoint/hole-200.pth
+INFO:Trainer:2024-05-18 17:15:51:[cuda:0] Epoch [ 200/1000] | Batchsize: 8192 | loss:  0.944587 | 1.58855 seconds/epoch
+INFO:Trainer:2024-05-18 17:18:15:[cuda:0] Epoch 300 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:01<00:12,  1.13s/it] 17%|█▋        | 2/12 [00:01<00:06,  1.61it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.52it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.43it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.28it/s] 50%|█████     | 6/12 [00:01<00:01,  5.04it/s] 58%|█████▊    | 7/12 [00:02<00:00,  5.67it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.18it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.58it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.87it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.10it/s]100%|██████████| 12/12 [00:02<00:00,  7.59it/s]100%|██████████| 12/12 [00:02<00:00,  4.39it/s]
+INFO:Trainer:2024-05-18 17:18:18:mr: 7937.063
+INFO:Trainer:2024-05-18 17:18:18:mrr: 0.373
+INFO:Trainer:2024-05-18 17:18:18:hits@1: 0.359
+INFO:Trainer:2024-05-18 17:18:18:hits@3: 0.379
+INFO:Trainer:2024-05-18 17:18:18:hits@10: 0.393
+INFO:Trainer:2024-05-18 17:18:18:mr_type: 3816.251
+INFO:Trainer:2024-05-18 17:18:18:mrr_type: 0.382
+INFO:Trainer:2024-05-18 17:18:18:hits@1_type: 0.367
+INFO:Trainer:2024-05-18 17:18:18:hits@3_type: 0.387
+INFO:Trainer:2024-05-18 17:18:18:hits@10_type: 0.405
+INFO:EarlyStopping:2024-05-18 17:18:18:Validation score improved (0.375000 --> 0.393000).  Saving model ...
+INFO:Trainer:2024-05-18 17:18:18:[cuda:0] Epoch 300 | Training checkpoint saved at ../../checkpoint/hole-300.pth
+INFO:Trainer:2024-05-18 17:18:18:[cuda:0] Epoch [ 300/1000] | Batchsize: 8192 | loss:  0.785192 | 1.55025 seconds/epoch
+INFO:Trainer:2024-05-18 17:20:43:[cuda:0] Epoch 400 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:01<00:11,  1.09s/it] 17%|█▋        | 2/12 [00:01<00:05,  1.70it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.64it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.56it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.41it/s] 50%|█████     | 6/12 [00:01<00:01,  5.14it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.76it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.24it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.62it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.90it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.10it/s]100%|██████████| 12/12 [00:02<00:00,  7.59it/s]100%|██████████| 12/12 [00:02<00:00,  4.48it/s]
+INFO:Trainer:2024-05-18 17:20:45:mr: 7654.397
+INFO:Trainer:2024-05-18 17:20:45:mrr: 0.377
+INFO:Trainer:2024-05-18 17:20:45:hits@1: 0.363
+INFO:Trainer:2024-05-18 17:20:45:hits@3: 0.384
+INFO:Trainer:2024-05-18 17:20:45:hits@10: 0.398
+INFO:Trainer:2024-05-18 17:20:45:mr_type: 3713.654
+INFO:Trainer:2024-05-18 17:20:45:mrr_type: 0.385
+INFO:Trainer:2024-05-18 17:20:45:hits@1_type: 0.368
+INFO:Trainer:2024-05-18 17:20:45:hits@3_type: 0.391
+INFO:Trainer:2024-05-18 17:20:45:hits@10_type: 0.41
+INFO:EarlyStopping:2024-05-18 17:20:45:Validation score improved (0.393000 --> 0.398000).  Saving model ...
+INFO:Trainer:2024-05-18 17:20:46:[cuda:0] Epoch 400 | Training checkpoint saved at ../../checkpoint/hole-400.pth
+INFO:Trainer:2024-05-18 17:20:46:[cuda:0] Epoch [ 400/1000] | Batchsize: 8192 | loss:  0.745776 | 1.53137 seconds/epoch
+INFO:Trainer:2024-05-18 17:23:12:[cuda:0] Epoch 500 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:00<00:09,  1.22it/s] 17%|█▋        | 2/12 [00:01<00:05,  1.86it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.84it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.77it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.62it/s] 50%|█████     | 6/12 [00:01<00:01,  5.34it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.92it/s] 67%|██████▋   | 8/12 [00:01<00:00,  6.38it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.73it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.99it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.18it/s]100%|██████████| 12/12 [00:02<00:00,  7.66it/s]100%|██████████| 12/12 [00:02<00:00,  4.79it/s]
+INFO:Trainer:2024-05-18 17:23:15:mr: 7605.966
+INFO:Trainer:2024-05-18 17:23:15:mrr: 0.378
+INFO:Trainer:2024-05-18 17:23:15:hits@1: 0.363
+INFO:Trainer:2024-05-18 17:23:15:hits@3: 0.384
+INFO:Trainer:2024-05-18 17:23:15:hits@10: 0.401
+INFO:Trainer:2024-05-18 17:23:15:mr_type: 3694.781
+INFO:Trainer:2024-05-18 17:23:15:mrr_type: 0.385
+INFO:Trainer:2024-05-18 17:23:15:hits@1_type: 0.368
+INFO:Trainer:2024-05-18 17:23:15:hits@3_type: 0.392
+INFO:Trainer:2024-05-18 17:23:15:hits@10_type: 0.411
+INFO:EarlyStopping:2024-05-18 17:23:15:Validation score improved (0.398000 --> 0.401000).  Saving model ...
+INFO:Trainer:2024-05-18 17:23:15:[cuda:0] Epoch 500 | Training checkpoint saved at ../../checkpoint/hole-500.pth
+INFO:Trainer:2024-05-18 17:23:15:[cuda:0] Epoch [ 500/1000] | Batchsize: 8192 | loss:  0.738592 | 1.52462 seconds/epoch
+INFO:Trainer:2024-05-18 17:25:42:[cuda:0] Epoch 600 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:00<00:09,  1.16it/s] 17%|█▋        | 2/12 [00:01<00:05,  1.67it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.60it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.51it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.36it/s] 50%|█████     | 6/12 [00:01<00:01,  5.10it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.72it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.21it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.60it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.88it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.09it/s]100%|██████████| 12/12 [00:02<00:00,  7.58it/s]100%|██████████| 12/12 [00:02<00:00,  4.56it/s]
+INFO:Trainer:2024-05-18 17:25:44:mr: 7541.858
+INFO:Trainer:2024-05-18 17:25:44:mrr: 0.379
+INFO:Trainer:2024-05-18 17:25:44:hits@1: 0.365
+INFO:Trainer:2024-05-18 17:25:44:hits@3: 0.385
+INFO:Trainer:2024-05-18 17:25:44:hits@10: 0.402
+INFO:Trainer:2024-05-18 17:25:44:mr_type: 3668.423
+INFO:Trainer:2024-05-18 17:25:44:mrr_type: 0.386
+INFO:Trainer:2024-05-18 17:25:44:hits@1_type: 0.37
+INFO:Trainer:2024-05-18 17:25:44:hits@3_type: 0.393
+INFO:Trainer:2024-05-18 17:25:44:hits@10_type: 0.412
+INFO:EarlyStopping:2024-05-18 17:25:44:Validation score improved (0.401000 --> 0.402000).  Saving model ...
+INFO:Trainer:2024-05-18 17:25:45:[cuda:0] Epoch 600 | Training checkpoint saved at ../../checkpoint/hole-600.pth
+INFO:Trainer:2024-05-18 17:25:45:[cuda:0] Epoch [ 600/1000] | Batchsize: 8192 | loss:  0.730367 | 1.51938 seconds/epoch
+INFO:Trainer:2024-05-18 17:28:11:[cuda:0] Epoch 700 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:00<00:08,  1.32it/s] 17%|█▋        | 2/12 [00:01<00:06,  1.56it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.44it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.34it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.19it/s] 50%|█████     | 6/12 [00:01<00:01,  4.95it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.60it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.12it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.53it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.84it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.07it/s]100%|██████████| 12/12 [00:02<00:00,  7.57it/s]100%|██████████| 12/12 [00:02<00:00,  4.52it/s]
+INFO:Trainer:2024-05-18 17:28:14:mr: 7504.048
+INFO:Trainer:2024-05-18 17:28:14:mrr: 0.379
+INFO:Trainer:2024-05-18 17:28:14:hits@1: 0.365
+INFO:Trainer:2024-05-18 17:28:14:hits@3: 0.386
+INFO:Trainer:2024-05-18 17:28:14:hits@10: 0.403
+INFO:Trainer:2024-05-18 17:28:14:mr_type: 3654.157
+INFO:Trainer:2024-05-18 17:28:14:mrr_type: 0.387
+INFO:Trainer:2024-05-18 17:28:14:hits@1_type: 0.369
+INFO:Trainer:2024-05-18 17:28:14:hits@3_type: 0.393
+INFO:Trainer:2024-05-18 17:28:14:hits@10_type: 0.413
+INFO:EarlyStopping:2024-05-18 17:28:14:Validation score improved (0.402000 --> 0.403000).  Saving model ...
+INFO:Trainer:2024-05-18 17:28:14:[cuda:0] Epoch 700 | Training checkpoint saved at ../../checkpoint/hole-700.pth
+INFO:Trainer:2024-05-18 17:28:14:[cuda:0] Epoch [ 700/1000] | Batchsize: 8192 | loss:  0.725311 | 1.51612 seconds/epoch
+INFO:Trainer:2024-05-18 17:30:43:[cuda:0] Epoch 800 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:00<00:08,  1.36it/s] 17%|█▋        | 2/12 [00:01<00:06,  1.54it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.42it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.32it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.16it/s] 50%|█████     | 6/12 [00:01<00:01,  4.92it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.57it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.09it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.50it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.81it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.04it/s]100%|██████████| 12/12 [00:02<00:00,  7.54it/s]100%|██████████| 12/12 [00:02<00:00,  4.50it/s]
+INFO:Trainer:2024-05-18 17:30:45:mr: 7499.307
+INFO:Trainer:2024-05-18 17:30:45:mrr: 0.379
+INFO:Trainer:2024-05-18 17:30:45:hits@1: 0.365
+INFO:Trainer:2024-05-18 17:30:45:hits@3: 0.386
+INFO:Trainer:2024-05-18 17:30:45:hits@10: 0.403
+INFO:Trainer:2024-05-18 17:30:45:mr_type: 3652.055
+INFO:Trainer:2024-05-18 17:30:45:mrr_type: 0.387
+INFO:Trainer:2024-05-18 17:30:45:hits@1_type: 0.37
+INFO:Trainer:2024-05-18 17:30:45:hits@3_type: 0.393
+INFO:Trainer:2024-05-18 17:30:45:hits@10_type: 0.412
+INFO:EarlyStopping:2024-05-18 17:30:45:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-18 17:30:45:[cuda:0] Epoch 800 | Training checkpoint saved at ../../checkpoint/hole-800.pth
+INFO:Trainer:2024-05-18 17:30:45:[cuda:0] Epoch [ 800/1000] | Batchsize: 8192 | loss:  0.724510 | 1.51564 seconds/epoch
+INFO:Trainer:2024-05-18 17:33:09:[cuda:0] Epoch 900 | The model starts evaluation on the validation set.
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [00:00<00:09,  1.20it/s] 17%|█▋        | 2/12 [00:01<00:06,  1.60it/s] 25%|██▌       | 3/12 [00:01<00:03,  2.50it/s] 33%|███▎      | 4/12 [00:01<00:02,  3.40it/s] 42%|████▏     | 5/12 [00:01<00:01,  4.25it/s] 50%|█████     | 6/12 [00:01<00:01,  5.01it/s] 58%|█████▊    | 7/12 [00:01<00:00,  5.65it/s] 67%|██████▋   | 8/12 [00:02<00:00,  6.16it/s] 75%|███████▌  | 9/12 [00:02<00:00,  6.56it/s] 83%|████████▎ | 10/12 [00:02<00:00,  6.86it/s] 92%|█████████▏| 11/12 [00:02<00:00,  7.09it/s]100%|██████████| 12/12 [00:02<00:00,  7.58it/s]100%|██████████| 12/12 [00:02<00:00,  4.52it/s]
+INFO:Trainer:2024-05-18 17:33:12:mr: 7493.649
+INFO:Trainer:2024-05-18 17:33:12:mrr: 0.379
+INFO:Trainer:2024-05-18 17:33:12:hits@1: 0.365
+INFO:Trainer:2024-05-18 17:33:12:hits@3: 0.386
+INFO:Trainer:2024-05-18 17:33:12:hits@10: 0.403
+INFO:Trainer:2024-05-18 17:33:12:mr_type: 3649.621
+INFO:Trainer:2024-05-18 17:33:12:mrr_type: 0.387
+INFO:Trainer:2024-05-18 17:33:12:hits@1_type: 0.37
+INFO:Trainer:2024-05-18 17:33:12:hits@3_type: 0.393
+INFO:Trainer:2024-05-18 17:33:12:hits@10_type: 0.412
+INFO:EarlyStopping:2024-05-18 17:33:12:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-18 17:33:12:[cuda:0] Send an early stopping signal
+INFO:Trainer:2024-05-18 17:33:12:[cuda:0] The model training is completed, taking a total of 1358.86990 seconds.
+INFO:Trainer:2024-05-18 17:33:12:[cuda:0] Model saved at ../../checkpoint/hole.pth.
+INFO:Trainer:2024-05-18 17:33:12:[cuda:0] The model starts evaluating in the test set.
+  0%|          | 0/13 [00:00<?, ?it/s]  8%|▊         | 1/13 [00:00<00:08,  1.41it/s] 15%|█▌        | 2/13 [00:01<00:06,  1.61it/s] 23%|██▎       | 3/13 [00:01<00:03,  2.52it/s] 31%|███       | 4/13 [00:01<00:02,  3.42it/s] 38%|███▊      | 5/13 [00:01<00:01,  4.27it/s] 46%|████▌     | 6/13 [00:01<00:01,  5.02it/s] 54%|█████▍    | 7/13 [00:01<00:01,  5.65it/s] 62%|██████▏   | 8/13 [00:02<00:00,  6.16it/s] 69%|██████▉   | 9/13 [00:02<00:00,  6.55it/s] 77%|███████▋  | 10/13 [00:02<00:00,  6.85it/s] 85%|████████▍ | 11/13 [00:02<00:00,  7.07it/s] 92%|█████████▏| 12/13 [00:02<00:00,  7.23it/s]100%|██████████| 13/13 [00:02<00:00,  4.87it/s]
+INFO:Trainer:2024-05-18 17:33:14:mr: 7335.001
+INFO:Trainer:2024-05-18 17:33:14:mrr: 0.379
+INFO:Trainer:2024-05-18 17:33:14:hits@1: 0.364
+INFO:Trainer:2024-05-18 17:33:14:hits@3: 0.385
+INFO:Trainer:2024-05-18 17:33:14:hits@10: 0.402
+INFO:Trainer:2024-05-18 17:33:14:mr_type: 3608.145
+INFO:Trainer:2024-05-18 17:33:14:mrr_type: 0.386
+INFO:Trainer:2024-05-18 17:33:14:hits@1_type: 0.368
+INFO:Trainer:2024-05-18 17:33:14:hits@3_type: 0.391
+INFO:Trainer:2024-05-18 17:33:14:hits@10_type: 0.415
+wandb: - 0.014 MB of 0.014 MB uploadedwandb: \ 0.014 MB of 0.014 MB uploadedwandb: | 0.014 MB of 0.014 MB uploadedwandb: / 0.014 MB of 0.014 MB uploadedwandb: - 0.023 MB of 0.039 MB uploadedwandb: \ 0.024 MB of 0.039 MB uploadedwandb: | 0.030 MB of 0.039 MB uploadedwandb: / 0.030 MB of 0.039 MB uploadedwandb: - 0.039 MB of 0.039 MB uploadedwandb: \ 0.039 MB of 0.039 MB uploadedwandb: | 0.039 MB of 0.039 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▂▃▄▅▆▇█
+wandb:  train/train_loss █▃▂▁▁▁▁▁
+wandb:         val/epoch ▁▂▃▄▅▅▆▇█
+wandb:        val/hits@1 ▁▆███████
+wandb:       val/hits@10 ▁▄▇▇█████
+wandb:  val/hits@10_type ▁▅▇██████
+wandb:   val/hits@1_type ▁▇███████
+wandb:        val/hits@3 ▁▆▇██████
+wandb:   val/hits@3_type ▁▆▇██████
+wandb:            val/mr █▅▂▁▁▁▁▁▁
+wandb:       val/mr_type █▅▂▁▁▁▁▁▁
+wandb:           val/mrr ▁▆███████
+wandb:      val/mrr_type ▁▆███████
+wandb: 
+wandb: Run summary:
+wandb:          duration 1358.8699
+wandb:       test/hits@1 0.364
+wandb:      test/hits@10 0.402
+wandb: test/hits@10_type 0.415
+wandb:  test/hits@1_type 0.368
+wandb:       test/hits@3 0.385
+wandb:  test/hits@3_type 0.391
+wandb:           test/mr 7335.001
+wandb:      test/mr_type 3608.145
+wandb:          test/mrr 0.379
+wandb:     test/mrr_type 0.386
+wandb:       train/epoch 800
+wandb:  train/train_loss 0.72451
+wandb:         val/epoch 899
+wandb:        val/hits@1 0.365
+wandb:       val/hits@10 0.403
+wandb:  val/hits@10_type 0.412
+wandb:   val/hits@1_type 0.37
+wandb:        val/hits@3 0.386
+wandb:   val/hits@3_type 0.393
+wandb:            val/mr 7493.649
+wandb:       val/mr_type 3649.621
+wandb:           val/mrr 0.379
+wandb:      val/mrr_type 0.387
+wandb: 
+wandb: 🚀 View run HolE-WN18RR at: https://wandb.ai/3555028709/pybind11-ke/runs/35dork8m
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240518_171021-35dork8m/logs
+DEBUG:connectionpool:2024-05-18 17:33:27:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-05-18 17:33:28:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0

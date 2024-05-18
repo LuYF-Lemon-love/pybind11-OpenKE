@@ -134,32 +134,8 @@ trainer.run()
 wandb_logger.finish()
 
 ######################################################################
-# .. figure:: /_static/images/examples/HolE/HolE-WN18RR-Loss.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中损失值的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/HolE/HolE-WN18RR-MR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/HolE/HolE-WN18RR-MRR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MRR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/HolE/HolE-WN18RR-Hit.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/HolE/single_gpu_hole_WN18RR_wandb.txt>`_ 下载。
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/HolE/HolE单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################
 # --------------
