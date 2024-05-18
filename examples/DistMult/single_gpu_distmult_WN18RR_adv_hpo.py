@@ -167,18 +167,8 @@ print()
 start_hpo_train(config=sweep_config, count=3)
 
 ######################################################################
-# .. figure:: /_static/images/examples/DistMult/DistMult-WN18RR-HPO.png
-#      :align: center
-#      :height: 300
-#
-#      超参数优化结果（3次）
-
-######################################################################
-# .. figure:: /_static/images/examples/DistMult/DistMult-WN18RR-HPO-10.png
-#      :align: center
-#      :height: 300
-#
-#      超参数优化结果（10次）
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/DistMult/single_gpu_distmult_WN18RR_adv_hpo.txt>`_ 下载。
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/DistMult/DistMult超参数搜索示例（一）.pdf>`_ 下载。
 
 ######################################################################
 # --------------
