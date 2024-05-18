@@ -6,6 +6,12 @@
 DistMult-WN18RR-single-gpu-adv-hpo
 ====================================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 18, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 18, 2024
+
 这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上寻找 ``DistMult`` :cite:`DistMult` 的超参数，应用 ``RotatE`` :cite:`RotatE` 提出的自我对抗负采样损失函数进行模型训练。
 
 定义训练数据加载器超参数优化范围
@@ -17,7 +23,7 @@ from pybind11_ke.data import get_kge_data_loader_hpo_config
 from pybind11_ke.module.model import get_distmult_hpo_config
 from pybind11_ke.module.loss import get_sigmoid_loss_hpo_config
 from pybind11_ke.module.strategy import get_negative_sampling_hpo_config
-from pybind11_ke.config import get_tester_hpo_config, Tester
+from pybind11_ke.config import get_tester_hpo_config
 from pybind11_ke.config import get_trainer_hpo_config
 from pybind11_ke.config import set_hpo_config, set_hpo_hits,start_hpo_train
 
