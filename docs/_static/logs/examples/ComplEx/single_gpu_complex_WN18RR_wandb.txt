@@ -12,3 +12,4 @@ wandb: Syncing run ComplEx-WN18RR
 wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
 wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/0ojtj18h
 INFO:Trainer:2024-05-19 12:52:49:[cuda:1] Initialization completed, start model training.
+INFO:Trainer:2024-05-19 12:55:42:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
