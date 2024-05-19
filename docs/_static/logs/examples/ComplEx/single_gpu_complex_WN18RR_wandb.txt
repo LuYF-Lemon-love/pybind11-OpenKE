@@ -13,3 +13,16 @@ wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
 wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/0ojtj18h
 INFO:Trainer:2024-05-19 12:52:49:[cuda:1] Initialization completed, start model training.
 INFO:Trainer:2024-05-19 12:55:42:[cuda:1] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 12:55:51:mr: 6916.31
+INFO:Trainer:2024-05-19 12:55:51:mrr: 0.39
+INFO:Trainer:2024-05-19 12:55:51:hits@1: 0.366
+INFO:Trainer:2024-05-19 12:55:51:hits@3: 0.404
+INFO:Trainer:2024-05-19 12:55:51:hits@10: 0.427
+INFO:Trainer:2024-05-19 12:55:51:mr_type: 3480.41
+INFO:Trainer:2024-05-19 12:55:51:mrr_type: 0.397
+INFO:Trainer:2024-05-19 12:55:51:hits@1_type: 0.371
+INFO:Trainer:2024-05-19 12:55:51:hits@3_type: 0.412
+INFO:Trainer:2024-05-19 12:55:51:hits@10_type: 0.436
+INFO:EarlyStopping:2024-05-19 12:55:51:Validation score improved (-inf --> 0.427000).  Saving model ...
+INFO:Trainer:2024-05-19 12:55:51:[cuda:1] Epoch 100 | Training checkpoint saved at ../../checkpoint/complex-100.pth
+INFO:Trainer:2024-05-19 12:55:51:[cuda:1] Epoch [ 100/2000] | Batchsize: 4096 | loss:  1.312347 | 1.73271 seconds/epoch
