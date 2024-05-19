@@ -100,5 +100,8 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 trainer.run()
 
 ######################################################################
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/ANALOGY/single_gpu_analogy_WN18RR.txt>`_ 下载。
+
+######################################################################
 # --------------
 #

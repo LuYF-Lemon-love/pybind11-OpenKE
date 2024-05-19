@@ -14,3 +14,159 @@ wandb: Syncing run ANALOGY-WN18RR
 wandb: ⭐️ View project at https://wandb.ai/3555028709/pybind11-ke
 wandb: 🚀 View run at https://wandb.ai/3555028709/pybind11-ke/runs/c4othhi2
 INFO:Trainer:2024-05-19 20:14:29:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-05-19 20:17:52:[cuda:0] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 20:18:00:mr: 8151.436
+INFO:Trainer:2024-05-19 20:18:00:mrr: 0.381
+INFO:Trainer:2024-05-19 20:18:00:hits@1: 0.367
+INFO:Trainer:2024-05-19 20:18:00:hits@3: 0.389
+INFO:Trainer:2024-05-19 20:18:00:hits@10: 0.403
+INFO:Trainer:2024-05-19 20:18:00:mr_type: 4108.788
+INFO:Trainer:2024-05-19 20:18:00:mrr_type: 0.386
+INFO:Trainer:2024-05-19 20:18:00:hits@1_type: 0.37
+INFO:Trainer:2024-05-19 20:18:00:hits@3_type: 0.392
+INFO:Trainer:2024-05-19 20:18:00:hits@10_type: 0.412
+INFO:EarlyStopping:2024-05-19 20:18:00:Validation score improved (-inf --> 0.403000).  Saving model ...
+INFO:Trainer:2024-05-19 20:18:02:[cuda:0] Epoch 100 | Training checkpoint saved at ../../checkpoint/analogy-100.pth
+INFO:Trainer:2024-05-19 20:18:02:[cuda:0] Epoch [ 100/2000] | Batchsize: 4096 | loss:  1.372830 | 2.03190 seconds/epoch
+INFO:Trainer:2024-05-19 20:21:04:[cuda:0] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 20:21:12:mr: 7038.43
+INFO:Trainer:2024-05-19 20:21:12:mrr: 0.384
+INFO:Trainer:2024-05-19 20:21:12:hits@1: 0.359
+INFO:Trainer:2024-05-19 20:21:12:hits@3: 0.398
+INFO:Trainer:2024-05-19 20:21:12:hits@10: 0.422
+INFO:Trainer:2024-05-19 20:21:12:mr_type: 3427.042
+INFO:Trainer:2024-05-19 20:21:12:mrr_type: 0.39
+INFO:Trainer:2024-05-19 20:21:12:hits@1_type: 0.364
+INFO:Trainer:2024-05-19 20:21:12:hits@3_type: 0.406
+INFO:Trainer:2024-05-19 20:21:12:hits@10_type: 0.43
+INFO:EarlyStopping:2024-05-19 20:21:12:Validation score improved (0.403000 --> 0.422000).  Saving model ...
+INFO:Trainer:2024-05-19 20:21:14:[cuda:0] Epoch 200 | Training checkpoint saved at ../../checkpoint/analogy-200.pth
+INFO:Trainer:2024-05-19 20:21:14:[cuda:0] Epoch [ 200/2000] | Batchsize: 4096 | loss:  0.842776 | 1.97514 seconds/epoch
+INFO:Trainer:2024-05-19 20:24:11:[cuda:0] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 20:24:19:mr: 6630.113
+INFO:Trainer:2024-05-19 20:24:19:mrr: 0.388
+INFO:Trainer:2024-05-19 20:24:19:hits@1: 0.36
+INFO:Trainer:2024-05-19 20:24:19:hits@3: 0.405
+INFO:Trainer:2024-05-19 20:24:19:hits@10: 0.431
+INFO:Trainer:2024-05-19 20:24:19:mr_type: 3176.692
+INFO:Trainer:2024-05-19 20:24:19:mrr_type: 0.395
+INFO:Trainer:2024-05-19 20:24:19:hits@1_type: 0.364
+INFO:Trainer:2024-05-19 20:24:19:hits@3_type: 0.413
+INFO:Trainer:2024-05-19 20:24:19:hits@10_type: 0.439
+INFO:EarlyStopping:2024-05-19 20:24:19:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-19 20:24:20:[cuda:0] Epoch 300 | Training checkpoint saved at ../../checkpoint/analogy-300.pth
+INFO:Trainer:2024-05-19 20:24:20:[cuda:0] Epoch [ 300/2000] | Batchsize: 4096 | loss:  0.702249 | 1.93839 seconds/epoch
+INFO:Trainer:2024-05-19 20:27:19:[cuda:0] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 20:27:27:mr: 6315.46
+INFO:Trainer:2024-05-19 20:27:27:mrr: 0.393
+INFO:Trainer:2024-05-19 20:27:27:hits@1: 0.363
+INFO:Trainer:2024-05-19 20:27:27:hits@3: 0.411
+INFO:Trainer:2024-05-19 20:27:27:hits@10: 0.44
+INFO:Trainer:2024-05-19 20:27:27:mr_type: 2995.506
+INFO:Trainer:2024-05-19 20:27:27:mrr_type: 0.4
+INFO:Trainer:2024-05-19 20:27:27:hits@1_type: 0.367
+INFO:Trainer:2024-05-19 20:27:27:hits@3_type: 0.421
+INFO:Trainer:2024-05-19 20:27:27:hits@10_type: 0.448
+INFO:EarlyStopping:2024-05-19 20:27:27:Validation score improved (0.422000 --> 0.440000).  Saving model ...
+INFO:Trainer:2024-05-19 20:27:28:[cuda:0] Epoch 400 | Training checkpoint saved at ../../checkpoint/analogy-400.pth
+INFO:Trainer:2024-05-19 20:27:28:[cuda:0] Epoch [ 400/2000] | Batchsize: 4096 | loss:  0.654199 | 1.92449 seconds/epoch
+INFO:Trainer:2024-05-19 20:30:28:[cuda:0] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 20:30:37:mr: 6018.286
+INFO:Trainer:2024-05-19 20:30:37:mrr: 0.399
+INFO:Trainer:2024-05-19 20:30:37:hits@1: 0.369
+INFO:Trainer:2024-05-19 20:30:37:hits@3: 0.414
+INFO:Trainer:2024-05-19 20:30:37:hits@10: 0.445
+INFO:Trainer:2024-05-19 20:30:37:mr_type: 2850.037
+INFO:Trainer:2024-05-19 20:30:37:mrr_type: 0.406
+INFO:Trainer:2024-05-19 20:30:37:hits@1_type: 0.374
+INFO:Trainer:2024-05-19 20:30:37:hits@3_type: 0.422
+INFO:Trainer:2024-05-19 20:30:37:hits@10_type: 0.456
+INFO:EarlyStopping:2024-05-19 20:30:37:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-19 20:30:38:[cuda:0] Epoch 500 | Training checkpoint saved at ../../checkpoint/analogy-500.pth
+INFO:Trainer:2024-05-19 20:30:38:[cuda:0] Epoch [ 500/2000] | Batchsize: 4096 | loss:  0.633198 | 1.91871 seconds/epoch
+INFO:Trainer:2024-05-19 20:33:37:[cuda:0] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 20:33:45:mr: 5818.697
+INFO:Trainer:2024-05-19 20:33:45:mrr: 0.399
+INFO:Trainer:2024-05-19 20:33:45:hits@1: 0.366
+INFO:Trainer:2024-05-19 20:33:45:hits@3: 0.418
+INFO:Trainer:2024-05-19 20:33:45:hits@10: 0.447
+INFO:Trainer:2024-05-19 20:33:45:mr_type: 2751.707
+INFO:Trainer:2024-05-19 20:33:45:mrr_type: 0.407
+INFO:Trainer:2024-05-19 20:33:45:hits@1_type: 0.372
+INFO:Trainer:2024-05-19 20:33:45:hits@3_type: 0.428
+INFO:Trainer:2024-05-19 20:33:45:hits@10_type: 0.458
+INFO:EarlyStopping:2024-05-19 20:33:45:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-19 20:33:45:[cuda:0] Send an early stopping signal
+INFO:Trainer:2024-05-19 20:33:45:[cuda:0] The model training is completed, taking a total of 1148.18541 seconds.
+INFO:Trainer:2024-05-19 20:33:46:[cuda:0] Model saved at ../../checkpoint/analogy.pth.
+INFO:Trainer:2024-05-19 20:33:46:[cuda:0] The model starts evaluating in the test set.
+INFO:Trainer:2024-05-19 20:33:55:mr: 5930.545
+INFO:Trainer:2024-05-19 20:33:55:mrr: 0.399
+INFO:Trainer:2024-05-19 20:33:55:hits@1: 0.368
+INFO:Trainer:2024-05-19 20:33:55:hits@3: 0.418
+INFO:Trainer:2024-05-19 20:33:55:hits@10: 0.45
+INFO:Trainer:2024-05-19 20:33:55:mr_type: 2838.617
+INFO:Trainer:2024-05-19 20:33:55:mrr_type: 0.407
+INFO:Trainer:2024-05-19 20:33:55:hits@1_type: 0.372
+INFO:Trainer:2024-05-19 20:33:55:hits@3_type: 0.427
+INFO:Trainer:2024-05-19 20:33:55:hits@10_type: 0.459
+wandb: Network error (TransientError), entering retry loop.
+wandb: - 0.023 MB of 0.034 MB uploadedwandb: \ 0.024 MB of 0.036 MB uploadedwandb: | 0.026 MB of 0.036 MB uploadedwandb: / 0.036 MB of 0.036 MB uploadedwandb: 
+wandb: Run history:
+wandb:          duration ▁
+wandb:       test/hits@1 ▁
+wandb:      test/hits@10 ▁
+wandb: test/hits@10_type ▁
+wandb:  test/hits@1_type ▁
+wandb:       test/hits@3 ▁
+wandb:  test/hits@3_type ▁
+wandb:           test/mr ▁
+wandb:      test/mr_type ▁
+wandb:          test/mrr ▁
+wandb:     test/mrr_type ▁
+wandb:       train/epoch ▁▃▅▆█
+wandb:  train/train_loss █▃▂▁▁
+wandb:         val/epoch ▁▂▄▅▇█
+wandb:        val/hits@1 ▇▁▂▄█▆
+wandb:       val/hits@10 ▁▄▅▇██
+wandb:  val/hits@10_type ▁▄▅▆██
+wandb:   val/hits@1_type ▅▁▁▃█▇
+wandb:        val/hits@3 ▁▃▅▆▇█
+wandb:   val/hits@3_type ▁▄▅▇▇█
+wandb:            val/mr █▅▃▂▂▁
+wandb:       val/mr_type █▄▃▂▂▁
+wandb:           val/mrr ▁▂▄▆██
+wandb:      val/mrr_type ▁▂▄▆██
+wandb: 
+wandb: Run summary:
+wandb:          duration 1148.18541
+wandb:       test/hits@1 0.368
+wandb:      test/hits@10 0.45
+wandb: test/hits@10_type 0.459
+wandb:  test/hits@1_type 0.372
+wandb:       test/hits@3 0.418
+wandb:  test/hits@3_type 0.427
+wandb:           test/mr 5930.545
+wandb:      test/mr_type 2838.617
+wandb:          test/mrr 0.399
+wandb:     test/mrr_type 0.407
+wandb:       train/epoch 500
+wandb:  train/train_loss 0.6332
+wandb:         val/epoch 599
+wandb:        val/hits@1 0.366
+wandb:       val/hits@10 0.447
+wandb:  val/hits@10_type 0.458
+wandb:   val/hits@1_type 0.372
+wandb:        val/hits@3 0.418
+wandb:   val/hits@3_type 0.428
+wandb:            val/mr 5818.697
+wandb:       val/mr_type 2751.707
+wandb:           val/mrr 0.399
+wandb:      val/mrr_type 0.407
+wandb: 
+wandb: 🚀 View run ANALOGY-WN18RR at: https://wandb.ai/3555028709/pybind11-ke/runs/c4othhi2
+wandb: ⭐️ View project at: https://wandb.ai/3555028709/pybind11-ke
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240519_201425-c4othhi2/logs
+DEBUG:connectionpool:2024-05-19 20:34:09:Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+DEBUG:connectionpool:2024-05-19 20:34:10:https://o151352.ingest.sentry.io:443 "POST /api/4504800232407040/envelope/ HTTP/1.1" 200 0

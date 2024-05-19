@@ -135,32 +135,8 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 trainer.run()
 
 ######################################################################
-# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-Loss.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中损失值的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-MR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-MRR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MRR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/ANALOGY/ANALOGY-WN18RR-Hit.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/ANALOGY/single_gpu_analogy_WN18RR_wandb.txt>`_ 下载。
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/ANALOGY/ANALOGY单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################
 # --------------
