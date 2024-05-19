@@ -248,3 +248,17 @@ DEBUG:connectionpool:2024-05-19 14:04:10:https://api.wandb.ai:443 "POST /graphql
 DEBUG:connectionpool:2024-05-19 14:04:16:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
 DEBUG:connectionpool:2024-05-19 14:04:21:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
 DEBUG:connectionpool:2024-05-19 14:04:26:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-19 14:04:29:[cuda:0] Epoch 300 | The model starts evaluation on the validation set.
+DEBUG:connectionpool:2024-05-19 14:04:31:https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+INFO:Trainer:2024-05-19 14:04:33:mr: 8994.465
+INFO:Trainer:2024-05-19 14:04:33:mrr: 0.329
+INFO:Trainer:2024-05-19 14:04:33:hits@1: 0.304
+INFO:Trainer:2024-05-19 14:04:33:hits@3: 0.347
+INFO:Trainer:2024-05-19 14:04:33:hits@10: 0.367
+INFO:Trainer:2024-05-19 14:04:33:mr_type: 3659.697
+INFO:Trainer:2024-05-19 14:04:33:mrr_type: 0.343
+INFO:Trainer:2024-05-19 14:04:33:hits@1_type: 0.315
+INFO:Trainer:2024-05-19 14:04:33:hits@3_type: 0.36
+INFO:Trainer:2024-05-19 14:04:33:hits@10_type: 0.386
+INFO:EarlyStopping:2024-05-19 14:04:33:Validation score improved (0.356000 --> 0.367000).  Saving model ...
+INFO:Trainer:2024-05-19 14:04:33:[cuda:0] Epoch [ 300/10000] | Batchsize: 1024 | loss: 491.260905 | 1.03886 seconds/epoch
