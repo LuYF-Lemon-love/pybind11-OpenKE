@@ -1,1 +1,111 @@
 INFO:Trainer:2024-05-19 16:23:14:[cuda:0] Initialization completed, start model training.
+INFO:Trainer:2024-05-19 16:26:23:[cuda:0] Epoch 100 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:26:31:mr: 8111.488
+INFO:Trainer:2024-05-19 16:26:31:mrr: 0.378
+INFO:Trainer:2024-05-19 16:26:31:hits@1: 0.364
+INFO:Trainer:2024-05-19 16:26:31:hits@3: 0.383
+INFO:Trainer:2024-05-19 16:26:31:hits@10: 0.402
+INFO:Trainer:2024-05-19 16:26:31:mr_type: 4127.008
+INFO:Trainer:2024-05-19 16:26:31:mrr_type: 0.383
+INFO:Trainer:2024-05-19 16:26:31:hits@1_type: 0.367
+INFO:Trainer:2024-05-19 16:26:31:hits@3_type: 0.39
+INFO:Trainer:2024-05-19 16:26:31:hits@10_type: 0.411
+INFO:EarlyStopping:2024-05-19 16:26:31:Validation score improved (-inf --> 0.402000).  Saving model ...
+INFO:Trainer:2024-05-19 16:26:34:[cuda:0] Epoch 100 | Training checkpoint saved at ../../checkpoint/analogy-100.pth
+INFO:Trainer:2024-05-19 16:26:34:[cuda:0] Epoch [ 100/2000] | Batchsize: 4096 | loss:  1.363593 | 1.88989 seconds/epoch
+INFO:Trainer:2024-05-19 16:29:31:[cuda:0] Epoch 200 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:29:39:mr: 6716.302
+INFO:Trainer:2024-05-19 16:29:39:mrr: 0.386
+INFO:Trainer:2024-05-19 16:29:39:hits@1: 0.364
+INFO:Trainer:2024-05-19 16:29:39:hits@3: 0.398
+INFO:Trainer:2024-05-19 16:29:39:hits@10: 0.422
+INFO:Trainer:2024-05-19 16:29:39:mr_type: 3274.771
+INFO:Trainer:2024-05-19 16:29:39:mrr_type: 0.395
+INFO:Trainer:2024-05-19 16:29:39:hits@1_type: 0.371
+INFO:Trainer:2024-05-19 16:29:39:hits@3_type: 0.407
+INFO:Trainer:2024-05-19 16:29:39:hits@10_type: 0.432
+INFO:EarlyStopping:2024-05-19 16:29:39:Validation score improved (0.402000 --> 0.422000).  Saving model ...
+INFO:Trainer:2024-05-19 16:29:40:[cuda:0] Epoch 200 | Training checkpoint saved at ../../checkpoint/analogy-200.pth
+INFO:Trainer:2024-05-19 16:29:40:[cuda:0] Epoch [ 200/2000] | Batchsize: 4096 | loss:  0.837205 | 1.88265 seconds/epoch
+INFO:Trainer:2024-05-19 16:32:36:[cuda:0] Epoch 300 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:32:44:mr: 6176.977
+INFO:Trainer:2024-05-19 16:32:44:mrr: 0.394
+INFO:Trainer:2024-05-19 16:32:44:hits@1: 0.366
+INFO:Trainer:2024-05-19 16:32:44:hits@3: 0.411
+INFO:Trainer:2024-05-19 16:32:44:hits@10: 0.439
+INFO:Trainer:2024-05-19 16:32:44:mr_type: 2957.396
+INFO:Trainer:2024-05-19 16:32:44:mrr_type: 0.402
+INFO:Trainer:2024-05-19 16:32:44:hits@1_type: 0.373
+INFO:Trainer:2024-05-19 16:32:44:hits@3_type: 0.42
+INFO:Trainer:2024-05-19 16:32:44:hits@10_type: 0.449
+INFO:EarlyStopping:2024-05-19 16:32:44:Validation score improved (0.422000 --> 0.439000).  Saving model ...
+INFO:Trainer:2024-05-19 16:32:45:[cuda:0] Epoch 300 | Training checkpoint saved at ../../checkpoint/analogy-300.pth
+INFO:Trainer:2024-05-19 16:32:45:[cuda:0] Epoch [ 300/2000] | Batchsize: 4096 | loss:  0.702512 | 1.87256 seconds/epoch
+INFO:Trainer:2024-05-19 16:35:41:[cuda:0] Epoch 400 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:35:49:mr: 5793.655
+INFO:Trainer:2024-05-19 16:35:49:mrr: 0.4
+INFO:Trainer:2024-05-19 16:35:49:hits@1: 0.371
+INFO:Trainer:2024-05-19 16:35:49:hits@3: 0.416
+INFO:Trainer:2024-05-19 16:35:49:hits@10: 0.447
+INFO:Trainer:2024-05-19 16:35:49:mr_type: 2747.617
+INFO:Trainer:2024-05-19 16:35:49:mrr_type: 0.409
+INFO:Trainer:2024-05-19 16:35:49:hits@1_type: 0.378
+INFO:Trainer:2024-05-19 16:35:49:hits@3_type: 0.426
+INFO:Trainer:2024-05-19 16:35:49:hits@10_type: 0.455
+INFO:EarlyStopping:2024-05-19 16:35:49:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-19 16:35:50:[cuda:0] Epoch 400 | Training checkpoint saved at ../../checkpoint/analogy-400.pth
+INFO:Trainer:2024-05-19 16:35:50:[cuda:0] Epoch [ 400/2000] | Batchsize: 4096 | loss:  0.656183 | 1.86717 seconds/epoch
+INFO:Trainer:2024-05-19 16:38:47:[cuda:0] Epoch 500 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:38:55:mr: 5544.671
+INFO:Trainer:2024-05-19 16:38:55:mrr: 0.402
+INFO:Trainer:2024-05-19 16:38:55:hits@1: 0.372
+INFO:Trainer:2024-05-19 16:38:55:hits@3: 0.418
+INFO:Trainer:2024-05-19 16:38:55:hits@10: 0.453
+INFO:Trainer:2024-05-19 16:38:55:mr_type: 2621.944
+INFO:Trainer:2024-05-19 16:38:55:mrr_type: 0.412
+INFO:Trainer:2024-05-19 16:38:55:hits@1_type: 0.38
+INFO:Trainer:2024-05-19 16:38:55:hits@3_type: 0.429
+INFO:Trainer:2024-05-19 16:38:55:hits@10_type: 0.463
+INFO:EarlyStopping:2024-05-19 16:38:55:Validation score improved (0.439000 --> 0.453000).  Saving model ...
+INFO:Trainer:2024-05-19 16:38:56:[cuda:0] Epoch 500 | Training checkpoint saved at ../../checkpoint/analogy-500.pth
+INFO:Trainer:2024-05-19 16:38:56:[cuda:0] Epoch [ 500/2000] | Batchsize: 4096 | loss:  0.636360 | 1.86533 seconds/epoch
+INFO:Trainer:2024-05-19 16:41:53:[cuda:0] Epoch 600 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:42:02:mr: 5316.828
+INFO:Trainer:2024-05-19 16:42:02:mrr: 0.406
+INFO:Trainer:2024-05-19 16:42:02:hits@1: 0.373
+INFO:Trainer:2024-05-19 16:42:02:hits@3: 0.424
+INFO:Trainer:2024-05-19 16:42:02:hits@10: 0.456
+INFO:Trainer:2024-05-19 16:42:02:mr_type: 2524.253
+INFO:Trainer:2024-05-19 16:42:02:mrr_type: 0.416
+INFO:Trainer:2024-05-19 16:42:02:hits@1_type: 0.382
+INFO:Trainer:2024-05-19 16:42:02:hits@3_type: 0.435
+INFO:Trainer:2024-05-19 16:42:02:hits@10_type: 0.467
+INFO:EarlyStopping:2024-05-19 16:42:02:EarlyStopping counter: 1 / 2
+INFO:Trainer:2024-05-19 16:42:02:[cuda:0] Epoch 600 | Training checkpoint saved at ../../checkpoint/analogy-600.pth
+INFO:Trainer:2024-05-19 16:42:02:[cuda:0] Epoch [ 600/2000] | Batchsize: 4096 | loss:  0.624029 | 1.86531 seconds/epoch
+INFO:Trainer:2024-05-19 16:44:58:[cuda:0] Epoch 700 | The model starts evaluation on the validation set.
+INFO:Trainer:2024-05-19 16:45:06:mr: 5198.648
+INFO:Trainer:2024-05-19 16:45:06:mrr: 0.407
+INFO:Trainer:2024-05-19 16:45:06:hits@1: 0.374
+INFO:Trainer:2024-05-19 16:45:06:hits@3: 0.424
+INFO:Trainer:2024-05-19 16:45:06:hits@10: 0.461
+INFO:Trainer:2024-05-19 16:45:06:mr_type: 2470.134
+INFO:Trainer:2024-05-19 16:45:06:mrr_type: 0.417
+INFO:Trainer:2024-05-19 16:45:06:hits@1_type: 0.383
+INFO:Trainer:2024-05-19 16:45:06:hits@3_type: 0.436
+INFO:Trainer:2024-05-19 16:45:06:hits@10_type: 0.472
+INFO:EarlyStopping:2024-05-19 16:45:06:EarlyStopping counter: 2 / 2
+INFO:Trainer:2024-05-19 16:45:06:[cuda:0] Send an early stopping signal
+INFO:Trainer:2024-05-19 16:45:06:[cuda:0] The model training is completed, taking a total of 1303.71563 seconds.
+INFO:Trainer:2024-05-19 16:45:06:[cuda:0] Model saved at ../../checkpoint/analogy.pth.
+INFO:Trainer:2024-05-19 16:45:06:[cuda:0] The model starts evaluating in the test set.
+INFO:Trainer:2024-05-19 16:45:15:mr: 5088.035
+INFO:Trainer:2024-05-19 16:45:15:mrr: 0.409
+INFO:Trainer:2024-05-19 16:45:15:hits@1: 0.377
+INFO:Trainer:2024-05-19 16:45:15:hits@3: 0.426
+INFO:Trainer:2024-05-19 16:45:15:hits@10: 0.464
+INFO:Trainer:2024-05-19 16:45:15:mr_type: 2547.149
+INFO:Trainer:2024-05-19 16:45:15:mrr_type: 0.419
+INFO:Trainer:2024-05-19 16:45:15:hits@1_type: 0.385
+INFO:Trainer:2024-05-19 16:45:15:hits@3_type: 0.436
+INFO:Trainer:2024-05-19 16:45:15:hits@10_type: 0.477
