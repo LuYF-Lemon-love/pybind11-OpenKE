@@ -5,6 +5,12 @@
 ComplEx-WN18RR-single-gpu-hpo
 ====================================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 19, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 19, 2024
+
 这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上寻找 ``ComplEx`` :cite:`ComplEx` 的超参数。
 
 定义训练数据加载器超参数优化范围
@@ -105,7 +111,7 @@ print()
 
 tester_config.update({
     'device': {
-        'value': 'cuda:1'
+        'value': 'cuda:0'
     }
 })
 
