@@ -46,8 +46,8 @@ class RGCN(Model):
         
         # define the model
         rgcn = RGCN(
-        	ent_tol = dataloader.train_sampler.ent_tol,
-        	rel_tol = dataloader.train_sampler.rel_tol,
+        	ent_tol = dataloader.get_ent_tol(),
+        	rel_tol = dataloader.get_rel_tol(),
         	dim = 500,
         	num_layers = 2
         )

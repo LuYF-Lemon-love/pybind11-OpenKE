@@ -1,0 +1,1 @@
+INFO:Trainer:2024-05-20 15:43:52:[cuda:0] Initialization completed, start model training.
