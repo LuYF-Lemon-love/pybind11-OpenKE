@@ -5,6 +5,12 @@
 SimplE-WN18RR-single-gpu-wandb
 ====================================================================
 
+.. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
+
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 20, 2024
+
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 20, 2024
+
 这一部分介绍如何用一个 GPU 在 ``WN18RR`` 知识图谱上训练 ``SimplE`` :cite:`SimplE`，使用 ``wandb`` 记录实验结果。
 
 导入数据
@@ -26,30 +32,31 @@ wandb_logger = WandbLogger(
 	project="pybind11-ke",
 	name="SimplE-WN18RR",
 	config=dict(
-		in_path = '../../benchmarks/WN18RR/',
-		batch_size = 4096,
-		neg_ent = 25,
-		test = True,
-		test_batch_size = 10,
-		num_workers = 16,
-		dim = 200,
-		regul_rate = 1.0,
-		use_gpu = True,
-		device = 'cuda:1',
-		epochs = 2000,
-		lr = 0.5,
-		opt_method = 'adagrad',
-		valid_interval = 100,
-		log_interval = 100,
-		save_interval = 100,
-		save_path = '../../checkpoint/transe.pth'
+        in_path = '../../benchmarks/WN18RR/',
+        batch_size = 4096,
+        neg_ent = 25,
+        test = True,
+        test_batch_size = 10,
+        num_workers = 16,
+        dim = 200,
+        regul_rate = 1.0,
+        use_tqdm = False,
+        use_gpu = True,
+        device = 'cuda:1',
+        epochs = 2000,
+        lr = 0.5,
+        opt_method = 'adagrad',
+        valid_interval = 100,
+        log_interval = 100,
+        save_interval = 100,
+        save_path = '../../checkpoint/transe.pth'
 	)
 )
 
 config = wandb_logger.config
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 # dataloader for training
@@ -114,7 +121,8 @@ model = NegativeSampling(
 # 使得训练器能够在训练过程中评估模型。
 
 # test the model
-tester = Tester(model = simple, data_loader = dataloader, use_gpu = config.use_gpu, device = config.device)
+tester = Tester(model = simple, data_loader = dataloader, use_tqdm = config.use_tqdm,
+                use_gpu = config.use_gpu, device = config.device)
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(), epochs = config.epochs,
