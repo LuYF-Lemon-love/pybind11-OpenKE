@@ -139,6 +139,32 @@ class RGCNTestSampler(TestSampler):
         )
 
     @override
+    def get_type_constrain_id(self):
+
+        """读取 type_constrain.txt 文件。"""
+
+        tol = int(self.sampler.rel_tol / 2)
+                
+        with open(os.path.join(self.sampler.in_path, "type_constrain.txt")) as f:
+            rel_tol = (int)(f.readline())
+            first_line = True
+            for line in f:
+                rel_types = line.strip().split("\t")
+                for entity in rel_types[2:]:
+                    if first_line:
+                        self.rel_heads[int(rel_types[0])].add(int(entity))
+                        self.rel_tails[int(rel_types[0]) + tol].add(int(entity))
+                    else:
+                        self.rel_tails[int(rel_types[0])].add(int(entity))
+                        self.rel_heads[int(rel_types[0]) + tol].add(int(entity))
+                first_line = not first_line
+
+        for rel in self.rel_heads:
+            self.rel_heads[rel] = torch.tensor(list(self.rel_heads[rel]))
+        for rel in self.rel_tails:
+            self.rel_tails[rel] = torch.tensor(list(self.rel_tails[rel]))
+
+    @override
     def sampling(
         self,
         data: list[tuple[int, int, int]]) -> dict[str, typing.Union[dgl.DGLGraph , torch.Tensor]]:

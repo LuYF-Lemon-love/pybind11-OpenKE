@@ -89,7 +89,8 @@ model = RGCNSampling(
 # 使得训练器能够在训练过程中评估模型。
 
 # test the model
-tester = Tester(model = rgcn, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
+tester = Tester(model = rgcn, data_loader = dataloader, use_tqdm = False,
+                use_gpu = True, device = 'cuda:0')
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
