@@ -26,7 +26,7 @@ from pybind11_ke.module.strategy import RGCNSampling
 from pybind11_ke.config import Trainer, Tester
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 dataloader = KGEDataLoader(
