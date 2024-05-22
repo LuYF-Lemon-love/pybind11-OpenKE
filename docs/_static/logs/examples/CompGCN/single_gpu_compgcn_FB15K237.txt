@@ -29,3 +29,5 @@ INFO:Trainer:2024-05-22 19:35:08:hits@10_type: 0.355
 INFO:EarlyStopping:2024-05-22 19:35:08:Validation score improved (0.085000 --> 0.277000).  Saving model ...
 INFO:Trainer:2024-05-22 19:35:08:[cuda:0] Epoch 100 | Training checkpoint saved at ../../checkpoint/compgcn-100.pth
 INFO:Trainer:2024-05-22 19:35:08:[cuda:0] Epoch [ 100/2000] | Batchsize: 2048 | loss:  0.159864 | 6.55768 seconds/epoch
+INFO:Trainer:2024-05-22 19:40:33:[cuda:0] Epoch 150 | The model starts evaluation on the validation set.
+  0%|          | 0/137 [00:00<?, ?it/s]  1%|          | 1/137 [00:01<03:08,  1.39s/it]  1%|▏         | 2/137 [00:01<01:35,  1.42it/s]  2%|▏         | 3/137 [00:02<01:29,  1.49it/s]  5%|▌         | 7/137 [00:02<00:26,  4.90it/s]  9%|▉         | 12/137 [00:02<00:12,  9.82it/s] 12%|█▏        | 17/137 [00:02<00:08, 14.99it/s] 16%|█▌        | 22/137 [00:02<00:05, 20.11it/s]
