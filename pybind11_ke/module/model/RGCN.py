@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/RGCN.py
 # 
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 16, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 22, 2024
 # 
 # 该头文件定义了 R-GCN.
 
@@ -278,7 +278,7 @@ def get_rgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
 	    		'value': 'RGCN'
 	    	},
 	    	'dim': {
-	    		'values': [200, 400, 600]
+	    		'values': [200, 300, 400]
 	    	},
 	    	'num_layers': {
 	    		'value': 2
@@ -294,7 +294,7 @@ def get_rgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
 			'value': 'RGCN'
 		},
 		'dim': {
-			'values': [200, 400, 600]
+			'values': [200, 300, 400]
 		},
 		'num_layers': {
 			'value': 2
