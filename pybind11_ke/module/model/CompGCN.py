@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/CompGCN.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2023
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 22, 2024
 #
 # 该脚本定义了 CompGCN 类.
 
@@ -36,8 +36,8 @@ class CompGCN(Model):
         
         # define the model
         compgcn = CompGCN(
-        	ent_tol = dataloader.train_sampler.ent_tol,
-        	rel_tol = dataloader.train_sampler.rel_tol,
+        	ent_tol = dataloader.get_ent_tol(),
+        	rel_tol = dataloader.get_rel_tol(),
         	dim = 100
         )
         
@@ -45,7 +45,7 @@ class CompGCN(Model):
         model = CompGCNSampling(
         	model = compgcn,
         	loss = CompGCNLoss(model = compgcn),
-        	ent_tol = dataloader.train_sampler.ent_tol
+        	ent_tol = dataloader.get_ent_tol()
         )
         
         # test the model
