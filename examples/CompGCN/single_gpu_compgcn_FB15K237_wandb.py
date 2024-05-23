@@ -8,9 +8,9 @@ CompGCN-FB15K237-single-gpu-wandb
 
 .. Note:: created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 7, 2023
 
-.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2024
+.. Note:: updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2024
 
-.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 24, 2024
+.. Note:: last run by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2024
 
 这一部分介绍如何用一个 GPU 在 FB15K237 知识图谱上训练 ``CompGCN`` :cite:`CompGCN`，使用 ``wandb`` 记录实验结果。
 
@@ -54,7 +54,7 @@ wandb_logger = WandbLogger(
 config = wandb_logger.config
 
 ######################################################################
-# pybind11-KE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
+# pybind11-OpenKE 提供了很多数据集，它们很多都是 KGE 原论文发表时附带的数据集。
 # :py:class:`pybind11_ke.data.KGEDataLoader` 包含 ``in_path`` 用于传递数据集目录。
 
 dataloader = KGEDataLoader(
@@ -132,32 +132,8 @@ trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
 trainer.run()
 
 ######################################################################
-# .. figure:: /_static/images/examples/CompGCN/CompGCN-FB15K237-Loss.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中损失值的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/CompGCN/CompGCN-FB15K237-MR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/CompGCN/CompGCN-FB15K237-MRR.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 MRR 的变化
-
-######################################################################
-# .. figure:: /_static/images/examples/CompGCN/CompGCN-FB15K237-Hit.png
-#      :align: center
-#      :height: 300
-#
-#      训练过程中 Hits@3、Hits@3 和 Hits@10 的变化
+# .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/CompGCN/single_gpu_compgcn_FB15K237_wandb.txt>`_ 下载。
+# .. Note:: 上述代码的运行报告可以从 `此处 </zh-cn/latest/_static/pdfs/examples/CompGCN/CompGCN单卡训练示例（一）.pdf>`_ 下载。
 
 ######################################################################
 # --------------
