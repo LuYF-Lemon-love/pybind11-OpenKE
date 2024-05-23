@@ -44,4 +44,4 @@ pybind11_ke.module.loss
     get_sigmoid_loss_hpo_config
     get_softplus_loss_hpo_config
     get_rgcn_loss_hpo_config
-    get_cross_entropy_loss_hpo_config
+    get_compgcn_loss_hpo_config

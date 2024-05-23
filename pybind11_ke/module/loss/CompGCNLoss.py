@@ -3,7 +3,7 @@
 # pybind11_ke/module/loss/CompGCNLoss.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2024
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 20, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2024
 #
 # 该脚本定义了 CompGCNLoss 类.
 
@@ -24,7 +24,7 @@ class CompGCNLoss(Loss):
 	.. Note:: :py:meth:`forward` 中的正样本评分函数的得分应大于负样本评分函数的得分。
 
 	例子::
-
+    
         from pybind11_ke.module.loss import CompGCNLoss
         from pybind11_ke.module.strategy import CompGCNSampling
         
@@ -71,7 +71,7 @@ class CompGCNLoss(Loss):
         loss = self.loss(pred, label)
         return loss
 
-def get_cross_entropy_loss_hpo_config() -> dict[str, dict[str, Any]]:
+def get_compgcn_loss_hpo_config() -> dict[str, dict[str, Any]]:
 
 	"""返回 :py:class:`CompGCNLoss` 的默认超参数优化配置。
 	

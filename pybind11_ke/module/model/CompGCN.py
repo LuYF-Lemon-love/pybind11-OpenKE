@@ -3,7 +3,7 @@
 # pybind11_ke/module/model/CompGCN.py
 #
 # created by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on Jan 19, 2023
-# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 22, 2024
+# updated by LuYF-Lemon-love <luyanfeng_nlp@qq.com> on May 23, 2024
 #
 # 该脚本定义了 CompGCN 类.
 
@@ -530,10 +530,10 @@ def get_compgcn_hpo_config() -> dict[str, dict[str, typing.Any]]:
                 'value': 'ConvE'
             }
         }
-
-	:returns: :py:class:`CompGCN` 的默认超参数优化配置
-	:rtype: dict[str, dict[str, typing.Any]]
-	"""
+        
+    :returns: :py:class:`CompGCN` 的默认超参数优化配置
+    :rtype: dict[str, dict[str, typing.Any]]
+    """
     
     parameters_dict = {
         'model': {
