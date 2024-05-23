@@ -17,17 +17,17 @@ from typing import Any
 from ..model import CompGCN
 
 class CompGCNLoss(Loss):
-
+    
     """
-	``CompGCN`` :cite:`CompGCN` 原论文中应用这种损失函数完成模型训练。
-	
-	.. Note:: :py:meth:`forward` 中的正样本评分函数的得分应大于负样本评分函数的得分。
+    ``CompGCN`` :cite:`CompGCN` 原论文中应用这种损失函数完成模型训练。
+    
+    .. Note:: :py:meth:`forward` 中的正样本评分函数的得分应大于负样本评分函数的得分。
+    
+    例子::
 
-	例子::
-        
         from pybind11_ke.module.loss import CompGCNLoss
         from pybind11_ke.module.strategy import CompGCNSampling
-        
+
         # define the loss function
         model = CompGCNSampling(
             model = compgcn,
