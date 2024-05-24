@@ -4,10 +4,21 @@
 Pip
 ----------------------------------
 
+1. 安装：
+
 .. prompt:: bash
 
     pip install dgl -f https://data.dgl.ai/wheels/cu118/repo.html
     pip install git+https://github.com/LuYF-Lemon-love/pybind11-OpenKE.git
+
+2. 验证:
+
+::
+
+    >>> import pybind11_ke
+    >>> pybind11_ke.__version__
+    '3.0.0'
+    >>>
 
 Linux
 ----------------------------------
@@ -16,7 +27,7 @@ Linux
 
 .. prompt:: bash
 
-    git clone -b pybind11-OpenKE-PyTorch git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
+    git clone -b main git@github.com:LuYF-Lemon-love/pybind11-OpenKE.git --depth 1
     cd pybind11-OpenKE/
     python -m venv env
     source env/bin/activate
