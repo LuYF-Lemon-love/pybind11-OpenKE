@@ -108,4 +108,4 @@ pybind11-OpenKE — 知识图谱嵌入工具包
     }
 
 
-该仓库主要由 `Yanfeng Lu <https://github.com/LuYF-Lemon-love>`_， `Fengzhen Hou <https://github.com/houfz-cpu>`_提供（按时间顺序排列）。
+该仓库主要由 `Yanfeng Lu <https://github.com/LuYF-Lemon-love>`_， `Fengzhen Hou <https://github.com/houfz-cpu>`_ 提供（按时间顺序排列）。
