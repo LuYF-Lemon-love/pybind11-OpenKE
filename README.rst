@@ -92,3 +92,20 @@ pybind11-OpenKE — 知识图谱嵌入工具包
       - ``RESCAL`` :cite:`RESCAL`, ``DistMult`` :cite:`DistMult`, ``HolE`` :cite:`HolE`, ``ComplEx`` :cite:`ComplEx`, ``Analogy`` :cite:`ANALOGY`, ``SimplE`` :cite:`SimplE`
     * - 图神经网络模型
       - ``R-GCN`` :cite:`R-GCN`, ``CompGCN`` :cite:`CompGCN`
+
+如何引用这个项目？
+---------------------------
+
+如果您发现 pybind11-OpenKE 对您的研究有用，请考虑使用以下 BibTeX 模板引用 pybind11-OpenKE：
+
+::
+
+    @misc{pybind11-OpenKE,
+       author = {Yanfeng Lu and Fengzhen Hou},
+       year = {2024},
+       note = {https://github.com/LuYF-Lemon-love/pybind11-OpenKE},
+       title = {pybind11-OpenKE: An Open Source Library for Knowledge Graph Embeddings}
+    }
+
+
+该仓库主要由 `Yanfeng Lu <https://github.com/LuYF-Lemon-love>`_， `Fengzhen Hou <https://github.com/houfz-cpu>`_提供（按时间顺序排列）。
