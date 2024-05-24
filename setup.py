@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_namespace_packages
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 
 setup(
     name="pybind11_ke",
