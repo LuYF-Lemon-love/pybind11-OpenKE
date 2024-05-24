@@ -101,7 +101,7 @@ pybind11-OpenKE — 知识图谱嵌入工具包
 ::
 
     @misc{pybind11-OpenKE,
-       author = {Yanfeng Lu and Fengzhen Hou},
+       author = {Lu, Yanfeng and Hou, Fengzhen},
        year = {2024},
        note = {https://github.com/LuYF-Lemon-love/pybind11-OpenKE},
        title = {pybind11-OpenKE: An Open Source Library for Knowledge Graph Embeddings}
