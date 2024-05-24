@@ -96,7 +96,7 @@ model = NegativeSampling(
 # 使得训练器能够在训练过程中评估模型。
 	
 # test the model
-tester = Tester(model = transe, data_loader = dataloader, use_gpu = False, device = 'cuda:0')
+tester = Tester(model = transe, data_loader = dataloader, use_gpu = True, device = 'cuda:0')
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
