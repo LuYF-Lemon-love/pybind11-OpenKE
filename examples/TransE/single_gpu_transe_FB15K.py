@@ -96,15 +96,20 @@ model = NegativeSampling(
 # 使得训练器能够在训练过程中评估模型。
 	
 # test the model
-tester = Tester(model = transe, data_loader = dataloader, use_gpu = True, device = 'cuda:1')
+tester = Tester(model = transe, data_loader = dataloader, use_gpu = False, device = 'cuda:0')
 
 # train the model
 trainer = Trainer(model = model, data_loader = dataloader.train_dataloader(),
-	epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:1',
+	epochs = 1000, lr = 0.01, use_gpu = True, device = 'cuda:0',
 	tester = tester, test = True, valid_interval = 100,
 	log_interval = 100, save_interval = 100,
 	save_path = '../../checkpoint/transe.pth', delta = 0.01)
-trainer.run()
+# for linux
+# trainer.run()
+
+# for windows
+if __name__ == '__main__':
+	trainer.run()
 
 ######################################################################
 # .. Note:: 上述代码的运行日志可以从 `此处 </zh-cn/latest/_static/logs/examples/TransE/single_gpu_transe_FB15K.txt>`_ 下载。
