@@ -23,7 +23,7 @@ Pip
 Linux
 ----------------------------------
 
-1. 克隆 pybind11-OpenKE-PyTorch 分支。
+1. 克隆 main 分支。
 
 .. prompt:: bash
 
@@ -46,7 +46,7 @@ Linux
 Windows
 ----------------------------------
 
-1. 克隆 pybind11-OpenKE-PyTorch 分支。
+1. 克隆 main 分支。
 
 .. prompt:: bash
 
