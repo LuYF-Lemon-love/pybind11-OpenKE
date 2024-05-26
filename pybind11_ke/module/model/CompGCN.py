@@ -399,24 +399,24 @@ class CompGCNCov(nn.Module):
         rel_emb: torch.nn.parameter.Parameter,
         edge_type: torch.Tensor,
         edge_norm: torch.Tensor) -> tuple[torch.nn.parameter.Parameter, torch.nn.parameter.Parameter]:
-
-        """
-		定义每次调用时执行的计算。
-		:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
-        
-        :param graph: 子图
-        :type graph: dgl.DGLGraph
-        :param ent_emb: 实体嵌入向量
-        :type ent_emb: torch.nn.parameter.Parameter
-        :param rel_emb: 关系嵌入向量
-        :type rel_emb: torch.nn.parameter.Parameter
-        :param edge_type: 关系 ID
-        :type edge_type: torch.Tensor
-        :param norm: 关系的归一化系数
-        :type norm: torch.Tensor
-        :returns: 更新后的实体嵌入和关系嵌入
-        :rtype: tuple[torch.nn.parameter.Parameter, torch.nn.parameter.Parameter]
-		"""
+		
+	"""
+ 	定义每次调用时执行的计算。
+  	:py:class:`torch.nn.Module` 子类必须重写 :py:meth:`torch.nn.Module.forward`。
+   
+   	:param graph: 子图
+    	:type graph: dgl.DGLGraph
+     	:param ent_emb: 实体嵌入向量
+      	:type ent_emb: torch.nn.parameter.Parameter
+       	:param rel_emb: 关系嵌入向量
+	:type rel_emb: torch.nn.parameter.Parameter
+ 	:param edge_type: 关系 ID
+  	:type edge_type: torch.Tensor
+   	:param norm: 关系的归一化系数
+    	:type norm: torch.Tensor
+     	:returns: 更新后的实体嵌入和关系嵌入
+      	:rtype: tuple[torch.nn.parameter.Parameter, torch.nn.parameter.Parameter]
+       	"""
 
         graph = graph.local_var()
         graph.ndata['h'] = ent_emb
